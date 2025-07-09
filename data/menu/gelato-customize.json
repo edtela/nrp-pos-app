@@ -6,8 +6,10 @@
     "flavor-choice": {
       "id": "flavor-choice",
       "name": "Flavor Selection",
-      "min": 1,
-      "max": 2
+      "constraints": {
+        "min": 1,
+        "max": 2
+      }
     }
   },
   "content": {
@@ -22,31 +24,56 @@
             "id": "vanilla-gelato",
             "name": "Vanilla",
             "price": 0,
-            "choiceId": "flavor-choice"
+            "constraints": {
+              "choice": {
+                "id": "flavor-choice",
+                "single": false
+              }
+            }
           },
           {
             "id": "chocolate-gelato",
             "name": "Chocolate", 
             "price": 0,
-            "choiceId": "flavor-choice"
+            "constraints": {
+              "choice": {
+                "id": "flavor-choice",
+                "single": false
+              }
+            }
           },
           {
             "id": "strawberry-gelato",
             "name": "Strawberry",
             "price": 0,
-            "choiceId": "flavor-choice"
+            "constraints": {
+              "choice": {
+                "id": "flavor-choice",
+                "single": false
+              }
+            }
           },
           {
             "id": "pistachio-gelato",
             "name": "Pistachio",
             "price": 0.50,
-            "choiceId": "flavor-choice"
+            "constraints": {
+              "choice": {
+                "id": "flavor-choice",
+                "single": false
+              }
+            }
           },
           {
             "id": "hazelnut-gelato",
             "name": "Hazelnut",
             "price": 0.50,
-            "choiceId": "flavor-choice"
+            "constraints": {
+              "choice": {
+                "id": "flavor-choice",
+                "single": false
+              }
+            }
           }
         ]
       },

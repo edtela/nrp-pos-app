@@ -41,18 +41,14 @@ export interface MenuItem {
   name: string;
   description?: string;
   icon?: string;
-  
+
   // Pricing - if undefined, this is a Category; if defined, this is a SaleItem
-  price?: number | VariantPrice;  
+  price?: number | VariantPrice;
   variantGroupId?: string;         // References a Variants definition for variant-based pricing
-  
+
   // Constraints
-  min?: number;                    // Minimum quantity that can be selected
-  max?: number;                    // Maximum quantity that can be selected
-  
-  // Selection group
-  choiceId?: string;              // References a Choice definition for selection behavior
-  
+  constraints?: Constraint;        // Item constraints and choice reference
+
   // Navigation
   subMenu?: {                     // For Categories: submenu to navigate to
     menuId: string;               // For SaleItems: customization menu after "Add to Order"
@@ -75,6 +71,8 @@ export interface Choice {
   min?: number;          // Minimum items that must be selected (default: 0)
   max?: number;          // Maximum items that can be selected (undefined = unlimited)
 }
+
+export type Constraint = { min?: number, max?: number, choice?: { id: string, single: boolean } };
 
 /**
  * Product variant (e.g., size options like mini, standard, large)

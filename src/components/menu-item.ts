@@ -169,12 +169,13 @@ const menuItemPrice = css`
  * Menu item template - pure function
  */
 export function MenuItemTemplate(data: MenuItem): Template {
+  const iType = data.constraints?.choice?.single ? 'radio' : (data.subMenu ? 'none' : 'checkbox')
   return html`
     <div class="${menuItem}" 
          id="menu-item__${data.id}"
          data-id="${data.id}" 
          data-type="menu-item"
-         data-interaction-type="none"
+         data-interaction-type="${iType}"
          data-selected="false">
       <div class="${menuItemContent}">
         <span class="${menuItemIcon}">${data.icon || ''}</span>

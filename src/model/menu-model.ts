@@ -256,8 +256,9 @@ export class MenuContentModel {
     const menuItemChanges: MenuContentDataChange['menuItem'] = {};
 
     // Handle choice constraints
-    if (item.choiceId && this.choiceGroups.has(item.choiceId)) {
-      const choiceGroup = this.choiceGroups.get(item.choiceId)!;
+    const choiceId = item.constraints?.choice?.id;
+    if (choiceId && this.choiceGroups.has(choiceId)) {
+      const choiceGroup = this.choiceGroups.get(choiceId)!;
       const itemChanges = choiceGroup.handleSelection(itemId, this.selectedItems);
 
       // Apply changes to model state and build change object
@@ -402,14 +403,15 @@ export class MenuContentModel {
       if (isItemGroup(group)) {
         group.items.forEach(item => {
           this.menuItems.set(item.id, item);
-          if (item.choiceId && this.menu.choices?.[item.choiceId]) {
-            if (!this.choiceGroups.has(item.choiceId)) {
+          const choiceId = item.constraints?.choice?.id;
+          if (choiceId && this.menu.choices?.[choiceId]) {
+            if (!this.choiceGroups.has(choiceId)) {
               this.choiceGroups.set(
-                item.choiceId,
-                new ChoiceGroupModel(item.choiceId, this.menu.choices[item.choiceId])
+                choiceId,
+                new ChoiceGroupModel(choiceId, this.menu.choices[choiceId])
               );
             }
-            this.choiceGroups.get(item.choiceId)!.addItem(item.id);
+            this.choiceGroups.get(choiceId)!.addItem(item.id);
           }
         });
       } else if (isNestedGroup(group)) {
@@ -506,8 +508,9 @@ export class MenuContentModel {
     if (item.subMenu) {
       interactionType = 'navigate';
     } else if (isSaleItem(item)) {
-      if (item.choiceId && this.menu.choices?.[item.choiceId]) {
-        const choice = this.menu.choices[item.choiceId];
+      const choiceId = item.constraints?.choice?.id;
+      if (choiceId && this.menu.choices?.[choiceId]) {
+        const choice = this.menu.choices[choiceId];
         interactionType = choice.max === 1 ? 'radio' : 'checkbox';
       } else {
         interactionType = 'checkbox';
