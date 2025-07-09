@@ -1,0 +1,110 @@
+{
+  "id": "drinks-menu",
+  "name": "Beverages",
+  "variants": {
+    "drink-size": {
+      "id": "drink-size",
+      "name": "Size",
+      "variants": [
+        {
+          "id": "small",
+          "name": "Small",
+          "icon": "🥤"
+        },
+        {
+          "id": "medium",
+          "name": "Medium", 
+          "icon": "🥤"
+        },
+        {
+          "id": "large",
+          "name": "Large",
+          "icon": "🥤"
+        }
+      ],
+      "selectedId": "medium"
+    }
+  },
+  "content": {
+    "groups": [
+      {
+        "header": {
+          "text": "Soft Drinks",
+          "classes": ["menu-group__header"]
+        },
+        "items": [
+          {
+            "id": "coca-cola",
+            "name": "Coca-Cola",
+            "description": "Classic cola",
+            "price": {
+              "small": 2.49,
+              "medium": 2.99,
+              "large": 3.49
+            }
+          },
+          {
+            "id": "sprite",
+            "name": "Sprite", 
+            "description": "Lemon-lime soda",
+            "price": {
+              "small": 2.49,
+              "medium": 2.99,
+              "large": 3.49
+            }
+          },
+          {
+            "id": "orange-juice",
+            "name": "Orange Juice",
+            "description": "Freshly squeezed",
+            "price": {
+              "small": 3.49,
+              "medium": 3.99,
+              "large": 4.49
+            }
+          }
+        ]
+      },
+      {
+        "header": {
+          "text": "Beer & Wine",
+          "classes": ["menu-group__header"]
+        },
+        "items": [
+          {
+            "id": "draft-beer",
+            "name": "Draft Beer",
+            "description": "Local craft beer on tap",
+            "price": 5.99
+          },
+          {
+            "id": "house-wine",
+            "name": "House Wine",
+            "description": "Red or white",
+            "price": 6.99
+          }
+        ]
+      },
+      {
+        "header": {
+          "text": "Hot Beverages",
+          "classes": ["menu-group__header"]
+        },
+        "items": [
+          {
+            "id": "coffee",
+            "name": "Coffee",
+            "description": "Freshly brewed",
+            "price": 2.49
+          },
+          {
+            "id": "tea",
+            "name": "Tea",
+            "description": "Assorted varieties",
+            "price": 2.49
+          }
+        ]
+      }
+    ]
+  }
+}

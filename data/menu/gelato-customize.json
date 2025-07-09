@@ -1,0 +1,78 @@
+{
+  "id": "gelato-customize",
+  "name": "Choose Your Gelato",
+  "modifierMenu": true,
+  "choices": {
+    "flavor-choice": {
+      "id": "flavor-choice",
+      "name": "Flavor Selection",
+      "min": 1,
+      "max": 2
+    }
+  },
+  "content": {
+    "groups": [
+      {
+        "header": {
+          "text": "Gelato Flavors",
+          "classes": ["menu-group__header"]
+        },
+        "items": [
+          {
+            "id": "vanilla-gelato",
+            "name": "Vanilla",
+            "price": 0,
+            "choiceId": "flavor-choice"
+          },
+          {
+            "id": "chocolate-gelato",
+            "name": "Chocolate", 
+            "price": 0,
+            "choiceId": "flavor-choice"
+          },
+          {
+            "id": "strawberry-gelato",
+            "name": "Strawberry",
+            "price": 0,
+            "choiceId": "flavor-choice"
+          },
+          {
+            "id": "pistachio-gelato",
+            "name": "Pistachio",
+            "price": 0.50,
+            "choiceId": "flavor-choice"
+          },
+          {
+            "id": "hazelnut-gelato",
+            "name": "Hazelnut",
+            "price": 0.50,
+            "choiceId": "flavor-choice"
+          }
+        ]
+      },
+      {
+        "header": {
+          "text": "Toppings",
+          "classes": ["menu-group__header"]
+        },
+        "items": [
+          {
+            "id": "chocolate-chips",
+            "name": "Chocolate Chips",
+            "price": 0.50
+          },
+          {
+            "id": "caramel-sauce",
+            "name": "Caramel Sauce",
+            "price": 0.50
+          },
+          {
+            "id": "whipped-cream",
+            "name": "Whipped Cream",
+            "price": 0.50
+          }
+        ]
+      }
+    ]
+  }
+}

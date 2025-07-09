@@ -1,0 +1,36 @@
+{
+  "id": "desserts-menu",
+  "name": "Desserts",
+  "content": {
+    "items": [
+      {
+        "id": "tiramisu",
+        "name": "Tiramisu",
+        "description": "Classic Italian dessert with espresso-soaked ladyfingers",
+        "price": 6.99
+      },
+      {
+        "id": "chocolate-cake",
+        "name": "Chocolate Lava Cake", 
+        "description": "Warm chocolate cake with molten center",
+        "price": 7.99
+      },
+      {
+        "id": "gelato",
+        "name": "Gelato",
+        "description": "Choose from vanilla, chocolate, or strawberry",
+        "price": 4.99,
+        "subMenu": {
+          "menuId": "gelato-customize",
+          "included": []
+        }
+      },
+      {
+        "id": "cannoli",
+        "name": "Cannoli",
+        "description": "Crispy shells filled with sweet ricotta",
+        "price": 5.99
+      }
+    ]
+  }
+}

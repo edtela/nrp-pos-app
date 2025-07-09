@@ -1,0 +1,38 @@
+{
+  "id": "main-menu",
+  "name": "Tony's Pizza",
+  "content": {
+    "items": [
+      {
+        "id": "pizza",
+        "name": "Pizza",
+        "description": "Hand-tossed pizzas made fresh to order",
+        "icon": "🍕",
+        "subMenu": {
+          "menuId": "pizza-menu",
+          "included": []
+        }
+      },
+      {
+        "id": "drinks", 
+        "name": "Drinks",
+        "description": "Refreshing beverages",
+        "icon": "🥤",
+        "subMenu": {
+          "menuId": "drinks-menu",
+          "included": []
+        }
+      },
+      {
+        "id": "desserts",
+        "name": "Desserts", 
+        "description": "Sweet treats to finish your meal",
+        "icon": "🍰",
+        "subMenu": {
+          "menuId": "desserts-menu",
+          "included": []
+        }
+      }
+    ]
+  }
+}

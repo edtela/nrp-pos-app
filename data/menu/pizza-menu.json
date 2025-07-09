@@ -1,0 +1,108 @@
+{
+  "id": "pizza-menu",
+  "name": "Pizza Menu",
+  "variants": {
+    "pizza-size": {
+      "id": "pizza-size",
+      "name": "Size",
+      "variants": [
+        {
+          "id": "small",
+          "name": "Small 10\"",
+          "icon": "🍕"
+        },
+        {
+          "id": "medium", 
+          "name": "Medium 12\"",
+          "icon": "🍕"
+        },
+        {
+          "id": "large",
+          "name": "Large 14\"",
+          "icon": "🍕"
+        }
+      ],
+      "selectedId": "medium"
+    }
+  },
+  "content": {
+    "groups": [
+      {
+        "header": {
+          "text": "Classic Pizzas",
+          "classes": ["menu-group__header"]
+        },
+        "items": [
+          {
+            "id": "margherita",
+            "name": "Margherita",
+            "description": "Fresh mozzarella, tomato sauce, basil",
+            "price": {
+              "small": 12.99,
+              "medium": 15.99,
+              "large": 18.99
+            },
+            "variantGroupId": "pizza-size",
+            "subMenu": {
+              "menuId": "pizza-toppings",
+              "included": ["fresh-mozzarella", "tomato-sauce", "fresh-basil"]
+            }
+          },
+          {
+            "id": "pepperoni",
+            "name": "Pepperoni",
+            "description": "Pepperoni, mozzarella, tomato sauce",
+            "price": {
+              "small": 13.99,
+              "medium": 16.99,
+              "large": 19.99
+            },
+            "variantGroupId": "pizza-size",
+            "subMenu": {
+              "menuId": "pizza-toppings",
+              "included": ["pepperoni", "regular-mozzarella", "tomato-sauce"]
+            }
+          },
+          {
+            "id": "hawaiian",
+            "name": "Hawaiian",
+            "description": "Ham, pineapple, mozzarella, tomato sauce",
+            "price": {
+              "small": 14.99,
+              "medium": 17.99,
+              "large": 20.99
+            },
+            "variantGroupId": "pizza-size",
+            "subMenu": {
+              "menuId": "pizza-toppings",
+              "included": ["ham", "pineapple", "regular-mozzarella", "tomato-sauce"]
+            }
+          }
+        ]
+      },
+      {
+        "header": {
+          "text": "Build Your Own",
+          "classes": ["menu-group__header"]
+        },
+        "items": [
+          {
+            "id": "build-your-own",
+            "name": "Build Your Own Pizza",
+            "description": "Start with cheese and sauce, add your favorite toppings",
+            "price": {
+              "small": 10.99,
+              "medium": 13.99,
+              "large": 16.99
+            },
+            "variantGroupId": "pizza-size",
+            "subMenu": {
+              "menuId": "pizza-toppings",
+              "included": ["regular-mozzarella", "tomato-sauce"]
+            }
+          }
+        ]
+      }
+    ]
+  }
+}
