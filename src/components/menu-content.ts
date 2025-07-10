@@ -6,9 +6,9 @@
 import { css } from '@linaria/core';
 import { html, Template } from '@/lib/html-template';
 import { ItemGroup, Menu, MenuGroup, NestedGroup } from '@/types';
-import { HeaderCells } from './menu-header';
-import { MenuItemTemplate, menuItemUpdate } from './menu-item';
-import { VariantGroupTemplate } from './variant';
+import { headerCells } from './menu-header';
+import { menuItemTemplate, menuItemUpdate } from './menu-item';
+import { variantGroupTemplate } from './variant';
 import { mdColors, mdSpacing, mdElevation, mdShape } from '@/styles/theme';
 import { MenuEvent } from '@/model/menu-model';
 
@@ -42,16 +42,16 @@ const menuGroupItems = css`
 /**
  * Template for menu group
  */
-function MenuGroupTemplate(group: MenuGroup): Template {
+function menuGroupTemplate(group: MenuGroup): Template {
   return html`
     <div class="${menuGroup}">
-      ${group.header ? HeaderCells(group.header) : ''}
+      ${group.header ? headerCells(group.header) : ''}
       ${'items' in group ? html`
         <div class="${menuGroupItems}">
-          ${(group as ItemGroup).items.map(itemData => MenuItemTemplate(itemData))}
+          ${(group as ItemGroup).items.map(itemData => menuItemTemplate(itemData))}
         </div>
       ` : html`
-        ${(group as NestedGroup).groups.map(nestedGroup => MenuGroupTemplate(nestedGroup))}
+        ${(group as NestedGroup).groups.map(nestedGroup => menuGroupTemplate(nestedGroup))}
       `}
     </div>
   `;
@@ -60,12 +60,12 @@ function MenuGroupTemplate(group: MenuGroup): Template {
 /**
  * Main template for menu content
  */
-export function MenuContentTemplate(data: Menu): Template {
+export function menuContentTemplate(data: Menu): Template {
   const variantGroups = data.variants ? Object.values(data.variants) : [];
   return html`
     <div class="${menuContainer}">
-      ${variantGroups.length ? html`${variantGroups.map(variantData => VariantGroupTemplate(variantData))}` : ''}
-      ${MenuGroupTemplate(data.content)}
+      ${variantGroups.length ? html`${variantGroups.map(variantData => variantGroupTemplate(variantData))}` : ''}
+      ${menuGroupTemplate(data.content)}
     </div>
   `;
 }

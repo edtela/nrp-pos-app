@@ -62,7 +62,7 @@ const variantButton = css`
 /**
  * Variant selector template - pure function
  */
-export function VariantGroupTemplate(data: VariantGroup): Template {
+export function variantGroupTemplate(data: VariantGroup): Template {
   return html`
     <div class="${variantGroup}" id="variant-group-${data.id}" data-id="${data.id}">
       <span class="${variantGroupLabel}">${data.name || 'Size'}</span>

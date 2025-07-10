@@ -169,7 +169,7 @@ const menuItemPrice = css`
 /**
  * Price template - renders the price or navigation chevron
  */
-function PriceTemplate(price?: number | VariantPrice): Template {
+function priceTemplate(price?: number | VariantPrice): Template {
   if (typeof price === 'number') {
     return price === 0 ? html`` : html`<span class="${menuItemPrice}">$${price.toFixed(2)}</span>`;
   }
@@ -179,7 +179,7 @@ function PriceTemplate(price?: number | VariantPrice): Template {
 /**
  * Menu item template - pure function
  */
-export function MenuItemTemplate(data: MenuItem): Template {
+export function menuItemTemplate(data: MenuItem): Template {
   const iType = data.constraints?.choice?.single ? 'radio' : (data.subMenu ? 'none' : 'checkbox')
   return html`
     <div class="${menuItem}" 
@@ -194,7 +194,7 @@ export function MenuItemTemplate(data: MenuItem): Template {
           <span class="${menuItemName}">${data.name}</span>
           ${data.description ? html`<p class="${menuItemDescription}">${data.description}</p>` : ''}
         </div>
-        ${PriceTemplate(data.price)}
+        ${priceTemplate(data.price)}
       </div>
     </div>
   `;
@@ -203,7 +203,7 @@ export function MenuItemTemplate(data: MenuItem): Template {
 export function menuItemUpdate(element: HTMLElement, event: MenuItemEvent) {
   // Check if price has changed
   if ('price' in event && event.price !== undefined) {
-    replaceElements(element, `.${menuItemPrice}`, PriceTemplate(event.price));
+    replaceElements(element, `.${menuItemPrice}`, priceTemplate(event.price));
   }
 }
 

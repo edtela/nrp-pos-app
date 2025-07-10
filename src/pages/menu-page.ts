@@ -1,7 +1,7 @@
 import { css } from '@linaria/core';
 import { html, render } from '@/lib/html-template';
 import { Menu } from '@/types';
-import { MenuContentTemplate, menuContentUpdate, menuContainer as menuContainerClass } from '@/components/menu-content';
+import { menuContentTemplate, menuContentUpdate, menuContainer as menuContainerClass } from '@/components/menu-content';
 import { mdColors, mdTypography, mdSpacing, mdElevation } from '@/styles/theme';
 import { MenuModel, MenuModelEvent } from '@/model/menu-model';
 
@@ -79,7 +79,7 @@ function menuPageTemplate(menuData: Menu | null, error?: string) {
             Error: ${error}
           </div>
         ` : ''}
-        ${menuData ? MenuContentTemplate(menuData) : ''}
+        ${menuData ? menuContentTemplate(menuData) : ''}
       </main>
     </div>
   `;

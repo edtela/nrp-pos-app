@@ -18,7 +18,7 @@ function classesToObject(classes?: string[]): Record<string, boolean> {
 /**
  * Render a single cell based on its type
  */
-export function HeaderCell(cell: Cell): Template {
+export function headerCell(cell: Cell): Template {
   if (isTextCell(cell)) {
     return html`<span class="${classMap(classesToObject(cell.classes))}" style="${styleMap(cell.style || {})}">${cell.text}</span>`;
   }
@@ -37,7 +37,7 @@ export function HeaderCell(cell: Cell): Template {
   }
 
   if (isLayoutCell(cell)) {
-    return html`<div class="${classMap(classesToObject(cell.classes))}" style="${styleMap(cell.style || {})}">${HeaderCells(cell.cells)}</div>`;
+    return html`<div class="${classMap(classesToObject(cell.classes))}" style="${styleMap(cell.style || {})}">${headerCells(cell.cells)}</div>`;
   }
 
   // This shouldn't happen with proper types, but just in case
@@ -47,9 +47,9 @@ export function HeaderCell(cell: Cell): Template {
 /**
  * Render cells (handles both single cell and array of cells)
  */
-export function HeaderCells(cells: Cells): Template {
+export function headerCells(cells: Cells): Template {
   if (Array.isArray(cells)) {
-    return html`${cells.map(cell => HeaderCell(cell))}`;
+    return html`${cells.map(cell => headerCell(cell))}`;
   }
-  return HeaderCell(cells);
+  return headerCell(cells);
 }
