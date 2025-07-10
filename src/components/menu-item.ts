@@ -4,9 +4,10 @@
  */
 
 import { css } from '@linaria/core';
-import { html, Template } from '@/lib/html-template';
-import { MenuItem } from '@/types';
+import { html, Template, replaceElements } from '@/lib/html-template';
+import { MenuItem, VariantPrice } from '@/types';
 import { mdColors, mdTypography, mdSpacing } from '@/styles/theme';
+import { MenuItemEvent } from '@/model/menu-model';
 
 const menuItemIcon = css`
   font-size: 24px;
@@ -166,13 +167,23 @@ const menuItemPrice = css`
 `;
 
 /**
+ * Price template - renders the price or navigation chevron
+ */
+function PriceTemplate(price?: number | VariantPrice): Template {
+  if (typeof price === 'number') {
+    return price === 0 ? html`` : html`<span class="${menuItemPrice}">$${price.toFixed(2)}</span>`;
+  }
+  return html`<span class="${menuItemPrice} material-icons">chevron_right</span>`;
+}
+
+/**
  * Menu item template - pure function
  */
 export function MenuItemTemplate(data: MenuItem): Template {
   const iType = data.constraints?.choice?.single ? 'radio' : (data.subMenu ? 'none' : 'checkbox')
   return html`
     <div class="${menuItem}" 
-         id="menu-item__${data.id}"
+         id="menu-item-${data.id}"
          data-id="${data.id}" 
          data-type="menu-item"
          data-interaction-type="${iType}"
@@ -183,10 +194,16 @@ export function MenuItemTemplate(data: MenuItem): Template {
           <span class="${menuItemName}">${data.name}</span>
           ${data.description ? html`<p class="${menuItemDescription}">${data.description}</p>` : ''}
         </div>
-        ${typeof data.price === 'number' ?
-      (data.price === 0 ? '' : html`<span class="${menuItemPrice}">$${data.price.toFixed(2)}</span>`) :
-      html`<span class="${menuItemPrice} material-icons">chevron_right</span>`}
+        ${PriceTemplate(data.price)}
       </div>
     </div>
   `;
 }
+
+export function menuItemUpdate(element: HTMLElement, event: MenuItemEvent) {
+  // Check if price has changed
+  if ('price' in event && event.price !== undefined) {
+    replaceElements(element, `.${menuItemPrice}`, PriceTemplate(event.price));
+  }
+}
+

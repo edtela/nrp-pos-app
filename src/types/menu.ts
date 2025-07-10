@@ -121,10 +121,32 @@ export function isSaleItem(item: MenuItem): boolean {
   return item.price !== undefined;
 }
 
+export function isVariantPrice(price?: number | VariantPrice): price is VariantPrice {
+  return price != null && typeof price !== 'number';
+}
+
 export function hasVariantPricing(item: MenuItem): item is MenuItem & { price: VariantPrice } {
   return typeof item.price === 'object' && item.price !== null;
 }
 
 export function hasFixedPricing(item: MenuItem): item is MenuItem & { price: number } {
   return typeof item.price === 'number';
+}
+
+export function* iterateGroups(group: MenuGroup): Generator<ItemGroup> {
+  if (isItemGroup(group)) {
+    yield group;
+  } else {
+    for (const subGroup of group.groups) {
+      yield* iterateGroups(subGroup);
+    }
+  }
+}
+
+export function* iterateItems(group: MenuGroup): Generator<MenuItem> {
+  for (const itemGroup of iterateGroups(group)) {
+    for (const item of itemGroup.items) {
+      yield item;
+    }
+  }
 }

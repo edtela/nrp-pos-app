@@ -7,14 +7,15 @@ import { css } from '@linaria/core';
 import { html, Template } from '@/lib/html-template';
 import { ItemGroup, Menu, MenuGroup, NestedGroup } from '@/types';
 import { HeaderCells } from './menu-header';
-import { MenuItemTemplate } from './menu-item';
+import { MenuItemTemplate, menuItemUpdate } from './menu-item';
 import { VariantGroupTemplate } from './variant';
 import { mdColors, mdSpacing, mdElevation, mdShape } from '@/styles/theme';
+import { MenuEvent } from '@/model/menu-model';
 
 /**
  * Menu Content Styles
  */
-const menuContainer = css`
+export const menuContainer = css`
   text-align: center;
 
   .loading {
@@ -67,4 +68,15 @@ export function MenuContentTemplate(data: Menu): Template {
       ${MenuGroupTemplate(data.content)}
     </div>
   `;
+}
+
+export function menuContentUpdate(container: HTMLElement, event: MenuEvent) {
+  // Iterate through all menu item events
+  for (const [itemId, itemEvent] of Object.entries(event)) {
+    // Find the menu item element by its ID
+    const menuItemElement = container.querySelector(`#menu-item-${itemId}`) as HTMLElement;
+    if (menuItemElement) {
+      menuItemUpdate(menuItemElement, itemEvent);
+    }
+  }
 }

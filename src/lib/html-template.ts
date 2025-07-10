@@ -39,6 +39,38 @@ export function styleMap(styleInfo: Record<string, any>): string {
     .join('; ');
 }
 
+/**
+ * Replace elements matching a selector with a new template
+ * @param container The container element to search within
+ * @param selector The CSS selector to find elements to replace
+ * @param template The template to render as replacement (null/undefined to remove)
+ * @returns The number of elements replaced
+ */
+export function replaceElements(container: Element, selector: string, template: Template | null | undefined): number {
+  const elements = container.querySelectorAll(selector);
+  let replacedCount = 0;
+  
+  elements.forEach(element => {
+    if (template) {
+      // Create a temporary container to render the template
+      const temp = document.createElement('div');
+      render(template, temp);
+      
+      // Replace the element with all children from the temp container
+      if (temp.firstElementChild) {
+        element.replaceWith(temp.firstElementChild);
+        replacedCount++;
+      }
+    } else {
+      // If template is empty, remove the element
+      element.remove();
+      replacedCount++;
+    }
+  });
+  
+  return replacedCount;
+}
+
 function buildHTML(template: Template): string {
   const { strings, values } = template;
   let result = '';

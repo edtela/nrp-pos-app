@@ -1,8 +1,9 @@
 import { css } from '@linaria/core';
 import { html, render } from '@/lib/html-template';
 import { Menu } from '@/types';
-import { MenuContentTemplate } from '@/components/menu-content';
+import { MenuContentTemplate, menuContentUpdate, menuContainer as menuContainerClass } from '@/components/menu-content';
 import { mdColors, mdTypography, mdSpacing, mdElevation } from '@/styles/theme';
+import { MenuModel, MenuModelEvent } from '@/model/menu-model';
 
 // Page container styles using Linaria's recommended approach
 const menuPageStyles = css`
@@ -98,4 +99,19 @@ export async function renderMenuPage(container: Element, menuFile: string = 'ind
   const error = menuData ? undefined : 'Failed to load menu data';
   
   render(menuPageTemplate(menuData, error), container);
+
+  if (menuData) {
+    const event = new MenuModel().setMenu(menuData);
+    menuPageUpdate(event);
+  }
+}
+
+function menuPageUpdate(event: MenuModelEvent) {
+  if (event.menu) {
+    // Find the menu container element using the imported class name
+    const container = document.querySelector(`.${menuContainerClass}`) as HTMLElement;
+    if (container) {
+      menuContentUpdate(container, event.menu);
+    }
+  }
 }
