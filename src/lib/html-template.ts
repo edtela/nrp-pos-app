@@ -71,6 +71,87 @@ export function replaceElements(container: Element, selector: string, template: 
   return replacedCount;
 }
 
+/**
+ * Create data attributes for click handling
+ * @param eventType The type of event to dispatch (will be prefixed with 'app:')
+ * @returns Data attributes string
+ */
+export function onClick(eventType: string): string {
+  return `data-click-event="${eventType}"`;
+}
+
+/**
+ * Global click handler that processes data-click-event attributes
+ * Call this once during app initialization
+ */
+export function initializeGlobalClickHandler(root: Element = document.body): void {
+  root.addEventListener('click', (e: Event) => {
+    const target = e.target as HTMLElement;
+    
+    // Find the closest element with click event data
+    const eventElement = target.closest('[data-click-event]') as HTMLElement;
+    
+    if (!eventElement) return;
+    
+    // Dispatch the custom event
+    dispatchCustomEvent(eventElement, eventElement.dataset.clickEvent!, e as MouseEvent);
+  });
+}
+
+/**
+ * Dispatch a custom event with collected data
+ */
+function dispatchCustomEvent(target: HTMLElement, eventType: string, originalEvent: MouseEvent): void {
+  // Create and dispatch custom event
+  const customEvent = new CustomEvent(`app:${eventType}`, {
+    bubbles: true,
+    detail: {
+      target,
+      dataset: { ...target.dataset },
+      originalEvent
+    }
+  });
+  
+  target.dispatchEvent(customEvent);
+}
+
+/**
+ * Type-safe event handler
+ */
+export type AppEventHandler<T> = (data: T) => void;
+
+/**
+ * Add a type-safe event handler
+ * @param element The element to attach the listener to
+ * @param eventName The event name (without 'app:' prefix)
+ * @param handler The event handler function
+ */
+export function addEventHandler<T extends Record<string, any>>(
+  element: Element,
+  eventName: string,
+  handler: AppEventHandler<T>
+): void {
+  element.addEventListener(`app:${eventName}`, (e: Event) => {
+    const customEvent = e as CustomEvent;
+    const { dataset } = customEvent.detail;
+    
+    // Convert dataset strings to proper types based on common patterns
+    const data = {} as T;
+    for (const [key, value] of Object.entries(dataset)) {
+      if (value === 'true' || value === 'false') {
+        (data as any)[key] = value === 'true';
+      } else if (value && !isNaN(Number(value))) {
+        // Only convert to number if it's a valid number
+        (data as any)[key] = Number(value);
+      } else {
+        (data as any)[key] = value;
+      }
+    }
+    
+    handler(data);
+  });
+}
+
 function buildHTML(template: Template): string {
   const { strings, values } = template;
   let result = '';

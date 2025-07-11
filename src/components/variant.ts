@@ -4,9 +4,23 @@
  */
 
 import { css } from '@linaria/core';
-import { html, Template } from '@/lib/html-template';
+import { html, Template, onClick } from '@/lib/html-template';
 import { VariantGroup } from '@/types';
 import { mdColors, mdTypography, mdSpacing } from '@/styles/theme';
+
+/**
+ * Event constants
+ */
+export const VARIANT_SELECT_EVENT = 'variant-select';
+
+/**
+ * Event data interface
+ */
+export interface VariantSelectEventData {
+  variantGroupId: string;
+  variantId: string;
+  selected: boolean;
+}
 
 /**
  * Variant Selector Styles
@@ -59,6 +73,8 @@ const variantButton = css`
   }
 `;
 
+
+
 /**
  * Variant selector template - pure function
  */
@@ -74,6 +90,7 @@ export function variantGroupTemplate(data: VariantGroup): Template {
             data-variant-id="${variant.id}"
             data-variant-group-id="${data.id}"
             data-selected="${variant.id === data.selectedId}"
+            ${onClick(VARIANT_SELECT_EVENT)}
           >
           ${variant.name}
           </button>

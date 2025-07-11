@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test Event System</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <style>
+    .event-log {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 400px;
+      max-height: 300px;
+      overflow-y: auto;
+      background: rgba(0, 0, 0, 0.9);
+      color: #00ff00;
+      font-family: monospace;
+      font-size: 12px;
+      padding: 10px;
+      border-radius: 4px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    }
+    .event-log div {
+      margin-bottom: 5px;
+      padding: 5px;
+      border-bottom: 1px solid #333;
+    }
+  </style>
+</head>
+<body>
+  <div id="app"></div>
+  <div class="event-log" id="event-log">
+    <div>Event Log:</div>
+  </div>
+  
+  <script type="module">
+    import { renderMenuPage } from './src/pages/menu-page.ts';
+    import { initializeGlobalClickHandler, addEventHandler } from './src/lib/html-template.ts';
+    import { VARIANT_SELECT_EVENT, VariantSelectEventData } from './src/components/variant.ts';
+    
+    // Initialize global click handler
+    initializeGlobalClickHandler();
+    
+    // Create event logger
+    const log = document.getElementById('event-log');
+    
+    // Listen for all custom app events
+    document.addEventListener('app:menu-item-click', (e) => {
+      const entry = document.createElement('div');
+      entry.textContent = `[${new Date().toLocaleTimeString()}] Menu Item: ${e.detail.dataset.id}`;
+      log.appendChild(entry);
+    });
+    
+    // Type-safe variant select handler
+    function variantSelectHandler({variantId, variantGroupId, selected}: VariantSelectEventData) {
+      const entry = document.createElement('div');
+      entry.textContent = `[${new Date().toLocaleTimeString()}] Variant: ${variantGroupId} -> ${variantId} (selected: ${selected})`;
+      log.appendChild(entry);
+    }
+    
+    addEventHandler(document, VARIANT_SELECT_EVENT, variantSelectHandler);
+    
+    // Render pizza menu to test events
+    renderMenuPage(document.getElementById('app'), 'pizza-menu.json');
+  </script>
+</body>
+</html>

@@ -1,8 +1,12 @@
 import { renderMenuPage } from '@/pages/menu-page';
 import { globals } from '@/styles/theme';
+import { initializeGlobalClickHandler } from '@/lib/html-template';
 
 // Apply global styles
 document.documentElement.classList.add(globals);
+
+// Initialize global click handler
+initializeGlobalClickHandler();
 
 // Get the root element
 const app = document.getElementById('app');

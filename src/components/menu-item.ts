@@ -4,7 +4,7 @@
  */
 
 import { css } from '@linaria/core';
-import { html, Template, replaceElements } from '@/lib/html-template';
+import { html, Template, replaceElements, onClick } from '@/lib/html-template';
 import { MenuItem, VariantPrice } from '@/types';
 import { mdColors, mdTypography, mdSpacing } from '@/styles/theme';
 import { MenuItemEvent } from '@/model/menu-model';
@@ -187,7 +187,8 @@ export function menuItemTemplate(data: MenuItem): Template {
          data-id="${data.id}" 
          data-type="menu-item"
          data-interaction-type="${iType}"
-         data-selected="false">
+         data-selected="false"
+         ${onClick('menu-item-click')}>
       <div class="${menuItemContent}">
         <span class="${menuItemIcon}">${data.icon || ''}</span>
         <div class="${menuItemText}">

@@ -1,9 +1,10 @@
 import { css } from '@linaria/core';
-import { html, render } from '@/lib/html-template';
+import { html, render, addEventHandler } from '@/lib/html-template';
 import { Menu } from '@/types';
 import { menuContentTemplate, menuContentUpdate, menuContainer as menuContainerClass } from '@/components/menu-content';
 import { mdColors, mdTypography, mdSpacing, mdElevation } from '@/styles/theme';
 import { MenuModel, MenuModelEvent } from '@/model/menu-model';
+import { VARIANT_SELECT_EVENT, VariantSelectEventData } from '@/components/variant';
 
 // Page container styles using Linaria's recommended approach
 const menuPageStyles = css`
@@ -101,8 +102,40 @@ export async function renderMenuPage(container: Element, menuFile: string = 'ind
   render(menuPageTemplate(menuData, error), container);
 
   if (menuData) {
-    const event = new MenuModel().setMenu(menuData);
+    const menuModel = new MenuModel();
+    const event = menuModel.setMenu(menuData);
     menuPageUpdate(event);
+    
+    // Set up event listeners for custom events
+    container.addEventListener('app:menu-item-click', (e: Event) => {
+      const customEvent = e as CustomEvent;
+      const { target, dataset } = customEvent.detail;
+      
+      console.log('Menu item clicked:', {
+        id: dataset.id,
+        type: dataset.type,
+        interactionType: dataset.interactionType,
+        selected: dataset.selected
+      });
+      
+      // Handle menu item selection/navigation
+      if (dataset.interactionType === 'checkbox' || dataset.interactionType === 'radio') {
+        // TODO: Update selection state and dispatch model changes
+      } else if (dataset.interactionType === 'none') {
+        // Navigate to submenu
+        // TODO: Implement navigation
+      }
+    });
+    
+    // Define the handler function
+    function variantSelectHandler({variantId, variantGroupId, selected}: VariantSelectEventData) {
+      console.log('Variant selected:', variantId, variantGroupId, selected);
+      
+      // TODO: Update variant selection in model and trigger price updates
+    }
+    
+    // Add the event handler
+    addEventHandler(container, VARIANT_SELECT_EVENT, variantSelectHandler);
   }
 }
 
