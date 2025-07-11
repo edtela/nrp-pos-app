@@ -7,48 +7,21 @@ import { css } from '@linaria/core';
 import { html, Template } from '@/lib/html-template';
 import { ItemGroup, Menu, MenuGroup, NestedGroup } from '@/types';
 import { headerCells } from './menu-header';
-import { menuItemTemplate, menuItemUpdate } from './menu-item';
-import { variantGroupTemplate } from './variant';
+import * as MenuItemUI from './menu-item';
+import * as VariantGroupUI from './variant';
 import { mdColors, mdSpacing, mdElevation, mdShape } from '@/styles/theme';
 import { MenuEvent } from '@/model/menu-model';
-
-/**
- * Menu Content Styles
- */
-export const menuContainer = css`
-  text-align: center;
-
-  .loading {
-    padding: 40px;
-    text-align: center;
-    color: ${mdColors.onSurfaceVariant};
-  }
-`;
-
-const menuGroup = css`
-  margin-bottom: ${mdSpacing.lg};
-  text-align: left;
-`;
-
-const menuGroupItems = css`
-  background: ${mdColors.surface};
-  border-radius: ${mdShape.corner.medium};
-  margin-bottom: ${mdSpacing.lg};
-  overflow: hidden;
-  box-shadow: ${mdElevation.level1};
-  width: 100%;
-`;
 
 /**
  * Template for menu group
  */
 function menuGroupTemplate(group: MenuGroup): Template {
   return html`
-    <div class="${menuGroup}">
+    <div class="${styles.group}">
       ${group.header ? headerCells(group.header) : ''}
       ${'items' in group ? html`
-        <div class="${menuGroupItems}">
-          ${(group as ItemGroup).items.map(itemData => menuItemTemplate(itemData))}
+        <div class="${styles.groupItems}">
+          ${(group as ItemGroup).items.map(itemData => MenuItemUI.template(itemData))}
         </div>
       ` : html`
         ${(group as NestedGroup).groups.map(nestedGroup => menuGroupTemplate(nestedGroup))}
@@ -60,23 +33,78 @@ function menuGroupTemplate(group: MenuGroup): Template {
 /**
  * Main template for menu content
  */
-export function menuContentTemplate(data: Menu): Template {
+export function template(data: Menu): Template {
   const variantGroups = data.variants ? Object.values(data.variants) : [];
   return html`
-    <div class="${menuContainer}">
-      ${variantGroups.length ? html`${variantGroups.map(variantData => variantGroupTemplate(variantData))}` : ''}
+    <div class="${styles.container}">
+      ${variantGroups.length ? html`${variantGroups.map(variantData => VariantGroupUI.template(variantData))}` : ''}
       ${menuGroupTemplate(data.content)}
     </div>
   `;
 }
 
-export function menuContentUpdate(container: HTMLElement, event: MenuEvent) {
+/**
+ * Update menu content
+ */
+export function update(container: HTMLElement, event: MenuEvent) {
   // Iterate through all menu item events
   for (const [itemId, itemEvent] of Object.entries(event)) {
     // Find the menu item element by its ID
     const menuItemElement = container.querySelector(`#menu-item-${itemId}`) as HTMLElement;
     if (menuItemElement) {
-      menuItemUpdate(menuItemElement, itemEvent);
+      MenuItemUI.update(menuItemElement, itemEvent);
     }
   }
 }
+
+/**
+ * Attach variant selection handler
+ */
+export function attachVariantHandler(
+  container: HTMLElement,
+  handler: (data: VariantGroupUI.VariantSelectEventData) => void
+): void {
+  VariantGroupUI.attach(container, handler);
+}
+
+/**
+ * Attach menu item click handler
+ */
+export function attachMenuItemHandler(
+  container: HTMLElement,
+  handler: (data: MenuItemUI.MenuItemClickEventData) => void
+): void {
+  MenuItemUI.attach(container, handler);
+}
+
+/**
+ * Menu Content Styles
+ */
+export const styles = {
+  container: css`
+    text-align: center;
+
+    .loading {
+      padding: 40px;
+      text-align: center;
+      color: ${mdColors.onSurfaceVariant};
+    }
+  `,
+
+  group: css`
+    margin-bottom: ${mdSpacing.lg};
+    text-align: left;
+  `,
+
+  groupItems: css`
+    background: ${mdColors.surface};
+    border-radius: ${mdShape.corner.medium};
+    margin-bottom: ${mdSpacing.lg};
+    overflow: hidden;
+    box-shadow: ${mdElevation.level1};
+    width: 100%;
+  `
+} as const;
+
+// Export for selector usage in menu-page
+export const menuContainer = styles.container;

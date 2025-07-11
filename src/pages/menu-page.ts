@@ -1,10 +1,11 @@
 import { css } from '@linaria/core';
-import { html, render, addEventHandler } from '@/lib/html-template';
+import { html, render } from '@/lib/html-template';
 import { Menu } from '@/types';
-import { menuContentTemplate, menuContentUpdate, menuContainer as menuContainerClass } from '@/components/menu-content';
+import * as MenuContentUI from '@/components/menu-content';
+import * as VariantGroupUI from '@/components/variant';
+import * as MenuItemUI from '@/components/menu-item';
 import { mdColors, mdTypography, mdSpacing, mdElevation } from '@/styles/theme';
 import { MenuModel, MenuModelEvent } from '@/model/menu-model';
-import { VARIANT_SELECT_EVENT, VariantSelectEventData } from '@/components/variant';
 
 // Page container styles using Linaria's recommended approach
 const menuPageStyles = css`
@@ -80,7 +81,7 @@ function menuPageTemplate(menuData: Menu | null, error?: string) {
             Error: ${error}
           </div>
         ` : ''}
-        ${menuData ? menuContentTemplate(menuData) : ''}
+        ${menuData ? MenuContentUI.template(menuData) : ''}
       </main>
     </div>
   `;
@@ -106,45 +107,42 @@ export async function renderMenuPage(container: Element, menuFile: string = 'ind
     const event = menuModel.setMenu(menuData);
     menuPageUpdate(event);
     
-    // Set up event listeners for custom events
-    container.addEventListener('app:menu-item-click', (e: Event) => {
-      const customEvent = e as CustomEvent;
-      const { target, dataset } = customEvent.detail;
-      
+    // Set up event listeners
+    function menuItemClickHandler({id, type, interactionType, selected}: MenuItemUI.MenuItemClickEventData) {
       console.log('Menu item clicked:', {
-        id: dataset.id,
-        type: dataset.type,
-        interactionType: dataset.interactionType,
-        selected: dataset.selected
+        id,
+        type,
+        interactionType,
+        selected
       });
       
       // Handle menu item selection/navigation
-      if (dataset.interactionType === 'checkbox' || dataset.interactionType === 'radio') {
+      if (interactionType === 'checkbox' || interactionType === 'radio') {
         // TODO: Update selection state and dispatch model changes
-      } else if (dataset.interactionType === 'none') {
+      } else if (interactionType === 'none') {
         // Navigate to submenu
         // TODO: Implement navigation
       }
-    });
+    }
     
-    // Define the handler function
-    function variantSelectHandler({variantId, variantGroupId, selected}: VariantSelectEventData) {
+    function variantSelectHandler({variantId, variantGroupId, selected}: VariantGroupUI.VariantSelectEventData) {
       console.log('Variant selected:', variantId, variantGroupId, selected);
       
       // TODO: Update variant selection in model and trigger price updates
     }
     
-    // Add the event handler
-    addEventHandler(container, VARIANT_SELECT_EVENT, variantSelectHandler);
+    // Attach event handlers
+    MenuContentUI.attachMenuItemHandler(container as HTMLElement, menuItemClickHandler);
+    MenuContentUI.attachVariantHandler(container as HTMLElement, variantSelectHandler);
   }
 }
 
 function menuPageUpdate(event: MenuModelEvent) {
   if (event.menu) {
     // Find the menu container element using the imported class name
-    const container = document.querySelector(`.${menuContainerClass}`) as HTMLElement;
+    const container = document.querySelector(`.${MenuContentUI.menuContainer}`) as HTMLElement;
     if (container) {
-      menuContentUpdate(container, event.menu);
+      MenuContentUI.update(container, event.menu);
     }
   }
 }

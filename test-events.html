@@ -37,8 +37,10 @@
   
   <script type="module">
     import { renderMenuPage } from './src/pages/menu-page.ts';
-    import { initializeGlobalClickHandler, addEventHandler } from './src/lib/html-template.ts';
-    import { VARIANT_SELECT_EVENT, VariantSelectEventData } from './src/components/variant.ts';
+    import { initializeGlobalClickHandler } from './src/lib/html-template.ts';
+    import * as MenuContentUI from './src/components/menu-content.ts';
+    import * as VariantGroupUI from './src/components/variant.ts';
+    import * as MenuItemUI from './src/components/menu-item.ts';
     
     // Initialize global click handler
     initializeGlobalClickHandler();
@@ -46,21 +48,23 @@
     // Create event logger
     const log = document.getElementById('event-log');
     
-    // Listen for all custom app events
-    document.addEventListener('app:menu-item-click', (e) => {
+    // Type-safe menu item handler
+    function menuItemClickHandler({id, type, interactionType, selected}: MenuItemUI.MenuItemClickEventData) {
       const entry = document.createElement('div');
-      entry.textContent = `[${new Date().toLocaleTimeString()}] Menu Item: ${e.detail.dataset.id}`;
+      entry.textContent = `[${new Date().toLocaleTimeString()}] Menu Item: ${id} (selected: ${selected})`;
       log.appendChild(entry);
-    });
+    }
     
     // Type-safe variant select handler
-    function variantSelectHandler({variantId, variantGroupId, selected}: VariantSelectEventData) {
+    function variantSelectHandler({variantId, variantGroupId, selected}: VariantGroupUI.VariantSelectEventData) {
       const entry = document.createElement('div');
       entry.textContent = `[${new Date().toLocaleTimeString()}] Variant: ${variantGroupId} -> ${variantId} (selected: ${selected})`;
       log.appendChild(entry);
     }
     
-    addEventHandler(document, VARIANT_SELECT_EVENT, variantSelectHandler);
+    // Attach handlers to document for testing
+    MenuContentUI.attachMenuItemHandler(document, menuItemClickHandler);
+    MenuContentUI.attachVariantHandler(document, variantSelectHandler);
     
     // Render pizza menu to test events
     renderMenuPage(document.getElementById('app'), 'pizza-menu.json');

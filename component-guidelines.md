@@ -11,7 +11,7 @@ Each component should follow this structure:
  */
 
 import { css } from '@linaria/core';
-import { html, Template, onClick } from '@/lib/html-template';
+import { html, Template, onClick, addEventHandler } from '@/lib/html-template';
 import { /* types */ } from '@/types';
 import { /* theme tokens */ } from '@/styles/theme';
 
@@ -29,22 +29,11 @@ export interface ComponentActionEventData {
 }
 
 /**
- * Component Styles
- */
-const componentContainer = css`
-  /* styles */
-`;
-
-export const componentItemClass = css`
-  /* Export if needed for selectors */
-`;
-
-/**
  * Component template - pure function
  */
-export function componentTemplate(data: ComponentData): Template {
+export function template(data: ComponentData): Template {
   return html`
-    <div class="${componentContainer}">
+    <div class="${styles.container}">
       <!-- content -->
     </div>
   `;
@@ -53,9 +42,35 @@ export function componentTemplate(data: ComponentData): Template {
 /**
  * Component update function (if needed)
  */
-export function componentUpdate(element: HTMLElement, event: ComponentEvent): void {
+export function update(element: HTMLElement, event: ComponentEvent): void {
   // Update specific parts of the DOM
 }
+
+/**
+ * Attach event handler with data transformation
+ */
+export function attach(container: HTMLElement, handler: (data: ComponentActionEventData) => void): void {
+  addEventHandler(container, COMPONENT_ACTION_EVENT, (rawData) => {
+    const data: ComponentActionEventData = {
+      id: rawData.id,
+      // Transform data as needed (e.g., string to boolean)
+    };
+    handler(data);
+  });
+}
+
+/**
+ * Component Styles
+ */
+export const styles = {
+  container: css`
+    /* styles */
+  `,
+  
+  item: css`
+    /* Export if needed for selectors */
+  `
+} as const;
 ```
 
 ## Key Principles
@@ -75,6 +90,7 @@ export function componentUpdate(element: HTMLElement, event: ComponentEvent): vo
 - Prefix custom events with 'app:'
 - Define clear event data interfaces
 - Use constants for event names
+- Implement `attach` methods for type-safe event handling
 
 Example:
 ```typescript
@@ -90,54 +106,74 @@ ${onClick(ITEM_SELECT_EVENT)}
 data-item-id="${item.id}"
 data-selected="${item.selected}"
 
-// Handle
-import { addEventHandler } from '@/lib/html-template';
-
-function itemSelectHandler({itemId, selected}: ItemSelectEventData) {
-  // selected is automatically converted to boolean
-  // handle selection
+// Attach handler
+export function attach(container: HTMLElement, handler: (data: ItemSelectEventData) => void): void {
+  addEventHandler(container, ITEM_SELECT_EVENT, (rawData) => {
+    const data: ItemSelectEventData = {
+      itemId: rawData.itemId,
+      selected: rawData.selected === 'true'  // Convert string to boolean
+    };
+    handler(data);
+  });
 }
-
-addEventHandler(container, ITEM_SELECT_EVENT, itemSelectHandler);
 ```
 
-### 4. Styling
-- Use Linaria CSS-in-JS for all styles
-- Export class names that need to be used as selectors
-- Follow Material Design 3 tokens from theme.ts
-- Keep styles colocated with components
+### 4. Component Organization
 
-### 5. Updates
-- Implement update functions for partial DOM updates
-- Use the `replaceElements` utility for efficient updates
-- Update functions receive the root element and event data
+Components follow a consistent order:
+1. **Event constants and interfaces** - Public API for events
+2. **Template functions** - Main component rendering
+3. **Update functions** - DOM update logic
+4. **Attach functions** - Event handler attachment
+5. **Styles** - CSS-in-JS styles at the bottom
 
-### 6. Naming Conventions
+### 5. Naming Conventions
 
 #### Files
 - `kebab-case.ts` for all component files
 - Match component purpose (e.g., `menu-item.ts`, `variant-selector.ts`)
 
 #### Functions
-- `camelCase` for all functions
-- Template functions: `componentNameTemplate()`
-- Update functions: `componentNameUpdate()`
+- Simple, descriptive names: `template()`, `update()`, `attach()`
+- No prefixes needed when using namespace imports
+
+#### Imports
+- Use namespace imports for components:
+  ```typescript
+  import * as MenuItemUI from '@/components/menu-item';
+  
+  // Usage
+  MenuItemUI.template(data);
+  MenuItemUI.attach(container, handler);
+  ```
 
 #### CSS Classes
-- `camelCase` for CSS class variables
-- Descriptive names (e.g., `menuItemPrice`, not `price`)
+- Group all styles in a single `styles` object
+- Use camelCase for property names
+- Export the object as const
 
 #### Events
 - `UPPER_SNAKE_CASE` for event name constants
 - `kebab-case` for actual event names
 - Descriptive event names (e.g., `'variant-select'`, not `'click'`)
 
-### 7. Data Attributes
+### 6. Styling
+- Use Linaria CSS-in-JS for all styles
+- Group all styles in a `styles` object at the bottom of the file
+- Export specific classes if needed for selectors
+- Follow Material Design 3 tokens from theme.ts
+
+### 7. Updates
+- Implement update functions for partial DOM updates
+- Use the `replaceElements` utility for efficient updates
+- Update functions receive the root element and event data
+
+### 8. Data Attributes
 - Use semantic names (e.g., `data-item-id`, not `data-id`)
 - Boolean values as strings ('true'/'false')
-- Parse in handlers as needed
+- Handle type conversion in `attach` methods
 
-### 8. Documentation
+### 9. Documentation
 - Add JSDoc comments for exported functions
 - Document event data interfaces
 - Include usage examples for complex components
@@ -151,7 +187,7 @@ addEventHandler(container, ITEM_SELECT_EVENT, itemSelectHandler);
  */
 
 import { css } from '@linaria/core';
-import { html, Template, onClick } from '@/lib/html-template';
+import { html, Template, onClick, addEventHandler } from '@/lib/html-template';
 import { Product } from '@/types';
 import { mdColors, mdSpacing, mdTypography } from '@/styles/theme';
 
@@ -166,38 +202,17 @@ export const ADD_TO_CART_EVENT = 'add-to-cart';
 export interface AddToCartEventData {
   productId: string;
   productName: string;
-  price: string;
+  price: number;
 }
-
-/**
- * Product Card Styles
- */
-const productCard = css`
-  display: flex;
-  flex-direction: column;
-  padding: ${mdSpacing.md};
-  border-radius: 8px;
-  background: ${mdColors.surface};
-`;
-
-const productName = css`
-  ${mdTypography.titleMedium};
-  color: ${mdColors.onSurface};
-`;
-
-export const productPriceClass = css`
-  ${mdTypography.labelLarge};
-  color: ${mdColors.primary};
-`;
 
 /**
  * Product card template
  */
-export function productCardTemplate(product: Product): Template {
+export function template(product: Product): Template {
   return html`
-    <div class="${productCard}" id="product-${product.id}">
-      <h3 class="${productName}">${product.name}</h3>
-      <span class="${productPriceClass}">$${product.price.toFixed(2)}</span>
+    <div class="${styles.card}" id="product-${product.id}">
+      <h3 class="${styles.name}">${product.name}</h3>
+      <span class="${styles.price}">$${product.price.toFixed(2)}</span>
       <button
         ${onClick(ADD_TO_CART_EVENT)}
         data-product-id="${product.id}"
@@ -213,13 +228,68 @@ export function productCardTemplate(product: Product): Template {
 /**
  * Update product card (e.g., price change)
  */
-export function productCardUpdate(element: HTMLElement, event: { price?: number }): void {
+export function update(element: HTMLElement, event: { price?: number }): void {
   if ('price' in event && event.price !== undefined) {
     replaceElements(
       element,
-      `.${productPriceClass}`,
-      html`<span class="${productPriceClass}">$${event.price.toFixed(2)}</span>`
+      `.${styles.price}`,
+      html`<span class="${styles.price}">$${event.price.toFixed(2)}</span>`
     );
   }
 }
+
+/**
+ * Attach event handler
+ */
+export function attach(container: HTMLElement, handler: (data: AddToCartEventData) => void): void {
+  addEventHandler(container, ADD_TO_CART_EVENT, (rawData) => {
+    const data: AddToCartEventData = {
+      productId: rawData.productId,
+      productName: rawData.productName,
+      price: parseFloat(rawData.price)  // Convert string to number
+    };
+    handler(data);
+  });
+}
+
+/**
+ * Product Card Styles
+ */
+export const styles = {
+  card: css`
+    display: flex;
+    flex-direction: column;
+    padding: ${mdSpacing.md};
+    border-radius: 8px;
+    background: ${mdColors.surface};
+  `,
+
+  name: css`
+    ${mdTypography.titleMedium};
+    color: ${mdColors.onSurface};
+  `,
+
+  price: css`
+    ${mdTypography.labelLarge};
+    color: ${mdColors.primary};
+  `
+} as const;
+```
+
+## Usage Example
+
+```typescript
+// In parent component
+import * as ProductCardUI from '@/components/product-card';
+
+// Render
+const product = { id: '123', name: 'Widget', price: 19.99 };
+const template = ProductCardUI.template(product);
+
+// Attach handler
+function addToCartHandler({productId, productName, price}: ProductCardUI.AddToCartEventData) {
+  console.log(`Adding ${productName} to cart for $${price}`);
+}
+
+ProductCardUI.attach(container, addToCartHandler);
 ```
