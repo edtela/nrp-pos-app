@@ -12,7 +12,7 @@ import { headerCells } from './menu-header';
 import * as MenuItemUI from './menu-item';
 import * as VariantGroupUI from './variant';
 import { mdColors, mdSpacing, mdElevation, mdShape } from '@/styles/theme';
-import { MenuEvent } from '@/model/menu-model';
+import { MenuEvent, MenuModelEvent, VariantGroupEvent } from '@/model/menu-model';
 
 /**
  * Template for menu group
@@ -48,15 +48,25 @@ export function template(data: Menu): Template {
 /**
  * Update menu content
  */
-export function update(container: HTMLElement, event: MenuEvent) {
+export function update(container: HTMLElement, event: MenuModelEvent) {
   // Iterate through all menu item events
-  for (const [itemId, itemEvent] of Object.entries(event)) {
+  for (const [itemId, itemEvent] of Object.entries(event.menu ?? {})) {
     // Find the menu item element by its ID
     const menuItemElement = container.querySelector(`#menu-item-${itemId}`) as HTMLElement;
     if (menuItemElement) {
       MenuItemUI.update(menuItemElement, itemEvent);
     }
   }
+
+  for (const [variantGroupId, variantEvent] of Object.entries(event.variant ?? {})) {
+    // Find the menu item element by its ID
+    const variantGroupElement = container.querySelector(`#variant-group-${variantGroupId}`) as HTMLElement;
+    if (variantGroupElement) {
+      VariantGroupUI.update(variantGroupElement, variantEvent);
+    }
+  }
+
+
 }
 
 /**
