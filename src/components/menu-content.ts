@@ -59,8 +59,12 @@ export function update(container: HTMLElement, event: MenuEvent) {
   }
 }
 
-export const attachVariantHandler = VariantGroupUI.attach;
-export const attachMenuItemHandler = MenuItemUI.attach;
+/**
+ * Event handler forwarding
+ * Direct assignment for simple event forwarding to child components
+ */
+export const addVariantHandler = VariantGroupUI.addSelectEventHandler;
+export const addMenuItemHandler = MenuItemUI.addClickEventHandler;
 
 /**
  * Menu Content Styles

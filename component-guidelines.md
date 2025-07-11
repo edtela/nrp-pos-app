@@ -21,14 +21,6 @@ import { /* theme tokens */ } from '@/styles/theme';
 export const COMPONENT_ACTION_EVENT = 'component-action';
 
 /**
- * Event data interfaces
- */
-export interface ClickEventData {
-  id: string;
-  // other relevant data
-}
-
-/**
  * Component template - pure function
  */
 export function template(data: ComponentData): Template {
@@ -49,13 +41,9 @@ export function update(element: HTMLElement, event: ComponentEvent): void {
 /**
  * Attach event handler with data transformation
  */
-export function attach(container: HTMLElement, handler: (data: ClickEventData) => void): void {
+export function addActionEventHandler(container: HTMLElement, handler: (id: string) => void): void {
   addEventHandler(container, COMPONENT_ACTION_EVENT, (rawData) => {
-    const data: ClickEventData = {
-      id: rawData.id,
-      // Transform data as needed (e.g., string to boolean)
-    };
-    handler(data);
+    handler(rawData.id);
   });
 }
 
@@ -81,8 +69,8 @@ export const styles = {
 - Use descriptive parameter names (e.g., `data`, not `props`)
 
 ### 2. Type Safety
-- Define interfaces for all event data
 - Export event name constants to avoid magic strings
+- Use typed parameters in handler functions
 - Use TypeScript strict mode
 
 ### 3. Event Handling
@@ -92,64 +80,66 @@ When a parent component simply forwards events to child components without addit
 
 ```typescript
 // Good - direct assignment for simple forwarding
-export const attachVariantHandler = VariantGroupUI.attach;
-export const attachMenuItemHandler = MenuItemUI.attach;
+export const addVariantHandler = VariantGroupUI.addSelectEventHandler;
+export const addMenuItemHandler = MenuItemUI.addClickEventHandler;
 
 // Avoid - unnecessary wrapper function
-export function attachVariantHandler(
+export function addVariantHandler(
   container: HTMLElement,
-  handler: (data: VariantGroupUI.ClickEventData) => void
+  handler: (groupId: string, variantId: string) => void
 ): void {
-  VariantGroupUI.attach(container, handler);
+  VariantGroupUI.addSelectEventHandler(container, handler);
 }
 ```
 
-#### Event Data Naming
-Use generic `ClickEventData` for event data interfaces to avoid redundant prefixes:
+#### Handler Function Parameters
+Define handler functions with specific typed parameters instead of data objects:
 
 ```typescript
-// Good
-export interface ClickEventData {
-  id: string;
-  selected: boolean;
+// Good - specific parameters
+export function addClickEventHandler(
+  container: HTMLElement,
+  handler: (id: string, selected: boolean) => void
+): void {
+  addEventHandler(container, CLICK_EVENT, (rawData) => {
+    handler(rawData.id, rawData.selected === 'true');
+  });
 }
 
-// Avoid
-export interface MenuItemClickEventData {
-  id: string;
-  selected: boolean;
+// Avoid - unnecessary data objects
+export function addClickEventHandler(
+  container: HTMLElement,
+  handler: (data: { id: string; selected: boolean }) => void
+): void {
+  // ...
 }
 ```
 
 ### 4. Event System
 - Use data attributes for event configuration
-- Prefix custom events with 'app:'
-- Define clear event data interfaces
+- Use descriptive event names (no prefix needed)
 - Use constants for event names
-- Implement `attach` methods for type-safe event handling
+- Implement event handler functions with typed parameters
+- The `addEventHandler` utility automatically converts data types
 
 Example:
 ```typescript
-// Define
+// Define event constant
 export const ITEM_SELECT_EVENT = 'item-select';
-export interface ClickEventData {
-  itemId: string;
-  selected: boolean;
-}
 
 // Use in template
 ${onClick(ITEM_SELECT_EVENT)}
 data-item-id="${item.id}"
 data-selected="${item.selected}"
 
-// Attach handler
-export function attach(container: HTMLElement, handler: (data: ClickEventData) => void): void {
+// Attach handler with typed parameters
+export function addSelectEventHandler(
+  container: HTMLElement,
+  handler: (itemId: string, selected: boolean) => void
+): void {
   addEventHandler(container, ITEM_SELECT_EVENT, (rawData) => {
-    const data: ClickEventData = {
-      itemId: rawData.itemId,
-      selected: rawData.selected === 'true'  // Convert string to boolean
-    };
-    handler(data);
+    // addEventHandler automatically converts 'true'/'false' to boolean
+    handler(rawData.itemId, rawData.selected);
   });
 }
 ```
@@ -157,10 +147,10 @@ export function attach(container: HTMLElement, handler: (data: ClickEventData) =
 ### 5. Component Organization
 
 Components follow a consistent order:
-1. **Event constants and interfaces** - Public API for events
+1. **Event constants** - Public event name constants
 2. **Template functions** - Main component rendering
 3. **Update functions** - DOM update logic
-4. **Attach functions** - Event handler attachment
+4. **Event handler functions** - Type-safe event attachment
 5. **Styles** - CSS-in-JS styles at the bottom
 
 ### 6. Naming Conventions
@@ -170,7 +160,8 @@ Components follow a consistent order:
 - Match component purpose (e.g., `menu-item.ts`, `variant-selector.ts`)
 
 #### Functions
-- Simple, descriptive names: `template()`, `update()`, `attach()`
+- Simple, descriptive names: `template()`, `update()`
+- Event handlers: `addClickEventHandler()`, `addSelectEventHandler()`, etc.
 - No prefixes needed when using namespace imports
 
 #### Imports
@@ -180,7 +171,7 @@ Components follow a consistent order:
   
   // Usage
   MenuItemUI.template(data);
-  MenuItemUI.attach(container, handler);
+  MenuItemUI.addClickEventHandler(container, handler);
   ```
 
 #### CSS Classes
@@ -202,16 +193,16 @@ Components follow a consistent order:
 ### 8. Updates
 - Implement update functions for partial DOM updates
 - Use the `replaceElements` utility for efficient updates
-- Update functions receive the root element and event data
+- Update functions receive the root element and specific update data
 
 ### 9. Data Attributes
 - Use semantic names (e.g., `data-item-id`, not `data-id`)
 - Boolean values as strings ('true'/'false')
-- Handle type conversion in `attach` methods
+- The `addEventHandler` utility automatically converts types
 
 ### 10. Documentation
 - Add JSDoc comments for exported functions
-- Document event data interfaces
+- Document handler function parameters
 - Include usage examples for complex components
 
 ## Example Component
@@ -231,15 +222,6 @@ import { mdColors, mdSpacing, mdTypography } from '@/styles/theme';
  * Event constants
  */
 export const ADD_TO_CART_EVENT = 'add-to-cart';
-
-/**
- * Event data interfaces
- */
-export interface ClickEventData {
-  productId: string;
-  productName: string;
-  price: number;
-}
 
 /**
  * Product card template
@@ -277,14 +259,13 @@ export function update(element: HTMLElement, event: { price?: number }): void {
 /**
  * Attach event handler
  */
-export function attach(container: HTMLElement, handler: (data: ClickEventData) => void): void {
+export function addCartEventHandler(
+  container: HTMLElement,
+  handler: (productId: string, productName: string, price: number) => void
+): void {
   addEventHandler(container, ADD_TO_CART_EVENT, (rawData) => {
-    const data: ClickEventData = {
-      productId: rawData.productId,
-      productName: rawData.productName,
-      price: parseFloat(rawData.price)  // Convert string to number
-    };
-    handler(data);
+    // addEventHandler automatically converts numeric strings to numbers
+    handler(rawData.productId, rawData.productName, rawData.price);
   });
 }
 
@@ -323,9 +304,9 @@ const product = { id: '123', name: 'Widget', price: 19.99 };
 const template = ProductCardUI.template(product);
 
 // Attach handler
-function addToCartHandler({productId, productName, price}: ProductCardUI.ClickEventData) {
+function addToCartHandler(productId: string, productName: string, price: number) {
   console.log(`Adding ${productName} to cart for $${price}`);
 }
 
-ProductCardUI.attach(container, addToCartHandler);
+ProductCardUI.addCartEventHandler(container, addToCartHandler);
 ```

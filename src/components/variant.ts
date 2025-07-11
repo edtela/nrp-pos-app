@@ -16,15 +16,6 @@ import { mdColors, mdTypography, mdSpacing } from '@/styles/theme';
 export const VARIANT_SELECT_EVENT = 'variant-select';
 
 /**
- * Event data interface
- */
-export interface ClickEventData {
-  variantGroupId: string;
-  variantId: string;
-  selected: boolean;
-}
-
-/**
  * Variant selector template - pure function
  */
 export function template(data: VariantGroup): Template {
@@ -50,16 +41,12 @@ export function template(data: VariantGroup): Template {
 }
 
 /**
- * Attach event handler with data transformation
+ * Attach select event handler
+ * Handles variant selection within a group
  */
-export function attach(container: HTMLElement, handler: (data: ClickEventData) => void): void {
-  addEventHandler(container, VARIANT_SELECT_EVENT, (rawData) => {
-    const data: ClickEventData = {
-      variantGroupId: rawData.variantGroupId,
-      variantId: rawData.variantId,
-      selected: rawData.selected === 'true'
-    };
-    handler(data);
+export function addSelectEventHandler(container: HTMLElement, handler: (groupId: string, variantId: string) => void): void {
+  addEventHandler(container, VARIANT_SELECT_EVENT, (data) => {
+    handler(data.variantGroupId, data.variantId);
   });
 }
 

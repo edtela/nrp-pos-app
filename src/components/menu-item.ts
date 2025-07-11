@@ -17,16 +17,6 @@ import { MenuItemEvent } from '@/model/menu-model';
 export const MENU_ITEM_CLICK_EVENT = 'menu-item-click';
 
 /**
- * Event data interface
- */
-export interface ClickEventData {
-  id: string;
-  type: string;
-  interactionType: string;
-  selected: boolean;
-}
-
-/**
  * Price template - renders the price or navigation chevron
  */
 function priceTemplate(price?: number | VariantPrice): Template {
@@ -72,17 +62,12 @@ export function update(element: HTMLElement, event: MenuItemEvent) {
 }
 
 /**
- * Attach event handler with data transformation
+ * Attach click event handler
+ * Handles menu item selection events
  */
-export function attach(container: HTMLElement, handler: (data: ClickEventData) => void): void {
+export function addClickEventHandler(container: HTMLElement, handler: (menuItemId: string) => void): void {
   addEventHandler(container, MENU_ITEM_CLICK_EVENT, (rawData) => {
-    const data: ClickEventData = {
-      id: rawData.id,
-      type: rawData.type,
-      interactionType: rawData.interactionType,
-      selected: rawData.selected === 'true'
-    };
-    handler(data);
+    handler(rawData.id);
   });
 }
 
