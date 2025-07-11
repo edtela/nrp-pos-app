@@ -1,3 +1,10 @@
+/**
+ * Menu Page
+ * Main page component for displaying menu data
+ * 
+ * @see /component-guidelines.md for component patterns and conventions
+ */
+
 import { css } from '@linaria/core';
 import { html, render } from '@/lib/html-template';
 import { Menu } from '@/types';
@@ -108,7 +115,7 @@ export async function renderMenuPage(container: Element, menuFile: string = 'ind
     menuPageUpdate(event);
     
     // Set up event listeners
-    function menuItemClickHandler({id, type, interactionType, selected}: MenuItemUI.MenuItemClickEventData) {
+    function menuItemClickHandler({id, type, interactionType, selected}: MenuItemUI.ClickEventData) {
       console.log('Menu item clicked:', {
         id,
         type,
@@ -125,7 +132,7 @@ export async function renderMenuPage(container: Element, menuFile: string = 'ind
       }
     }
     
-    function variantSelectHandler({variantId, variantGroupId, selected}: VariantGroupUI.VariantSelectEventData) {
+    function variantSelectHandler({variantId, variantGroupId, selected}: VariantGroupUI.ClickEventData) {
       console.log('Variant selected:', variantId, variantGroupId, selected);
       
       // TODO: Update variant selection in model and trigger price updates

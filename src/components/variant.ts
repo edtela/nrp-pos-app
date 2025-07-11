@@ -1,6 +1,8 @@
 /**
  * Variant Selector Component
  * Segmented button for selecting variants (e.g., sizes)
+ * 
+ * @see /component-guidelines.md for component patterns and conventions
  */
 
 import { css } from '@linaria/core';
@@ -16,7 +18,7 @@ export const VARIANT_SELECT_EVENT = 'variant-select';
 /**
  * Event data interface
  */
-export interface VariantSelectEventData {
+export interface ClickEventData {
   variantGroupId: string;
   variantId: string;
   selected: boolean;
@@ -50,9 +52,9 @@ export function template(data: VariantGroup): Template {
 /**
  * Attach event handler with data transformation
  */
-export function attach(container: HTMLElement, handler: (data: VariantSelectEventData) => void): void {
+export function attach(container: HTMLElement, handler: (data: ClickEventData) => void): void {
   addEventHandler(container, VARIANT_SELECT_EVENT, (rawData) => {
-    const data: VariantSelectEventData = {
+    const data: ClickEventData = {
       variantGroupId: rawData.variantGroupId,
       variantId: rawData.variantId,
       selected: rawData.selected === 'true'

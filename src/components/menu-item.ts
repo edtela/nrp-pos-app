@@ -1,6 +1,8 @@
 /**
  * Menu Item Component
  * Individual menu item with selection states
+ * 
+ * @see /component-guidelines.md for component patterns and conventions
  */
 
 import { css } from '@linaria/core';
@@ -17,7 +19,7 @@ export const MENU_ITEM_CLICK_EVENT = 'menu-item-click';
 /**
  * Event data interface
  */
-export interface MenuItemClickEventData {
+export interface ClickEventData {
   id: string;
   type: string;
   interactionType: string;
@@ -72,9 +74,9 @@ export function update(element: HTMLElement, event: MenuItemEvent) {
 /**
  * Attach event handler with data transformation
  */
-export function attach(container: HTMLElement, handler: (data: MenuItemClickEventData) => void): void {
+export function attach(container: HTMLElement, handler: (data: ClickEventData) => void): void {
   addEventHandler(container, MENU_ITEM_CLICK_EVENT, (rawData) => {
-    const data: MenuItemClickEventData = {
+    const data: ClickEventData = {
       id: rawData.id,
       type: rawData.type,
       interactionType: rawData.interactionType,

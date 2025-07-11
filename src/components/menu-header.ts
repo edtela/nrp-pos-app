@@ -1,6 +1,8 @@
 /**
  * Menu Header Component
  * Renders display cells for menu headers with data-driven styling
+ * 
+ * @see /component-guidelines.md for component patterns and conventions
  */
 
 import { html, Template, classMap, styleMap } from '@/lib/html-template';

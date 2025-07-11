@@ -23,7 +23,7 @@ export const COMPONENT_ACTION_EVENT = 'component-action';
 /**
  * Event data interfaces
  */
-export interface ComponentActionEventData {
+export interface ClickEventData {
   id: string;
   // other relevant data
 }
@@ -49,9 +49,9 @@ export function update(element: HTMLElement, event: ComponentEvent): void {
 /**
  * Attach event handler with data transformation
  */
-export function attach(container: HTMLElement, handler: (data: ComponentActionEventData) => void): void {
+export function attach(container: HTMLElement, handler: (data: ClickEventData) => void): void {
   addEventHandler(container, COMPONENT_ACTION_EVENT, (rawData) => {
-    const data: ComponentActionEventData = {
+    const data: ClickEventData = {
       id: rawData.id,
       // Transform data as needed (e.g., string to boolean)
     };
@@ -86,6 +86,42 @@ export const styles = {
 - Use TypeScript strict mode
 
 ### 3. Event Handling
+
+#### Forwarding Pattern
+When a parent component simply forwards events to child components without additional logic, use direct assignment:
+
+```typescript
+// Good - direct assignment for simple forwarding
+export const attachVariantHandler = VariantGroupUI.attach;
+export const attachMenuItemHandler = MenuItemUI.attach;
+
+// Avoid - unnecessary wrapper function
+export function attachVariantHandler(
+  container: HTMLElement,
+  handler: (data: VariantGroupUI.ClickEventData) => void
+): void {
+  VariantGroupUI.attach(container, handler);
+}
+```
+
+#### Event Data Naming
+Use generic `ClickEventData` for event data interfaces to avoid redundant prefixes:
+
+```typescript
+// Good
+export interface ClickEventData {
+  id: string;
+  selected: boolean;
+}
+
+// Avoid
+export interface MenuItemClickEventData {
+  id: string;
+  selected: boolean;
+}
+```
+
+### 4. Event System
 - Use data attributes for event configuration
 - Prefix custom events with 'app:'
 - Define clear event data interfaces
@@ -96,7 +132,7 @@ Example:
 ```typescript
 // Define
 export const ITEM_SELECT_EVENT = 'item-select';
-export interface ItemSelectEventData {
+export interface ClickEventData {
   itemId: string;
   selected: boolean;
 }
@@ -107,9 +143,9 @@ data-item-id="${item.id}"
 data-selected="${item.selected}"
 
 // Attach handler
-export function attach(container: HTMLElement, handler: (data: ItemSelectEventData) => void): void {
+export function attach(container: HTMLElement, handler: (data: ClickEventData) => void): void {
   addEventHandler(container, ITEM_SELECT_EVENT, (rawData) => {
-    const data: ItemSelectEventData = {
+    const data: ClickEventData = {
       itemId: rawData.itemId,
       selected: rawData.selected === 'true'  // Convert string to boolean
     };
@@ -118,7 +154,7 @@ export function attach(container: HTMLElement, handler: (data: ItemSelectEventDa
 }
 ```
 
-### 4. Component Organization
+### 5. Component Organization
 
 Components follow a consistent order:
 1. **Event constants and interfaces** - Public API for events
@@ -127,7 +163,7 @@ Components follow a consistent order:
 4. **Attach functions** - Event handler attachment
 5. **Styles** - CSS-in-JS styles at the bottom
 
-### 5. Naming Conventions
+### 6. Naming Conventions
 
 #### Files
 - `kebab-case.ts` for all component files
@@ -157,23 +193,23 @@ Components follow a consistent order:
 - `kebab-case` for actual event names
 - Descriptive event names (e.g., `'variant-select'`, not `'click'`)
 
-### 6. Styling
+### 7. Styling
 - Use Linaria CSS-in-JS for all styles
 - Group all styles in a `styles` object at the bottom of the file
 - Export specific classes if needed for selectors
 - Follow Material Design 3 tokens from theme.ts
 
-### 7. Updates
+### 8. Updates
 - Implement update functions for partial DOM updates
 - Use the `replaceElements` utility for efficient updates
 - Update functions receive the root element and event data
 
-### 8. Data Attributes
+### 9. Data Attributes
 - Use semantic names (e.g., `data-item-id`, not `data-id`)
 - Boolean values as strings ('true'/'false')
 - Handle type conversion in `attach` methods
 
-### 9. Documentation
+### 10. Documentation
 - Add JSDoc comments for exported functions
 - Document event data interfaces
 - Include usage examples for complex components
@@ -199,7 +235,7 @@ export const ADD_TO_CART_EVENT = 'add-to-cart';
 /**
  * Event data interfaces
  */
-export interface AddToCartEventData {
+export interface ClickEventData {
   productId: string;
   productName: string;
   price: number;
@@ -241,9 +277,9 @@ export function update(element: HTMLElement, event: { price?: number }): void {
 /**
  * Attach event handler
  */
-export function attach(container: HTMLElement, handler: (data: AddToCartEventData) => void): void {
+export function attach(container: HTMLElement, handler: (data: ClickEventData) => void): void {
   addEventHandler(container, ADD_TO_CART_EVENT, (rawData) => {
-    const data: AddToCartEventData = {
+    const data: ClickEventData = {
       productId: rawData.productId,
       productName: rawData.productName,
       price: parseFloat(rawData.price)  // Convert string to number
@@ -287,7 +323,7 @@ const product = { id: '123', name: 'Widget', price: 19.99 };
 const template = ProductCardUI.template(product);
 
 // Attach handler
-function addToCartHandler({productId, productName, price}: ProductCardUI.AddToCartEventData) {
+function addToCartHandler({productId, productName, price}: ProductCardUI.ClickEventData) {
   console.log(`Adding ${productName} to cart for $${price}`);
 }
 

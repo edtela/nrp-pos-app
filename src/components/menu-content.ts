@@ -1,6 +1,8 @@
 /**
  * Menu Content Component
  * Container and layout for menu content
+ * 
+ * @see /component-guidelines.md for component patterns and conventions
  */
 
 import { css } from '@linaria/core';
@@ -57,25 +59,8 @@ export function update(container: HTMLElement, event: MenuEvent) {
   }
 }
 
-/**
- * Attach variant selection handler
- */
-export function attachVariantHandler(
-  container: HTMLElement,
-  handler: (data: VariantGroupUI.VariantSelectEventData) => void
-): void {
-  VariantGroupUI.attach(container, handler);
-}
-
-/**
- * Attach menu item click handler
- */
-export function attachMenuItemHandler(
-  container: HTMLElement,
-  handler: (data: MenuItemUI.MenuItemClickEventData) => void
-): void {
-  MenuItemUI.attach(container, handler);
-}
+export const attachVariantHandler = VariantGroupUI.attach;
+export const attachMenuItemHandler = MenuItemUI.attach;
 
 /**
  * Menu Content Styles
