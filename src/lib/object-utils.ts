@@ -1,4 +1,4 @@
-export function setValues(target: any, values: any, event: Record<string, any> = {}): Record<string, any> {
+export function setValues(target: any, values: any, event?: Record<string, any>): Record<string, any> | undefined {
   function isTerminal(value: any): boolean {
     return (
       value === null ||
@@ -8,31 +8,41 @@ export function setValues(target: any, values: any, event: Record<string, any> =
     );
   }
 
-  function processPath(currentTarget: any, currentValues: any, path: string[] = []): void {
-    for (const key in currentValues) {
-      if (!currentValues.hasOwnProperty(key)) continue;
+  let hasChanges = false;
+  const changeEvent = event || {};
 
-      const targetValue = currentTarget[key];
-      const newValue = currentValues[key];
-      const currentPath = [...path, key];
-      const pathString = currentPath.join('.');
+  for (const key in values) {
+    if (!values.hasOwnProperty(key)) continue;
 
-      if (targetValue === newValue) {
-        continue;
+    const targetValue = target[key];
+    let newValue = values[key];
+
+    // If newValue is a function, execute it with the key
+    if (typeof newValue === 'function') {
+      newValue = newValue(key);
+    }
+
+    if (targetValue === newValue) {
+      continue;
+    }
+
+    hasChanges = true;
+
+    if (isTerminal(newValue)) {
+      target[key] = newValue;
+      changeEvent[key] = newValue;
+    } else {
+      if (targetValue === undefined || targetValue === null || typeof targetValue !== 'object' || Array.isArray(targetValue)) {
+        target[key] = {};
       }
-
-      if (isTerminal(newValue)) {
-        currentTarget[key] = newValue;
-        event[pathString] = newValue;
-      } else {
-        if (targetValue === undefined || targetValue === null || typeof targetValue !== 'object' || Array.isArray(targetValue)) {
-          currentTarget[key] = {};
-        }
-        processPath(currentTarget[key], newValue, currentPath);
+      changeEvent[key] = {};
+      setValues(target[key], newValue, changeEvent[key]);
+      // Remove empty event objects
+      if (Object.keys(changeEvent[key]).length === 0) {
+        delete changeEvent[key];
       }
     }
   }
 
-  processPath(target, values);
-  return event;
+  return hasChanges ? changeEvent : undefined;
 }

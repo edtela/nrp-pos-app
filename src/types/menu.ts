@@ -45,6 +45,7 @@ export interface MenuItem {
   // Pricing - if undefined, this is a Category; if defined, this is a SaleItem
   price?: number | VariantPrice;
   variantGroupId?: string;         // References a Variants definition for variant-based pricing
+  selectedVariantId?: string;
 
   // Constraints
   constraints?: Constraint;        // Item constraints and choice reference
