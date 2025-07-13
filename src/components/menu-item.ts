@@ -19,9 +19,12 @@ export const MENU_ITEM_CLICK_EVENT = 'menu-item-click';
 /**
  * Price template - renders the price or navigation chevron
  */
-function priceTemplate(price?: number | VariantPrice): Template {
+function priceTemplate(price?: number | VariantPrice, selectedVariantId?: string): Template {
   if (typeof price === 'number') {
     return price === 0 ? html`` : html`<span class="${styles.price}">$${price.toFixed(2)}</span>`;
+  } else if (price && selectedVariantId && selectedVariantId in price) {
+    const variantPrice = price[selectedVariantId];
+    return variantPrice === 0 ? html`` : html`<span class="${styles.price}">$${variantPrice.toFixed(2)}</span>`;
   }
   return html`<span class="${styles.price} material-icons">chevron_right</span>`;
 }
@@ -34,10 +37,11 @@ export function template(data: MenuItem): Template {
   return html`
     <div class="${styles.item}" 
          id="menu-item-${data.id}"
-         data-id="${data.id}" 
          data-type="menu-item"
+         data-id="${data.id}" 
          data-interaction-type="${iType}"
          data-selected="false"
+         ${data.price ? `data-price=${JSON.stringify(data.price)}` : ``}         
          ${onClick(MENU_ITEM_CLICK_EVENT)}>
       <div class="${styles.content}">
         <span class="${styles.icon} ${iconClassName}">${data.icon || ''}</span>
@@ -45,7 +49,7 @@ export function template(data: MenuItem): Template {
           <span class="${styles.name}">${data.name}</span>
           ${data.description ? html`<p class="${styles.description}">${data.description}</p>` : ''}
         </div>
-        ${priceTemplate(data.price)}
+        ${priceTemplate(data.price, data.selectedVariantId)}
       </div>
     </div>
   `;
@@ -55,9 +59,16 @@ export function template(data: MenuItem): Template {
  * Update menu item
  */
 export function update(element: HTMLElement, event: MenuItemEvent) {
-  // Check if price has changed
-  if ('price' in event && event.price !== undefined) {
-    replaceElements(element, `.${styles.price}`, priceTemplate(event.price));
+  // Check if price or selectedVariantId has changed
+  if (('price' in event && event.price !== undefined) || ('selectedVariantId' in event)) {
+    // Get the current data from the element
+    const menuItem = element as HTMLElement & { __data?: MenuItem };
+    const data = menuItem.__data;
+    if (data) {
+      const price = 'price' in event ? event.price : data.price;
+      const selectedVariantId = 'selectedVariantId' in event ? event.selectedVariantId : data.selectedVariantId;
+      replaceElements(element, `.${styles.price}`, priceTemplate(price, selectedVariantId));
+    }
   }
 }
 

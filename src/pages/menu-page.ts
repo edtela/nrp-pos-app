@@ -83,10 +83,13 @@ function template(menuData: Menu | null, error?: string) {
   `;
 }
 
-function update(event: MenuModelEvent) {
-  const container = document.querySelector(`.${MenuContentUI.menuContainer}`) as HTMLElement;
-  if (container) {
-    MenuContentUI.update(container, event);
+function update(event: MenuModelEvent | undefined) {
+  if (event) {
+    console.log('EVT: ', event);
+    const container = document.querySelector(`.${MenuContentUI.menuContainer}`) as HTMLElement;
+    if (container) {
+      MenuContentUI.update(container, event);
+    }
   }
 }
 
