@@ -1,38 +1,41 @@
-import { MenuItem, VariantGroup } from "@/types";
-
 // Define symbols for batch operations
 const ALL = Symbol('*');
 const WHERE = Symbol('?');
 
-// Terminal types - primitives, null, or arrays
-type Terminal = string | number | boolean | null | Array<any>;
-type DataStructure = { [key: string]: Data };
-type Data = Terminal | DataStructure;
+// Type-safe path through a data structure with ALL symbol support
+type DataPath<T> = T extends Record<string, any>
+    ? {
+        // Exact paths for each key
+        [K in keyof T]: [K] | (T[K] extends Record<string, any> ? [K, ...DataPath<T[K]>] : [K])
+    }[keyof T]
+    | [typeof ALL] // ALL at current level
+    | (T[keyof T] extends Record<string, any>
+        ? [typeof ALL, ...DataPath<T[keyof T]>] // ALL followed by common properties
+        : [typeof ALL])
+    : T extends any[]
+    ? [number] // Specific index
+    | [typeof ALL] // ALL elements
+    | (T[number] extends Record<string, any> | any[]
+        ? [number, ...DataPath<T[number]>] // Specific index with nested path
+        | [typeof ALL, ...DataPath<T[number]>] // ALL with nested path
+        : [number])
+    : never;
 
 // Changes structure - same shape as Data but all properties optional
-type DataChange<T extends DataStructure> = {
-    [K in keyof T]?: T[K] extends DataStructure ? DataChange<T[K]> : T[K];
+type DataChange<T> = {
+    [K in keyof T]?: T[K] extends object ? DataChange<T[K]> : T[K];
 };
 
-type UpdateValue<T> = T extends DataStructure ? Update<T> : T;
-type UpdateFunction<T> = ((current: T) => UpdateValue<T>)
-type Update<T extends DataStructure> = {
+type UpdateValue<T> = T extends object ? Update<T> : T;
+type UpdateFunction<T> = (value: T) => UpdateValue<T>;
+type StaticKeyUpdate<T> = {
     [K in keyof T]?: UpdateValue<T[K]> | UpdateFunction<T[K]>;
-} & {
+}
+type OperatorUpdate<T> = {
     [ALL]?: UpdateValue<T[keyof T]> | UpdateFunction<T[keyof T]>;
     [WHERE]?: (value: T) => boolean;
 }
-
-// Helper to check if a value is terminal (not a nested object)
-function isTerminal(value: any): value is Terminal {
-    return (
-        typeof value === 'string' ||
-        typeof value === 'number' ||
-        typeof value === 'boolean' ||
-        value === null ||
-        Array.isArray(value)
-    );
-}
+type Update<T> = OperatorUpdate<T> & StaticKeyUpdate<T>
 
 function isEmpty(obj: { [key: string]: unknown }) {
     for (const _ in obj) {
@@ -41,8 +44,11 @@ function isEmpty(obj: { [key: string]: unknown }) {
     return true;
 }
 
-function update<T extends DataStructure>(data: T, statement: Update<T>, changes: DataChange<T> = {}): DataChange<T> | undefined {
-    const { [WHERE]: where, [ALL]: all, ...expanded } = statement;
+function update<T extends object>(data: T, statement?: Update<T>, changes: DataChange<T> = {}): DataChange<T> | undefined {
+    if (!statement) return undefined;
+
+    const { [WHERE]: where, [ALL]: all, ...rest } = statement;
+    const expanded = rest as StaticKeyUpdate<T>;
 
     if (where && !where(data)) {
         return undefined;
@@ -50,46 +56,40 @@ function update<T extends DataStructure>(data: T, statement: Update<T>, changes:
 
     if (all) {
         for (const key in data) {
-            if ((expanded as any)[key] === undefined) {
+            if (expanded[key] === undefined) {
                 (expanded as any)[key] = all;
             }
         }
     }
 
+    function getUpdateValue<V>(d: V, u?: UpdateValue<V> | UpdateFunction<V>): UpdateValue<V> | undefined {
+        if (typeof u === 'function') {
+            return (u as UpdateFunction<V>)(d);
+        }
+        return u;
+    }
+
     // Process each key in the expanded transform
     for (const key in expanded) {
-        let updateValue = expanded[key];
-        if (updateValue === undefined) {
-            continue;
-        }
-
         let dataValue = data[key];
-
-        // If transformValue is a function, call it to get the actual transform
-        if (typeof updateValue === 'function') {
-            updateValue = updateValue(dataValue as any);
-        }
-
-        if (updateValue === dataValue) {
+        const updateValue = getUpdateValue(dataValue, expanded[key]);
+        if (updateValue === undefined || updateValue === dataValue) {
             continue;
         }
 
-        if (isTerminal(updateValue)) {
-            (data as any)[key] = (changes as any)[key] = updateValue;
+        if (updateValue === null || typeof updateValue !== 'object') {
+            data[key] = changes[key] = updateValue;
             continue;
         }
 
-        // transformValue is a nested object, recurse
-        // If currentValue is terminal or doesn't exist, start with empty object
-        if (!dataValue || isTerminal(dataValue)) {
-            (data as any)[key] = {};
+        if (!dataValue || typeof dataValue !== 'object') {
+            data[key] = dataValue = {} as any;
         }
 
-        // Recursively apply nested transforms
-        const nestedChanges = update(data[key] as DataStructure, updateValue as Update<DataStructure>, changes[key] as DataChange<DataStructure>);
+        const nestedChanges = update(dataValue as any, updateValue, changes[key] as any);
         if (nestedChanges) {
             // If changes[key] was undefined prior to update we set it here
-            (changes as any)[key] = nestedChanges;
+            changes[key] = nestedChanges as any;
         }
     }
 
@@ -98,4 +98,5 @@ function update<T extends DataStructure>(data: T, statement: Update<T>, changes:
 
 // Export the main functionality
 export { update, ALL, WHERE };
-export type { DataStructure, Terminal, DataChange, Update };
+export type { DataChange, Update, DataPath };
+
