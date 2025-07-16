@@ -2,23 +2,29 @@
 const ALL = Symbol('*');
 const WHERE = Symbol('?');
 
-// Type-safe path through a data structure with ALL symbol support
-type DataPath<T> = T extends Record<string, any>
-    ? {
-        // Exact paths for each key
-        [K in keyof T]: [K] | (T[K] extends Record<string, any> ? [K, ...DataPath<T[K]>] : [K])
-    }[keyof T]
-    | [typeof ALL] // ALL at current level
-    | (T[keyof T] extends Record<string, any>
-        ? [typeof ALL, ...DataPath<T[keyof T]>] // ALL followed by common properties
-        : [typeof ALL])
-    : T extends any[]
-    ? [number] // Specific index
-    | [typeof ALL] // ALL elements
-    | (T[number] extends Record<string, any> | any[]
-        ? [number, ...DataPath<T[number]>] // Specific index with nested path
-        | [typeof ALL, ...DataPath<T[number]>] // ALL with nested path
-        : [number])
+type DataPath<T> =
+    // Base case: Only allow non-array objects. Primitives, functions, and arrays are terminal.
+    T extends Record<string, any> & { length?: never } ?
+    (
+        // --- Paths for specific keys ---
+        {
+            // For each key K in T...
+            [K in keyof T & string]:
+            // A path can be just the key itself, e.g., ['users']
+            | [K]
+            // Or, if T[K] is pathable, a path can be [K, ...sub-path]
+            | (DataPath<T[K]> extends never ? never : [K, ...DataPath<T[K]>])
+        }[keyof T & string] // Unionize all possible paths
+    ) |
+    (
+        // --- Paths for the ALL symbol ---
+        // A path can be the ALL symbol for the current level, e.g., [ALL]
+        | [typeof ALL]
+        // Or, it can be [ALL, ...sub-path] where the sub-path is valid for any
+        // object-like value within T.
+        | (DataPath<Extract<T[keyof T], Record<string, any>>> extends never ? never
+            : [typeof ALL, ...DataPath<Extract<T[keyof T], Record<string, any>>>])
+    )
     : never;
 
 // Changes structure - same shape as Data but all properties optional
@@ -96,7 +102,33 @@ function update<T extends object>(data: T, statement?: Update<T>, changes: DataC
     return isEmpty(changes) ? undefined : changes;
 }
 
+function selectByPath<T>(data: T, path: readonly (string | symbol)[]): any {
+    if (path.length === 0 || data === null || typeof data != 'object' || Array.isArray(data)) {
+        return data;
+    }
+
+    const [head, ...tail] = path;
+
+    const result: any = {};
+    if (typeof head === 'string') {
+        const value = selectByPath((data as any)[head], tail as any);
+        if (value !== undefined) result[head] = value;
+    } else if (head === ALL) {
+        for (const key in data) {
+            const value = selectByPath(data[key], tail as any);
+            if (value !== undefined) result[key] = value;
+        }
+    }
+
+    return isEmpty(result) ? undefined : result;
+}
+
+// Type-safe wrapper for selectByPath
+function select<T, P extends DataPath<T>>(data: T, path: P): any {
+    return selectByPath(data, path as readonly (string | symbol)[]);
+}
+
 // Export the main functionality
-export { update, ALL, WHERE };
+export { ALL, WHERE, update, select, selectByPath };
 export type { DataChange, Update, DataPath };
 

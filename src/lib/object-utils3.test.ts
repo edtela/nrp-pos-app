@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { update, ALL, WHERE, type DataStructure, type Update } from './object-utils3';
+import { update, ALL, WHERE, type Update } from './object-utils3';
 
 describe('object-utils3', () => {
     describe('direct value updates', () => {
@@ -118,7 +118,7 @@ describe('object-utils3', () => {
                     user3: { status: 'pending' }
                 }
             });
-            
+
             Object.values(data.users).forEach(user => {
                 expect(user.status).toBe('pending');
             });
@@ -250,8 +250,8 @@ describe('object-utils3', () => {
 
     describe('edge cases', () => {
         it('should create nested objects when they do not exist', () => {
-            const data: DataStructure = {
-                config: {}
+            const data = {
+                config: {} as { database?: { host?: string, port?: number } }
             };
 
             const changes = update(data, {
@@ -281,14 +281,14 @@ describe('object-utils3', () => {
                 }
             };
 
-            const changes = update(data as DataStructure, {
+            const changes = update(data, {
                 settings: {
                     theme: {
                         primary: 'blue',
                         secondary: 'gray'
                     }
                 }
-            } as Update<DataStructure>);
+            });
 
             expect(changes).toEqual({
                 settings: {
