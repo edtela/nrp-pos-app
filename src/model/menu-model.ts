@@ -1,6 +1,6 @@
 import { iterateItems, Menu, MenuItem, VariantGroup } from "@/types";
 import { OrderEvent } from "./order-model";
-import { ALL, DataPath, Update, update, WHERE } from "@/lib/object-utils3";
+import { ALL, BindingPath, Binding, Update, update, WHERE } from "@/lib/object-utils3";
 
 export type MenuItemEvent = Partial<MenuItem>;
 export type MenuEvent = Record<string, MenuItemEvent>;
@@ -66,19 +66,19 @@ export class MenuModel {
     }
 }
 
-function variantUpdate(group: VariantGroupEvent): Update<MenuDataModel> {
+function variantUpdate(group: VariantGroup): Update<MenuDataModel> {
     return {
         menu: {
             [ALL]: {
-                [WHERE]: (item: MenuItem) => item.variantGroupId === group,
+                [WHERE]: (item: MenuItem) => item.variantGroupId === group.id,
                 selectedVariantId: group.selectedId
             }
         }
     }
 }
 
-const variantBinding = {
-    onChange: ['variants', ALL, 'selectedId'] as DataPath<MenuDataModel>,
+const variantBinding: Binding<MenuDataModel> = {
+    onChange: ['variants', [ALL], 'selectedId'] as BindingPath<MenuDataModel>,
     update: variantUpdate
 }
 

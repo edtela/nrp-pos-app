@@ -1,5 +1,25 @@
 import { describe, it, expect } from 'vitest';
-import { update, ALL, WHERE, type Update } from './object-utils3';
+import { update, ALL, WHERE, type Update, applyBinding, type Binding, type BindingPath, type DataChange } from './object-utils3';
+
+// Test types for binding functionality
+type MenuDataModel = {
+    variants: Record<string, VariantGroup>,
+    menu: Record<string, MenuItem>
+}
+
+interface VariantGroup {
+    id: string;
+    name?: string;
+    variants: Array<{ id: string; name: string }>;
+    selectedId: string;
+}
+
+interface MenuItem {
+    id: string;
+    name: string;
+    variantGroupId?: string;
+    selectedVariantId?: string;
+}
 
 describe('object-utils3', () => {
     describe('direct value updates', () => {
@@ -386,6 +406,66 @@ describe('object-utils3', () => {
             const changes = update(data, updateStatement);
             expect(changes?.users?.user1?.profile?.settings?.theme).toBe('light');
             expect(changes?.users?.user1?.stats?.loginCount).toBe(43);
+        });
+    });
+
+    describe('binding functionality', () => {
+        it('should trigger binding when variant selection changes and update menu items', () => {
+            // Define the binding
+            const variantBinding: Binding<MenuDataModel> = {
+                onChange: ['variants', [ALL], 'selectedId'] as BindingPath<MenuDataModel>,
+                update: (group: VariantGroup) => ({
+                    menu: {
+                        [ALL]: {
+                            [WHERE]: (item: MenuItem) => item.variantGroupId === group.id,
+                            selectedVariantId: group.selectedId
+                        }
+                    }
+                })
+            };
+
+            // Setup data - variant selection already changed to 'large'
+            const data: MenuDataModel = {
+                variants: {
+                    size: { 
+                        id: 'size', 
+                        name: 'Size',
+                        variants: [
+                            { id: 'small', name: 'Small' },
+                            { id: 'large', name: 'Large' }
+                        ],
+                        selectedId: 'large'  // Already changed
+                    }
+                },
+                menu: {
+                    item1: { id: 'item1', name: 'Item 1', variantGroupId: 'size', selectedVariantId: 'small' },
+                    item2: { id: 'item2', name: 'Item 2', variantGroupId: 'size', selectedVariantId: 'small' },
+                    item3: { id: 'item3', name: 'Item 3', variantGroupId: 'other', selectedVariantId: 'default' }
+                }
+            };
+            
+            // Change object shows what was changed (matches current data)
+            const change: DataChange<MenuDataModel> = {
+                variants: {
+                    size: {
+                        selectedId: 'large'
+                    }
+                }
+            };
+            
+            // Apply the binding - should update menu items
+            applyBinding(data, change, variantBinding);
+            
+            // Verify that menu items were updated to match variant selection
+            expect(data.menu.item1.selectedVariantId).toBe('large');
+            expect(data.menu.item2.selectedVariantId).toBe('large');
+            expect(data.menu.item3.selectedVariantId).toBe('default'); // unchanged
+            
+            // Verify the change object now includes menu updates
+            expect(change.menu).toBeDefined();
+            expect(change.menu?.item1?.selectedVariantId).toBe('large');
+            expect(change.menu?.item2?.selectedVariantId).toBe('large');
+            expect(change.menu?.item3).toBeUndefined(); // no change
         });
     });
 });

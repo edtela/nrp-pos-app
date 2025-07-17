@@ -27,6 +27,40 @@ type DataPath<T> =
     )
     : never;
 
+type BindingPath<T, Depth extends number = 5> =
+    Depth extends 0
+    ? never  // Stop recursion at depth 0
+    : T extends Record<string, any> & { length?: never } ?
+    (
+        // --- Paths for specific keys ---
+        {
+            [K in keyof T & string]:
+            // A path can be just the key or captured [key]
+            | [K] | [[K]]
+            // Or continue with sub-paths (decrement depth)
+            | (BindingPath<T[K], Prev[Depth]> extends never ? never
+                : [K, ...BindingPath<T[K], Prev[Depth]>]
+                | [[K], ...BindingPath<T[K], Prev[Depth]>])
+        }[keyof T & string]
+    ) |
+    (
+        // --- Paths for the ALL symbol ---
+        | [typeof ALL] | [[typeof ALL]]
+        // Or [ALL, ...sub-path] with capture support (decrement depth)
+        | (BindingPath<Extract<T[keyof T], Record<string, any>>, Prev[Depth]> extends never ? never
+            : [typeof ALL, ...BindingPath<Extract<T[keyof T], Record<string, any>>, Prev[Depth]>]
+            | [[typeof ALL], ...BindingPath<Extract<T[keyof T], Record<string, any>>, Prev[Depth]>])
+    )
+    : never;
+
+// Helper type to decrement numbers
+type Prev = [never, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+
+interface Binding<T> {
+    onChange: BindingPath<T>;
+    update: (...args: any[]) => Update<T>;
+}
+
 // Changes structure - same shape as Data but all properties optional
 type DataChange<T> = {
     [K in keyof T]?: T[K] extends object ? DataChange<T[K]> : T[K];
@@ -83,7 +117,7 @@ function update<T extends object>(data: T, statement?: Update<T>, changes: DataC
             continue;
         }
 
-        if (updateValue === null || typeof updateValue !== 'object') {
+        if (updateValue === null || typeof updateValue !== 'object' || Array.isArray(updateValue)) {
             data[key] = changes[key] = updateValue;
             continue;
         }
@@ -102,7 +136,7 @@ function update<T extends object>(data: T, statement?: Update<T>, changes: DataC
     return isEmpty(changes) ? undefined : changes;
 }
 
-function selectByPath<T>(data: T, path: readonly (string | symbol)[]): any {
+function selectByPath<T>(data: T, path: readonly (string | symbol)[]): Partial<T> | undefined {
     if (path.length === 0 || data === null || typeof data != 'object' || Array.isArray(data)) {
         return data;
     }
@@ -123,12 +157,60 @@ function selectByPath<T>(data: T, path: readonly (string | symbol)[]): any {
     return isEmpty(result) ? undefined : result;
 }
 
-// Type-safe wrapper for selectByPath
-function select<T, P extends DataPath<T>>(data: T, path: P): any {
-    return selectByPath(data, path as readonly (string | symbol)[]);
+function applyBinding<T>(data: T, changes: DataChange<T>, binding: Binding<T>) {
+    const updates = extractBindingUpdates(data, changes, binding, []);
+    if (Array.isArray(updates)) {
+        updates.forEach(u => update(data, u, changes));
+    } else {
+        update(data, updates, changes);
+    }
+}
+
+function extractBindingUpdates(data: any, change: any, binding: Binding<any>, args: any[]): Update<any> | Update<any>[] {
+    const [head, ...tail] = binding.onChange;
+
+    function extractSingle(key: string) {
+        const keyChange = change[key];
+        if (keyChange === undefined) {
+            return {};
+        }
+
+        let keyArgs = args;
+        const keyData = data[key];
+        if (Array.isArray(head)) {
+            keyArgs = [...args, keyData];
+        }
+
+        if (tail.length === 0) {
+            return binding.update(...keyArgs);
+        }
+
+        const keyBinding = { ...binding, onChange: tail as any };
+        return extractBindingUpdates(keyData, keyChange, keyBinding, keyArgs);
+    }
+
+    let field = Array.isArray(head) ? head[0] : head;
+    if (typeof field === 'string') {
+        return extractSingle(field);
+    }
+
+    if (field === ALL) {
+        const updates = [];
+        for (const key in change) {
+            const result = extractSingle(key);
+            if (Array.isArray(result)) {
+                updates.push(...result);
+            } else {
+                updates.push(result);
+            }
+        }
+        return updates;
+    }
+
+    return {};
 }
 
 // Export the main functionality
-export { ALL, WHERE, update, select, selectByPath };
-export type { DataChange, Update, DataPath };
+export { ALL, WHERE, update, selectByPath, applyBinding };
+export type { DataChange, Update, DataPath, BindingPath, Binding };
 
