@@ -1,6 +1,6 @@
 import { iterateItems, Menu, MenuItem, VariantGroup } from "@/types";
 import { OrderEvent } from "./order-model";
-import { ALL, BindingPath, Binding, Update, update, WHERE } from "@/lib/object-utils3";
+import { ALL, WHERE, update, type BindingPath, type Binding, type Update } from "@/lib/data-model";
 
 export type MenuItemEvent = Partial<MenuItem>;
 export type MenuEvent = Record<string, MenuItemEvent>;

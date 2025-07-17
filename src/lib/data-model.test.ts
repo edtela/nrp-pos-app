@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { update, ALL, WHERE, type Update, applyBinding, type Binding, type BindingPath, type DataChange } from './object-utils3';
+import { update, ALL, WHERE, applyBinding, type Update, type Binding, type BindingPath, type DataChange } from './data-model';
 
 // Test types for binding functionality
 type MenuDataModel = {
@@ -21,7 +21,7 @@ interface MenuItem {
     selectedVariantId?: string;
 }
 
-describe('object-utils3', () => {
+describe('data-model', () => {
     describe('direct value updates', () => {
         it('should update simple properties', () => {
             const data = {
