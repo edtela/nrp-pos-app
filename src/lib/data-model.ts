@@ -6,7 +6,7 @@ import {
     type StaticKeyUpdate,
     type UpdateValue,
     type UpdateFunction,
-    type Binding
+    type DataBinding
 } from './data-model-types';
 
 function isEmpty(obj: { [key: string]: unknown }) {
@@ -89,8 +89,10 @@ export function selectByPath<T>(data: T, path: readonly (string | symbol)[]): Pa
     return isEmpty(result) ? undefined : result;
 }
 
-export function applyBinding<T>(data: T, changes: DataChange<T>, binding: Binding<T>) {
-    const updates = extractBindingUpdates(data, changes, binding, []);
+export function applyBinding<T>(data: T, changes: DataChange<T>, binding: DataBinding<T>) {
+    const hasCapture = binding.onChange.findIndex(b => Array.isArray(b)) >= 0;
+    const updateArgs = hasCapture ? [] : [data];
+    const updates = extractBindingUpdates(data, changes, binding, updateArgs, hasCapture);
     if (Array.isArray(updates)) {
         updates.forEach(u => update(data, u, changes));
     } else {
@@ -98,19 +100,23 @@ export function applyBinding<T>(data: T, changes: DataChange<T>, binding: Bindin
     }
 }
 
-function extractBindingUpdates(data: any, change: any, binding: Binding<any>, args: any[]): Update<any> | Update<any>[] {
+function extractBindingUpdates(data: any, change: any, binding: DataBinding<any>, args: any[], hasCapture: boolean): Update<any> | Update<any>[] {
     const [head, ...tail] = binding.onChange;
 
-    function extractSingle(key: string) {
+    function extractSingle(key: string, addToArgs = false) {
         const keyChange = change[key];
         if (keyChange === undefined) {
             return {};
         }
 
         let keyArgs = args;
+        if (addToArgs) {
+            keyArgs = [...keyArgs, key]
+        }
+
         const keyData = data[key];
         if (Array.isArray(head)) {
-            keyArgs = [...args, keyData];
+            keyArgs = [...keyArgs, keyData];
         }
 
         if (tail.length === 0) {
@@ -118,7 +124,7 @@ function extractBindingUpdates(data: any, change: any, binding: Binding<any>, ar
         }
 
         const keyBinding = { ...binding, onChange: tail as any };
-        return extractBindingUpdates(keyData, keyChange, keyBinding, keyArgs);
+        return extractBindingUpdates(keyData, keyChange, keyBinding, keyArgs, hasCapture);
     }
 
     let field = Array.isArray(head) ? head[0] : head;
@@ -129,7 +135,7 @@ function extractBindingUpdates(data: any, change: any, binding: Binding<any>, ar
     if (field === ALL) {
         const updates = [];
         for (const key in change) {
-            const result = extractSingle(key);
+            const result = extractSingle(key, !hasCapture);
             if (Array.isArray(result)) {
                 updates.push(...result);
             } else {
@@ -141,7 +147,3 @@ function extractBindingUpdates(data: any, change: any, binding: Binding<any>, ar
 
     return {};
 }
-
-// Re-export symbols and types from data-model-types
-export { ALL, WHERE };
-export type { DataChange, Update, DataPath, BindingPath, Binding } from './data-model-types';

@@ -1,6 +1,7 @@
 import { iterateItems, Menu, MenuItem, VariantGroup } from "@/types";
 import { OrderEvent } from "./order-model";
-import { ALL, WHERE, update, type BindingPath, type Binding, type Update } from "@/lib/data-model";
+import { update } from "@/lib/data-model";
+import { ALL, CapturePath, DataBinding, Update, WHERE } from "@/lib/data-model-types";
 
 export type MenuItemEvent = Partial<MenuItem>;
 export type MenuEvent = Record<string, MenuItemEvent>;
@@ -77,8 +78,8 @@ function variantUpdate(group: VariantGroup): Update<MenuDataModel> {
     }
 }
 
-const variantBinding: Binding<MenuDataModel> = {
-    onChange: ['variants', [ALL], 'selectedId'] as BindingPath<MenuDataModel>,
+const variantBinding: DataBinding<MenuDataModel> = {
+    onChange: ['variants', [ALL], 'selectedId'] as CapturePath<MenuDataModel>,
     update: variantUpdate
 }
 
