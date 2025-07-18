@@ -8,12 +8,12 @@ export type DataChange<T> = {
 };
 
 export type UpdateValue<T> = T extends object ? Update<T> : T;
-export type UpdateFunction<T> = (value: T) => UpdateValue<T>;
+export type UpdateFunction<V, D> = (value: V, data: D) => UpdateValue<V>;
 export type StaticKeyUpdate<T> = {
-    [K in keyof T]?: UpdateValue<T[K]> | UpdateFunction<T[K]>;
+    [K in keyof T]?: UpdateValue<T[K]> | UpdateFunction<T[K], T>;
 }
 export type OperatorUpdate<T> = {
-    [ALL]?: UpdateValue<T[keyof T]> | UpdateFunction<T[keyof T]>;
+    [ALL]?: UpdateValue<T[keyof T]> | UpdateFunction<T[keyof T], T>;
     [WHERE]?: (value: T) => boolean;
 }
 export type Update<T> = OperatorUpdate<T> & StaticKeyUpdate<T>

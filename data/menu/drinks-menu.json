@@ -37,30 +37,39 @@
             "id": "coca-cola",
             "name": "Coca-Cola",
             "description": "Classic cola",
-            "price": {
-              "small": 2.49,
-              "medium": 2.99,
-              "large": 3.49
+            "variants": {
+              "groupId": "drink-size",
+              "price": {
+                "small": 2.49,
+                "medium": 2.99,
+                "large": 3.49
+              }
             }
           },
           {
             "id": "sprite",
             "name": "Sprite", 
             "description": "Lemon-lime soda",
-            "price": {
-              "small": 2.49,
-              "medium": 2.99,
-              "large": 3.49
+            "variants": {
+              "groupId": "drink-size",
+              "price": {
+                "small": 2.49,
+                "medium": 2.99,
+                "large": 3.49
+              }
             }
           },
           {
             "id": "orange-juice",
             "name": "Orange Juice",
             "description": "Freshly squeezed",
-            "price": {
-              "small": 3.49,
-              "medium": 3.99,
-              "large": 4.49
+            "variants": {
+              "groupId": "drink-size",
+              "price": {
+                "small": 3.49,
+                "medium": 3.99,
+                "large": 4.49
+              }
             }
           }
         ]

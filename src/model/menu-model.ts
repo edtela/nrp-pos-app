@@ -1,85 +1,47 @@
 import { iterateItems, Menu, MenuItem, VariantGroup } from "@/types";
-import { OrderEvent } from "./order-model";
-import { update } from "@/lib/data-model";
-import { ALL, CapturePath, DataBinding, Update, WHERE } from "@/lib/data-model-types";
+import { model } from "@/lib/data-model";
+import { ALL, DataBinding, WHERE } from "@/lib/data-model-types";
 
-export type MenuItemEvent = Partial<MenuItem>;
-export type MenuEvent = Record<string, MenuItemEvent>;
-
-export type VariantGroupEvent = { selectedId?: string };
-export type VariantEvent = Record<string, VariantGroupEvent>;
-
-export type MenuModelEvent = { order?: OrderEvent, menu?: MenuEvent, variant?: VariantEvent };
-
-export type MenuDataModel = {
+export type MenuPageData = {
     variants: Record<string, VariantGroup>,
     menu: Record<string, MenuItem>
 }
 
+const bindings: DataBinding<MenuPageData>[] = [
+    {
+        onChange: ['variants', [ALL], 'selectedId'],
+        update: (group: VariantGroup) => ({
+            menu: {
+                [ALL]: {
+                    [WHERE]: (item) => item.variants?.groupId === group.id,
+                    variants: { selectedId: group.selectedId },
+                    price: (_, item) => item.variants?.price[group.selectedId]
+                }
+            }
+        })
+    }
+]
+
 export class MenuModel {
-    data: MenuDataModel = { variants: {}, menu: {} }
+    model = model({ variants: {}, menu: {} }, bindings);
 
     setMenu(menu: Menu) {
-        const event: MenuModelEvent = { menu: {} };
-
-        this.data.variants = {};
+        const data: MenuPageData = { variants: {}, menu: {} }
         for (let vg of Object.values(menu.variants ?? {})) {
-            this.data.variants[vg.id] = { ...vg };
+            data.variants[vg.id] = { ...vg };
         };
 
-        this.data.menu = {};
         for (let item of iterateItems(menu.content)) {
-            this.data.menu[item.id] = item;
-
-            if (item.variantGroupId && item.variantGroupId in this.data.variants) {
-                item.selectedVariantId = this.data.variants[item.variantGroupId]?.selectedId;
-            }
+            data.menu[item.id] = item;
         }
 
-        return event;
+        this.model = model(data, bindings);
+        return data;
     }
 
     setVariant(groupId: string, selectedId: string) {
-        const group = this.data.variants[groupId];
-        if (group == null) {
-            throw new Error(`variant group doesn't exist: ${groupId}`);
-        }
-
-        const variantEvent = update({ [groupId]: group }, { [groupId]: { selectedId } }) as VariantEvent;
-        if (variantEvent) {
-            return this.variantUpdated({ variant: variantEvent });
-        }
-        return undefined;
-    }
-
-    private variantUpdated(event: MenuModelEvent) {
-        for (const [groupId, group] of Object.entries(event?.variant ?? {})) {
-            update(this.data, {
-                menu: {
-                    [ALL]: {
-                        [WHERE]: (item: MenuItem) => item.variantGroupId === groupId,
-                        selectedVariantId: group.selectedId
-                    }
-                }
-            }, event);
-        }
-        return event;
+        return this.model.update({ variants: { [groupId]: { selectedId } } });
     }
 }
 
-function variantUpdate(group: VariantGroup): Update<MenuDataModel> {
-    return {
-        menu: {
-            [ALL]: {
-                [WHERE]: (item: MenuItem) => item.variantGroupId === group.id,
-                selectedVariantId: group.selectedId
-            }
-        }
-    }
-}
-
-const variantBinding: DataBinding<MenuDataModel> = {
-    onChange: ['variants', [ALL], 'selectedId'] as CapturePath<MenuDataModel>,
-    update: variantUpdate
-}
 

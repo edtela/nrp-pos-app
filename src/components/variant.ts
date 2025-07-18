@@ -9,7 +9,7 @@ import { css } from '@linaria/core';
 import { html, Template, onClick, addEventHandler } from '@/lib/html-template';
 import { VariantGroup } from '@/types';
 import { mdColors, mdTypography, mdSpacing } from '@/styles/theme';
-import { VariantGroupEvent } from '@/model/menu-model';
+import { DataChange } from '@/lib/data-model-types';
 
 /**
  * Event constants
@@ -41,11 +41,11 @@ export function template(data: VariantGroup): Template {
   `;
 }
 
-export function update(variantGroupElement: HTMLElement, variantEvent: VariantGroupEvent) {
+export function update(variantGroupElement: HTMLElement, variantEvent: DataChange<VariantGroup>) {
   if (variantEvent.selectedId) {
     // Find all variant buttons in this group
     const buttons = variantGroupElement.querySelectorAll('[data-type="variant"]');
-    
+
     // Update the selected state for each button
     buttons.forEach((button) => {
       const variantId = button.getAttribute('data-variant-id');

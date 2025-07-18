@@ -161,52 +161,62 @@
               {
                 "id": "pepperoni",
                 "name": "Pepperoni",
-                "price": {
-                  "small": 1,
-                  "medium": 1.5,
-                  "large": 2
-                },
-                "variantGroupId": "pizza-size"
+                "variants": {
+                  "groupId": "pizza-size",
+                  "price": {
+                    "small": 1,
+                    "medium": 1.5,
+                    "large": 2
+                  }
+                }
               },
               {
                 "id": "italian-sausage",
                 "name": "Italian Sausage",
-                "price": {
-                  "small": 1,
-                  "medium": 1.5,
-                  "large": 2
-                },
-                "variantGroupId": "pizza-size"
+                "variants": {
+                  "groupId": "pizza-size",
+                  "price": {
+                    "small": 1,
+                    "medium": 1.5,
+                    "large": 2
+                  }
+                }
               },
               {
                 "id": "ham",
                 "name": "Ham",
-                "price": {
-                  "small": 1,
-                  "medium": 1.5,
-                  "large": 2
-                },
-                "variantGroupId": "pizza-size"
+                "variants": {
+                  "groupId": "pizza-size",
+                  "price": {
+                    "small": 1,
+                    "medium": 1.5,
+                    "large": 2
+                  }
+                }
               },
               {
                 "id": "bacon",
                 "name": "Bacon",
-                "price": {
-                  "small": 1,
-                  "medium": 1.5,
-                  "large": 2
-                },
-                "variantGroupId": "pizza-size"
+                "variants": {
+                  "groupId": "pizza-size",
+                  "price": {
+                    "small": 1,
+                    "medium": 1.5,
+                    "large": 2
+                  }
+                }
               },
               {
                 "id": "grilled-chicken",
                 "name": "Grilled Chicken",
-                "price": {
-                  "small": 1,
-                  "medium": 1.5,
-                  "large": 2
-                },
-                "variantGroupId": "pizza-size"
+                "variants": {
+                  "groupId": "pizza-size",
+                  "price": {
+                    "small": 1,
+                    "medium": 1.5,
+                    "large": 2
+                  }
+                }
               }
             ]
           },
@@ -221,72 +231,86 @@
               {
                 "id": "mushrooms",
                 "name": "Mushrooms",
-                "price": {
-                  "small": 1,
-                  "medium": 1.5,
-                  "large": 2
-                },
-                "variantGroupId": "pizza-size"
+                "variants": {
+                  "groupId": "pizza-size",
+                  "price": {
+                    "small": 1,
+                    "medium": 1.5,
+                    "large": 2
+                  }
+                }
               },
               {
                 "id": "onions",
                 "name": "Onions",
-                "price": {
-                  "small": 1,
-                  "medium": 1.5,
-                  "large": 2
-                },
-                "variantGroupId": "pizza-size"
+                "variants": {
+                  "groupId": "pizza-size",
+                  "price": {
+                    "small": 1,
+                    "medium": 1.5,
+                    "large": 2
+                  }
+                }
               },
               {
                 "id": "bell-peppers",
                 "name": "Bell Peppers",
-                "price": {
-                  "small": 1,
-                  "medium": 1.5,
-                  "large": 2
-                },
-                "variantGroupId": "pizza-size"
+                "variants": {
+                  "groupId": "pizza-size",
+                  "price": {
+                    "small": 1,
+                    "medium": 1.5,
+                    "large": 2
+                  }
+                }
               },
               {
                 "id": "black-olives",
                 "name": "Black Olives",
-                "price": {
-                  "small": 1,
-                  "medium": 1.5,
-                  "large": 2
-                },
-                "variantGroupId": "pizza-size"
+                "variants": {
+                  "groupId": "pizza-size",
+                  "price": {
+                    "small": 1,
+                    "medium": 1.5,
+                    "large": 2
+                  }
+                }
               },
               {
                 "id": "tomatoes",
                 "name": "Fresh Tomatoes",
-                "price": {
-                  "small": 1,
-                  "medium": 1.5,
-                  "large": 2
-                },
-                "variantGroupId": "pizza-size"
+                "variants": {
+                  "groupId": "pizza-size",
+                  "price": {
+                    "small": 1,
+                    "medium": 1.5,
+                    "large": 2
+                  }
+                }
               },
               {
                 "id": "jalapenos",
                 "name": "Jalapeños",
-                "price": {
-                  "small": 1,
-                  "medium": 1.5,
-                  "large": 2
-                },
-                "variantGroupId": "pizza-size"
+                "variants": {
+                  "groupId": "pizza-size",
+                  "price": {
+                    "small": 1,
+                    "medium": 1.5,
+                    "large": 2
+                  }
+                }
               },
               {
                 "id": "pineapple",
                 "name": "Pineapple",
-                "price": {
-                  "small": 1,
-                  "medium": 1.5,
-                  "large": 2
-                },
-                "variantGroupId": "pizza-size"
+                "variants": {
+                  "groupId": "pizza-size",
+                  "price": {
+                    "small": 1,
+                    "medium": 1.5,
+                    "large": 2
+                  }
+                }
               },
               {
                 "id": "fresh-basil",
@@ -306,42 +330,50 @@
               {
                 "id": "prosciutto",
                 "name": "Prosciutto",
-                "price": {
-                  "small": 2,
-                  "medium": 2.5,
-                  "large": 3
-                },
-                "variantGroupId": "pizza-size"
+                "variants": {
+                  "groupId": "pizza-size",
+                  "price": {
+                    "small": 2,
+                    "medium": 2.5,
+                    "large": 3
+                  }
+                }
               },
               {
                 "id": "truffle-oil",
                 "name": "Truffle Oil",
-                "price": {
-                  "small": 2,
-                  "medium": 2.5,
-                  "large": 3
-                },
-                "variantGroupId": "pizza-size"
+                "variants": {
+                  "groupId": "pizza-size",
+                  "price": {
+                    "small": 2,
+                    "medium": 2.5,
+                    "large": 3
+                  }
+                }
               },
               {
                 "id": "artichokes",
                 "name": "Artichoke Hearts",
-                "price": {
-                  "small": 2,
-                  "medium": 2.5,
-                  "large": 3
-                },
-                "variantGroupId": "pizza-size"
+                "variants": {
+                  "groupId": "pizza-size",
+                  "price": {
+                    "small": 2,
+                    "medium": 2.5,
+                    "large": 3
+                  }
+                }
               },
               {
                 "id": "sun-dried-tomatoes",
                 "name": "Sun-Dried Tomatoes",
-                "price": {
-                  "small": 2,
-                  "medium": 2.5,
-                  "large": 3
-                },
-                "variantGroupId": "pizza-size"
+                "variants": {
+                  "groupId": "pizza-size",
+                  "price": {
+                    "small": 2,
+                    "medium": 2.5,
+                    "large": 3
+                  }
+                }
               }
             ]
           }

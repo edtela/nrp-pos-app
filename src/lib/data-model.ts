@@ -34,9 +34,9 @@ export function update<T extends object>(data: T, statement?: Update<T>, changes
         }
     }
 
-    function getUpdateValue<V>(d: V, u?: UpdateValue<V> | UpdateFunction<V>): UpdateValue<V> | undefined {
+    function getUpdateValue<V>(v: V, u?: UpdateValue<V> | UpdateFunction<V, T>): UpdateValue<V> | undefined {
         if (typeof u === 'function') {
-            return (u as UpdateFunction<V>)(d);
+            return (u as UpdateFunction<V, T>)(v, data);
         }
         return u;
     }
@@ -87,6 +87,10 @@ export function selectByPath<T>(data: T, path: readonly (string | symbol)[]): Pa
     }
 
     return isEmpty(result) ? undefined : result;
+}
+
+export function applyBindings<T>(data: T, changes: DataChange<T>, bindings: DataBinding<T>[]) {
+    bindings.forEach(b => applyBinding(data, changes, b));
 }
 
 export function applyBinding<T>(data: T, changes: DataChange<T>, binding: DataBinding<T>) {
@@ -146,4 +150,18 @@ function extractBindingUpdates(data: any, change: any, binding: DataBinding<any>
     }
 
     return {};
+}
+
+export function model<T extends object>(data: T, bindings: DataBinding<T>[]) {
+    applyBindings(data, data, bindings);
+
+    return {
+        update: (statement: Update<T>) => {
+            const changes = update(data, statement);
+            if (changes) {
+                applyBindings(data, changes, bindings);
+            }
+            return changes;
+        }
+    }
 }

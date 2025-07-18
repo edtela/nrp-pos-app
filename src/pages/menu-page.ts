@@ -10,7 +10,8 @@ import { html, render } from '@/lib/html-template';
 import { Menu } from '@/types';
 import * as MenuContentUI from '@/components/menu-content';
 import { mdColors, mdTypography, mdSpacing, mdElevation } from '@/styles/theme';
-import { MenuModel, MenuModelEvent } from '@/model/menu-model';
+import { MenuPageData, MenuModel } from '@/model/menu-model';
+import { DataChange } from '@/lib/data-model-types';
 
 const menuModel = new MenuModel();
 
@@ -83,7 +84,7 @@ function template(menuData: Menu | null, error?: string) {
   `;
 }
 
-function update(event: MenuModelEvent | undefined) {
+function update(event: DataChange<MenuPageData> | undefined) {
   if (event) {
     console.log('EVT: ', event);
     const container = document.querySelector(`.${MenuContentUI.menuContainer}`) as HTMLElement;

@@ -7,9 +7,9 @@
 
 import { css } from '@linaria/core';
 import { html, Template, replaceElements, onClick, addEventHandler } from '@/lib/html-template';
-import { MenuItem, VariantPrice } from '@/types';
+import { MenuItem } from '@/types';
 import { mdColors, mdTypography, mdSpacing } from '@/styles/theme';
-import { MenuItemEvent } from '@/model/menu-model';
+import { DataChange } from '@/lib/data-model-types';
 
 /**
  * Event constants
@@ -19,12 +19,9 @@ export const MENU_ITEM_CLICK_EVENT = 'menu-item-click';
 /**
  * Price template - renders the price or navigation chevron
  */
-function priceTemplate(price?: number | VariantPrice, selectedVariantId?: string): Template {
+function priceTemplate(price?: number): Template {
   if (typeof price === 'number') {
     return price === 0 ? html`` : html`<span class="${styles.price}">$${price.toFixed(2)}</span>`;
-  } else if (price && selectedVariantId && selectedVariantId in price) {
-    const variantPrice = price[selectedVariantId];
-    return variantPrice === 0 ? html`` : html`<span class="${styles.price}">$${variantPrice.toFixed(2)}</span>`;
   }
   return html`<span class="${styles.price} material-icons">chevron_right</span>`;
 }
@@ -49,7 +46,7 @@ export function template(data: MenuItem): Template {
           <span class="${styles.name}">${data.name}</span>
           ${data.description ? html`<p class="${styles.description}">${data.description}</p>` : ''}
         </div>
-        ${priceTemplate(data.price, data.selectedVariantId)}
+        ${priceTemplate(data.price)}
       </div>
     </div>
   `;
@@ -58,17 +55,10 @@ export function template(data: MenuItem): Template {
 /**
  * Update menu item
  */
-export function update(element: HTMLElement, event: MenuItemEvent) {
+export function update(element: HTMLElement, event: DataChange<MenuItem>) {
   // Check if price or selectedVariantId has changed
-  if (('price' in event && event.price !== undefined) || ('selectedVariantId' in event)) {
-    // Get the current data from the element
-    const menuItem = element as HTMLElement & { __data?: MenuItem };
-    const data = menuItem.__data;
-    if (data) {
-      const price = 'price' in event ? event.price : data.price;
-      const selectedVariantId = 'selectedVariantId' in event ? event.selectedVariantId : data.selectedVariantId;
-      replaceElements(element, `.${styles.price}`, priceTemplate(price, selectedVariantId));
-    }
+  if ('price' in event) {
+    replaceElements(element, `.${styles.price}`, priceTemplate(event.price));
   }
 }
 
