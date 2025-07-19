@@ -8,16 +8,16 @@ import { css } from '@linaria/core';
 // Material Design 3 Color Tokens
 export const mdColors = {
   // Primary
-  primary: '#6750A4',
+  primary: '#1B6C3F',
   onPrimary: '#FFFFFF',
-  primaryContainer: '#EADDFF',
-  onPrimaryContainer: '#21005D',
+  primaryContainer: '#A3F5BB',
+  onPrimaryContainer: '#00210F',
   
   // Secondary
-  secondary: '#625B71',
+  secondary: '#52634F',
   onSecondary: '#FFFFFF',
-  secondaryContainer: '#E8DEF8',
-  onSecondaryContainer: '#1D192B',
+  secondaryContainer: '#D5E8D0',
+  onSecondaryContainer: '#101F0D',
   
   // Tertiary
   tertiary: '#7D5260',
@@ -32,20 +32,20 @@ export const mdColors = {
   onErrorContainer: '#410E0B',
   
   // Background
-  background: '#FEF7FF',
+  background: '#FDFCF8',
   onBackground: '#1D1B20',
   
   // Surface
-  surface: '#FEF7FF',
+  surface: '#FDFCF8',
   onSurface: '#1D1B20',
   surfaceVariant: '#E7E0EC',
   onSurfaceVariant: '#49454F',
   
   // Surface containers (Material Design 3)
-  surfaceContainer: '#F3EDF7',
-  surfaceContainerHigh: '#ECE6F0',
-  surfaceContainerHighest: '#E6E0E9',
-  surfaceContainerLow: '#F7F2FA',
+  surfaceContainer: '#F1F0EC',
+  surfaceContainerHigh: '#EBE9E6',
+  surfaceContainerHighest: '#E5E4E0',
+  surfaceContainerLow: '#F7F5F2',
   surfaceContainerLowest: '#FFFFFF',
   
   // Outline
@@ -53,11 +53,11 @@ export const mdColors = {
   outlineVariant: '#CAC4D0',
   
   // Others
-  surfaceTint: '#6750A4',
+  surfaceTint: '#1B6C3F',
   scrim: '#000000',
   inverseSurface: '#313033',
   inverseOnSurface: '#F4EFF4',
-  inversePrimary: '#D0BCFF',
+  inversePrimary: '#87D9A0',
 } as const;
 
 // Material Design 3 Typography Scale
