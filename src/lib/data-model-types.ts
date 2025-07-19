@@ -5,7 +5,7 @@ export const WHERE = Symbol('?');
 // Changes structure - same shape as Data but all properties optional
 export type DataChange<T> = {
     [K in keyof T]?: T[K] extends object ? DataChange<T[K]> : T[K];
-};
+}
 
 export type UpdateValue<T> = T extends object ? Update<T> : T;
 export type UpdateFunction<D, V> = (data: D, value: V) => UpdateValue<V>;

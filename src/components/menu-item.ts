@@ -7,9 +7,9 @@
 
 import { css } from '@linaria/core';
 import { html, Template, replaceElements, onClick, addEventHandler } from '@/lib/html-template';
-import { MenuItem } from '@/types';
 import { mdColors, mdTypography, mdSpacing } from '@/styles/theme';
 import { DataChange } from '@/lib/data-model-types';
+import { DisplayMenuItem } from '@/model/menu-model';
 
 /**
  * Event constants
@@ -29,7 +29,7 @@ function priceTemplate(price?: number): Template {
 /**
  * Menu item template - pure function
  */
-export function template(data: MenuItem): Template {
+export function template(data: DisplayMenuItem): Template {
   const iType = data.constraints?.choice?.single ? 'radio' : (data.subMenu ? 'none' : 'checkbox')
   return html`
     <div class="${styles.item}" 
@@ -37,8 +37,7 @@ export function template(data: MenuItem): Template {
          data-type="menu-item"
          data-id="${data.id}" 
          data-interaction-type="${iType}"
-         data-selected="false"
-         ${data.price ? `data-price=${JSON.stringify(data.price)}` : ``}         
+         data-selected=${data.selected ? 'true' : 'false'}
          ${onClick(MENU_ITEM_CLICK_EVENT)}>
       <div class="${styles.content}">
         <span class="${styles.icon} ${iconClassName}">${data.icon || ''}</span>
@@ -55,10 +54,14 @@ export function template(data: MenuItem): Template {
 /**
  * Update menu item
  */
-export function update(element: HTMLElement, event: DataChange<MenuItem>) {
+export function update(element: HTMLElement, event: DataChange<DisplayMenuItem>) {
   // Check if price or selectedVariantId has changed
   if ('price' in event) {
     replaceElements(element, `.${styles.price}`, priceTemplate(event.price));
+  }
+
+  if ('selected' in event) {
+    element.setAttribute('data-selected', event.selected ? 'true' : 'false');
   }
 }
 

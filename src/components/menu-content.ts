@@ -50,9 +50,7 @@ export function template(data: Menu): Template {
  * Update menu content
  */
 export function update(container: HTMLElement, event: DataChange<MenuPageData>) {
-  // Iterate through all menu item events
   for (const [itemId, itemEvent] of Object.entries(event.menu ?? {})) {
-    // Find the menu item element by its ID
     const menuItemElement = container.querySelector(`#menu-item-${itemId}`) as HTMLElement;
     if (menuItemElement && itemEvent) {
       MenuItemUI.update(menuItemElement, itemEvent);
@@ -60,14 +58,11 @@ export function update(container: HTMLElement, event: DataChange<MenuPageData>) 
   }
 
   for (const [variantGroupId, variantEvent] of Object.entries(event.variants ?? {})) {
-    // Find the menu item element by its ID
     const variantGroupElement = container.querySelector(`#variant-group-${variantGroupId}`) as HTMLElement;
     if (variantGroupElement && variantEvent) {
       VariantGroupUI.update(variantGroupElement, variantEvent);
     }
   }
-
-
 }
 
 /**

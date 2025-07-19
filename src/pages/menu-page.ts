@@ -16,12 +16,22 @@ import { DataChange } from '@/lib/data-model-types';
 const menuModel = new MenuModel();
 
 // HANDLERS
-function variantSelectHandler(groupId: string, variantId: string) {
-  update(menuModel.setVariant(groupId, variantId));
+function variantSelectHandler(groupId: string, selectedId: string) {
+  update(menuModel.update({ variants: { [groupId]: { selectedId } } }));
 }
 
 function menuItemClickHandler(menuItemId: string) {
-  console.log('Menu item clicked:', menuItemId);
+  const menuItem = menuModel.getMenuItem(menuItemId);
+  if (menuItem == null) {
+    return;
+  }
+
+  if (menuItem.subMenu) {
+    window.location.pathname = `/${menuItem.subMenu.menuId}`;
+    return;
+  }
+
+  update(menuModel.update({ menu: { [menuItemId]: { selected: !menuItem.selected } } }));
 }
 
 // Function to load menu data based on path
@@ -86,7 +96,6 @@ function template(menuData: Menu | null, error?: string) {
 
 function update(event: DataChange<MenuPageData> | undefined) {
   if (event) {
-    console.log('EVT: ', event);
     const container = document.querySelector(`.${MenuContentUI.menuContainer}`) as HTMLElement;
     if (container) {
       MenuContentUI.update(container, event);
