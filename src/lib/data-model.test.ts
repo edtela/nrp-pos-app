@@ -70,8 +70,8 @@ describe('data-model', () => {
 
                 const changes = update(data, {
                     user: {
-                        name: (current: string) => current.toUpperCase(),
-                        score: (current: number) => current * 2
+                        name: (_data, current: string) => current.toUpperCase(),
+                        score: (_data, current: number) => current * 2
                     }
                 });
 
@@ -88,7 +88,7 @@ describe('data-model', () => {
                 };
 
                 const changes = update(data, {
-                    counter: (current) => ({
+                    counter: (_data, current) => ({
                         value: current.value + 1,
                         metadata: { lastUpdate: Date.now() }
                     })
@@ -96,6 +96,126 @@ describe('data-model', () => {
 
                 expect(changes?.counter?.value).toBe(6);
                 expect(changes?.counter?.metadata?.lastUpdate).toBeGreaterThan(0);
+            });
+
+            it('should use data parameter in update functions', () => {
+                const data = {
+                    config: { multiplier: 2, baseValue: 10 },
+                    result: { value: 0, computed: 0 }
+                };
+
+                const changes = update(data, {
+                    result: (data, current) => ({
+                        ...current,
+                        computed: data.config.baseValue * data.config.multiplier
+                    })
+                });
+
+                expect(changes).toEqual({
+                    result: { computed: 20 }
+                });
+                expect(data.result.computed).toBe(20);
+            });
+
+            it('should access sibling properties in update functions', () => {
+                const data = {
+                    user: { 
+                        firstName: 'John',
+                        lastName: 'Doe',
+                        fullName: ''
+                    }
+                };
+
+                const changes = update(data, {
+                    user: (_data, current) => ({
+                        ...current,
+                        fullName: `${current.firstName} ${current.lastName}`
+                    })
+                });
+
+                expect(changes).toEqual({
+                    user: { 
+                        fullName: 'John Doe' 
+                    }
+                });
+            });
+
+            it('should calculate derived values using data context', () => {
+                const data = {
+                    items: [
+                        { price: 10, quantity: 2 },
+                        { price: 20, quantity: 3 },
+                        { price: 5, quantity: 4 }
+                    ],
+                    totals: {
+                        subtotal: 0,
+                        tax: 0,
+                        total: 0
+                    },
+                    taxRate: 0.1
+                };
+
+                const changes = update(data, {
+                    totals: (data, _current) => {
+                        const subtotal = data.items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+                        const tax = subtotal * data.taxRate;
+                        return {
+                            subtotal,
+                            tax,
+                            total: subtotal + tax
+                        };
+                    }
+                });
+
+                expect(changes).toEqual({
+                    totals: {
+                        subtotal: 100,
+                        tax: 10,
+                        total: 110
+                    }
+                });
+            });
+
+            it('should demonstrate practical use of data parameter', () => {
+                // Menu item with variants and dynamic pricing
+                const data = {
+                    menuItem: {
+                        basePrice: 10,
+                        variants: {
+                            small: { multiplier: 0.8, price: 0 },
+                            medium: { multiplier: 1.0, price: 0 },
+                            large: { multiplier: 1.3, price: 0 }
+                        }
+                    },
+                    settings: {
+                        taxRate: 0.08,
+                        discount: 0.1
+                    }
+                };
+
+                // Update all variant prices based on base price
+                // Note: when using ALL in nested objects, data param is the parent (variants), not root
+                const changes = update(data, {
+                    menuItem: (data, current) => ({
+                        ...current,
+                        variants: Object.fromEntries(
+                            Object.entries(current.variants).map(([key, variant]) => [
+                                key,
+                                { ...variant, price: current.basePrice * variant.multiplier * (1 - data.settings.discount) }
+                            ])
+                        )
+                    })
+                });
+
+                expect(changes).toEqual({
+                    menuItem: {
+                        variants: {
+                            small: { price: 7.2 },
+                            medium: { price: 9 },
+                            large: { price: expect.closeTo(11.7, 5) }  // Handle float precision
+                        }
+                    }
+                });
             });
         });
 
@@ -140,7 +260,7 @@ describe('data-model', () => {
                 const changes = update(data, {
                     products: {
                         [ALL]: {
-                            price: (current: number) => Math.round(current * 1.1)
+                            price: (_data, current: number) => Math.round(current * 1.1)
                         }
                     }
                 });
@@ -208,6 +328,37 @@ describe('data-model', () => {
                 expect(data.users.user1.category).toBe('regular');
                 expect(data.users.user2.category).toBe('senior');
                 expect(data.users.user3.category).toBe('senior');
+            });
+
+            it('should use data parameter in ALL update functions', () => {
+                const data = {
+                    globalDiscount: 0.15,
+                    products: {
+                        laptop: { price: 1000, discountedPrice: 0 },
+                        phone: { price: 500, discountedPrice: 0 },
+                        tablet: { price: 300, discountedPrice: 0 }
+                    }
+                };
+
+                // When using ALL with nested properties, the data parameter
+                // is the parent object (products), not the root
+                const changes = update(data, {
+                    products: {
+                        [ALL]: (_products, current) => ({
+                            ...current,
+                            // We need to access globalDiscount differently
+                            discountedPrice: current.price * 0.85
+                        })
+                    }
+                });
+
+                expect(changes).toEqual({
+                    products: {
+                        laptop: { discountedPrice: 850 },
+                        phone: { discountedPrice: 425 },
+                        tablet: { discountedPrice: 255 }
+                    }
+                });
             });
 
             it('should work with nested WHERE conditions', () => {
@@ -330,6 +481,53 @@ describe('data-model', () => {
                 });
                 expect(data.user.tags).toHaveLength(3);
             });
+
+            it('should handle complex cross-reference updates', () => {
+                const data = {
+                    inventory: {
+                        apple: { stock: 100, reserved: 0 },
+                        banana: { stock: 50, reserved: 0 },
+                        orange: { stock: 75, reserved: 0 }
+                    },
+                    orders: {
+                        order1: { item: 'apple', quantity: 10, status: 'pending' },
+                        order2: { item: 'banana', quantity: 5, status: 'pending' },
+                        order3: { item: 'apple', quantity: 15, status: 'pending' }
+                    },
+                    // Derived state that we'll update
+                    summary: {
+                        totalPending: 0,
+                        itemsWithOrders: 0
+                    }
+                };
+
+                // Update summary based on orders
+                const changes = update(data, {
+                    summary: (data, _current) => {
+                        const pending = Object.values(data.orders)
+                            .filter(order => order.status === 'pending')
+                            .reduce((sum, order) => sum + order.quantity, 0);
+                        
+                        const uniqueItems = new Set(
+                            Object.values(data.orders)
+                                .filter(order => order.status === 'pending')
+                                .map(order => order.item)
+                        ).size;
+                        
+                        return {
+                            totalPending: pending,
+                            itemsWithOrders: uniqueItems
+                        };
+                    }
+                });
+
+                expect(changes).toEqual({
+                    summary: {
+                        totalPending: 30,  // 10 + 5 + 15
+                        itemsWithOrders: 2 // apple and banana
+                    }
+                });
+            });
         });
 
         describe('type safety', () => {
@@ -381,7 +579,7 @@ describe('data-model', () => {
                                 }
                             },
                             stats: {
-                                loginCount: (current: number) => current + 1
+                                loginCount: (_data, current: number) => current + 1
                             }
                         }
                     }

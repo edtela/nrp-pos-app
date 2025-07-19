@@ -34,9 +34,9 @@ export function update<T extends object>(data: T, statement?: Update<T>, changes
         }
     }
 
-    function getUpdateValue<V>(v: V, u?: UpdateValue<V> | UpdateFunction<V, T>): UpdateValue<V> | undefined {
+    function getUpdateValue<V>(v: V, u?: UpdateValue<V> | UpdateFunction<T, V>): UpdateValue<V> | undefined {
         if (typeof u === 'function') {
-            return (u as UpdateFunction<V, T>)(v, data);
+            return (u as UpdateFunction<T, V>)(data, v);
         }
         return u;
     }
