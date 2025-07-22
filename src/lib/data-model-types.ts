@@ -102,3 +102,35 @@ export type CapturePath<T, Depth extends number = 6> =
             | [[typeof ALL], ...CapturePath<Extract<T[keyof T], Record<string, any>>, Prev[Depth]>])
     )
     : never;
+
+// ----------- STRICT UPDATE TYPES (FUTURE IMPLEMENTATION) -----------
+// These types provide strict undefined handling for updates:
+// - Required fields cannot be set to undefined
+// - Optional fields can still be undefined
+// - All properties remain optional in the update object
+/*
+// Helper types
+type IncludesUndefined<T> = undefined extends T ? true : false;
+type StrictValue<T> = IncludesUndefined<T> extends true ? T : Exclude<T, undefined>;
+
+// Core update value type (same as current)
+export type UpdateValue<T> = T extends object ? Update<T> : T;
+
+// Function that produces an update value
+export type UpdateFunction<D, V> = (data: D, value: V) => UpdateValue<V>;
+
+// Common type that combines both direct values and functions
+export type UpdateOperand<D, V> = UpdateValue<StrictValue<V>> | UpdateFunction<D, V>;
+
+// Simplified update types using UpdateOperand
+export type StaticKeyUpdate<T> = {
+    [K in keyof T]?: UpdateOperand<T, T[K]>;
+}
+
+export type OperatorUpdate<T> = {
+    [ALL]?: T[keyof T] extends infer V ? UpdateOperand<T, V> : never;
+    [WHERE]?: (value: T) => boolean;
+}
+
+export type Update<T> = OperatorUpdate<T> & StaticKeyUpdate<T>
+*/

@@ -2,11 +2,24 @@ import { iterateItems, Menu, MenuItem, VariantGroup } from "@/types";
 import { model } from "@/lib/data-model";
 import { ALL, DataBinding, Update, WHERE } from "@/lib/data-model-types";
 
+export interface MenuOrderItem {
+    menuItemId: string;
+    name: string;
+    quantity: number;
+    price: number;
+}
+
 export type DisplayMenuItem = MenuItem & {
     selected?: boolean;
 }
 
 export type MenuPageData = {
+    order?: MenuOrderItem & {
+        children: Record<string, MenuOrderItem>,
+        childrenPrice: number;
+        unitPrice: number;
+        totalPrice: number;
+    }
     variants: Record<string, VariantGroup>,
     menu: Record<string, DisplayMenuItem>
 }
@@ -40,6 +53,49 @@ const initBindings: DataBinding<MenuPageData>[] = [
             }
             return {};
         },
+    },
+    {
+        // Add/Remove child order
+        onChange: ['menu', [ALL], 'selected'],
+        update(item: DisplayMenuItem) {
+            if (item.selected) {
+                return {
+                    order: {
+                        children: {
+                            [item.id]: {
+                                menuItemId: item.id,
+                                name: item.name,
+                                quantity: 1,
+                                price: item.price
+                            }
+                        }
+                    }
+                }
+            }
+            return { order: { children: { [item.id]: undefined } } }
+        }
+    },
+    {
+        // Update child order price
+        onChange: ['menu', [ALL], 'price'],
+        update(item: DisplayMenuItem) {
+            if (item.selected) {
+                return { order: { children: { [item.id]: { price: item.price } } } }
+            }
+            return {}
+        }
+    },
+    {
+        onChange: [['order'], 'children'],
+        update(order: MenuPageData['order']) {
+            if (order === undefined) return {};
+
+            const childrenPrice = Object.values(order.children)
+                .filter(child => child !== undefined)
+                .reduce((sum, child) => sum + child.quantity * child.price, 0);
+            const unitPrice = (order.price + childrenPrice) * order.quantity;
+            return { order: { childrenPrice, unitPrice, totalPrice: order.quantity * unitPrice } };
+        }
     }
 ]
 

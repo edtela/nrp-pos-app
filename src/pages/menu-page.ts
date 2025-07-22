@@ -7,7 +7,7 @@
 
 import { css } from '@linaria/core';
 import { html, render } from '@/lib/html-template';
-import { Menu } from '@/types';
+import { Menu, MenuItem } from '@/types';
 import * as MenuContentUI from '@/components/menu-content';
 import { mdColors, mdTypography, mdSpacing, mdElevation } from '@/styles/theme';
 import { MenuPageData, MenuModel } from '@/model/menu-model';
@@ -27,6 +27,20 @@ function menuItemClickHandler(menuItemId: string) {
   }
 
   if (menuItem.subMenu) {
+    if (menuItem.price) {
+      const order: MenuPageData['order'] = {
+        menuItemId: menuItem.id,
+        name: menuItem.name,
+        children: {},
+        quantity: 1,
+        price: menuItem.price,
+        childrenPrice: 0,
+        unitPrice: menuItem.price,
+        totalPrice: menuItem.price
+      }
+      const data = {order, subMenu: menuItem.subMenu};
+      sessionStorage.setItem(`menu-order`, JSON.stringify(data))
+    }
     window.location.pathname = `/${menuItem.subMenu.menuId}`;
     return;
   }
@@ -64,6 +78,14 @@ export async function renderMenuPage(container: Element, menuFile: string = 'ind
   render(template(menuData, error), container);
 
   if (menuData) {
+    const sData = sessionStorage.getItem('menu-order');
+    let included: string[] = [];
+    if (sData) {
+      const m = JSON.parse(sData) as {order: MenuPageData['order'], subMenu: MenuItem['subMenu']};
+      if (m.subMenu?.menuId === menuFile) {
+      }
+    }
+
     const event = menuModel.setMenu(menuData);
     update(event);
 
