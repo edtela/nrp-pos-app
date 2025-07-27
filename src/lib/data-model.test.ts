@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { update, applyBinding } from './data-model';
-import { ALL, CapturePath, DataBinding, DataChange, Update, WHERE } from './data-model-types';
+import { ALL, CapturePath, DataBinding, DataChange, Update, WHERE, STRUCTURE } from './data-model-types';
 
 
 
@@ -119,7 +119,7 @@ describe('data-model', () => {
 
             it('should access sibling properties in update functions', () => {
                 const data = {
-                    user: { 
+                    user: {
                         firstName: 'John',
                         lastName: 'Doe',
                         fullName: ''
@@ -134,8 +134,8 @@ describe('data-model', () => {
                 });
 
                 expect(changes).toEqual({
-                    user: { 
-                        fullName: 'John Doe' 
+                    user: {
+                        fullName: 'John Doe'
                     }
                 });
             });
@@ -362,7 +362,7 @@ describe('data-model', () => {
             });
 
             it('should work with nested WHERE conditions', () => {
-                const data = {
+                const data: { departments: Record<'eng' | 'sales', { employees: Record<string, { salary: number, years: number }> }> } = {
                     departments: {
                         eng: {
                             employees: {
@@ -385,7 +385,7 @@ describe('data-model', () => {
                         [ALL]: {
                             employees: {
                                 [ALL]: {
-                                    [WHERE]: (emp: any) => emp.years >= 5,
+                                    [WHERE]: (emp) => emp.years >= 5,
                                     salary: 100000
                                 }
                             }
@@ -405,16 +405,16 @@ describe('data-model', () => {
 
         describe('edge cases', () => {
             it('should create nested objects when they do not exist', () => {
-                const data = {
-                    config: {} as { database?: { host?: string, port?: number } }
+                const data: { config: { database?: { host?: string, port?: number } } } = {
+                    config: {}
                 };
 
                 const changes = update(data, {
                     config: {
-                        database: {
+                        database: [{
                             host: 'localhost',
                             port: 5432
-                        }
+                        }]
                     }
                 });
 
@@ -423,6 +423,9 @@ describe('data-model', () => {
                         database: {
                             host: 'localhost',
                             port: 5432
+                        },
+                        [STRUCTURE]: {
+                            database: 'replace'
                         }
                     }
                 });
@@ -438,10 +441,10 @@ describe('data-model', () => {
 
                 const changes = update(data, {
                     settings: {
-                        theme: {
+                        theme: [{
                             primary: 'blue',
                             secondary: 'gray'
-                        }
+                        }]
                     }
                 });
 
@@ -450,6 +453,9 @@ describe('data-model', () => {
                         theme: {
                             primary: 'blue',
                             secondary: 'gray'
+                        },
+                        [STRUCTURE]: {
+                            theme: 'replace'
                         }
                     }
                 });
@@ -461,7 +467,7 @@ describe('data-model', () => {
                 expect(changes).toBeUndefined();
             });
 
-            it('should handle arrays as terminal values', () => {
+            it('should support full array replacement with array syntax', () => {
                 const data = {
                     user: {
                         tags: ['admin', 'active']
@@ -470,15 +476,40 @@ describe('data-model', () => {
 
                 const changes = update(data, {
                     user: {
-                        tags: ['admin', 'active', 'premium']
+                        tags: [['admin', 'active', 'premium']]
                     }
                 });
 
                 expect(changes).toEqual({
                     user: {
-                        tags: ['admin', 'active', 'premium']
+                        tags: ['admin', 'active', 'premium'],
+                        [STRUCTURE]: {
+                            tags: 'replace'
+                        }
                     }
                 });
+                expect(data.user.tags).toHaveLength(3);
+            });
+
+            it('should support partial array updates using index keys', () => {
+                const data = {
+                    user: {
+                        tags: ['admin', 'active']
+                    }
+                };
+
+                const changes = update(data, {
+                    user: {
+                        tags: { '2': 'premium' }
+                    }
+                });
+
+                expect(changes).toEqual({
+                    user: {
+                        tags: { '2': 'premium' }
+                    }
+                });
+                expect(data.user.tags).toEqual(['admin', 'active', 'premium']);
                 expect(data.user.tags).toHaveLength(3);
             });
 
@@ -507,13 +538,13 @@ describe('data-model', () => {
                         const pending = Object.values(data.orders)
                             .filter(order => order.status === 'pending')
                             .reduce((sum, order) => sum + order.quantity, 0);
-                        
+
                         const uniqueItems = new Set(
                             Object.values(data.orders)
                                 .filter(order => order.status === 'pending')
                                 .map(order => order.item)
                         ).size;
-                        
+
                         return {
                             totalPending: pending,
                             itemsWithOrders: uniqueItems
@@ -527,6 +558,194 @@ describe('data-model', () => {
                         itemsWithOrders: 2 // apple and banana
                     }
                 });
+            });
+
+            it('should delete properties with empty array syntax', () => {
+                const data: {
+                    user: {
+                        name: string;
+                        email?: string;
+                        age: number;
+                    }
+                } = {
+                    user: {
+                        name: 'John',
+                        email: 'john@example.com',
+                        age: 30
+                    }
+                };
+
+                const changes = update(data, {
+                    user: {
+                        email: []
+                    }
+                });
+
+                expect(changes).toEqual({
+                    user: {
+                        email: undefined,
+                        [STRUCTURE]: {
+                            email: 'delete'
+                        }
+                    }
+                });
+                expect(data.user).not.toHaveProperty('email');
+                expect(data.user.name).toBe('John');
+                expect(data.user.age).toBe(30);
+            });
+
+            it('should replace nested objects with array syntax', () => {
+                const data = {
+                    config: {
+                        database: {
+                            host: 'localhost',
+                            port: 5432,
+                            username: 'admin'
+                        },
+                        cache: {
+                            enabled: true
+                        }
+                    }
+                };
+
+                const changes = update(data, {
+                    config: {
+                        database: [{
+                            host: 'newhost',
+                            port: 3306,
+                            username: 'root'
+                        }]
+                    }
+                });
+
+                expect(changes).toEqual({
+                    config: {
+                        database: {
+                            host: 'newhost',
+                            port: 3306,
+                            username: 'root'
+                        },
+                        [STRUCTURE]: {
+                            database: 'replace'
+                        }
+                    }
+                });
+                expect(data.config.database).toEqual({
+                    host: 'newhost',
+                    port: 3306,
+                    username: 'root'
+                });
+            });
+
+            it('should support ALL operator on arrays', () => {
+                type Data = { items: string[] };
+                const data: Data = {
+                    items: ['apple', 'banana', 'cherry']
+                };
+
+                const changes = update(data, {
+                    items: {
+                        [ALL]: (_: any, value: string) => value.toUpperCase()
+                    }
+                });
+
+                expect(changes).toEqual({
+                    items: {
+                        '0': 'APPLE',
+                        '1': 'BANANA',
+                        '2': 'CHERRY'
+                    }
+                });
+                expect(data.items).toEqual(['APPLE', 'BANANA', 'CHERRY']);
+            });
+
+            it('should support WHERE operator with arrays', () => {
+                type Users = {
+                    users: Array<{ name: string; score: number; bonus?: number }>
+                };
+
+                const data: Users = {
+                    users: [
+                        { name: 'Alice', score: 85 },
+                        { name: 'Bob', score: 92 },
+                        { name: 'Charlie', score: 78 }
+                    ]
+                };
+
+                const changes = update(data, {
+                    users: {
+                        [WHERE]: (users: Users['users']) => users.some(u => u.score > 90),
+                        [ALL]: { bonus: 10 }
+                    } as any
+                });
+
+                expect(changes).toEqual({
+                    users: {
+                        '0': { bonus: 10 },
+                        '1': { bonus: 10 },
+                        '2': { bonus: 10 }
+                    }
+                });
+                expect(data.users[0]).toEqual({ name: 'Alice', score: 85, bonus: 10 });
+                expect(data.users[1]).toEqual({ name: 'Bob', score: 92, bonus: 10 });
+                expect(data.users[2]).toEqual({ name: 'Charlie', score: 78, bonus: 10 });
+            });
+
+            it('should support nested array operations', () => {
+                const data = {
+                    matrix: [
+                        [1, 2, 3],
+                        [4, 5, 6],
+                        [7, 8, 9]
+                    ]
+                };
+
+                const changes = update(data, {
+                    matrix: {
+                        '1': {
+                            '1': 50
+                        }
+                    } as any
+                });
+
+                expect(changes).toEqual({
+                    matrix: {
+                        '1': {
+                            '1': 50
+                        }
+                    }
+                });
+                expect(data.matrix[1][1]).toBe(50);
+                expect(data.matrix[0]).toEqual([1, 2, 3]);
+                expect(data.matrix[2]).toEqual([7, 8, 9]);
+            });
+
+            it('should handle array replacement and partial updates together', () => {
+                const data = {
+                    lists: {
+                        todo: ['task1', 'task2'],
+                        done: ['task3']
+                    }
+                };
+
+                const changes = update(data, {
+                    lists: {
+                        todo: { '2': 'task4' },
+                        done: [['task3', 'task5', 'task6']]
+                    }
+                });
+
+                expect(changes).toEqual({
+                    lists: {
+                        todo: { '2': 'task4' },
+                        done: ['task3', 'task5', 'task6'],
+                        [STRUCTURE]: {
+                            done: 'replace'
+                        }
+                    }
+                });
+                expect(data.lists.todo).toEqual(['task1', 'task2', 'task4']);
+                expect(data.lists.done).toEqual(['task3', 'task5', 'task6']);
             });
         });
 

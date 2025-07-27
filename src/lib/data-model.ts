@@ -3,10 +3,8 @@ import {
     WHERE,
     type DataChange,
     type Update,
-    type StaticKeyUpdate,
-    type UpdateValue,
-    type UpdateFunction,
-    type DataBinding
+    type DataBinding,
+    STRUCTURE
 } from './data-model-types';
 
 function isEmpty(obj: { [key: string]: unknown }) {
@@ -15,12 +13,12 @@ function isEmpty(obj: { [key: string]: unknown }) {
     }
     return true;
 }
-
-export function update<T extends object>(data: T, statement?: Update<T>, changes: DataChange<T> = {}): DataChange<T> | undefined {
+/** 
+export function update_old<T extends object>(data: T, statement?: Update<T>, changes: DataChange<T> = {}): DataChange<T> | undefined {
     if (!statement) return undefined;
 
     const { [WHERE]: where, [ALL]: all, ...rest } = statement;
-    const expanded = rest as StaticKeyUpdate<T>;
+    const expanded = rest as StaticUpdate<T>;
 
     if (where && !where(data)) {
         return undefined;
@@ -34,22 +32,24 @@ export function update<T extends object>(data: T, statement?: Update<T>, changes
         }
     }
 
-    function getUpdateValue<V>(v: V, u?: UpdateValue<V> | UpdateFunction<T, V>): UpdateValue<V> | undefined {
-        if (typeof u === 'function') {
-            return (u as UpdateFunction<T, V>)(data, v);
+    function toStaticOperand<K extends keyof T>(value: T[K], op?: UpdateOperand<T, K>): StaticUpdateOperand<T, K> | undefined {
+        if (typeof op === 'function') {
+            return op(data, value);
         }
-        return u;
+        return op;
     }
+
+    function setValue<K extends keyof T>()
 
     // Process each key in the expanded transform
     for (const key in expanded) {
         let dataValue = data[key];
-        const updateValue = getUpdateValue(dataValue, expanded[key]);
+        const updateValue = toStaticOperand(dataValue, expanded[key]);
         if (updateValue === undefined || updateValue === dataValue) {
             continue;
         }
 
-        if (updateValue === null || typeof updateValue !== 'object' || Array.isArray(updateValue)) {
+        if (updateValue === null || typeof updateValue !== 'object') {
             data[key] = changes[key] = updateValue;
             continue;
         }
@@ -62,6 +62,87 @@ export function update<T extends object>(data: T, statement?: Update<T>, changes
         if (nestedChanges) {
             // If changes[key] was undefined prior to update we set it here
             changes[key] = nestedChanges as any;
+        }
+    }
+
+    return isEmpty(changes) ? undefined : changes;
+}
+*/
+export function update<T extends object>(data: T, statement?: Update<T>, changes?: DataChange<T>): DataChange<T> | undefined {
+    return updateImpl(data, statement, changes);
+}
+
+export function updateImpl(data: any, statement?: any, changes: any = {}): any {
+    if (!statement) return undefined;
+
+    const { [WHERE]: where, [ALL]: all, ...rest } = statement;
+    const staticUpdate = rest;
+
+    if (where && !where(data)) {
+        return undefined;
+    }
+
+    if (all) {
+        for (const key in data) {
+            if (staticUpdate[key] === undefined) {
+                staticUpdate[key] = all;
+            }
+        }
+    }
+
+    function structureChange(key: string, change: 'delete' | 'replace') {
+        let sc = changes[STRUCTURE];
+        if (!sc) {
+            sc = changes[STRUCTURE] = {};
+        }
+        sc[key] = change;
+    }
+
+    function updateKey(key: string, value: any, newValue: any, replace = false) {
+        if (value === newValue) {
+            return;
+        }
+
+        if (!replace && newValue != null && typeof newValue === 'object') {
+            if (value == null || typeof value !== 'object') {
+                throw Error(`Can't partially update a non-object`);
+            }
+
+            const change = updateImpl(value, newValue, changes[key]);
+            if (change) {
+                changes[key] = change;
+            }
+            return;
+        }
+
+        // newValue null or not an object or full object, set directly 
+        data[key] = newValue;
+        changes[key] = newValue;
+    }
+
+    // Process each key in the expanded transform
+    for (const key in staticUpdate) {
+        let value = data[key];
+
+        const operand = staticUpdate[key];
+        const staticOperand = typeof operand === 'function' ? operand(data, value) : operand;
+
+        if (Array.isArray(staticOperand)) {
+            if (staticOperand.length === 0) {
+                delete data[key];
+                changes[key] = undefined;
+                structureChange(key, 'delete');
+                continue;
+            }
+
+            if (staticOperand.length === 1) {
+                updateKey(key, value, staticOperand[0], true);
+                structureChange(key, 'replace');
+            } else {
+                throw new Error('Multiple element arrays not allowed'); //TODO collect warning
+            }
+        } else {
+            updateKey(key, value, staticOperand);
         }
     }
 
@@ -153,7 +234,7 @@ function extractBindingUpdates(data: any, change: any, binding: DataBinding<any>
 }
 
 export function model<T extends object>(data: T, bindings: DataBinding<T>[]) {
-    applyBindings(data, data, bindings);
+    applyBindings(data, data as any, bindings);
 
     return {
         update: (statement: Update<T>) => {

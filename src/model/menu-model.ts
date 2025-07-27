@@ -62,17 +62,17 @@ const initBindings: DataBinding<MenuPageData>[] = [
                 return {
                     order: {
                         children: {
-                            [item.id]: {
+                            [item.id]: [{
                                 menuItemId: item.id,
                                 name: item.name,
                                 quantity: 1,
                                 price: item.price
-                            }
+                            }]
                         }
                     }
                 }
             }
-            return { order: { children: { [item.id]: undefined } } }
+            return { order: { children: { [item.id]: [] } } }
         }
     },
     {

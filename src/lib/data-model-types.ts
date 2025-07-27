@@ -1,22 +1,77 @@
-// Define symbols for batch operations
-export const ALL = Symbol('*');
-export const WHERE = Symbol('?');
+// Define symbols for operations
+export const ALL = Symbol('*');      // Apply update to all properties
+export const WHERE = Symbol('?');    // Conditional filter for updates
+export const DELETIONS = Symbol('-'); // Track deleted properties in DataChange
+export const STRUCTURE = Symbol('structure'); // Track structural changes (delete/replace) in DataChange
 
-// Changes structure - same shape as Data but all properties optional
-export type DataChange<T> = {
-    [K in keyof T]?: T[K] extends object ? DataChange<T[K]> : T[K];
+// Helper type to extract only string keys from T
+type StringKeys<T> = Extract<keyof T, string>;
+
+// Helper type to check if a property is optional
+type IsOptional<T, K extends keyof T> = {} extends Pick<T, K> ? true : false;
+
+// DataChange tracks what changed in the data object
+// - If a key exists, it was changed (even if set to undefined)
+// - The value represents the current value after the change
+// - [STRUCTURE] record tracks structural changes: 'delete' for deletions, 'replace' for replacements
+// - Only string keys from T are tracked (symbols in data are ignored)
+// - For union types, only common properties are tracked (non-distributive)
+// - For arrays, allows any string index for partial updates
+export type DataChange<T> = T extends readonly any[] ? {
+    // For arrays, allow any string key (including numeric indices)
+    [index: string]: T extends readonly (infer E)[] ? 
+        [E] extends [object] ? DataChange<E> : E 
+        : never;
+} & {
+    [STRUCTURE]?: Record<string, 'delete' | 'replace'>;
+} : {
+    // For objects, use StringKeys as before
+    [K in StringKeys<T>]?: [T[K]] extends [object] ? DataChange<T[K]> : T[K];
+} & {
+    [STRUCTURE]?: Record<StringKeys<T>, 'delete' | 'replace'>;
 }
 
-export type UpdateValue<T> = T extends object ? Update<T> : T;
-export type UpdateFunction<D, V> = (data: D, value: V) => UpdateValue<V>;
-export type StaticKeyUpdate<T> = {
-    [K in keyof T]?: UpdateValue<T[K]> | UpdateFunction<T, T[K]>;
+// Static update operand - direct values and operations
+// For each property type V at key K in type T:
+// - V: Update with a partial value (for objects) or direct value (for primitives)
+// - [V]: Create/replace with a complete new value
+// - []: Delete the property (only allowed for optional properties)
+// - Update<V>: Nested update (only for object types, non-distributive for unions)
+// - For arrays: Also allows partial updates with numeric string indices
+// - For function properties, direct value assignment is disabled to avoid ambiguity
+export type StaticUpdateOperand<T, K extends keyof T> =
+    | (T[K] extends Function ? never : T[K])          // Direct value (disabled for functions)
+    | [T[K]]                                           // Create/replace operation
+    | (IsOptional<T, K> extends true ? [] : never)    // Delete operation (optional only)
+    | ([NonNullable<T[K]>] extends [object] ? Update<T[K]> : never)  // Nested update (objects only, non-distributive)
+    | ([NonNullable<T[K]>] extends [readonly any[]] ? { [index: string]: T[K] extends readonly (infer E)[] ? E : never } : never);  // Array index updates
+
+// Function update operand - compute updates based on current data
+// - Receives the full data object and current property value
+// - Returns a static update operand to apply
+// - Disabled for function properties to avoid ambiguity
+export type FunctionUpdateOperand<T, K extends keyof T> =
+    T[K] extends Function ? never : (data: T, value: T[K]) => StaticUpdateOperand<T, K>;
+
+// Combined update operand - either static or function-based
+export type UpdateOperand<T, K extends keyof T> = StaticUpdateOperand<T, K> | FunctionUpdateOperand<T, K>;
+
+// Update specific properties by key
+// Only string keys from T can be updated (symbols in data are ignored)
+export type StaticUpdate<T> = {
+    [K in StringKeys<T>]?: UpdateOperand<T, K>
 }
+
+// Operator-based updates
+// - [ALL]: Apply the same update to all properties (must be valid for all property types)
+// - [WHERE]: Filter condition - update only applies if predicate returns true
 export type OperatorUpdate<T> = {
-    [ALL]?: UpdateValue<T[keyof T]> | UpdateFunction<T, T[keyof T]>;
+    [ALL]?: UpdateOperand<T, StringKeys<T>>;
     [WHERE]?: (value: T) => boolean;
 }
-export type Update<T> = OperatorUpdate<T> & StaticKeyUpdate<T>
+
+// Complete update type combining operators and static key updates
+export type Update<T> = OperatorUpdate<T> & StaticUpdate<T>
 
 //----------- DATA BINDING --------------------------
 
