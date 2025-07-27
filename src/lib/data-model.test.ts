@@ -951,7 +951,7 @@ describe('data-model', () => {
                 expect(data.items.every(i => !i.active)).toBe(true);
             });
 
-            it('should handle mixed object/primitive unions in terminal updates', () => {
+            it('should require replacement syntax for unions containing objects', () => {
                 type TestData = {
                     value: { type: 'object'; data: string } | string;
                 };
@@ -960,13 +960,16 @@ describe('data-model', () => {
                     value: 'simple'
                 };
 
-                // Can update with string
+                // Must use replacement syntax since union contains object
                 const changes1 = update(data, {
-                    value: 'new string'
+                    value: ['new string']
                 });
-                expect(changes1).toEqual({ value: 'new string' });
+                expect(changes1).toEqual({ 
+                    value: 'new string',
+                    [STRUCTURE]: { value: 'replace' }
+                });
 
-                // Can use replacement syntax for object part
+                // Also use replacement syntax for object value
                 const changes3 = update(data, {
                     value: [{ type: 'object', data: 'replaced' }]
                 });
@@ -974,12 +977,6 @@ describe('data-model', () => {
                     value: { type: 'object', data: 'replaced' },
                     [STRUCTURE]: { value: 'replace' }
                 });
-
-                // Can update with object
-                const changes2 = update(data, {
-                    value: { type: 'object', data: 'complex' }
-                });
-                expect(changes2).toEqual({ value: { data: 'complex' } });
             });
         });
 

@@ -51,7 +51,7 @@ export type DataChange<T> = T extends readonly any[] ? {
 type UpdateTerminal<T> = 
     [T] extends [Function]
         ? [T]  // Functions must use replacement syntax
-        : T | (Extract<T, object> extends never ? never : [T]);
+        : (Extract<T, object> extends never ? T : [T]);
 
 // Update type for arrays
 // - Allows partial updates by index (string keys)

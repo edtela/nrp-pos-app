@@ -13,61 +13,7 @@ function isEmpty(obj: { [key: string]: unknown }) {
     }
     return true;
 }
-/** 
-export function update_old<T extends object>(data: T, statement?: Update<T>, changes: DataChange<T> = {}): DataChange<T> | undefined {
-    if (!statement) return undefined;
 
-    const { [WHERE]: where, [ALL]: all, ...rest } = statement;
-    const expanded = rest as StaticUpdate<T>;
-
-    if (where && !where(data)) {
-        return undefined;
-    }
-
-    if (all) {
-        for (const key in data) {
-            if (expanded[key] === undefined) {
-                (expanded as any)[key] = all;
-            }
-        }
-    }
-
-    function toStaticOperand<K extends keyof T>(value: T[K], op?: UpdateOperand<T, K>): StaticUpdateOperand<T, K> | undefined {
-        if (typeof op === 'function') {
-            return op(data, value);
-        }
-        return op;
-    }
-
-    function setValue<K extends keyof T>()
-
-    // Process each key in the expanded transform
-    for (const key in expanded) {
-        let dataValue = data[key];
-        const updateValue = toStaticOperand(dataValue, expanded[key]);
-        if (updateValue === undefined || updateValue === dataValue) {
-            continue;
-        }
-
-        if (updateValue === null || typeof updateValue !== 'object') {
-            data[key] = changes[key] = updateValue;
-            continue;
-        }
-
-        if (!dataValue || typeof dataValue !== 'object') {
-            data[key] = dataValue = {} as any;
-        }
-
-        const nestedChanges = update(dataValue as any, updateValue, changes[key] as any);
-        if (nestedChanges) {
-            // If changes[key] was undefined prior to update we set it here
-            changes[key] = nestedChanges as any;
-        }
-    }
-
-    return isEmpty(changes) ? undefined : changes;
-}
-*/
 export function update<T extends object>(data: T, statement?: Update<T>, changes?: DataChange<T>): DataChange<T> | undefined {
     return updateImpl(data, statement, changes);
 }
@@ -170,11 +116,11 @@ export function selectByPath<T>(data: T, path: readonly (string | symbol)[]): Pa
     return isEmpty(result) ? undefined : result;
 }
 
-export function applyBindings<T>(data: T, changes: DataChange<T>, bindings: DataBinding<T>[]) {
+export function applyBindings<T extends object>(data: T, changes: DataChange<T>, bindings: DataBinding<T>[]) {
     bindings.forEach(b => applyBinding(data, changes, b));
 }
 
-export function applyBinding<T>(data: T, changes: DataChange<T>, binding: DataBinding<T>) {
+export function applyBinding<T extends object>(data: T, changes: DataChange<T>, binding: DataBinding<T>) {
     const hasCapture = binding.onChange.findIndex(b => Array.isArray(b)) >= 0;
     const updateArgs = hasCapture ? [] : [data];
     const updates = extractBindingUpdates(data, changes, binding, updateArgs, hasCapture);
