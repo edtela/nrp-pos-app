@@ -70,8 +70,8 @@ describe('data-model', () => {
 
                 const changes = update(data, {
                     user: {
-                        name: (_data, current: string) => current.toUpperCase(),
-                        score: (_data, current: number) => current * 2
+                        name: (current: string, _data) => current.toUpperCase(),
+                        score: (current: number, _data) => current * 2
                     }
                 });
 
@@ -88,7 +88,7 @@ describe('data-model', () => {
                 };
 
                 const changes = update(data, {
-                    counter: (_data, current) => ({
+                    counter: (current, _data) => ({
                         value: current.value + 1,
                         metadata: { lastUpdate: Date.now() }
                     })
@@ -105,7 +105,7 @@ describe('data-model', () => {
                 };
 
                 const changes = update(data, {
-                    result: (data, current) => ({
+                    result: (current, data) => ({
                         ...current,
                         computed: data.config.baseValue * data.config.multiplier
                     })
@@ -127,7 +127,7 @@ describe('data-model', () => {
                 };
 
                 const changes = update(data, {
-                    user: (_data, current) => ({
+                    user: (current, _data) => ({
                         ...current,
                         fullName: `${current.firstName} ${current.lastName}`
                     })
@@ -156,7 +156,7 @@ describe('data-model', () => {
                 };
 
                 const changes = update(data, {
-                    totals: (data, _current) => {
+                    totals: (_current, data) => {
                         const subtotal = data.items.reduce((sum, item) => sum + item.price * item.quantity, 0);
                         const tax = subtotal * data.taxRate;
                         return {
@@ -196,7 +196,7 @@ describe('data-model', () => {
                 // Update all variant prices based on base price
                 // Note: when using ALL in nested objects, data param is the parent (variants), not root
                 const changes = update(data, {
-                    menuItem: (data, current) => ({
+                    menuItem: (current, data) => ({
                         ...current,
                         variants: Object.fromEntries(
                             Object.entries(current.variants).map(([key, variant]) => [
@@ -260,7 +260,7 @@ describe('data-model', () => {
                 const changes = update(data, {
                     products: {
                         [ALL]: {
-                            price: (_data, current: number) => Math.round(current * 1.1)
+                            price: (current: number, _data) => Math.round(current * 1.1)
                         }
                     }
                 });
@@ -344,7 +344,7 @@ describe('data-model', () => {
                 // is the parent object (products), not the root
                 const changes = update(data, {
                     products: {
-                        [ALL]: (_products, current) => ({
+                        [ALL]: (current, _products) => ({
                             ...current,
                             // We need to access globalDiscount differently
                             discountedPrice: current.price * 0.85
@@ -534,7 +534,7 @@ describe('data-model', () => {
 
                 // Update summary based on orders
                 const changes = update(data, {
-                    summary: (data, _current) => {
+                    summary: (_current, data) => {
                         const pending = Object.values(data.orders)
                             .filter(order => order.status === 'pending')
                             .reduce((sum, order) => sum + order.quantity, 0);
@@ -645,7 +645,7 @@ describe('data-model', () => {
 
                 const changes = update(data, {
                     items: {
-                        [ALL]: (_: any, value: string) => value.toUpperCase()
+                        [ALL]: (value: string, _: any) => value.toUpperCase()
                     }
                 });
 
@@ -749,6 +749,240 @@ describe('data-model', () => {
             });
         });
 
+        describe('new Update type functionality', () => {
+            it('should handle function properties with replacement syntax only', () => {
+                type TestData = {
+                    callback: () => void;
+                    handler: (x: number) => string;
+                };
+
+                const data: TestData = {
+                    callback: () => console.log('old'),
+                    handler: (x) => `old: ${x}`
+                };
+
+                const newCallback = () => console.log('new');
+                const newHandler = (x: number) => `new: ${x}`;
+
+                const changes = update(data, {
+                    callback: [newCallback],
+                    handler: [newHandler]
+                });
+
+                expect(changes).toEqual({
+                    callback: newCallback,
+                    handler: newHandler,
+                    [STRUCTURE]: {
+                        callback: 'replace',
+                        handler: 'replace'
+                    }
+                });
+                expect(data.callback).toBe(newCallback);
+                expect(data.handler).toBe(newHandler);
+            });
+
+            it('should handle union types with null and undefined', () => {
+                type TestData = {
+                    nullable: string | null;
+                    optional?: string;
+                    both: string | null | undefined;
+                };
+
+                const data: TestData = {
+                    nullable: 'value',
+                    optional: 'value',
+                    both: 'value'
+                };
+
+                // Test setting to null/undefined
+                const changes1 = update(data, {
+                    nullable: null,
+                    optional: undefined,
+                    both: null
+                });
+
+                expect(changes1).toEqual({
+                    nullable: null,
+                    optional: undefined,
+                    both: null
+                });
+
+                // Test object replacement for nullable types
+                type ObjData = {
+                    config: { theme: string } | null;
+                };
+
+                const objData: ObjData = {
+                    config: null
+                };
+
+                const changes2 = update(objData, {
+                    config: [{ theme: 'dark' }]
+                });
+
+                expect(changes2).toEqual({
+                    config: { theme: 'dark' },
+                    [STRUCTURE]: { config: 'replace' }
+                });
+            });
+
+            it('should support ALL operator with type-safe intersection', () => {
+                type TestData = {
+                    items: {
+                        a: { x: number; y: string };
+                        b: { x: number; z: boolean };
+                        c: { x: number };
+                    }
+                };
+
+                const data: TestData = {
+                    items: {
+                        a: { x: 1, y: 'hello' },
+                        b: { x: 2, z: true },
+                        c: { x: 3 }
+                    }
+                };
+
+                // ALL should only allow updating 'x' since it's common to all
+                const changes = update(data, {
+                    items: {
+                        [ALL]: { x: 10 }
+                    }
+                });
+
+                expect(changes).toEqual({
+                    items: {
+                        a: { x: 10 },
+                        b: { x: 10 },
+                        c: { x: 10 }
+                    }
+                });
+                expect(data.items.a).toEqual({ x: 10, y: 'hello' });
+                expect(data.items.b).toEqual({ x: 10, z: true });
+                expect(data.items.c).toEqual({ x: 10 });
+            });
+
+            it('should support ALL with function updates on objects', () => {
+                type TestData = {
+                    scores: Record<string, { value: number; multiplier: number }>;
+                };
+
+                const data: TestData = {
+                    scores: {
+                        player1: { value: 100, multiplier: 2 },
+                        player2: { value: 200, multiplier: 3 },
+                        player3: { value: 150, multiplier: 1 }
+                    }
+                };
+
+                const changes = update(data, {
+                    scores: {
+                        [ALL]: (current) => ({
+                            ...current,
+                            value: current.value * current.multiplier
+                        })
+                    }
+                });
+
+                expect(changes).toEqual({
+                    scores: {
+                        player1: { value: 200 },
+                        player2: { value: 600 }
+                    }
+                });
+            });
+
+            it('should support partial array updates with functions', () => {
+                type TestData = {
+                    numbers: number[];
+                };
+
+                const data: TestData = {
+                    numbers: [1, 2, 3, 4, 5]
+                };
+
+                const changes = update(data, {
+                    numbers: {
+                        '0': (value) => value * 10,
+                        '2': (value) => value * 100,
+                        '4': 500 // Direct value
+                    }
+                });
+
+                expect(changes).toEqual({
+                    numbers: {
+                        '0': 10,
+                        '2': 300,
+                        '4': 500
+                    }
+                });
+                expect(data.numbers).toEqual([10, 2, 300, 4, 500]);
+            });
+
+            it('should support WHERE with array functions', () => {
+                type TestData = {
+                    items: { id: number; active: boolean }[];
+                };
+
+                const data: TestData = {
+                    items: [
+                        { id: 1, active: true },
+                        { id: 2, active: false },
+                        { id: 3, active: true }
+                    ]
+                };
+
+                const changes = update(data, {
+                    items: {
+                        [WHERE]: (items) => items.filter(i => i.active).length >= 2,
+                        [ALL]: (current) => ({
+                            ...current,
+                            active: false
+                        })
+                    }
+                });
+
+                expect(changes).toEqual({
+                    items: {
+                        '0': { active: false },
+                        '2': { active: false }
+                    }
+                });
+                expect(data.items.every(i => !i.active)).toBe(true);
+            });
+
+            it('should handle mixed object/primitive unions in terminal updates', () => {
+                type TestData = {
+                    value: { type: 'object'; data: string } | string;
+                };
+
+                const data: TestData = {
+                    value: 'simple'
+                };
+
+                // Can update with string
+                const changes1 = update(data, {
+                    value: 'new string'
+                });
+                expect(changes1).toEqual({ value: 'new string' });
+
+                // Can use replacement syntax for object part
+                const changes3 = update(data, {
+                    value: [{ type: 'object', data: 'replaced' }]
+                });
+                expect(changes3).toEqual({
+                    value: { type: 'object', data: 'replaced' },
+                    [STRUCTURE]: { value: 'replace' }
+                });
+
+                // Can update with object
+                const changes2 = update(data, {
+                    value: { type: 'object', data: 'complex' }
+                });
+                expect(changes2).toEqual({ value: { data: 'complex' } });
+            });
+        });
+
         describe('type safety', () => {
             it('should maintain type safety with complex nested structures', () => {
                 type AppData = {
@@ -798,7 +1032,7 @@ describe('data-model', () => {
                                 }
                             },
                             stats: {
-                                loginCount: (_data, current: number) => current + 1
+                                loginCount: (current: number, _data, _key) => current + 1
                             }
                         }
                     }

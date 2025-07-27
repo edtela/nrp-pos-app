@@ -79,15 +79,14 @@ export async function renderMenuPage(container: Element, menuFile: string = 'ind
 
   if (menuData) {
     const sData = sessionStorage.getItem('menu-order');
-    let included: string[] = [];
     if (sData) {
       const m = JSON.parse(sData) as {order: MenuPageData['order'], subMenu: MenuItem['subMenu']};
       if (m.subMenu?.menuId === menuFile) {
       }
     }
 
-    const event = menuModel.setMenu(menuData);
-    update(event);
+    menuModel.setMenu(menuData);
+    update(undefined);
 
     // Attach event handlers to the menuPage element (automatically cleaned up on re-render)
     const menuPageElement = container.querySelector(`.${styles.menuPage}`) as HTMLElement;

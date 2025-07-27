@@ -125,7 +125,7 @@ export function updateImpl(data: any, statement?: any, changes: any = {}): any {
         let value = data[key];
 
         const operand = staticUpdate[key];
-        const staticOperand = typeof operand === 'function' ? operand(data, value) : operand;
+        const staticOperand = typeof operand === 'function' ? operand(value, data, key) : operand;
 
         if (Array.isArray(staticOperand)) {
             if (staticOperand.length === 0) {

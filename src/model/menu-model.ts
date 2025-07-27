@@ -32,7 +32,7 @@ const initBindings: DataBinding<MenuPageData>[] = [
                 [ALL]: {
                     [WHERE]: (item) => item.variants?.groupId === group.id,
                     variants: { selectedId: group.selectedId },
-                    price: (item) => item.variants?.price[group.selectedId]
+                    price: (_, item) => item.variants?.price[group.selectedId]
                 }
             }
         })
@@ -46,7 +46,7 @@ const initBindings: DataBinding<MenuPageData>[] = [
                     menu: {
                         [ALL]: {
                             [WHERE]: (item) => item.constraints?.choice?.id === selectItem.constraints?.choice?.id,
-                            selected: (item) => item.id === selectItem.id
+                            selected: (_, item) => item.id === selectItem.id
                         }
                     }
                 }

@@ -10,6 +10,19 @@ type StringKeys<T> = Extract<keyof T, string>;
 // Helper type to check if a property is optional
 type IsOptional<T, K extends keyof T> = {} extends Pick<T, K> ? true : false;
 
+// Helper to convert union to intersection (for ALL operator)
+// This ensures ALL only allows updates to properties common across all types
+type UnionToIntersection<U> = 
+    (U extends any ? (x: U) => void : never) extends (x: infer I) => void ? I : never;
+
+// Helper to get the value type for ALL operator
+// - For arrays: the element type
+// - For objects: intersection of all value types
+type AllValueType<T extends object> = 
+    T extends readonly any[]
+        ? T[number]
+        : UnionToIntersection<T[keyof T]>;
+
 // DataChange tracks what changed in the data object
 // - If a key exists, it was changed (even if set to undefined)
 // - The value represents the current value after the change
@@ -31,47 +44,64 @@ export type DataChange<T> = T extends readonly any[] ? {
     [STRUCTURE]?: Record<StringKeys<T>, 'delete' | 'replace'>;
 }
 
-// Static update operand - direct values and operations
-// For each property type V at key K in type T:
-// - V: Update with a partial value (for objects) or direct value (for primitives)
-// - [V]: Create/replace with a complete new value
-// - []: Delete the property (only allowed for optional properties)
-// - Update<V>: Nested update (only for object types, non-distributive for unions)
-// - For arrays: Also allows partial updates with numeric string indices
-// - For function properties, direct value assignment is disabled to avoid ambiguity
-export type StaticUpdateOperand<T, K extends keyof T> =
-    | (T[K] extends Function ? never : T[K])          // Direct value (disabled for functions)
-    | [T[K]]                                           // Create/replace operation
-    | (IsOptional<T, K> extends true ? [] : never)    // Delete operation (optional only)
-    | ([NonNullable<T[K]>] extends [object] ? Update<T[K]> : never)  // Nested update (objects only, non-distributive)
-    | ([NonNullable<T[K]>] extends [readonly any[]] ? { [index: string]: T[K] extends readonly (infer E)[] ? E : never } : never);  // Array index updates
+// Terminal update types - for non-object values
+// - Functions can only be replaced using [T] syntax
+// - Other values can be direct assignment or replacement
+// - For unions containing objects, [T] syntax is allowed
+type UpdateTerminal<T> = 
+    [T] extends [Function]
+        ? [T]  // Functions must use replacement syntax
+        : T | (Extract<T, object> extends never ? never : [T]);
 
-// Function update operand - compute updates based on current data
-// - Receives the full data object and current property value
-// - Returns a static update operand to apply
-// - Disabled for function properties to avoid ambiguity
-export type FunctionUpdateOperand<T, K extends keyof T> =
-    T[K] extends Function ? never : (data: T, value: T[K]) => StaticUpdateOperand<T, K>;
-
-// Combined update operand - either static or function-based
-export type UpdateOperand<T, K extends keyof T> = StaticUpdateOperand<T, K> | FunctionUpdateOperand<T, K>;
-
-// Update specific properties by key
-// Only string keys from T can be updated (symbols in data are ignored)
-export type StaticUpdate<T> = {
-    [K in StringKeys<T>]?: UpdateOperand<T, K>
+// Update type for arrays
+// - Allows partial updates by index (string keys)
+// - Supports [ALL] to update all elements
+// - Each update can be a value or function
+type UpdateArray<T extends readonly any[]> = {
+    [index: string]: T extends readonly (infer E)[] 
+        ? Update<E> | ((value: E, data: T, index: string) => Update<E>)
+        : never
+} & {
+    [ALL]?: T extends readonly (infer E)[] 
+        ? Update<E> | ((value: E, data: T, index: number) => Update<E>)
+        : never;
 }
 
-// Operator-based updates
-// - [ALL]: Apply the same update to all properties (must be valid for all property types)
-// - [WHERE]: Filter condition - update only applies if predicate returns true
-export type OperatorUpdate<T> = {
-    [ALL]?: UpdateOperand<T, StringKeys<T>>;
-    [WHERE]?: (value: T) => boolean;
+// Update type for non-array objects
+// - Each property can be updated with a value or function
+// - Optional properties can be deleted with []
+// - [ALL] updates all properties (type-safe intersection)
+type UpdateNonArrayObject<T extends object> = {
+    [K in StringKeys<T>]?: 
+        | Update<T[K]> 
+        | (IsOptional<T, K> extends true ? [] : never)
+        | ((value: T[K], data: T, key: K) => Update<T[K]>)
+} & {
+    [ALL]?: Update<AllValueType<T>> | ((value: AllValueType<T>, data: T, key: keyof T) => Update<AllValueType<T>>);
 }
 
-// Complete update type combining operators and static key updates
-export type Update<T> = OperatorUpdate<T> & StaticUpdate<T>
+// Update type for objects (arrays and non-arrays)
+// - Delegates to appropriate sub-type
+// - WHERE predicate applies to the entire object
+type UpdateObject<T extends object> = 
+    (T extends readonly any[] 
+        ? UpdateArray<T>
+        : UpdateNonArrayObject<T>
+    ) & {
+        [WHERE]?: (value: T) => boolean;
+    };
+
+// Main Update type
+// - Routes to UpdateObject for objects (including null/undefined unions)
+// - Routes to UpdateTerminal for primitives
+// - Preserves null/undefined in unions
+// - Allows [T] replacement for object types
+export type Update<T> = [NonNullable<T>] extends [object]
+    ? (undefined extends T ? undefined : never) |
+      (null extends T ? null : never) |
+      UpdateObject<NonNullable<T>> |
+      [NonNullable<T>]
+    : UpdateTerminal<T>;
 
 //----------- DATA BINDING --------------------------
 
