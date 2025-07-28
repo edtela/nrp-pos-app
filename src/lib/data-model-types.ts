@@ -12,16 +12,12 @@ type IsOptional<T, K extends keyof T> = {} extends Pick<T, K> ? true : false;
 
 // Helper to convert union to intersection (for ALL operator)
 // This ensures ALL only allows updates to properties common across all types
-type UnionToIntersection<U> = 
-    (U extends any ? (x: U) => void : never) extends (x: infer I) => void ? I : never;
+type UnionToIntersection<U> = (U extends any ? (x: U) => void : never) extends (x: infer I) => void ? I : never;
 
 // Helper to get the value type for ALL operator
 // - For arrays: the element type
 // - For objects: intersection of all value types
-type AllValueType<T extends object> = 
-    T extends readonly any[]
-        ? T[number]
-        : UnionToIntersection<T[keyof T]>;
+type AllValueType<T extends object> = T extends readonly any[] ? T[number] : UnionToIntersection<T[keyof T]>;
 
 // DataChange tracks what changed in the data object
 // - If a key exists, it was changed (even if set to undefined)
@@ -106,6 +102,7 @@ export type Update<T> = [NonNullable<T>] extends [object]
 //----------- DATA BINDING --------------------------
 
 export interface DataBinding<T> {
+    init?: boolean;
     onChange: CapturePath<T>;
     /**
      * Function that generates an Update object based on the binding path and data.
@@ -187,35 +184,3 @@ export type CapturePath<T, Depth extends number = 6> =
             | [[typeof ALL], ...CapturePath<Extract<T[keyof T], Record<string, any>>, Prev[Depth]>])
     )
     : never;
-
-// ----------- STRICT UPDATE TYPES (FUTURE IMPLEMENTATION) -----------
-// These types provide strict undefined handling for updates:
-// - Required fields cannot be set to undefined
-// - Optional fields can still be undefined
-// - All properties remain optional in the update object
-/*
-// Helper types
-type IncludesUndefined<T> = undefined extends T ? true : false;
-type StrictValue<T> = IncludesUndefined<T> extends true ? T : Exclude<T, undefined>;
-
-// Core update value type (same as current)
-export type UpdateValue<T> = T extends object ? Update<T> : T;
-
-// Function that produces an update value
-export type UpdateFunction<D, V> = (data: D, value: V) => UpdateValue<V>;
-
-// Common type that combines both direct values and functions
-export type UpdateOperand<D, V> = UpdateValue<StrictValue<V>> | UpdateFunction<D, V>;
-
-// Simplified update types using UpdateOperand
-export type StaticKeyUpdate<T> = {
-    [K in keyof T]?: UpdateOperand<T, T[K]>;
-}
-
-export type OperatorUpdate<T> = {
-    [ALL]?: T[keyof T] extends infer V ? UpdateOperand<T, V> : never;
-    [WHERE]?: (value: T) => boolean;
-}
-
-export type Update<T> = OperatorUpdate<T> & StaticKeyUpdate<T>
-*/

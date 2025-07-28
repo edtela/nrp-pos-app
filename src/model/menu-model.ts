@@ -1,5 +1,5 @@
 import { iterateItems, Menu, MenuItem, VariantGroup } from "@/types";
-import { model } from "@/lib/data-model";
+import { state } from "@/lib/data-model";
 import { ALL, DataBinding, Update, WHERE } from "@/lib/data-model-types";
 
 export interface MenuOrderItem {
@@ -24,8 +24,9 @@ export type MenuPageData = {
     menu: Record<string, DisplayMenuItem>
 }
 
-const initBindings: DataBinding<MenuPageData>[] = [
+const bindings: DataBinding<MenuPageData>[] = [
     {
+        init: true,
         onChange: ['variants', [ALL], 'selectedId'],
         update: (group: VariantGroup) => ({
             menu: {
@@ -56,10 +57,12 @@ const initBindings: DataBinding<MenuPageData>[] = [
     },
     {
         // Add/Remove child order
+        init: true,
         onChange: ['menu', [ALL], 'selected'],
         update(item: DisplayMenuItem) {
             if (item.selected) {
                 return {
+                    [WHERE]: (d: MenuPageData) => d.order != null,
                     order: {
                         children: {
                             [item.id]: [{
@@ -72,7 +75,10 @@ const initBindings: DataBinding<MenuPageData>[] = [
                     }
                 }
             }
-            return { order: { children: { [item.id]: [] } } }
+            return {
+                [WHERE]: (d: MenuPageData) => d.order != null,
+                order: { children: { [item.id]: [] } }
+            }
         }
     },
     {
@@ -80,7 +86,10 @@ const initBindings: DataBinding<MenuPageData>[] = [
         onChange: ['menu', [ALL], 'price'],
         update(item: DisplayMenuItem) {
             if (item.selected) {
-                return { order: { children: { [item.id]: { price: item.price } } } }
+                return {
+                    [WHERE]: (d: MenuPageData) => d.order != null,
+                    order: { children: { [item.id]: { price: item.price } } }
+                }
             }
             return {}
         }
@@ -99,13 +108,9 @@ const initBindings: DataBinding<MenuPageData>[] = [
     }
 ]
 
-const updateBindings: DataBinding<MenuPageData>[] = [
-    ...initBindings
-]
-
 export class MenuModel {
     data: MenuPageData = { variants: {}, menu: {} };
-    model = model(this.data, initBindings);
+    model = state(bindings);
 
     setMenu(menu: Menu) {
         this.data = { variants: {}, menu: {} }
@@ -117,8 +122,7 @@ export class MenuModel {
             this.data.menu[item.id] = item;
         }
 
-        this.model = model(this.data, updateBindings);
-        return this.data;
+        return this.model.setData(this.data);
     }
 
     getMenuItem(id: string) {
@@ -126,7 +130,13 @@ export class MenuModel {
     }
 
     update(stmt: Update<MenuPageData>) {
-        return this.model.update(stmt);
+        try {
+            const dc = this.model.update(stmt);
+            return dc;
+        } catch (e) {
+            console.error(e);
+        }
+        return undefined;
     }
 }
 

@@ -7,25 +7,18 @@ import {
     STRUCTURE
 } from './data-model-types';
 
-function isEmpty(obj: { [key: string]: unknown }) {
-    for (const _ in obj) {
-        return false;
-    }
-    return true;
-}
-
 export function update<T extends object>(data: T, statement?: Update<T>, changes?: DataChange<T>): DataChange<T> | undefined {
     return updateImpl(data, statement, changes);
 }
 
-export function updateImpl(data: any, statement?: any, changes: any = {}): any {
+export function updateImpl(data: any, statement?: any, changes?: any): any {
     if (!statement) return undefined;
 
     const { [WHERE]: where, [ALL]: all, ...rest } = statement;
     const staticUpdate = rest;
 
     if (where && !where(data)) {
-        return undefined;
+        return changes;
     }
 
     if (all) {
@@ -36,7 +29,18 @@ export function updateImpl(data: any, statement?: any, changes: any = {}): any {
         }
     }
 
+    function addChange(key: string, newValue: any) {
+        if (!changes) {
+            changes = {};
+        }
+        changes[key] = newValue;
+    }
+
     function structureChange(key: string, change: 'delete' | 'replace') {
+        if (!changes) {
+            changes = {};
+        }
+
         let sc = changes[STRUCTURE];
         if (!sc) {
             sc = changes[STRUCTURE] = {};
@@ -54,16 +58,16 @@ export function updateImpl(data: any, statement?: any, changes: any = {}): any {
                 throw Error(`Can't partially update a non-object`);
             }
 
-            const change = updateImpl(value, newValue, changes[key]);
+            const change = updateImpl(value, newValue, changes ? changes[key] : undefined);
             if (change) {
-                changes[key] = change;
+                addChange(key, change);
             }
             return;
         }
 
         // newValue null or not an object or full object, set directly 
         data[key] = newValue;
-        changes[key] = newValue;
+        addChange(key, newValue);
     }
 
     // Process each key in the expanded transform
@@ -76,7 +80,7 @@ export function updateImpl(data: any, statement?: any, changes: any = {}): any {
         if (Array.isArray(staticOperand)) {
             if (staticOperand.length === 0) {
                 delete data[key];
-                changes[key] = undefined;
+                addChange(key, undefined);
                 structureChange(key, 'delete');
                 continue;
             }
@@ -92,7 +96,7 @@ export function updateImpl(data: any, statement?: any, changes: any = {}): any {
         }
     }
 
-    return isEmpty(changes) ? undefined : changes;
+    return changes;
 }
 
 export function selectByPath<T>(data: T, path: readonly (string | symbol)[]): Partial<T> | undefined {
@@ -102,28 +106,37 @@ export function selectByPath<T>(data: T, path: readonly (string | symbol)[]): Pa
 
     const [head, ...tail] = path;
 
-    const result: any = {};
+    let result: any;
     if (typeof head === 'string') {
         const value = selectByPath((data as any)[head], tail as any);
-        if (value !== undefined) result[head] = value;
+        if (value !== undefined) result = { [head]: value };
     } else if (head === ALL) {
         for (const key in data) {
             const value = selectByPath(data[key], tail as any);
-            if (value !== undefined) result[key] = value;
+            if (value !== undefined) {
+                if (!result) {
+                    result = {};
+                }
+                result[key] = value;
+            }
         }
     }
 
-    return isEmpty(result) ? undefined : result;
+    return result;
 }
 
-export function applyBindings<T extends object>(data: T, changes: DataChange<T>, bindings: DataBinding<T>[]) {
-    bindings.forEach(b => applyBinding(data, changes, b));
+export function applyBindings<T extends object>(data: T, changes: DataChange<T>, bindings: DataBinding<T>[], init = false) {
+    bindings.forEach(b => applyBinding(data, changes, b, init));
 }
 
-export function applyBinding<T extends object>(data: T, changes: DataChange<T>, binding: DataBinding<T>) {
+export function applyBinding<T extends object>(data: T, changes: DataChange<T>, binding: DataBinding<T>, init = false) {
+    if (init && !binding.init) {
+        return;
+    }
+
     const hasCapture = binding.onChange.findIndex(b => Array.isArray(b)) >= 0;
     const updateArgs = hasCapture ? [] : [data];
-    const updates = extractBindingUpdates(data, changes, binding, updateArgs, hasCapture);
+    const updates = extractBindingUpdates(data, init ? data : changes, binding, updateArgs, hasCapture);
     if (Array.isArray(updates)) {
         updates.forEach(u => update(data, u, changes));
     } else {
@@ -179,11 +192,22 @@ function extractBindingUpdates(data: any, change: any, binding: DataBinding<any>
     return {};
 }
 
-export function model<T extends object>(data: T, bindings: DataBinding<T>[]) {
-    applyBindings(data, data as any, bindings);
+export function state<T extends object>(bindings: DataBinding<T>[]) {
+    let data: T | undefined;
 
     return {
+        setData(newData: T) {
+            data = newData;
+            if (data != null) {
+                const changes: DataChange<T> = {} as any
+                applyBindings(data, changes, bindings, true);
+                return changes;
+            }
+            return undefined;
+        },
         update: (statement: Update<T>) => {
+            if (data == null) throw Error('No data');
+
             const changes = update(data, statement);
             if (changes) {
                 applyBindings(data, changes, bindings);

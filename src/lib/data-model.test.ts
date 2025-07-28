@@ -313,7 +313,7 @@ describe('data-model', () => {
                 const changes = update(data, {
                     users: {
                         [ALL]: {
-                            [WHERE]: (user: any) => user.age >= 65,
+                            [WHERE]: (user) => user.age >= 65,
                             category: 'senior'
                         }
                     }
@@ -399,6 +399,80 @@ describe('data-model', () => {
                 });
                 expect(changes?.departments?.sales?.employees).toEqual({
                     emp5: { salary: 100000 }
+                });
+            });
+
+            it('should not update nested properties when WHERE clause at top level returns false', () => {
+                const data = {
+                    menu: {
+                        item1: { name: 'Pizza', selected: true }
+                    },
+                    order: undefined as { children: Record<string, any> } | undefined
+                };
+
+                // This should not throw an error even though order is undefined
+                const changes = update(data, {
+                    [WHERE]: (d) => d.order != null,
+                    order: {
+                        children: {
+                            item1: [{
+                                menuItemId: 'item1',
+                                name: 'Pizza',
+                                quantity: 1,
+                                price: 10
+                            }]
+                        }
+                    }
+                });
+
+                expect(changes).toBeUndefined();
+                expect(data.order).toBeUndefined();
+            });
+
+            it('should update nested properties when WHERE clause at top level returns true', () => {
+                const data = {
+                    menu: {
+                        item1: { name: 'Pizza', selected: true }
+                    },
+                    order: {
+                        children: {} as Record<string, any>
+                    }
+                };
+
+                const changes = update(data, {
+                    [WHERE]: (d) => d.order != null,
+                    order: {
+                        children: {
+                            item1: [{
+                                menuItemId: 'item1',
+                                name: 'Pizza',
+                                quantity: 1,
+                                price: 10
+                            }]
+                        }
+                    }
+                });
+
+                expect(changes).toEqual({
+                    order: {
+                        children: {
+                            item1: {
+                                menuItemId: 'item1',
+                                name: 'Pizza',
+                                quantity: 1,
+                                price: 10
+                            },
+                            [STRUCTURE]: {
+                                item1: 'replace'
+                            }
+                        }
+                    }
+                });
+                expect(data.order.children.item1).toEqual({
+                    menuItemId: 'item1',
+                    name: 'Pizza',
+                    quantity: 1,
+                    price: 10
                 });
             });
         });
@@ -645,7 +719,7 @@ describe('data-model', () => {
 
                 const changes = update(data, {
                     items: {
-                        [ALL]: (value: string, _: any) => value.toUpperCase()
+                        [ALL]: (value: string) => value.toUpperCase()
                     }
                 });
 
@@ -676,7 +750,7 @@ describe('data-model', () => {
                     users: {
                         [WHERE]: (users: Users['users']) => users.some(u => u.score > 90),
                         [ALL]: { bonus: 10 }
-                    } as any
+                    }
                 });
 
                 expect(changes).toEqual({
@@ -705,7 +779,7 @@ describe('data-model', () => {
                         '1': {
                             '1': 50
                         }
-                    } as any
+                    }
                 });
 
                 expect(changes).toEqual({
@@ -964,7 +1038,7 @@ describe('data-model', () => {
                 const changes1 = update(data, {
                     value: ['new string']
                 });
-                expect(changes1).toEqual({ 
+                expect(changes1).toEqual({
                     value: 'new string',
                     [STRUCTURE]: { value: 'replace' }
                 });

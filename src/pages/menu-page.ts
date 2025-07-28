@@ -22,6 +22,7 @@ function variantSelectHandler(groupId: string, selectedId: string) {
 
 function menuItemClickHandler(menuItemId: string) {
   const menuItem = menuModel.getMenuItem(menuItemId);
+  console.log('MM: ', menuItem);
   if (menuItem == null) {
     return;
   }
@@ -85,8 +86,8 @@ export async function renderMenuPage(container: Element, menuFile: string = 'ind
       }
     }
 
-    menuModel.setMenu(menuData);
-    update(undefined);
+    const changes = menuModel.setMenu(menuData);
+    update(changes);
 
     // Attach event handlers to the menuPage element (automatically cleaned up on re-render)
     const menuPageElement = container.querySelector(`.${styles.menuPage}`) as HTMLElement;
