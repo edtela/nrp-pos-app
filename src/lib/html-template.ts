@@ -73,11 +73,22 @@ export function replaceElements(container: Element, selector: string, template: 
 
 /**
  * Create data attributes for click handling
- * @param eventType The type of event to dispatch (will be prefixed with 'app:')
+ * @param eventTypeOrUpdate The type of event to dispatch (will be prefixed with 'app:') or an update object
  * @returns Data attributes string
  */
-export function onClick(eventType: string): string {
-  return `data-click-event="${eventType}"`;
+export function onClick(eventTypeOrUpdate: string | object | undefined): string {
+  if (eventTypeOrUpdate === undefined) {
+    return '';
+  }
+  
+  if (typeof eventTypeOrUpdate === 'string') {
+    return `data-click-event="${eventTypeOrUpdate}"`;
+  }
+  
+  // For objects, JSON.stringify and escape quotes for HTML attribute
+  const json = JSON.stringify(eventTypeOrUpdate);
+  const escaped = json.replace(/"/g, '&quot;');
+  return `data-click-event="${escaped}"`;
 }
 
 /**
@@ -93,26 +104,79 @@ export function initializeGlobalClickHandler(root: Element = document.body): voi
     
     if (!eventElement) return;
     
+    const clickEventData = eventElement.getAttribute('data-click-event');
+    if (!clickEventData) return; // Handle case where attribute exists but is empty
+    
     // Dispatch the custom event
-    dispatchCustomEvent(eventElement, eventElement.dataset.clickEvent!, e as MouseEvent);
+    dispatchCustomEvent(eventElement, clickEventData, e as MouseEvent);
   });
 }
 
 /**
  * Dispatch a custom event with collected data
  */
-function dispatchCustomEvent(target: HTMLElement, eventType: string, originalEvent: MouseEvent): void {
-  // Create and dispatch custom event
-  const customEvent = new CustomEvent(`app:${eventType}`, {
-    bubbles: true,
-    detail: {
+function dispatchCustomEvent(target: HTMLElement, eventData: string, originalEvent: MouseEvent): void {
+  let eventType: string;
+  let detail: any;
+  
+  // Try to parse as JSON first
+  try {
+    // Unescape HTML entities
+    const unescaped = eventData.replace(/&quot;/g, '"');
+    const parsed = JSON.parse(unescaped);
+    
+    if (typeof parsed === 'object' && parsed !== null) {
+      // It's an object - use generic event type and pass the object as detail
+      eventType = 'state-update';
+      detail = parsed;
+    } else {
+      // Parsed but not an object, treat as string
+      eventType = eventData;
+      detail = {
+        target,
+        dataset: { ...target.dataset },
+        originalEvent
+      };
+    }
+  } catch {
+    // Not JSON, treat as string event type
+    eventType = eventData;
+    detail = {
       target,
       dataset: { ...target.dataset },
       originalEvent
-    }
+    };
+  }
+  
+  // Create and dispatch custom event
+  const customEvent = new CustomEvent(`app:${eventType}`, {
+    bubbles: true,
+    detail
   });
   
   target.dispatchEvent(customEvent);
+}
+
+/**
+ * Update click handler on an existing DOM element
+ * @param element The element to update
+ * @param eventTypeOrUpdate The new click handler value
+ */
+export function updateOnClick(element: HTMLElement, eventTypeOrUpdate: string | object | undefined): void {
+  if (eventTypeOrUpdate === undefined) {
+    // Remove the attribute if undefined
+    element.removeAttribute('data-click-event');
+    return;
+  }
+  
+  if (typeof eventTypeOrUpdate === 'string') {
+    element.setAttribute('data-click-event', eventTypeOrUpdate);
+  } else {
+    // For objects, JSON.stringify and escape quotes
+    const json = JSON.stringify(eventTypeOrUpdate);
+    const escaped = json.replace(/"/g, '&quot;');
+    element.setAttribute('data-click-event', escaped);
+  }
 }
 
 /**

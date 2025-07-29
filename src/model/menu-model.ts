@@ -11,9 +11,11 @@ export interface MenuOrderItem {
 
 export type DisplayMenuItem = MenuItem & {
     selected?: boolean;
+    onClick?: Update<MenuPageData>;
 }
 
 export type MenuPageData = {
+    activeMenu?: DisplayMenuItem['subMenu'];
     order?: MenuOrderItem & {
         children: Record<string, MenuOrderItem>,
         childrenPrice: number;
@@ -79,6 +81,35 @@ const bindings: DataBinding<MenuPageData>[] = [
                 [WHERE]: (d: MenuPageData) => d.order != null,
                 order: { children: { [item.id]: [] } }
             }
+        }
+    },
+    // Handle choice selection
+    {
+        onChange: ['menu', [ALL], 'selected'],
+        update(item: DisplayMenuItem) {
+            return { menu: { [item.id]: { onClick: [{ menu: { [item.id]: { selected: !item.selected } } }] } } };
+        }
+    },
+    {
+        // Update click behavior
+        // TODO expand trigger to recognize type change. only needs to be triggered when changing null to value and init
+        init: true,
+        onChange: ['menu', [ALL], 'price'],
+        update(item: DisplayMenuItem) {
+            if (item.price == null) {
+                if (item.subMenu) {
+                    // Category
+                    return { menu: { [item.id]: { onClick: [{ activeMenu: item.subMenu }] } } };
+                }
+                return { menu: { [item.id]: { onClick: [] } } }
+            }
+
+            if (item.subMenu) {
+                // TODO add order info, variant and price
+                return { menu: { [item.id]: { onClick: [{ activeMenu: item.subMenu }] } } };
+            }
+
+            return { menu: { [item.id]: { onClick: [{ menu: { [item.id]: { selected: !item.selected } } }] } } };
         }
     },
     {
