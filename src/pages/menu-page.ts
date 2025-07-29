@@ -20,35 +20,6 @@ function variantSelectHandler(groupId: string, selectedId: string) {
   update(menuModel.update({ variants: { [groupId]: { selectedId } } }));
 }
 
-function menuItemClickHandler(menuItemId: string) {
-  const menuItem = menuModel.getMenuItem(menuItemId);
-  console.log('MM: ', menuItem);
-  if (menuItem == null) {
-    return;
-  }
-
-  if (menuItem.subMenu) {
-    if (menuItem.price) {
-      const order: MenuPageData['order'] = {
-        menuItemId: menuItem.id,
-        name: menuItem.name,
-        children: {},
-        quantity: 1,
-        price: menuItem.price,
-        childrenPrice: 0,
-        unitPrice: menuItem.price,
-        totalPrice: menuItem.price
-      }
-      const data = {order, subMenu: menuItem.subMenu};
-      sessionStorage.setItem(`menu-order`, JSON.stringify(data))
-    }
-    window.location.pathname = `/${menuItem.subMenu.menuId}`;
-    return;
-  }
-
-  update(menuModel.update({ menu: { [menuItemId]: { selected: !menuItem.selected } } }));
-}
-
 // Function to load menu data based on path
 async function loadMenuData(menuFile: string): Promise<Menu | null> {
   try {
@@ -81,7 +52,7 @@ export async function renderMenuPage(container: Element, menuFile: string = 'ind
   if (menuData) {
     const sData = sessionStorage.getItem('menu-order');
     if (sData) {
-      const m = JSON.parse(sData) as {order: MenuPageData['order'], subMenu: MenuItem['subMenu']};
+      const m = JSON.parse(sData) as { order: MenuPageData['order'], subMenu: MenuItem['subMenu'] };
       if (m.subMenu?.menuId === menuFile) {
       }
     }
@@ -92,8 +63,14 @@ export async function renderMenuPage(container: Element, menuFile: string = 'ind
     // Attach event handlers to the menuPage element (automatically cleaned up on re-render)
     const menuPageElement = container.querySelector(`.${styles.menuPage}`) as HTMLElement;
     if (menuPageElement) {
-      MenuContentUI.addMenuItemHandler(menuPageElement, menuItemClickHandler);
+      //MenuContentUI.addMenuItemHandler(menuPageElement, menuItemClickHandler);
       MenuContentUI.addVariantHandler(menuPageElement, variantSelectHandler);
+
+      menuPageElement.addEventListener('app:state-update', (e: Event) => {
+        const customEvent = e as CustomEvent;
+        const change = menuModel.update(customEvent.detail);
+        update(change);
+      });
     }
   }
 }

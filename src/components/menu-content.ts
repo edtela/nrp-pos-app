@@ -70,7 +70,6 @@ export function update(container: HTMLElement, event: DataChange<MenuPageData>) 
  * Direct assignment for simple event forwarding to child components
  */
 export const addVariantHandler = VariantGroupUI.addSelectEventHandler;
-export const addMenuItemHandler = MenuItemUI.addClickEventHandler;
 
 /**
  * Menu Content Styles

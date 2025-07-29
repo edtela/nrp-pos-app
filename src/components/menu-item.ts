@@ -6,15 +6,10 @@
  */
 
 import { css } from '@linaria/core';
-import { html, Template, replaceElements, onClick, addEventHandler } from '@/lib/html-template';
+import { html, Template, replaceElements, onClick, updateOnClick } from '@/lib/html-template';
 import { mdColors, mdTypography, mdSpacing } from '@/styles/theme';
 import { DataChange } from '@/lib/data-model-types';
 import { DisplayMenuItem } from '@/model/menu-model';
-
-/**
- * Event constants
- */
-export const MENU_ITEM_CLICK_EVENT = 'menu-item-click';
 
 /**
  * Price template - renders the price or navigation chevron
@@ -38,7 +33,7 @@ export function template(data: DisplayMenuItem): Template {
          data-id="${data.id}" 
          data-interaction-type="${iType}"
          data-selected=${data.selected ? 'true' : 'false'}
-         ${onClick(MENU_ITEM_CLICK_EVENT)}>
+         ${onClick(data.onClick)}>
       <div class="${styles.content}">
         <span class="${styles.icon} ${iconClassName}">${data.icon || ''}</span>
         <div class="${styles.text}">
@@ -63,16 +58,10 @@ export function update(element: HTMLElement, event: DataChange<DisplayMenuItem>)
   if ('selected' in event) {
     element.setAttribute('data-selected', event.selected ? 'true' : 'false');
   }
-}
 
-/**
- * Attach click event handler
- * Handles menu item selection events
- */
-export function addClickEventHandler(container: HTMLElement, handler: (menuItemId: string) => void): void {
-  addEventHandler(container, MENU_ITEM_CLICK_EVENT, (rawData) => {
-    handler(rawData.id);
-  });
+  if ('onClick' in event) {
+    updateOnClick(element, event.onClick);
+  }
 }
 
 // Class name for icon element (needed for style references)
