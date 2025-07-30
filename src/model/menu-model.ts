@@ -1,5 +1,5 @@
 import { iterateItems, Menu, MenuItem, VariantGroup } from "@/types";
-import { state } from "@/lib/data-model";
+import { state, typeChange } from "@/lib/data-model";
 import { ALL, DataBinding, Update, WHERE } from "@/lib/data-model-types";
 
 export interface MenuOrderItem {
@@ -94,7 +94,8 @@ const bindings: DataBinding<MenuPageData>[] = [
         // Update click behavior
         // TODO expand trigger to recognize type change. only needs to be triggered when changing null to value and init
         init: true,
-        onChange: ['menu', [ALL], 'price'],
+        onChange: ['menu', [ALL]],
+        detector: { menu: { [ALL]: { price: typeChange, subMenu: typeChange } } },
         update(item: DisplayMenuItem) {
             if (item.price == null) {
                 if (item.subMenu) {

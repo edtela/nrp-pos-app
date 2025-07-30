@@ -101,6 +101,7 @@ export type UpdateResultMeta<T> = {
 export interface DataBinding<T> {
     init?: boolean;
     onChange: CapturePath<T>;
+    detector?: ChangeDetector<T>;
     /**
      * Function that generates an Update object based on the binding path and data.
      * 
@@ -180,4 +181,27 @@ export type CapturePath<T, Depth extends number = 6> =
             : [typeof ALL, ...CapturePath<Extract<T[keyof T], Record<string, any>>, Prev[Depth]>]
             | [[typeof ALL], ...CapturePath<Extract<T[keyof T], Record<string, any>>, Prev[Depth]>])
     )
+    : never;
+
+export type ChangeDetectorFn<T> = (key: string, result?: UpdateResult<T>) => boolean;
+
+// Helper type for array change detectors
+type ArrayChangeDetector<T extends readonly any[]> = T extends readonly (infer E)[] ? {
+    [index: string]: ChangeDetectorFn<T> | ([E] extends [object] ? ChangeDetector<E> : never);
+} & {
+    [ALL]?: ChangeDetectorFn<T> | ([E] extends [object] ? ChangeDetector<E> : never);
+} : never;
+
+// Helper type for object change detectors  
+type ObjectChangeDetector<T extends object> = {
+    [K in StringKeys<T>]?: ChangeDetectorFn<T> | ([T[K]] extends [object] ? ChangeDetector<T[K]> : never);
+} & {
+    [ALL]?: ChangeDetectorFn<T> | ChangeDetector<AllValueType<T>>;
+};
+
+// Main ChangeDetector type
+export type ChangeDetector<T> = T extends readonly any[] 
+    ? ArrayChangeDetector<T>
+    : T extends object
+    ? ObjectChangeDetector<T>
     : never;

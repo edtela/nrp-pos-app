@@ -5,7 +5,9 @@ import {
     type Update,
     type DataBinding,
     UpdateResult,
-    META
+    META,
+    ChangeDetector,
+    ChangeDetectorFn
 } from './data-model-types';
 
 export function update<T extends object>(data: T, statement?: Update<T>, changes?: UpdateResult<T>): UpdateResult<T> | undefined {
@@ -128,6 +130,51 @@ function undoUpdateImpl(data: any, result: any) {
     }
 }
 
+export function hasChanges<T extends object>(result: UpdateResult<T> | undefined, detector: ChangeDetector<T>) {
+    if (result === undefined) return false;
+
+    const { [ALL]: all, ...rest } = detector;
+    if (all) {
+        for (const key in result) {
+            if (!(key in rest)) {
+                (rest as any)[key] = all;
+            }
+        }
+    }
+
+    for (const key in rest) {
+        const keyDetector = (rest as any)[key];
+        if (typeof keyDetector === 'function') {
+            if (keyDetector(key, result)) {
+                return true;
+            }
+        } else if (keyDetector !== undefined) {
+            if (hasChanges((result as any)[key], keyDetector)) {
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+
+
+export const valueChange: ChangeDetectorFn<any> = (key: string, r?: UpdateResult<any>) => {
+    return r !== undefined && key in r;
+}
+
+export const typeChange: ChangeDetectorFn<any> = (key: string, r?: UpdateResult<any>) => {
+    const meta = r?.[META];
+    if (!meta || !(key in r) || !(key in meta)) return false;
+
+    const newValue = r[key];
+    const oldValue = meta[key]?.original;
+
+    if (newValue === null) return oldValue !== null;
+    if (oldValue === null) return newValue !== null;
+    return typeof newValue !== typeof oldValue;
+}
+
 export function selectByPath<T>(data: T, path: readonly (string | symbol)[]): Partial<T> | undefined {
     if (path.length === 0 || data === null || typeof data != 'object' || Array.isArray(data)) {
         return data;
@@ -161,6 +208,13 @@ export function applyBindings<T extends object>(data: T, changes: UpdateResult<T
 export function applyBinding<T extends object>(data: T, changes: UpdateResult<T>, binding: DataBinding<T>, init = false) {
     if (init && !binding.init) {
         return;
+    }
+
+    const detector = binding.detector;
+    if (!init && detector) {
+        if (!hasChanges(changes, detector)) {
+            return;
+        }
     }
 
     const hasCapture = binding.onChange.findIndex(b => Array.isArray(b)) >= 0;
