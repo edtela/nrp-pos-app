@@ -159,7 +159,7 @@ export function hasChanges<T extends object>(result: UpdateResult<T> | undefined
 }
 
 
-export const valueChange: ChangeDetectorFn<any> = (key: string, r?: UpdateResult<any>) => {
+export const anyChange: ChangeDetectorFn<any> = (key: string, r?: UpdateResult<any>) => {
     return r !== undefined && key in r;
 }
 
@@ -210,16 +210,13 @@ export function applyBinding<T extends object>(data: T, changes: UpdateResult<T>
         return;
     }
 
-    const detector = binding.detector;
-    if (!init && detector) {
-        if (!hasChanges(changes, detector)) {
-            return;
-        }
+    let hasCapture = false;
+    if (Array.isArray(binding.onChange)) {
+        hasCapture = binding.onChange.findIndex(b => Array.isArray(b)) >= 0;
     }
 
-    const hasCapture = binding.onChange.findIndex(b => Array.isArray(b)) >= 0;
     const updateArgs = hasCapture ? [] : [data];
-    const updates = extractBindingUpdates(data, init ? data : changes, binding, updateArgs, hasCapture);
+    const updates = extractBindingUpdates(data, init ? true : changes, binding, updateArgs, hasCapture);
     if (Array.isArray(updates)) {
         updates.forEach(u => update(data, u, changes));
     } else {
@@ -227,11 +224,11 @@ export function applyBinding<T extends object>(data: T, changes: UpdateResult<T>
     }
 }
 
-function extractBindingUpdates(data: any, change: any, binding: DataBinding<any>, args: any[], hasCapture: boolean): Update<any> | Update<any>[] {
-    const [head, ...tail] = binding.onChange;
+function extractBindingUpdates(data: any, change: any | true, binding: any, args: any[], hasCapture: boolean): Update<any> | Update<any>[] {
+    const [head, ...tail] = Array.isArray(binding.onChange) ? binding.onChange : [binding.onChange];
 
     function extractSingle(key: string, addToArgs = false) {
-        const keyChange = change[key];
+        const keyChange = change === true ? change : change[key];
         if (keyChange === undefined) {
             return {};
         }
@@ -255,13 +252,10 @@ function extractBindingUpdates(data: any, change: any, binding: DataBinding<any>
     }
 
     let field = Array.isArray(head) ? head[0] : head;
-    if (typeof field === 'string') {
-        return extractSingle(field);
-    }
-
     if (field === ALL) {
         const updates = [];
-        for (const key in change) {
+
+        for (const key in (change === true ? data : change)) {
             const result = extractSingle(key, !hasCapture);
             if (Array.isArray(result)) {
                 updates.push(...result);
@@ -270,6 +264,14 @@ function extractBindingUpdates(data: any, change: any, binding: DataBinding<any>
             }
         }
         return updates;
+    }
+
+    if (typeof field === 'string') {
+        return extractSingle(field);
+    }
+
+    if (change === true || hasChanges(change, field)) {
+        return binding.update(...args);
     }
 
     return {};

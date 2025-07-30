@@ -94,8 +94,7 @@ const bindings: DataBinding<MenuPageData>[] = [
         // Update click behavior
         // TODO expand trigger to recognize type change. only needs to be triggered when changing null to value and init
         init: true,
-        onChange: ['menu', [ALL]],
-        detector: { menu: { [ALL]: { price: typeChange, subMenu: typeChange } } },
+        onChange: ['menu', [ALL], { price: typeChange, subMenu: typeChange }],
         update(item: DisplayMenuItem) {
             if (item.price == null) {
                 if (item.subMenu) {

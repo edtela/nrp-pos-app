@@ -100,8 +100,7 @@ export type UpdateResultMeta<T> = {
 
 export interface DataBinding<T> {
     init?: boolean;
-    onChange: CapturePath<T>;
-    detector?: ChangeDetector<T>;
+    onChange: CapturePath<T> | ChangeDetector<T>;
     /**
      * Function that generates an Update object based on the binding path and data.
      * 
@@ -127,33 +126,6 @@ export interface DataBinding<T> {
     update: (...args: any[]) => Update<T>;
 }
 
-//----------- DATA PATHS ----------------------------
-
-export type DataPath<T> =
-    // Base case: Only allow non-array objects. Primitives, functions, and arrays are terminal.
-    T extends Record<string, any> & { length?: never } ?
-    (
-        // --- Paths for specific keys ---
-        {
-            // For each key K in T...
-            [K in keyof T & string]:
-            // A path can be just the key itself, e.g., ['users']
-            | [K]
-            // Or, if T[K] is pathable, a path can be [K, ...sub-path]
-            | (DataPath<T[K]> extends never ? never : [K, ...DataPath<T[K]>])
-        }[keyof T & string] // Unionize all possible paths
-    ) |
-    (
-        // --- Paths for the ALL symbol ---
-        // A path can be the ALL symbol for the current level, e.g., [ALL]
-        | [typeof ALL]
-        // Or, it can be [ALL, ...sub-path] where the sub-path is valid for any
-        // object-like value within T.
-        | (DataPath<Extract<T[keyof T], Record<string, any>>> extends never ? never
-            : [typeof ALL, ...DataPath<Extract<T[keyof T], Record<string, any>>>])
-    )
-    : never;
-
 // Helper type to decrement numbers
 type Prev = [never, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
@@ -167,6 +139,8 @@ export type CapturePath<T, Depth extends number = 6> =
             [K in keyof T & string]:
             // A path can be just the key or captured [key]
             | [K] | [[K]]
+            // Or the key followed by a ChangeDetector (terminal)
+            | ([T[K]] extends [object] ? [K, ChangeDetector<T[K]>] | [[K], ChangeDetector<T[K]>] : never)
             // Or continue with sub-paths (decrement depth)
             | (CapturePath<T[K], Prev[Depth]> extends never ? never
                 : [K, ...CapturePath<T[K], Prev[Depth]>]
@@ -176,6 +150,9 @@ export type CapturePath<T, Depth extends number = 6> =
     (
         // --- Paths for the ALL symbol ---
         | [typeof ALL] | [[typeof ALL]]
+        // Or ALL followed by a ChangeDetector (terminal)
+        | [typeof ALL, ChangeDetector<AllValueType<T>>]
+        | [[typeof ALL], ChangeDetector<AllValueType<T>>]
         // Or [ALL, ...sub-path] with capture support (decrement depth)
         | (CapturePath<Extract<T[keyof T], Record<string, any>>, Prev[Depth]> extends never ? never
             : [typeof ALL, ...CapturePath<Extract<T[keyof T], Record<string, any>>, Prev[Depth]>]

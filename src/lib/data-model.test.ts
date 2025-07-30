@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { update, applyBinding, undoUpdate } from './data-model';
+import { update, applyBinding, undoUpdate, anyChange, typeChange } from './data-model';
 import { ALL, CapturePath, DataBinding, UpdateResult, Update, WHERE, META } from './data-model-types';
 
 
@@ -2149,6 +2149,241 @@ describe('data-model', () => {
 
                 applyBinding(data, change, binding);
                 expect(capturedValue).toBe(42);
+            });
+        });
+
+        describe('inline change detector', () => {
+            it('should support inline detector for specific key', () => {
+                type TestData = {
+                    user: { name: string; age: number };
+                    status: { online: boolean };
+                };
+
+                const data: TestData = {
+                    user: { name: 'Alice', age: 30 },
+                    status: { online: true }
+                };
+
+                let triggered = false;
+                const binding: DataBinding<TestData> = {
+                    onChange: ['user', { age: anyChange }] as CapturePath<TestData>,
+                    update: () => {
+                        triggered = true;
+                        return {};
+                    }
+                };
+
+                // Should not trigger on name change
+                applyBinding(data, { user: { name: 'Bob' } } as UpdateResult<TestData>, binding);
+                expect(triggered).toBe(false);
+
+                // Should trigger on age change
+                applyBinding(data, { user: { age: 31 } } as UpdateResult<TestData>, binding);
+                expect(triggered).toBe(true);
+            });
+
+            it('should support inline detector with ALL operator', () => {
+                type TestData = {
+                    products: Record<string, { name: string; price: number | null }>;
+                };
+
+                const data: TestData = {
+                    products: {
+                        apple: { name: 'Apple', price: 1.99 },
+                        banana: { name: 'Banana', price: null },
+                        orange: { name: 'Orange', price: 2.49 }
+                    }
+                };
+
+                const triggers: string[] = [];
+                const binding: DataBinding<TestData> = {
+                    onChange: ['products', [ALL], { price: typeChange }] as CapturePath<TestData>,
+                    update: (product) => {
+                        triggers.push(product.name);
+                        return {};
+                    }
+                };
+
+                // Change banana price from null to number (type change)
+                const change: UpdateResult<TestData> = {
+                    products: {
+                        banana: { price: 0.99, [META]: { price: { original: null } } }
+                    }
+                };
+                data.products.banana.price = 0.99;
+
+                applyBinding(data, change, binding);
+                expect(triggers).toEqual(['Banana']);
+
+                // Reset
+                triggers.length = 0;
+
+                // Change apple price (same type, no trigger)
+                const change2: UpdateResult<TestData> = {
+                    products: {
+                        apple: { price: 1.50, [META]: { price: { original: 1.99 } } }
+                    }
+                };
+                data.products.apple.price = 1.50;
+
+                applyBinding(data, change2, binding);
+                expect(triggers).toEqual([]);
+            });
+
+            it('should support complex inline detector with nested paths', () => {
+                type TestData = {
+                    app: {
+                        modules: Record<string, {
+                            config: { enabled: boolean; version: string };
+                            data: { count: number };
+                        }>;
+                    };
+                };
+
+                const data: TestData = {
+                    app: {
+                        modules: {
+                            auth: {
+                                config: { enabled: true, version: '1.0' },
+                                data: { count: 0 }
+                            },
+                            api: {
+                                config: { enabled: false, version: '2.0' },
+                                data: { count: 5 }
+                            }
+                        }
+                    }
+                };
+
+                let capturedModule: any;
+                const binding: DataBinding<TestData> = {
+                    onChange: ['app', 'modules', [ALL], {
+                        config: { enabled: anyChange },
+                        data: { count: (key, result) => {
+                            const meta = result?.[META];
+                            if (!meta || !meta.count) return false;
+                            return meta.count.original === 0 && result.count > 0;
+                        }}
+                    }] as CapturePath<TestData>,
+                    update: (module) => {
+                        capturedModule = module;
+                        return {};
+                    }
+                };
+
+                // Change that should trigger (count from 0 to 1)
+                const change: UpdateResult<TestData> = {
+                    app: {
+                        modules: {
+                            auth: {
+                                data: { count: 1, [META]: { count: { original: 0 } } }
+                            }
+                        }
+                    }
+                };
+                data.app.modules.auth.data.count = 1;
+
+                applyBinding(data, change, binding);
+                expect(capturedModule).toEqual({
+                    config: { enabled: true, version: '1.0' },
+                    data: { count: 1 }
+                });
+
+                // Reset
+                capturedModule = undefined;
+
+                // Change that should also trigger (enabled change)
+                const change2: UpdateResult<TestData> = {
+                    app: {
+                        modules: {
+                            api: {
+                                config: { enabled: true, [META]: { enabled: { original: false } } }
+                            }
+                        }
+                    }
+                };
+                data.app.modules.api.config.enabled = true;
+
+                applyBinding(data, change2, binding);
+                expect(capturedModule).toEqual({
+                    config: { enabled: true, version: '2.0' },
+                    data: { count: 5 }
+                });
+            });
+
+            it('should support detector as root onChange', () => {
+                type TestData = {
+                    settings: {
+                        theme: string;
+                        language: string;
+                    };
+                };
+
+                const data: TestData = {
+                    settings: {
+                        theme: 'dark',
+                        language: 'en'
+                    }
+                };
+
+                let triggered = false;
+                const binding: DataBinding<TestData> = {
+                    onChange: {
+                        settings: {
+                            theme: typeChange
+                        }
+                    },
+                    update: () => {
+                        triggered = true;
+                        return { settings: { theme: 'light' } };
+                    }
+                };
+
+                // Type change: string to null
+                const change: UpdateResult<TestData> = {
+                    settings: {
+                        theme: null as any,
+                        [META]: { theme: { original: 'dark' } }
+                    }
+                };
+
+                applyBinding(data, change, binding);
+                expect(triggered).toBe(true);
+            });
+
+            it('should work with init mode and inline detectors', () => {
+                type TestData = {
+                    items: Record<string, { quantity: number; price: number }>;
+                };
+
+                const data: TestData = {
+                    items: {
+                        apple: { quantity: 10, price: 1.5 },
+                        banana: { quantity: 0, price: 0.8 }
+                    }
+                };
+
+                const inits: string[] = [];
+                const binding: DataBinding<TestData> = {
+                    init: true,
+                    onChange: ['items', [ALL], {
+                        quantity: (key, result) => true // Always true for init
+                    }] as CapturePath<TestData>,
+                    update: (item) => {
+                        // In capture mode, we get the captured item
+                        if (item.quantity !== undefined) {
+                            inits.push(item.quantity > 0 ? 'apple' : 'banana');
+                        }
+                        return {};
+                    }
+                };
+
+                // Apply with init = true
+                applyBinding(data, {} as UpdateResult<TestData>, binding, true);
+                
+                expect(inits).toContain('apple');
+                expect(inits).toContain('banana');
+                expect(inits).toHaveLength(2);
             });
         });
     });
