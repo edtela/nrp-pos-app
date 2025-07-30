@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
-import { update, applyBinding } from './data-model';
-import { ALL, CapturePath, DataBinding, DataChange, Update, WHERE, STRUCTURE } from './data-model-types';
+import { update, applyBinding, undoUpdate } from './data-model';
+import { ALL, CapturePath, DataBinding, UpdateResult, Update, WHERE, META } from './data-model-types';
 
 
 
@@ -19,8 +19,8 @@ describe('data-model', () => {
                 });
 
                 expect(changes).toEqual({
-                    user: { age: 31 },
-                    settings: { theme: 'light' }
+                    user: { age: 31, [META]: { age: { original: 30 } } },
+                    settings: { theme: 'light', [META]: { theme: { original: 'dark' } } }
                 });
                 expect(data.user.age).toBe(31);
                 expect(data.settings.theme).toBe('light');
@@ -54,7 +54,7 @@ describe('data-model', () => {
 
                 expect(changes).toEqual({
                     app: {
-                        ui: { theme: 'light' }
+                        ui: { theme: 'light', [META]: { theme: { original: 'dark' } } }
                     }
                 });
                 expect(data.app.ui.theme).toBe('light');
@@ -76,7 +76,14 @@ describe('data-model', () => {
                 });
 
                 expect(changes).toEqual({
-                    user: { name: 'ALICE', score: 200 }
+                    user: { 
+                        name: 'ALICE', 
+                        score: 200,
+                        [META]: { 
+                            name: { original: 'alice' }, 
+                            score: { original: 100 } 
+                        }
+                    }
                 });
                 expect(data.user.name).toBe('ALICE');
                 expect(data.user.score).toBe(200);
@@ -112,7 +119,10 @@ describe('data-model', () => {
                 });
 
                 expect(changes).toEqual({
-                    result: { computed: 20 }
+                    result: { 
+                        computed: 20,
+                        [META]: { computed: { original: 0 } }
+                    }
                 });
                 expect(data.result.computed).toBe(20);
             });
@@ -135,7 +145,8 @@ describe('data-model', () => {
 
                 expect(changes).toEqual({
                     user: {
-                        fullName: 'John Doe'
+                        fullName: 'John Doe',
+                        [META]: { fullName: { original: '' } }
                     }
                 });
             });
@@ -171,7 +182,12 @@ describe('data-model', () => {
                     totals: {
                         subtotal: 100,
                         tax: 10,
-                        total: 110
+                        total: 110,
+                        [META]: {
+                            subtotal: { original: 0 },
+                            tax: { original: 0 },
+                            total: { original: 0 }
+                        }
                     }
                 });
             });
@@ -210,9 +226,9 @@ describe('data-model', () => {
                 expect(changes).toEqual({
                     menuItem: {
                         variants: {
-                            small: { price: 7.2 },
-                            medium: { price: 9 },
-                            large: { price: expect.closeTo(11.7, 5) }  // Handle float precision
+                            small: { price: 7.2, [META]: { price: { original: 0 } } },
+                            medium: { price: 9, [META]: { price: { original: 0 } } },
+                            large: { price: expect.closeTo(11.7, 5), [META]: { price: { original: 0 } } }  // Handle float precision
                         }
                     }
                 });
@@ -237,9 +253,9 @@ describe('data-model', () => {
 
                 expect(changes).toEqual({
                     users: {
-                        user1: { status: 'pending' },
-                        user2: { status: 'pending' },
-                        user3: { status: 'pending' }
+                        user1: { status: 'pending', [META]: { status: { original: 'active' } } },
+                        user2: { status: 'pending', [META]: { status: { original: 'active' } } },
+                        user3: { status: 'pending', [META]: { status: { original: 'inactive' } } }
                     }
                 });
 
@@ -267,9 +283,9 @@ describe('data-model', () => {
 
                 expect(changes).toEqual({
                     products: {
-                        prod1: { price: 110 },
-                        prod2: { price: 220 },
-                        prod3: { price: 330 }
+                        prod1: { price: 110, [META]: { price: { original: 100 } } },
+                        prod2: { price: 220, [META]: { price: { original: 200 } } },
+                        prod3: { price: 330, [META]: { price: { original: 300 } } }
                     }
                 });
             });
@@ -292,9 +308,9 @@ describe('data-model', () => {
 
                 expect(changes).toEqual({
                     items: {
-                        item1: { value: 10 },
-                        item2: { value: 20 }, // Specific value takes precedence
-                        item3: { value: 10 }
+                        item1: { value: 10, [META]: { value: { original: 1 } } },
+                        item2: { value: 20, [META]: { value: { original: 2 } } }, // Specific value takes precedence
+                        item3: { value: 10, [META]: { value: { original: 3 } } }
                     }
                 });
             });
@@ -321,8 +337,8 @@ describe('data-model', () => {
 
                 expect(changes).toEqual({
                     users: {
-                        user2: { category: 'senior' },
-                        user3: { category: 'senior' }
+                        user2: { category: 'senior', [META]: { category: { original: 'regular' } } },
+                        user3: { category: 'senior', [META]: { category: { original: 'regular' } } }
                     }
                 });
                 expect(data.users.user1.category).toBe('regular');
@@ -354,9 +370,9 @@ describe('data-model', () => {
 
                 expect(changes).toEqual({
                     products: {
-                        laptop: { discountedPrice: 850 },
-                        phone: { discountedPrice: 425 },
-                        tablet: { discountedPrice: 255 }
+                        laptop: { discountedPrice: 850, [META]: { discountedPrice: { original: 0 } } },
+                        phone: { discountedPrice: 425, [META]: { discountedPrice: { original: 0 } } },
+                        tablet: { discountedPrice: 255, [META]: { discountedPrice: { original: 0 } } }
                     }
                 });
             });
@@ -394,11 +410,11 @@ describe('data-model', () => {
                 });
 
                 expect(changes?.departments?.eng?.employees).toEqual({
-                    emp2: { salary: 100000 },
-                    emp3: { salary: 100000 }
+                    emp2: { salary: 100000, [META]: { salary: { original: 70000 } } },
+                    emp3: { salary: 100000, [META]: { salary: { original: 80000 } } }
                 });
                 expect(changes?.departments?.sales?.employees).toEqual({
-                    emp5: { salary: 100000 }
+                    emp5: { salary: 100000, [META]: { salary: { original: 75000 } } }
                 });
             });
 
@@ -462,8 +478,8 @@ describe('data-model', () => {
                                 quantity: 1,
                                 price: 10
                             },
-                            [STRUCTURE]: {
-                                item1: 'replace'
+                            [META]: {
+                                item1: { original: undefined }
                             }
                         }
                     }
@@ -498,8 +514,8 @@ describe('data-model', () => {
                             host: 'localhost',
                             port: 5432
                         },
-                        [STRUCTURE]: {
-                            database: 'replace'
+                        [META]: {
+                            database: { original: undefined }
                         }
                     }
                 });
@@ -528,8 +544,8 @@ describe('data-model', () => {
                             primary: 'blue',
                             secondary: 'gray'
                         },
-                        [STRUCTURE]: {
-                            theme: 'replace'
+                        [META]: {
+                            theme: { original: 'dark' }
                         }
                     }
                 });
@@ -557,8 +573,8 @@ describe('data-model', () => {
                 expect(changes).toEqual({
                     user: {
                         tags: ['admin', 'active', 'premium'],
-                        [STRUCTURE]: {
-                            tags: 'replace'
+                        [META]: {
+                            tags: { original: ['admin', 'active'] }
                         }
                     }
                 });
@@ -580,7 +596,7 @@ describe('data-model', () => {
 
                 expect(changes).toEqual({
                     user: {
-                        tags: { '2': 'premium' }
+                        tags: { '2': 'premium', [META]: { '2': { original: undefined } } }
                     }
                 });
                 expect(data.user.tags).toEqual(['admin', 'active', 'premium']);
@@ -629,7 +645,11 @@ describe('data-model', () => {
                 expect(changes).toEqual({
                     summary: {
                         totalPending: 30,  // 10 + 5 + 15
-                        itemsWithOrders: 2 // apple and banana
+                        itemsWithOrders: 2, // apple and banana
+                        [META]: {
+                            totalPending: { original: 0 },
+                            itemsWithOrders: { original: 0 }
+                        }
                     }
                 });
             });
@@ -658,8 +678,8 @@ describe('data-model', () => {
                 expect(changes).toEqual({
                     user: {
                         email: undefined,
-                        [STRUCTURE]: {
-                            email: 'delete'
+                        [META]: {
+                            email: { original: 'john@example.com' }
                         }
                     }
                 });
@@ -699,8 +719,12 @@ describe('data-model', () => {
                             port: 3306,
                             username: 'root'
                         },
-                        [STRUCTURE]: {
-                            database: 'replace'
+                        [META]: {
+                            database: { original: {
+                                host: 'localhost',
+                                port: 5432,
+                                username: 'admin'
+                            } }
                         }
                     }
                 });
@@ -727,7 +751,12 @@ describe('data-model', () => {
                     items: {
                         '0': 'APPLE',
                         '1': 'BANANA',
-                        '2': 'CHERRY'
+                        '2': 'CHERRY',
+                        [META]: {
+                            '0': { original: 'apple' },
+                            '1': { original: 'banana' },
+                            '2': { original: 'cherry' }
+                        }
                     }
                 });
                 expect(data.items).toEqual(['APPLE', 'BANANA', 'CHERRY']);
@@ -755,9 +784,9 @@ describe('data-model', () => {
 
                 expect(changes).toEqual({
                     users: {
-                        '0': { bonus: 10 },
-                        '1': { bonus: 10 },
-                        '2': { bonus: 10 }
+                        '0': { bonus: 10, [META]: { bonus: { original: undefined } } },
+                        '1': { bonus: 10, [META]: { bonus: { original: undefined } } },
+                        '2': { bonus: 10, [META]: { bonus: { original: undefined } } }
                     }
                 });
                 expect(data.users[0]).toEqual({ name: 'Alice', score: 85, bonus: 10 });
@@ -785,7 +814,8 @@ describe('data-model', () => {
                 expect(changes).toEqual({
                     matrix: {
                         '1': {
-                            '1': 50
+                            '1': 50,
+                            [META]: { '1': { original: 5 } }
                         }
                     }
                 });
@@ -811,10 +841,10 @@ describe('data-model', () => {
 
                 expect(changes).toEqual({
                     lists: {
-                        todo: { '2': 'task4' },
+                        todo: { '2': 'task4', [META]: { '2': { original: undefined } } },
                         done: ['task3', 'task5', 'task6'],
-                        [STRUCTURE]: {
-                            done: 'replace'
+                        [META]: {
+                            done: { original: ['task3'] }
                         }
                     }
                 });
@@ -846,9 +876,9 @@ describe('data-model', () => {
                 expect(changes).toEqual({
                     callback: newCallback,
                     handler: newHandler,
-                    [STRUCTURE]: {
-                        callback: 'replace',
-                        handler: 'replace'
+                    [META]: {
+                        callback: { original: expect.any(Function) },
+                        handler: { original: expect.any(Function) }
                     }
                 });
                 expect(data.callback).toBe(newCallback);
@@ -878,7 +908,12 @@ describe('data-model', () => {
                 expect(changes1).toEqual({
                     nullable: null,
                     optional: undefined,
-                    both: null
+                    both: null,
+                    [META]: {
+                        nullable: { original: 'value' },
+                        optional: { original: 'value' },
+                        both: { original: 'value' }
+                    }
                 });
 
                 // Test object replacement for nullable types
@@ -896,7 +931,7 @@ describe('data-model', () => {
 
                 expect(changes2).toEqual({
                     config: { theme: 'dark' },
-                    [STRUCTURE]: { config: 'replace' }
+                    [META]: { config: { original: null } }
                 });
             });
 
@@ -926,9 +961,9 @@ describe('data-model', () => {
 
                 expect(changes).toEqual({
                     items: {
-                        a: { x: 10 },
-                        b: { x: 10 },
-                        c: { x: 10 }
+                        a: { x: 10, [META]: { x: { original: 1 } } },
+                        b: { x: 10, [META]: { x: { original: 2 } } },
+                        c: { x: 10, [META]: { x: { original: 3 } } }
                     }
                 });
                 expect(data.items.a).toEqual({ x: 10, y: 'hello' });
@@ -960,8 +995,8 @@ describe('data-model', () => {
 
                 expect(changes).toEqual({
                     scores: {
-                        player1: { value: 200 },
-                        player2: { value: 600 }
+                        player1: { value: 200, [META]: { value: { original: 100 } } },
+                        player2: { value: 600, [META]: { value: { original: 200 } } }
                     }
                 });
             });
@@ -987,7 +1022,12 @@ describe('data-model', () => {
                     numbers: {
                         '0': 10,
                         '2': 300,
-                        '4': 500
+                        '4': 500,
+                        [META]: {
+                            '0': { original: 1 },
+                            '2': { original: 3 },
+                            '4': { original: 5 }
+                        }
                     }
                 });
                 expect(data.numbers).toEqual([10, 2, 300, 4, 500]);
@@ -1018,8 +1058,8 @@ describe('data-model', () => {
 
                 expect(changes).toEqual({
                     items: {
-                        '0': { active: false },
-                        '2': { active: false }
+                        '0': { active: false, [META]: { active: { original: true } } },
+                        '2': { active: false, [META]: { active: { original: true } } }
                     }
                 });
                 expect(data.items.every(i => !i.active)).toBe(true);
@@ -1040,16 +1080,21 @@ describe('data-model', () => {
                 });
                 expect(changes1).toEqual({
                     value: 'new string',
-                    [STRUCTURE]: { value: 'replace' }
+                    [META]: { value: { original: 'simple' } }
                 });
 
+                // Reset data for second test
+                const data2: TestData = {
+                    value: 'simple'
+                };
+
                 // Also use replacement syntax for object value
-                const changes3 = update(data, {
+                const changes2 = update(data2, {
                     value: [{ type: 'object', data: 'replaced' }]
                 });
-                expect(changes3).toEqual({
+                expect(changes2).toEqual({
                     value: { type: 'object', data: 'replaced' },
-                    [STRUCTURE]: { value: 'replace' }
+                    [META]: { value: { original: 'simple' } }
                 });
             });
         });
@@ -1114,6 +1159,241 @@ describe('data-model', () => {
                 expect(changes?.users?.user1?.stats?.loginCount).toBe(43);
             });
         });
+
+        describe('undoUpdate functionality', () => {
+            it('should undo simple property changes', () => {
+                const data = {
+                    user: { name: 'Alice', age: 30 },
+                    settings: { theme: 'dark' }
+                };
+
+                const changes = update(data, {
+                    user: { age: 31 },
+                    settings: { theme: 'light' }
+                });
+
+                expect(data.user.age).toBe(31);
+                expect(data.settings.theme).toBe('light');
+
+                undoUpdate(data, changes);
+
+                expect(data.user.age).toBe(30);
+                expect(data.settings.theme).toBe('dark');
+            });
+
+            it('should undo nested object changes', () => {
+                const data = {
+                    app: {
+                        ui: { theme: 'dark', fontSize: 14 },
+                        features: { autoSave: true }
+                    }
+                };
+
+                const changes = update(data, {
+                    app: {
+                        ui: { theme: 'light', fontSize: 16 }
+                    }
+                });
+
+                expect(data.app.ui.theme).toBe('light');
+                expect(data.app.ui.fontSize).toBe(16);
+
+                undoUpdate(data, changes);
+
+                expect(data.app.ui.theme).toBe('dark');
+                expect(data.app.ui.fontSize).toBe(14);
+            });
+
+            it('should undo deletions by restoring original values', () => {
+                const data: {
+                    user: {
+                        name: string;
+                        email?: string;
+                        age: number;
+                    }
+                } = {
+                    user: {
+                        name: 'John',
+                        email: 'john@example.com',
+                        age: 30
+                    }
+                };
+
+                const changes = update(data, {
+                    user: {
+                        email: []
+                    }
+                });
+
+                expect(data.user).not.toHaveProperty('email');
+
+                undoUpdate(data, changes);
+
+                expect(data.user.email).toBe('john@example.com');
+            });
+
+            it('should undo array replacements', () => {
+                const data = {
+                    user: {
+                        tags: ['admin', 'active']
+                    }
+                };
+
+                const changes = update(data, {
+                    user: {
+                        tags: [['admin', 'active', 'premium']]
+                    }
+                });
+
+                expect(data.user.tags).toEqual(['admin', 'active', 'premium']);
+
+                undoUpdate(data, changes);
+
+                expect(data.user.tags).toEqual(['admin', 'active']);
+            });
+
+            it('should undo object replacements', () => {
+                const data = {
+                    config: {
+                        database: {
+                            host: 'localhost',
+                            port: 5432,
+                            username: 'admin'
+                        }
+                    }
+                };
+
+                const changes = update(data, {
+                    config: {
+                        database: [{
+                            host: 'newhost',
+                            port: 3306,
+                            username: 'root'
+                        }]
+                    }
+                });
+
+                expect(data.config.database).toEqual({
+                    host: 'newhost',
+                    port: 3306,
+                    username: 'root'
+                });
+
+                undoUpdate(data, changes);
+
+                expect(data.config.database).toEqual({
+                    host: 'localhost',
+                    port: 5432,
+                    username: 'admin'
+                });
+            });
+
+            it('should undo array element changes', () => {
+                const data = {
+                    items: ['apple', 'banana', 'cherry']
+                };
+
+                const changes = update(data, {
+                    items: {
+                        [ALL]: (value: string) => value.toUpperCase()
+                    }
+                });
+
+                expect(data.items).toEqual(['APPLE', 'BANANA', 'CHERRY']);
+
+                undoUpdate(data, changes);
+
+                expect(data.items).toEqual(['apple', 'banana', 'cherry']);
+            });
+
+            it('should handle undefined changes gracefully', () => {
+                const data = { value: 42 };
+                
+                // Should not throw
+                expect(() => undoUpdate(data, undefined)).not.toThrow();
+                expect(data.value).toBe(42);
+            });
+
+            it('should undo deeply nested changes', () => {
+                const data = {
+                    a: { b: { c: { d: { e: { value: 1 } } } } }
+                };
+
+                const changes = update(data, {
+                    a: { b: { c: { d: { e: { value: 42 } } } } }
+                });
+
+                expect(data.a.b.c.d.e.value).toBe(42);
+
+                undoUpdate(data, changes);
+
+                expect(data.a.b.c.d.e.value).toBe(1);
+            });
+
+            it('should undo multiple property changes at once', () => {
+                const data: {
+                    user: {
+                        firstName: string;
+                        lastName: string;
+                        age: number;
+                        email?: string;
+                    }
+                } = {
+                    user: {
+                        firstName: 'John',
+                        lastName: 'Doe',
+                        age: 30,
+                        email: 'john@example.com'
+                    }
+                };
+
+                const changes = update(data, {
+                    user: {
+                        firstName: 'Jane',
+                        lastName: 'Smith',
+                        age: 25,
+                        email: []
+                    }
+                });
+
+                expect(data.user.firstName).toBe('Jane');
+                expect(data.user.lastName).toBe('Smith');
+                expect(data.user.age).toBe(25);
+                expect(data.user).not.toHaveProperty('email');
+
+                undoUpdate(data, changes);
+
+                expect(data.user.firstName).toBe('John');
+                expect(data.user.lastName).toBe('Doe');
+                expect(data.user.age).toBe(30);
+                expect(data.user.email).toBe('john@example.com');
+            });
+
+            it('should only restore values that were actually changed', () => {
+                const data = {
+                    user: {
+                        name: 'Alice',
+                        age: 30,
+                        role: 'admin'
+                    }
+                };
+
+                const changes = update(data, {
+                    user: {
+                        age: 31
+                    }
+                });
+
+                // Manually modify role (not part of changes)
+                data.user.role = 'superadmin';
+
+                undoUpdate(data, changes);
+
+                expect(data.user.age).toBe(30); // Restored
+                expect(data.user.name).toBe('Alice'); // Unchanged
+                expect(data.user.role).toBe('superadmin'); // Not restored
+            });
+        });
     }); // end of update functionality
 
     describe('data binding functionality', () => {
@@ -1139,7 +1419,7 @@ describe('data-model', () => {
                     }
                 };
 
-                const change: DataChange<TestData> = {
+                const change: UpdateResult<TestData> = {
                     users: { alice: { role: 'superadmin' } }
                 };
 
@@ -1181,7 +1461,7 @@ describe('data-model', () => {
                     }
                 };
 
-                const change: DataChange<TestData> = {
+                const change: UpdateResult<TestData> = {
                     org: {
                         teams: {
                             engineering: {
@@ -1225,7 +1505,7 @@ describe('data-model', () => {
                     }
                 };
 
-                const change: DataChange<TestData> = {
+                const change: UpdateResult<TestData> = {
                     products: {
                         laptop: { price: 900 },
                         mouse: { price: 45 }
@@ -1275,7 +1555,7 @@ describe('data-model', () => {
                     }
                 };
 
-                const change: DataChange<TestData> = {
+                const change: UpdateResult<TestData> = {
                     stores: {
                         north: { inventory: { apples: { quantity: 90 } } },
                         south: { inventory: { apples: { quantity: 70 } } }
@@ -1312,7 +1592,7 @@ describe('data-model', () => {
                     }
                 };
 
-                const change: DataChange<TestData> = {
+                const change: UpdateResult<TestData> = {
                     config: { theme: 'light' }
                 };
 
@@ -1343,7 +1623,7 @@ describe('data-model', () => {
                     }
                 };
 
-                const change: DataChange<TestData> = {
+                const change: UpdateResult<TestData> = {
                     users: {
                         alice: { status: 'offline' }
                     }
@@ -1389,7 +1669,7 @@ describe('data-model', () => {
                     }
                 };
 
-                const change: DataChange<TestData> = {
+                const change: UpdateResult<TestData> = {
                     regions: {
                         east: {
                             stores: {
@@ -1434,7 +1714,7 @@ describe('data-model', () => {
                     }
                 };
 
-                const change: DataChange<TestData> = {
+                const change: UpdateResult<TestData> = {
                     system: {
                         modules: {
                             auth: { config: { enabled: false } }
@@ -1481,7 +1761,7 @@ describe('data-model', () => {
                 expect(triggerCount).toBe(1);
 
                 // Change to different path
-                applyBinding(data, { app: { data: { value: 100 } } }, binding);
+                applyBinding(data, { app: { data: { value: 100 } } } as UpdateResult<TestData>, binding);
                 expect(triggerCount).toBe(1); // Should not trigger
             });
 
@@ -1512,7 +1792,7 @@ describe('data-model', () => {
                 };
 
                 // Change to settings, not profile
-                const change: DataChange<TestData> = {
+                const change: UpdateResult<TestData> = {
                     users: {
                         alice: {
                             settings: { notifications: false }
@@ -1551,7 +1831,7 @@ describe('data-model', () => {
                     }
                 };
 
-                const change: DataChange<TestData> = {
+                const change: UpdateResult<TestData> = {
                     counter: { value: 1 }
                 };
 
@@ -1598,7 +1878,7 @@ describe('data-model', () => {
                     }
                 };
 
-                const change: DataChange<TestData> = {
+                const change: UpdateResult<TestData> = {
                     form: {
                         fields: {
                             email: { value: 'new@example.com' }
@@ -1633,7 +1913,7 @@ describe('data-model', () => {
                     })
                 };
 
-                const change: DataChange<TestData> = {
+                const change: UpdateResult<TestData> = {
                     source: { value: 7 }
                 };
 
@@ -1668,7 +1948,7 @@ describe('data-model', () => {
                 };
 
                 const now = Date.now();
-                const change: DataChange<TestData> = {
+                const change: UpdateResult<TestData> = {
                     input: { text: 'Hi' },
                     metadata: { lastUpdated: now }
                 };
@@ -1711,7 +1991,7 @@ describe('data-model', () => {
                     }
                 };
 
-                const change: DataChange<TestData> = {
+                const change: UpdateResult<TestData> = {
                     items: {
                         apple: { quantity: 10 },
                         banana: { quantity: 6 }
@@ -1762,7 +2042,7 @@ describe('data-model', () => {
                     })
                 };
 
-                const change: DataChange<TestData> = {
+                const change: UpdateResult<TestData> = {
                     categories: {
                         electronics: { active: false }
                     }
@@ -1817,7 +2097,7 @@ describe('data-model', () => {
                     }
                 };
 
-                const change: DataChange<TestData> = {
+                const change: UpdateResult<TestData> = {
                     users: {
                         alice: { name: 'Alice Smith' }
                     }
@@ -1836,7 +2116,7 @@ describe('data-model', () => {
                     update: () => ({}) // Empty update
                 };
 
-                const change: DataChange<TestData> = { value: 20 };
+                const change: UpdateResult<TestData> = { value: 20 };
 
                 // Should not throw
                 expect(() => applyBinding(data, change, binding)).not.toThrow();
@@ -1860,7 +2140,7 @@ describe('data-model', () => {
                     }
                 };
 
-                const change: DataChange<TestData> = {
+                const change: UpdateResult<TestData> = {
                     a: { b: { c: { d: { e: { value: 42 } } } } }
                 };
 

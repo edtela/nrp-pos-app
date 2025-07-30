@@ -4,10 +4,11 @@ import {
     type DataChange,
     type Update,
     type DataBinding,
-    STRUCTURE
+    UpdateResult,
+    META
 } from './data-model-types';
 
-export function update<T extends object>(data: T, statement?: Update<T>, changes?: DataChange<T>): DataChange<T> | undefined {
+export function update<T extends object>(data: T, statement?: Update<T>, changes?: UpdateResult<T>): UpdateResult<T> | undefined {
     return updateImpl(data, statement, changes);
 }
 
@@ -29,74 +30,102 @@ export function updateImpl(data: any, statement?: any, changes?: any): any {
         }
     }
 
-    function addChange(key: string, newValue: any) {
+    function addValueChange(key: string, oldValue: any) {
+        const newValue = data[key];
+
+        if (oldValue != null && typeof oldValue === 'object') {
+            //we need to undo changes that may have occured before setting it as original
+            const oldValueChanges = changes?.[key];
+            if (oldValueChanges) {
+                undoUpdateImpl(oldValue, oldValueChanges);
+            }
+        }
+
         if (!changes) {
             changes = {};
         }
         changes[key] = newValue;
+
+        const meta = changes[META];
+        if (meta) {
+            if (!meta[key]) {
+                // only record on first change, original value
+                meta[key] = { original: oldValue };
+            }
+        } else {
+            changes[META] = { [key]: { original: oldValue } }
+        };
     }
 
-    function structureChange(key: string, change: 'delete' | 'replace') {
-        if (!changes) {
-            changes = {};
-        }
-
-        let sc = changes[STRUCTURE];
-        if (!sc) {
-            sc = changes[STRUCTURE] = {};
-        }
-        sc[key] = change;
-    }
-
-    function updateKey(key: string, value: any, newValue: any, replace = false) {
-        if (value === newValue) {
+    function updateKey(key: string, oldValue: any, newValue: any, replace = false) {
+        if (oldValue === newValue) {
             return;
         }
 
         if (!replace && newValue != null && typeof newValue === 'object') {
-            if (value == null || typeof value !== 'object') {
+            if (oldValue == null || typeof oldValue !== 'object') {
                 throw Error(`Can't partially update a non-object`);
             }
 
-            const change = updateImpl(value, newValue, changes ? changes[key] : undefined);
+            const change = updateImpl(oldValue, newValue, changes ? changes[key] : undefined);
             if (change) {
-                addChange(key, change);
+                if (changes) {
+                    changes[key] = change;
+                } else {
+                    changes = { [key]: change };
+                }
             }
             return;
         }
 
         // newValue null or not an object or full object, set directly 
         data[key] = newValue;
-        addChange(key, newValue);
+        addValueChange(key, oldValue);
     }
 
     // Process each key in the expanded transform
     for (const key in staticUpdate) {
-        let value = data[key];
+        let oldValue = data[key];
 
         const operand = staticUpdate[key];
-        const staticOperand = typeof operand === 'function' ? operand(value, data, key) : operand;
+        const staticOperand = typeof operand === 'function' ? operand(oldValue, data, key) : operand;
 
         if (Array.isArray(staticOperand)) {
             if (staticOperand.length === 0) {
                 delete data[key];
-                addChange(key, undefined);
-                structureChange(key, 'delete');
+                addValueChange(key, oldValue);
                 continue;
             }
 
             if (staticOperand.length === 1) {
-                updateKey(key, value, staticOperand[0], true);
-                structureChange(key, 'replace');
+                updateKey(key, oldValue, staticOperand[0], true);
             } else {
                 throw new Error('Multiple element arrays not allowed'); //TODO collect warning
             }
         } else {
-            updateKey(key, value, staticOperand);
+            updateKey(key, oldValue, staticOperand);
         }
     }
 
     return changes;
+}
+
+export function undoUpdate<T extends object>(data: T, result: UpdateResult<T> | undefined) {
+    return undoUpdateImpl(data, result);
+}
+
+function undoUpdateImpl(data: any, result: any) {
+    if (result === undefined) return data;
+
+    const { [META]: meta, ...rest } = result;
+    for (const key in rest) {
+        const change = rest[key];
+        if (meta && key in meta) {
+            data[key] = meta[key].original;
+        } else {
+            undoUpdate(data[key], change);
+        }
+    }
 }
 
 export function selectByPath<T>(data: T, path: readonly (string | symbol)[]): Partial<T> | undefined {
@@ -125,11 +154,11 @@ export function selectByPath<T>(data: T, path: readonly (string | symbol)[]): Pa
     return result;
 }
 
-export function applyBindings<T extends object>(data: T, changes: DataChange<T>, bindings: DataBinding<T>[], init = false) {
+export function applyBindings<T extends object>(data: T, changes: UpdateResult<T>, bindings: DataBinding<T>[], init = false) {
     bindings.forEach(b => applyBinding(data, changes, b, init));
 }
 
-export function applyBinding<T extends object>(data: T, changes: DataChange<T>, binding: DataBinding<T>, init = false) {
+export function applyBinding<T extends object>(data: T, changes: UpdateResult<T>, binding: DataBinding<T>, init = false) {
     if (init && !binding.init) {
         return;
     }

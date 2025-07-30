@@ -2,7 +2,8 @@
 export const ALL = Symbol('*');      // Apply update to all properties
 export const WHERE = Symbol('?');    // Conditional filter for updates
 export const DELETIONS = Symbol('-'); // Track deleted properties in DataChange
-export const STRUCTURE = Symbol('structure'); // Track structural changes (delete/replace) in DataChange
+export const META = Symbol('#'); // Track structural changes (delete/replace) in DataChange
+export const STRUCTURE = META; // Track structural changes (delete/replace) in DataChange
 
 // Helper type to extract only string keys from T
 type StringKeys<T> = Extract<keyof T, string>;
@@ -19,48 +20,29 @@ type UnionToIntersection<U> = (U extends any ? (x: U) => void : never) extends (
 // - For objects: intersection of all value types
 type AllValueType<T extends object> = T extends readonly any[] ? T[number] : UnionToIntersection<T[keyof T]>;
 
-// DataChange tracks what changed in the data object
-// - If a key exists, it was changed (even if set to undefined)
-// - The value represents the current value after the change
-// - [STRUCTURE] record tracks structural changes: 'delete' for deletions, 'replace' for replacements
-// - Only string keys from T are tracked (symbols in data are ignored)
-// - For union types, only common properties are tracked (non-distributive)
-// - For arrays, allows any string index for partial updates
-export type DataChange<T> = T extends readonly any[] ? {
-    // For arrays, allow any string key (including numeric indices)
-    [index: string]: T extends readonly (infer E)[] ? 
-        [E] extends [object] ? DataChange<E> : E 
-        : never;
-} & {
-    [STRUCTURE]?: Record<string, 'delete' | 'replace'>;
-} : {
-    // For objects, use StringKeys as before
-    [K in StringKeys<T>]?: [T[K]] extends [object] ? DataChange<T[K]> : T[K];
-} & {
-    [STRUCTURE]?: Record<StringKeys<T>, 'delete' | 'replace'>;
-}
+export type DataChange<T> = UpdateResult<T>
 
 // Terminal update types - for non-object values
 // - Functions can only be replaced using [T] syntax
 // - Other values can be direct assignment or replacement
 // - For unions containing objects, [T] syntax is allowed
-type UpdateTerminal<T> = 
+type UpdateTerminal<T> =
     [T] extends [Function]
-        ? [T]  // Functions must use replacement syntax
-        : (Extract<T, object> extends never ? T : [T]);
+    ? [T]  // Functions must use replacement syntax
+    : (Extract<T, object> extends never ? T : [T]);
 
 // Update type for arrays
 // - Allows partial updates by index (string keys)
 // - Supports [ALL] to update all elements
 // - Each update can be a value or function
 type UpdateArray<T extends readonly any[]> = {
-    [index: string]: T extends readonly (infer E)[] 
-        ? Update<E> | ((value: E, data: T, index: string) => Update<E>)
-        : never
+    [index: string]: T extends readonly (infer E)[]
+    ? Update<E> | ((value: E, data: T, index: string) => Update<E>)
+    : never
 } & {
-    [ALL]?: T extends readonly (infer E)[] 
-        ? Update<E> | ((value: E, data: T, index: number) => Update<E>)
-        : never;
+    [ALL]?: T extends readonly (infer E)[]
+    ? Update<E> | ((value: E, data: T, index: number) => Update<E>)
+    : never;
 }
 
 // Update type for non-array objects
@@ -68,10 +50,10 @@ type UpdateArray<T extends readonly any[]> = {
 // - Optional properties can be deleted with []
 // - [ALL] updates all properties (type-safe intersection)
 type UpdateNonArrayObject<T extends object> = {
-    [K in StringKeys<T>]?: 
-        | Update<T[K]> 
-        | (IsOptional<T, K> extends true ? [] : never)
-        | ((value: T[K], data: T, key: K) => Update<T[K]>)
+    [K in StringKeys<T>]?:
+    | Update<T[K]>
+    | (IsOptional<T, K> extends true ? [] : never)
+    | ((value: T[K], data: T, key: K) => Update<T[K]>)
 } & {
     [ALL]?: Update<AllValueType<T>> | ((value: AllValueType<T>, data: T, key: keyof T) => Update<AllValueType<T>>);
 }
@@ -79,8 +61,8 @@ type UpdateNonArrayObject<T extends object> = {
 // Update type for objects (arrays and non-arrays)
 // - Delegates to appropriate sub-type
 // - WHERE predicate applies to the entire object
-type UpdateObject<T extends object> = 
-    (T extends readonly any[] 
+type UpdateObject<T extends object> =
+    (T extends readonly any[]
         ? UpdateArray<T>
         : UpdateNonArrayObject<T>
     ) & {
@@ -94,10 +76,25 @@ type UpdateObject<T extends object> =
 // - Allows [T] replacement for object types
 export type Update<T> = [NonNullable<T>] extends [object]
     ? (undefined extends T ? undefined : never) |
-      (null extends T ? null : never) |
-      UpdateObject<NonNullable<T>> |
-      [NonNullable<T>]
+    (null extends T ? null : never) |
+    UpdateObject<NonNullable<T>> |
+    [NonNullable<T>]
     : UpdateTerminal<T>;
+
+export type UpdateResult<T> = T extends readonly any[] ? {
+    // For arrays, allow any string key (including numeric indices)
+    [index: string]: T extends readonly (infer E)[] ? [E] extends [object] ? UpdateResult<E> : E : never;
+    [META]?: { [index: string]: T extends readonly (infer E)[] ? UpdateResultMeta<E> : never };
+} : {
+    // For objects, use StringKeys as before
+    [K in StringKeys<T>]?: [T[K]] extends [object] ? UpdateResult<T[K]> : T[K];
+} & {
+    [META]?: { [K in StringKeys<T>]?: UpdateResultMeta<[T[K]]> };
+}
+
+export type UpdateResultMeta<T> = {
+    original: T;
+}
 
 //----------- DATA BINDING --------------------------
 
