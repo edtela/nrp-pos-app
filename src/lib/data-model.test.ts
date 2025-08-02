@@ -2259,10 +2259,10 @@ describe('data-model', () => {
                 const binding: DataBinding<TestData> = {
                     onChange: ['app', 'modules', [ALL], {
                         config: { enabled: anyChange },
-                        data: { count: (key, result) => {
+                        data: { count: (_key, result) => {
                             const meta = result?.[META];
                             if (!meta || !meta.count) return false;
-                            return meta.count.original === 0 && result.count > 0;
+                            return meta.count.original === 0 && result?.count && result.count > 0;
                         }}
                     }] as CapturePath<TestData>,
                     update: (module) => {
@@ -2367,7 +2367,7 @@ describe('data-model', () => {
                 const binding: DataBinding<TestData> = {
                     init: true,
                     onChange: ['items', [ALL], {
-                        quantity: (key, result) => true // Always true for init
+                        quantity: (_key, _result) => true // Always true for init
                     }] as CapturePath<TestData>,
                     update: (item) => {
                         // In capture mode, we get the captured item
