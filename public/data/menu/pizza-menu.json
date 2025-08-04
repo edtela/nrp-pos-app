@@ -47,7 +47,7 @@
             },
             "subMenu": {
               "menuId": "pizza-toppings",
-              "included": ["fresh-mozzarella", "tomato-sauce", "fresh-basil"]
+              "included": [{"itemId": "fresh-mozzarella"}, {"itemId": "tomato-sauce"}, {"itemId": "fresh-basil", "display": "included"}]
             }
           },
           {
@@ -64,7 +64,7 @@
             },
             "subMenu": {
               "menuId": "pizza-toppings",
-              "included": ["pepperoni", "regular-mozzarella", "tomato-sauce"]
+              "included": [{"itemId": "pepperoni", "display": "included"}, {"itemId": "regular-mozzarella"}, {"itemId": "tomato-sauce"}]
             }
           },
           {
@@ -81,7 +81,7 @@
             },
             "subMenu": {
               "menuId": "pizza-toppings",
-              "included": ["ham", "pineapple", "regular-mozzarella", "tomato-sauce"]
+              "included": [{"itemId": "ham", "display": "included"}, {"itemId": "pineapple", "display": "included"}, {"itemId": "regular-mozzarella"}, {"itemId": "tomato-sauce"}]
             }
           }
         ]
@@ -106,7 +106,7 @@
             },
             "subMenu": {
               "menuId": "pizza-toppings",
-              "included": ["regular-mozzarella", "tomato-sauce"]
+              "included": [{"itemId": "regular-mozzarella"}, {"itemId": "tomato-sauce"}]
             }
           }
         ]

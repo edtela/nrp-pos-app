@@ -7,14 +7,14 @@
 
 import { css } from "@linaria/core";
 import { html, render } from "@/lib/html-template";
-import { Menu, MenuItem } from "@/types";
+import { Menu, SubMenu } from "@/types";
 import * as MenuContentUI from "@/components/menu-content";
 import { mdColors, mdTypography, mdSpacing, mdElevation } from "@/styles/theme";
 import { MenuPageData, MenuModel } from "@/model/menu-model";
 import { DataChange, WHERE } from "@/lib/data-model-types";
 import { createStore } from "@/lib/storage";
 
-type BreadCrumb = NonNullable<MenuItem["subMenu"]>;
+type BreadCrumb = NonNullable<SubMenu>;
 const crumbsStore = createStore<BreadCrumb[]>("crumbs-v1", "session");
 
 const menuModel = new MenuModel();
@@ -66,10 +66,10 @@ export async function renderMenuPage(container: Element, menuFile: string = "ind
       crumbs = crumbs.slice(0, idx + 1);
       crumbsStore.set(crumbs);
     }
-    const crumb = crumbs[crumbs.length - 1];
-    if (crumb) {
-      const stmt = crumb.included.reduce((u, key) => {
-        u[key] = { [WHERE]: (item: any) => item != null, selected: true };
+    const subMenu = crumbs[crumbs.length - 1];
+    if (subMenu) {
+      const stmt = subMenu.included.reduce((u, key) => {
+        u[key.itemId] = { [WHERE]: (item: any) => item != null, selected: true };
         return u;
       }, {} as any);
       update(menuModel.update({ menu: stmt }));
@@ -78,6 +78,10 @@ export async function renderMenuPage(container: Element, menuFile: string = "ind
     // Attach event handlers to the menuPage element (automatically cleaned up on re-render)
     const menuPageElement = container.querySelector(`.${styles.menuPage}`) as HTMLElement;
     if (menuPageElement) {
+      if (subMenu) {
+        MenuContentUI.init(menuPageElement, subMenu);
+      }
+
       MenuContentUI.addVariantHandler(menuPageElement, variantSelectHandler);
 
       menuPageElement.addEventListener("app:state-update", (e: Event) => {

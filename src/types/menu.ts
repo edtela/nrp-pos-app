@@ -1,17 +1,17 @@
 /**
  * Menu System Type Definitions
- * 
+ *
  * A flexible, recursive menu system supporting infinite customization chains.
  * Single-language design - separate files generated for each language.
  */
 
-import { Cells } from './display';
+import { Cells } from "./display";
 
 /**
  * Menu group options
  */
 export interface MenuOptions {
-  extractIncluded?: boolean;  // If true, this group is a placeholder for included items
+  extractIncluded?: boolean; // If true, this group is a placeholder for included items
 }
 
 /**
@@ -28,9 +28,22 @@ export interface Menu {
   id: string;
   name: string;
   content: MenuGroup;
-  choices?: Record<string, Choice>;  // Choice definitions referenced by items via choiceId
-  variants?: Record<string, VariantGroup>;  // Variant definitions referenced by items
-  modifierMenu?: boolean;  // If true, requires an OrderItem in the stack to display
+  choices?: Record<string, Choice>; // Choice definitions referenced by items via choiceId
+  variants?: Record<string, VariantGroup>; // Variant definitions referenced by items
+  modifierMenu?: boolean; // If true, requires an OrderItem in the stack to display
+}
+
+// For Categories: submenu to navigate to
+// For SaleItems: customization menu after "Add to Order"
+// Item IDs that are pre-selected/included for this product
+export interface SubMenu {
+  menuId: string;
+  included: IncludedItem[];
+}
+
+export interface IncludedItem {
+  itemId: string;
+  display?: "none" | "included";
 }
 
 /**
@@ -45,24 +58,21 @@ export interface MenuItem {
   // Pricing - if undefined, this is a Category; if defined, this is a SaleItem
   price?: number;
   variants?: {
-    groupId: string;         // References a Variants definition for variant-based pricing
+    groupId: string; // References a Variants definition for variant-based pricing
     price: VariantPrice;
     selectedId?: string;
-  }
+  };
 
   // Constraints
-  constraints?: Constraint;        // Item constraints and choice reference
+  constraints?: Constraint; // Item constraints and choice reference
 
   // Navigation
-  subMenu?: {                     // For Categories: submenu to navigate to
-    menuId: string;               // For SaleItems: customization menu after "Add to Order"
-    included: string[];           // Item IDs that are pre-selected/included for this product
-  };
+  subMenu?: SubMenu;
 }
 
 /**
  * Choice definition for selection behavior and constraints
- * 
+ *
  * Examples:
  * - Radio button (required): min=1, max=1
  * - Radio button (optional): min=0, max=1
@@ -71,12 +81,12 @@ export interface MenuItem {
  */
 export interface Choice {
   id: string;
-  name?: string;          // Display name for the choice group
-  min?: number;          // Minimum items that must be selected (default: 0)
-  max?: number;          // Maximum items that can be selected (undefined = unlimited)
+  name?: string; // Display name for the choice group
+  min?: number; // Minimum items that must be selected (default: 0)
+  max?: number; // Maximum items that can be selected (undefined = unlimited)
 }
 
-export type Constraint = { min?: number, max?: number, choice?: { id: string, single: boolean } };
+export type Constraint = { min?: number; max?: number; choice?: { id: string; single: boolean } };
 
 /**
  * Product variant (e.g., size options like mini, standard, large)
@@ -94,9 +104,9 @@ export interface Variant {
  */
 export interface VariantGroup {
   id: string;
-  name?: string;              // Display name for the variant group
+  name?: string; // Display name for the variant group
   variants: Variant[];
-  selectedId: string;        // Default selected variant ID
+  selectedId: string; // Default selected variant ID
 }
 
 /**
@@ -110,11 +120,11 @@ export type VariantPrice = {
  * Type guards
  */
 export function isItemGroup(group: MenuGroup): group is ItemGroup {
-  return 'items' in group;
+  return "items" in group;
 }
 
 export function isNestedGroup(group: MenuGroup): group is NestedGroup {
-  return 'groups' in group;
+  return "groups" in group;
 }
 
 export function isCategory(item: MenuItem): boolean {
@@ -126,15 +136,15 @@ export function isSaleItem(item: MenuItem): boolean {
 }
 
 export function isVariantPrice(price?: number | VariantPrice): price is VariantPrice {
-  return price != null && typeof price !== 'number';
+  return price != null && typeof price !== "number";
 }
 
 export function hasVariantPricing(item: MenuItem): item is MenuItem & { price: VariantPrice } {
-  return typeof item.price === 'object' && item.price !== null;
+  return typeof item.price === "object" && item.price !== null;
 }
 
 export function hasFixedPricing(item: MenuItem): item is MenuItem & { price: number } {
-  return typeof item.price === 'number';
+  return typeof item.price === "number";
 }
 
 export function* iterateGroups(group: MenuGroup): Generator<ItemGroup> {

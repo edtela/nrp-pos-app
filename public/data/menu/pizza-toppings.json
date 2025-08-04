@@ -47,11 +47,17 @@
   "content": {
     "groups": [
       {
+        "options": { "extractIncluded": true },
+        "header": {
+          "text": "Included Toppings",
+          "classes": ["menu-group__header"]
+        },
+        "items": []
+      },
+      {
         "header": {
           "text": "Cheese Options",
-          "classes": [
-            "menu-group__header"
-          ]
+          "classes": ["menu-group__header"]
         },
         "items": [
           {
@@ -92,9 +98,7 @@
       {
         "header": {
           "text": "Sauce Options",
-          "classes": [
-            "menu-group__header"
-          ]
+          "classes": ["menu-group__header"]
         },
         "items": [
           {
@@ -139,243 +143,223 @@
         ]
       },
       {
-        "groups": [
+        "header": {
+          "text": "Meat Toppings",
+          "classes": ["menu-group__header"]
+        },
+        "items": [
           {
-            "options": {"extractIncluded": true},
-            "header": {
-              "text": "Included Toppings",
-              "classes": [
-                "menu-group__header"
-              ]
-            },
-            "items": []
+            "id": "pepperoni",
+            "name": "Pepperoni",
+            "variants": {
+              "groupId": "pizza-size",
+              "price": {
+                "small": 1,
+                "medium": 1.5,
+                "large": 2
+              }
+            }
           },
           {
-            "header": {
-              "text": "Meat Toppings",
-              "classes": [
-                "menu-group__header"
-              ]
-            },
-            "items": [
-              {
-                "id": "pepperoni",
-                "name": "Pepperoni",
-                "variants": {
-                  "groupId": "pizza-size",
-                  "price": {
-                    "small": 1,
-                    "medium": 1.5,
-                    "large": 2
-                  }
-                }
-              },
-              {
-                "id": "italian-sausage",
-                "name": "Italian Sausage",
-                "variants": {
-                  "groupId": "pizza-size",
-                  "price": {
-                    "small": 1,
-                    "medium": 1.5,
-                    "large": 2
-                  }
-                }
-              },
-              {
-                "id": "ham",
-                "name": "Ham",
-                "variants": {
-                  "groupId": "pizza-size",
-                  "price": {
-                    "small": 1,
-                    "medium": 1.5,
-                    "large": 2
-                  }
-                }
-              },
-              {
-                "id": "bacon",
-                "name": "Bacon",
-                "variants": {
-                  "groupId": "pizza-size",
-                  "price": {
-                    "small": 1,
-                    "medium": 1.5,
-                    "large": 2
-                  }
-                }
-              },
-              {
-                "id": "grilled-chicken",
-                "name": "Grilled Chicken",
-                "variants": {
-                  "groupId": "pizza-size",
-                  "price": {
-                    "small": 1,
-                    "medium": 1.5,
-                    "large": 2
-                  }
-                }
+            "id": "italian-sausage",
+            "name": "Italian Sausage",
+            "variants": {
+              "groupId": "pizza-size",
+              "price": {
+                "small": 1,
+                "medium": 1.5,
+                "large": 2
               }
-            ]
+            }
           },
           {
-            "header": {
-              "text": "Vegetable Toppings",
-              "classes": [
-                "menu-group__header"
-              ]
-            },
-            "items": [
-              {
-                "id": "mushrooms",
-                "name": "Mushrooms",
-                "variants": {
-                  "groupId": "pizza-size",
-                  "price": {
-                    "small": 1,
-                    "medium": 1.5,
-                    "large": 2
-                  }
-                }
-              },
-              {
-                "id": "onions",
-                "name": "Onions",
-                "variants": {
-                  "groupId": "pizza-size",
-                  "price": {
-                    "small": 1,
-                    "medium": 1.5,
-                    "large": 2
-                  }
-                }
-              },
-              {
-                "id": "bell-peppers",
-                "name": "Bell Peppers",
-                "variants": {
-                  "groupId": "pizza-size",
-                  "price": {
-                    "small": 1,
-                    "medium": 1.5,
-                    "large": 2
-                  }
-                }
-              },
-              {
-                "id": "black-olives",
-                "name": "Black Olives",
-                "variants": {
-                  "groupId": "pizza-size",
-                  "price": {
-                    "small": 1,
-                    "medium": 1.5,
-                    "large": 2
-                  }
-                }
-              },
-              {
-                "id": "tomatoes",
-                "name": "Fresh Tomatoes",
-                "variants": {
-                  "groupId": "pizza-size",
-                  "price": {
-                    "small": 1,
-                    "medium": 1.5,
-                    "large": 2
-                  }
-                }
-              },
-              {
-                "id": "jalapenos",
-                "name": "Jalapeños",
-                "variants": {
-                  "groupId": "pizza-size",
-                  "price": {
-                    "small": 1,
-                    "medium": 1.5,
-                    "large": 2
-                  }
-                }
-              },
-              {
-                "id": "pineapple",
-                "name": "Pineapple",
-                "variants": {
-                  "groupId": "pizza-size",
-                  "price": {
-                    "small": 1,
-                    "medium": 1.5,
-                    "large": 2
-                  }
-                }
-              },
-              {
-                "id": "fresh-basil",
-                "name": "Fresh Basil",
-                "price": 0
+            "id": "ham",
+            "name": "Ham",
+            "variants": {
+              "groupId": "pizza-size",
+              "price": {
+                "small": 1,
+                "medium": 1.5,
+                "large": 2
               }
-            ]
+            }
           },
           {
-            "header": {
-              "text": "Premium Toppings",
-              "classes": [
-                "menu-group__header"
-              ]
-            },
-            "items": [
-              {
-                "id": "prosciutto",
-                "name": "Prosciutto",
-                "variants": {
-                  "groupId": "pizza-size",
-                  "price": {
-                    "small": 2,
-                    "medium": 2.5,
-                    "large": 3
-                  }
-                }
-              },
-              {
-                "id": "truffle-oil",
-                "name": "Truffle Oil",
-                "variants": {
-                  "groupId": "pizza-size",
-                  "price": {
-                    "small": 2,
-                    "medium": 2.5,
-                    "large": 3
-                  }
-                }
-              },
-              {
-                "id": "artichokes",
-                "name": "Artichoke Hearts",
-                "variants": {
-                  "groupId": "pizza-size",
-                  "price": {
-                    "small": 2,
-                    "medium": 2.5,
-                    "large": 3
-                  }
-                }
-              },
-              {
-                "id": "sun-dried-tomatoes",
-                "name": "Sun-Dried Tomatoes",
-                "variants": {
-                  "groupId": "pizza-size",
-                  "price": {
-                    "small": 2,
-                    "medium": 2.5,
-                    "large": 3
-                  }
-                }
+            "id": "bacon",
+            "name": "Bacon",
+            "variants": {
+              "groupId": "pizza-size",
+              "price": {
+                "small": 1,
+                "medium": 1.5,
+                "large": 2
               }
-            ]
+            }
+          },
+          {
+            "id": "grilled-chicken",
+            "name": "Grilled Chicken",
+            "variants": {
+              "groupId": "pizza-size",
+              "price": {
+                "small": 1,
+                "medium": 1.5,
+                "large": 2
+              }
+            }
+          }
+        ]
+      },
+      {
+        "header": {
+          "text": "Vegetable Toppings",
+          "classes": ["menu-group__header"]
+        },
+        "items": [
+          {
+            "id": "mushrooms",
+            "name": "Mushrooms",
+            "variants": {
+              "groupId": "pizza-size",
+              "price": {
+                "small": 1,
+                "medium": 1.5,
+                "large": 2
+              }
+            }
+          },
+          {
+            "id": "onions",
+            "name": "Onions",
+            "variants": {
+              "groupId": "pizza-size",
+              "price": {
+                "small": 1,
+                "medium": 1.5,
+                "large": 2
+              }
+            }
+          },
+          {
+            "id": "bell-peppers",
+            "name": "Bell Peppers",
+            "variants": {
+              "groupId": "pizza-size",
+              "price": {
+                "small": 1,
+                "medium": 1.5,
+                "large": 2
+              }
+            }
+          },
+          {
+            "id": "black-olives",
+            "name": "Black Olives",
+            "variants": {
+              "groupId": "pizza-size",
+              "price": {
+                "small": 1,
+                "medium": 1.5,
+                "large": 2
+              }
+            }
+          },
+          {
+            "id": "tomatoes",
+            "name": "Fresh Tomatoes",
+            "variants": {
+              "groupId": "pizza-size",
+              "price": {
+                "small": 1,
+                "medium": 1.5,
+                "large": 2
+              }
+            }
+          },
+          {
+            "id": "jalapenos",
+            "name": "Jalapeños",
+            "variants": {
+              "groupId": "pizza-size",
+              "price": {
+                "small": 1,
+                "medium": 1.5,
+                "large": 2
+              }
+            }
+          },
+          {
+            "id": "pineapple",
+            "name": "Pineapple",
+            "variants": {
+              "groupId": "pizza-size",
+              "price": {
+                "small": 1,
+                "medium": 1.5,
+                "large": 2
+              }
+            }
+          },
+          {
+            "id": "fresh-basil",
+            "name": "Fresh Basil",
+            "price": 0
+          }
+        ]
+      },
+      {
+        "header": {
+          "text": "Premium Toppings",
+          "classes": ["menu-group__header"]
+        },
+        "items": [
+          {
+            "id": "prosciutto",
+            "name": "Prosciutto",
+            "variants": {
+              "groupId": "pizza-size",
+              "price": {
+                "small": 2,
+                "medium": 2.5,
+                "large": 3
+              }
+            }
+          },
+          {
+            "id": "truffle-oil",
+            "name": "Truffle Oil",
+            "variants": {
+              "groupId": "pizza-size",
+              "price": {
+                "small": 2,
+                "medium": 2.5,
+                "large": 3
+              }
+            }
+          },
+          {
+            "id": "artichokes",
+            "name": "Artichoke Hearts",
+            "variants": {
+              "groupId": "pizza-size",
+              "price": {
+                "small": 2,
+                "medium": 2.5,
+                "large": 3
+              }
+            }
+          },
+          {
+            "id": "sun-dried-tomatoes",
+            "name": "Sun-Dried Tomatoes",
+            "variants": {
+              "groupId": "pizza-size",
+              "price": {
+                "small": 2,
+                "medium": 2.5,
+                "large": 3
+              }
+            }
           }
         ]
       }

@@ -40,6 +40,29 @@ export function styleMap(styleInfo: Record<string, any>): string {
 }
 
 /**
+ * Conditionally outputs a data attribute if value is not undefined
+ * @param name - The data attribute name (without 'data-' prefix)
+ * @param value - The value to set (if undefined, returns empty string)
+ * @returns Data attribute string or empty string
+ */
+export function dataAttr(name: string, value: any): string {
+  if (value === undefined) {
+    return '';
+  }
+  
+  // Handle different value types
+  if (typeof value === 'object' && value !== null) {
+    // For objects, JSON.stringify and escape quotes for HTML attribute
+    const json = JSON.stringify(value);
+    const escaped = json.replace(/"/g, '&quot;');
+    return `data-${name}="${escaped}"`;
+  }
+  
+  // For primitives, convert to string
+  return `data-${name}="${String(value)}"`;
+}
+
+/**
  * Replace elements matching a selector with a new template
  * @param container The container element to search within
  * @param selector The CSS selector to find elements to replace
