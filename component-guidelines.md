@@ -11,7 +11,7 @@ Each component should follow this structure:
  */
 
 import { css } from '@linaria/core';
-import { html, Template, onClick, addEventHandler } from '@/lib/html-template';
+import { html, Template, onClick, updateOnClick, dataAttr, addEventHandler } from '@/lib/html-template';
 import { /* types */ } from '@/types';
 import { /* theme tokens */ } from '@/styles/theme';
 
@@ -122,7 +122,10 @@ export function addClickEventHandler(
 - Implement event handler functions with typed parameters
 - The `addEventHandler` utility automatically converts data types
 
-Example:
+#### onClick Usage
+The `onClick` helper supports two patterns:
+
+1. **Event delegation pattern** (for static UI):
 ```typescript
 // Define event constant
 export const ITEM_SELECT_EVENT = 'item-select';
@@ -131,7 +134,46 @@ export const ITEM_SELECT_EVENT = 'item-select';
 ${onClick(ITEM_SELECT_EVENT)}
 data-item-id="${item.id}"
 data-selected="${item.selected}"
+```
 
+2. **Direct handler pattern** (for dynamic/data-driven UI):
+```typescript
+// In template - pass handler function directly
+${onClick(data.onClick)}
+
+// The data object would contain:
+interface ItemData {
+  onClick?: () => void;
+  // other properties...
+}
+```
+
+#### updateOnClick
+For updating click handlers on existing elements:
+```typescript
+export function update(element: HTMLElement, event: DataChange<DisplayMenuItem>) {
+  if ('onClick' in event) {
+    updateOnClick(element, event.onClick);
+  }
+}
+```
+
+#### dataAttr Helper
+For setting data attributes conditionally:
+```typescript
+// In template
+<div ${dataAttr("included", group.options?.extractIncluded)}>
+  <!-- content -->
+</div>
+
+// Results in:
+// - data-included="true" if value is true
+// - data-included="false" if value is false  
+// - no attribute if value is undefined/null
+```
+
+#### Handler Attachment Example
+```typescript
 // Attach handler with typed parameters
 export function addSelectEventHandler(
   container: HTMLElement,
@@ -199,6 +241,11 @@ Components follow a consistent order:
 - Use semantic names (e.g., `data-item-id`, not `data-id`)
 - Boolean values as strings ('true'/'false')
 - The `addEventHandler` utility automatically converts types
+- Use the `dataAttr` helper for conditional data attributes:
+  ```typescript
+  ${dataAttr("active", isActive)}  // Sets data-active="true/false" or omits if undefined
+  ${dataAttr("state", item.state)}  // Sets data-state="value" or omits if undefined
+  ```
 
 ### 10. Documentation
 - Add JSDoc comments for exported functions
@@ -214,7 +261,7 @@ Components follow a consistent order:
  */
 
 import { css } from '@linaria/core';
-import { html, Template, onClick, addEventHandler } from '@/lib/html-template';
+import { html, Template, onClick, updateOnClick, dataAttr, addEventHandler } from '@/lib/html-template';
 import { Product } from '@/types';
 import { mdColors, mdSpacing, mdTypography } from '@/styles/theme';
 

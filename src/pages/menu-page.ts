@@ -9,7 +9,10 @@ import { css } from "@linaria/core";
 import { html, render } from "@/lib/html-template";
 import { Menu, SubMenu } from "@/types";
 import * as MenuContentUI from "@/components/menu-content";
-import { mdColors, mdTypography, mdSpacing, mdElevation } from "@/styles/theme";
+import * as AppHeader from "@/components/app-header";
+import * as AppBottomBar from "@/components/app-bottom-bar";
+import { styles as layoutStyles } from "@/components/app-layout";
+import { mdColors, mdSpacing } from "@/styles/theme";
 import { MenuPageData, MenuModel } from "@/model/menu-model";
 import { DataChange, WHERE } from "@/lib/data-model-types";
 import { createStore } from "@/lib/storage";
@@ -43,7 +46,7 @@ export async function renderMenuPage(container: Element, menuFile: string = "ind
   // Initial render with loading state
   render(
     html`
-      <div class="${styles.menuPage}">
+      <div class="${layoutStyles.pageContainer}">
         <div class="${styles.loading}">Loading menu...</div>
       </div>
     `,
@@ -75,8 +78,8 @@ export async function renderMenuPage(container: Element, menuFile: string = "ind
       update(menuModel.update({ menu: stmt }));
     }
 
-    // Attach event handlers to the menuPage element (automatically cleaned up on re-render)
-    const menuPageElement = container.querySelector(`.${styles.menuPage}`) as HTMLElement;
+    // Attach event handlers to the pageContainer element (automatically cleaned up on re-render)
+    const menuPageElement = container.querySelector(`.${layoutStyles.pageContainer}`) as HTMLElement;
     if (menuPageElement) {
       if (subMenu) {
         MenuContentUI.init(menuPageElement, subMenu);
@@ -95,14 +98,17 @@ export async function renderMenuPage(container: Element, menuFile: string = "ind
 
 function template(menuData: Menu | null, error?: string) {
   return html`
-    <div class="${styles.menuPage}">
-      <header class="${styles.header}">
-        <h1 class="${styles.title}">${menuData?.name || "Menu"}</h1>
+    <div class="${layoutStyles.pageContainer}">
+      <header class="${layoutStyles.header}">
+        ${AppHeader.template()}
       </header>
-      <main class="${styles.content}">
+      <main class="${layoutStyles.content}">
         ${error ? html` <div class="${styles.error}">Error: ${error}</div> ` : ""}
         ${menuData ? MenuContentUI.template(menuData) : ""}
       </main>
+      <div class="${layoutStyles.bottomBar}">
+        ${AppBottomBar.template()}
+      </div>
     </div>
   `;
 }
@@ -126,42 +132,6 @@ function update(event: DataChange<MenuPageData> | undefined) {
 }
 
 const styles = {
-  menuPage: css`
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    background-color: ${mdColors.background};
-    color: ${mdColors.onBackground};
-    font-family:
-      "Roboto",
-      -apple-system,
-      BlinkMacSystemFont,
-      "Segoe UI",
-      sans-serif;
-  `,
-
-  header: css`
-    background-color: ${mdColors.surface};
-    box-shadow: ${mdElevation.level2};
-    padding: ${mdSpacing.md};
-  `,
-
-  title: css`
-    font-size: ${mdTypography.headlineMedium.fontSize};
-    line-height: ${mdTypography.headlineMedium.lineHeight};
-    font-weight: ${mdTypography.headlineMedium.fontWeight};
-    letter-spacing: ${mdTypography.headlineMedium.letterSpacing};
-    margin: 0;
-    color: ${mdColors.onSurface};
-  `,
-
-  content: css`
-    flex: 1;
-    padding: ${mdSpacing.lg};
-    max-width: 1200px;
-    margin: 0 auto;
-    width: 100%;
-  `,
 
   loading: css`
     text-align: center;
