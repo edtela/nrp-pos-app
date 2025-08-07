@@ -44,13 +44,15 @@ export const styles = {
     flex: 1;
     overflow-y: auto;
     padding-top: calc(${HEADER_HEIGHT} + ${mdSpacing.md});
-    padding-bottom: calc(${BOTTOM_BAR_HEIGHT} + ${mdSpacing.lg});
+    padding-bottom: calc(${BOTTOM_BAR_HEIGHT} + ${mdSpacing.lg} + env(safe-area-inset-bottom, 0));
     padding-left: ${mdSpacing.md};
     padding-right: ${mdSpacing.md};
     background-color: ${mdColors.background};
     position: relative;
     scroll-behavior: smooth;
     -webkit-overflow-scrolling: touch;
+    /* Ensure content doesn't bleed through */
+    z-index: 1;
   `,
 
   bottomBar: css`
@@ -58,7 +60,7 @@ export const styles = {
     bottom: 0;
     left: 0;
     right: 0;
-    height: ${BOTTOM_BAR_HEIGHT};
+    height: calc(${BOTTOM_BAR_HEIGHT} + env(safe-area-inset-bottom, 0));
     background-color: ${mdColors.surface};
     border-top: 1px solid ${mdColors.outlineVariant};
     z-index: 100;
@@ -66,5 +68,7 @@ export const styles = {
     align-items: center;
     justify-content: space-between;
     padding: 0 ${mdSpacing.md};
+    padding-bottom: env(safe-area-inset-bottom, 0);
+    box-sizing: border-box;
   `,
 } as const;
