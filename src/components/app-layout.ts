@@ -20,7 +20,7 @@ export const styles = {
   pageContainer: css`
     display: flex;
     flex-direction: column;
-    height: 100vh;
+    min-height: 100vh;
     background-color: ${mdColors.background};
     color: ${mdColors.onBackground};
     position: relative;
@@ -44,10 +44,13 @@ export const styles = {
     flex: 1;
     overflow-y: auto;
     padding-top: calc(${HEADER_HEIGHT} + ${mdSpacing.md});
-    padding-bottom: calc(${BOTTOM_BAR_HEIGHT} + ${mdSpacing.md});
+    padding-bottom: calc(${BOTTOM_BAR_HEIGHT} + ${mdSpacing.lg});
     padding-left: ${mdSpacing.md};
     padding-right: ${mdSpacing.md};
     background-color: ${mdColors.background};
+    position: relative;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
   `,
 
   bottomBar: css`
