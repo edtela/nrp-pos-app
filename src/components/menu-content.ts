@@ -7,28 +7,46 @@
 
 import { css } from "@linaria/core";
 import { dataAttr, html, Template } from "@/lib/html-template";
-import { ItemGroup, Menu, MenuGroup, NestedGroup, SubMenu } from "@/types";
-import { headerCells } from "./menu-header";
+import { ItemGroup, Menu, MenuGroup, NestedGroup, SubMenu, DataCell } from "@/types";
+import { headerCells, DataCellRenderer } from "./menu-header";
 import * as MenuItemUI from "./menu-item";
 import * as VariantGroupUI from "./variant";
 import { mdColors, mdSpacing, mdElevation, mdShape } from "@/styles/theme";
-import { MenuPageData } from "@/model/menu-model";
+import { DisplayMenuItem, MenuPageData } from "@/model/menu-model";
 import { DataChange } from "@/lib/data-model-types";
+
+/**
+ * DataCell renderer for menu content
+ * Handles variant selection and other data-driven cells
+ */
+function createDataCellRenderer(menu: Menu): DataCellRenderer {
+  return (cell: DataCell): Template => {
+    if (cell.type === 'variant-selection' && typeof cell.data === 'string') {
+      // Find the variant group by ID
+      const variantGroup = menu.variants?.[cell.data];
+      if (variantGroup) {
+        return VariantGroupUI.template(variantGroup);
+      }
+    }
+    // Default fallback for unknown types
+    return html`[${cell.type}]`;
+  };
+}
 
 /**
  * Template for menu group
  */
-function menuGroupTemplate(group: MenuGroup): Template {
+function menuGroupTemplate(group: MenuGroup, dataRenderer: DataCellRenderer): Template {
   return html`
     <div class="${styles.group}" ${dataAttr("included", group.options?.extractIncluded)}>
-      ${group.header ? headerCells(group.header) : ""}
+      ${group.header ? headerCells(group.header, dataRenderer) : ""}
       ${"items" in group
         ? html`
             <div class="${styles.groupItems}">
-              ${(group as ItemGroup).items.map((itemData) => MenuItemUI.template(itemData))}
+              ${(group as ItemGroup).items.map((itemData) => MenuItemUI.template(itemData as DisplayMenuItem))}
             </div>
           `
-        : html` ${(group as NestedGroup).groups.map((nestedGroup) => menuGroupTemplate(nestedGroup))} `}
+        : html` ${(group as NestedGroup).groups.map((nestedGroup) => menuGroupTemplate(nestedGroup, dataRenderer))} `}
     </div>
   `;
 }
@@ -37,11 +55,10 @@ function menuGroupTemplate(group: MenuGroup): Template {
  * Main template for menu content
  */
 export function template(data: Menu): Template {
-  const variantGroups = data.variants ? Object.values(data.variants) : [];
+  const dataRenderer = createDataCellRenderer(data);
   return html`
     <div class="${styles.container}">
-      ${variantGroups.length ? html`${variantGroups.map((variantData) => VariantGroupUI.template(variantData))}` : ""}
-      ${menuGroupTemplate(data.content)}
+      ${menuGroupTemplate(data.content, dataRenderer)}
     </div>
   `;
 }
@@ -50,12 +67,12 @@ export function init(container: HTMLElement, subMenu: SubMenu) {
   // Find the included section
   const includedSection = container.querySelector('[data-included="true"]');
   const includedGroupItems = includedSection?.querySelector(`.${styles.groupItems}`);
-  
+
   // Process each included item
   for (const includedItem of subMenu.included) {
     const itemElement = container.querySelector(`#menu-item-${includedItem.itemId}`);
     if (!itemElement) continue;
-    
+
     if (includedItem.display === "none") {
       // Hide items with display: none
       (itemElement as HTMLElement).style.display = "none";
@@ -65,10 +82,10 @@ export function init(container: HTMLElement, subMenu: SubMenu) {
     }
     // If no display property, do nothing (leave item in place)
   }
-  
+
   // Hide all sections that have empty .groupItems
   const allGroups = container.querySelectorAll(`.${styles.group}`);
-  allGroups.forEach(group => {
+  allGroups.forEach((group) => {
     const groupItems = group.querySelector(`:scope > .${styles.groupItems}`);
     if (groupItems && groupItems.children.length === 0) {
       (group as HTMLElement).style.display = "none";
