@@ -12,6 +12,7 @@ import { mdColors, mdSpacing } from '@/styles/theme';
  */
 const HEADER_HEIGHT = '64px';
 const BOTTOM_BAR_HEIGHT = '80px';
+const BOTTOM_BAR_PADDING = '16px'; // Vertical padding for content
 
 /**
  * App Layout Styles
@@ -60,15 +61,17 @@ export const styles = {
     bottom: 0;
     left: 0;
     right: 0;
-    height: calc(${BOTTOM_BAR_HEIGHT} + env(safe-area-inset-bottom, 0));
+    /* Adjust height: reduce base height slightly since we're adding explicit padding */
+    height: calc(64px + env(safe-area-inset-bottom, 0));
     background-color: ${mdColors.surface};
     border-top: 1px solid ${mdColors.outlineVariant};
     z-index: 100;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 ${mdSpacing.md};
-    padding-bottom: env(safe-area-inset-bottom, 0);
+    /* Use symmetric padding on top, and safe area padding on bottom */
+    padding: ${mdSpacing.sm} ${mdSpacing.md};
+    padding-bottom: calc(${mdSpacing.sm} + env(safe-area-inset-bottom, 0));
     box-sizing: border-box;
   `,
 } as const;
