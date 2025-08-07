@@ -1,21 +1,25 @@
 /**
  * Menu Item Component
  * Individual menu item with selection states
- * 
+ *
  * @see /component-guidelines.md for component patterns and conventions
  */
 
-import { css } from '@linaria/core';
-import { html, Template, replaceElements, onClick, updateOnClick } from '@/lib/html-template';
-import { mdColors, mdTypography, mdSpacing } from '@/styles/theme';
-import { DataChange } from '@/lib/data-model-types';
-import { DisplayMenuItem } from '@/model/menu-model';
+import { css } from "@linaria/core";
+import { html, Template, replaceElements, onClick, updateOnClick } from "@/lib/html-template";
+import { mdColors, mdTypography, mdSpacing } from "@/styles/theme";
+import { DataChange } from "@/lib/data-model-types";
+import { DisplayMenuItem } from "@/model/menu-model";
+import { isSaleItem } from "@/types";
+
+export const ORDER_ITEM_EVENT = "order-item";
+export const OPEN_MENU_EVENT = "open-menu";
 
 /**
  * Price template - renders the price or navigation chevron
  */
 function priceTemplate(price?: number): Template {
-  if (typeof price === 'number') {
+  if (typeof price === "number") {
     return price === 0 ? html`` : html`<span class="${styles.price}">$${price.toFixed(2)}</span>`;
   }
   return html`<span class="${styles.price} material-icons">chevron_right</span>`;
@@ -24,23 +28,41 @@ function priceTemplate(price?: number): Template {
 /**
  * Menu item template - pure function
  */
-export function template(data: DisplayMenuItem): Template {
-  const iType = data.constraints?.choice?.single ? 'radio' : (data.subMenu ? 'none' : 'checkbox')
+export function template(item: DisplayMenuItem): Template {
+  const iType = item.constraints?.choice?.single ? "radio" : item.subMenu ? "none" : "checkbox";
+
+  function clickAction() {
+    if (item.subMenu) {
+      if (isSaleItem(item)) {
+        return ORDER_ITEM_EVENT;
+      }
+      return OPEN_MENU_EVENT;
+    }
+
+    if (iType === "radio" && item.selected) {
+      return undefined;
+    }
+
+    return { menu: { [item.id]: { selected: !item.selected } } };
+  }
+
   return html`
-    <div class="${styles.item}" 
-         id="menu-item-${data.id}"
-         data-type="menu-item"
-         data-id="${data.id}" 
-         data-interaction-type="${iType}"
-         data-selected=${data.selected ? 'true' : 'false'}
-         ${onClick(data.onClick)}>
+    <div
+      class="${styles.item}"
+      id="menu-item-${item.id}"
+      data-type="menu-item"
+      data-id="${item.id}"
+      data-interaction-type="${iType}"
+      data-selected=${item.selected ? "true" : "false"}
+      ${onClick(clickAction())}
+    >
       <div class="${styles.content}">
-        <span class="${styles.icon} ${iconClassName}">${data.icon || ''}</span>
+        <span class="${styles.icon} ${iconClassName}">${item.icon || ""}</span>
         <div class="${styles.text}">
-          <span class="${styles.name}">${data.name}</span>
-          ${data.description ? html`<p class="${styles.description}">${data.description}</p>` : ''}
+          <span class="${styles.name}">${item.name}</span>
+          ${item.description ? html`<p class="${styles.description}">${item.description}</p>` : ""}
         </div>
-        ${priceTemplate(data.price)}
+        ${priceTemplate(item.price)}
       </div>
     </div>
   `;
@@ -51,21 +73,26 @@ export function template(data: DisplayMenuItem): Template {
  */
 export function update(element: HTMLElement, event: DataChange<DisplayMenuItem>) {
   // Check if price or selectedVariantId has changed
-  if ('price' in event) {
+  if ("price" in event) {
     replaceElements(element, `.${styles.price}`, priceTemplate(event.price));
   }
 
-  if ('selected' in event) {
-    element.setAttribute('data-selected', event.selected ? 'true' : 'false');
-  }
+  if ("selected" in event) {
+    element.setAttribute("data-selected", event.selected ? "true" : "false");
 
-  if ('onClick' in event) {
-    updateOnClick(element, event.onClick);
+    if (element.dataset.interactionType === "radio" && event.selected) {
+      updateOnClick(element, undefined);
+    } else {
+      const id = element.dataset.id;
+      if (id) {
+        updateOnClick(element, { menu: { [id]: { selected: !event.selected } } });
+      }
+    }
   }
 }
 
 // Class name for icon element (needed for style references)
-const iconClassName = 'menu-item-icon';
+const iconClassName = "menu-item-icon";
 
 /**
  * Menu Item Styles
@@ -83,6 +110,15 @@ export const styles = {
     min-height: 80px;
     position: relative;
     text-align: left;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+    outline: none;
+
+    &:focus {
+      outline: none;
+    }
 
     &:last-child {
       border-bottom: none;
@@ -92,14 +128,15 @@ export const styles = {
       background: ${mdColors.surfaceContainer};
     }
 
-    &:active {
+    /* Remove active state to prevent sticky highlighting on touch devices */
+    /* &:active {
       background: ${mdColors.surfaceContainerHighest};
-    }
+    } */
 
     /* Checkmark for checkbox items */
     &[data-interaction-type="checkbox"][data-selected="true"] .${iconClassName}::after {
-      content: 'check';
-      font-family: 'Material Icons';
+      content: "check";
+      font-family: "Material Icons";
       font-size: 24px;
       color: ${mdColors.primary};
       position: absolute;
@@ -110,17 +147,17 @@ export const styles = {
       display: flex;
       align-items: center;
       justify-content: center;
-      background: ${mdColors.surface};
+      background: transparent;
       font-weight: 400;
       text-rendering: optimizeLegibility;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
-      font-feature-settings: 'liga';
+      font-feature-settings: "liga";
     }
 
     /* Radio button selection */
     &[data-interaction-type="radio"] .${iconClassName}::before {
-      content: '';
+      content: "";
       position: absolute;
       left: 2px;
       top: 2px;
@@ -138,7 +175,7 @@ export const styles = {
     }
 
     &[data-interaction-type="radio"][data-selected="true"] .${iconClassName}::after {
-      content: '';
+      content: "";
       position: absolute;
       left: 8px;
       top: 8px;
@@ -151,7 +188,7 @@ export const styles = {
     /* Override checkmark for radio button items */
     &[data-interaction-type="radio"] .${iconClassName}::after {
       font-family: inherit;
-      content: '';
+      content: "";
     }
   `,
 
@@ -213,15 +250,15 @@ export const styles = {
 
     /* Chevron icon for categories */
     &.material-icons {
-      font-family: 'Material Icons';
+      font-family: "Material Icons";
       font-size: 24px;
       color: ${mdColors.onSurfaceVariant};
       font-weight: 400;
       text-rendering: optimizeLegibility;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
-      font-feature-settings: 'liga';
+      font-feature-settings: "liga";
       line-height: 1;
     }
-  `
+  `,
 } as const;

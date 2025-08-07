@@ -8,17 +8,7 @@
 import { css } from '@linaria/core';
 import { html, Template } from '@/lib/html-template';
 import { mdColors, mdTypography, mdSpacing, mdElevation, mdShape } from '@/styles/theme';
-
-/**
- * Bottom bar data interface
- */
-export interface BottomBarData {
-  leftValue?: string | number;
-  leftLabel?: string;
-  rightValue?: string | number;
-  rightLabel?: string;
-  actionText?: string;
-}
+import { BottomBarData } from '@/model/menu-model';
 
 /**
  * Info display template for left/right sections
@@ -35,23 +25,27 @@ function infoDisplay(value: string | number, label: string): Template {
 /**
  * Bottom bar template - Material Design 3 Bottom App Bar
  */
-export function template(data: BottomBarData = {}): Template {
-  const {
-    leftValue = 2,
-    leftLabel = "Items",
-    rightValue = "$120",
-    rightLabel = "Total",
-    actionText = "View Cart"
-  } = data;
+export function template(data?: BottomBarData): Template {
+  if (!data) {
+    // Default values if no data provided
+    return html`
+      ${infoDisplay(0, "Items")}
+      <button class="${styles.actionButton}">View Order</button>
+      ${infoDisplay(0, "Total")}
+    `;
+  }
   
   return html`
-    ${infoDisplay(leftValue, leftLabel)}
+    ${infoDisplay(data.left.value, data.left.label)}
     
-    <button class="${styles.actionButton}">
-      ${actionText}
+    <button 
+      class="${styles.actionButton}"
+      ${data.action.onClick ? html`@click="${data.action.onClick}"` : ''}
+    >
+      ${data.action.label}
     </button>
     
-    ${infoDisplay(rightValue, rightLabel)}
+    ${infoDisplay(data.right.value, data.right.label)}
   `;
 }
 

@@ -124,24 +124,29 @@ export interface DataBinding<T> {
   update: (...args: any[]) => Update<T>;
 }
 
+export type CapturePath<_T = any> = CapturePathJS;
+
+type PathElt = string | typeof ALL;
+export type CapturePathJS = readonly [...(PathElt | PathElt[])[], PathElt | PathElt[] | ChangeDetector<any>];
+
 // Helper type to decrement numbers
 type Prev = [never, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
-export type CapturePath<T, Depth extends number = 6> = Depth extends 0
+export type CapturePathTS<T, Depth extends number = 6> = Depth extends 0
   ? never // Stop recursion at depth 0
   : T extends Record<string, any> & { length?: never }
     ?
         | // --- Paths for specific keys ---
         {
-            [K in keyof T & string]: // A path can be just the key or captured [key]
-            | [K]
+            [K in keyof T & string]:  // A path can be just the key or captured [key]
+              | [K]
               | [[K]]
               // Or the key followed by a ChangeDetector (terminal)
               | ([T[K]] extends [object] ? [K, ChangeDetector<T[K]>] | [[K], ChangeDetector<T[K]>] : never)
               // Or continue with sub-paths (decrement depth)
-              | (CapturePath<T[K], Prev[Depth]> extends never
+              | (CapturePathTS<T[K], Prev[Depth]> extends never
                   ? never
-                  : [K, ...CapturePath<T[K], Prev[Depth]>] | [[K], ...CapturePath<T[K], Prev[Depth]>]);
+                  : [K, ...CapturePathTS<T[K], Prev[Depth]>] | [[K], ...CapturePathTS<T[K], Prev[Depth]>]);
           }[keyof T & string]
         // --- Paths for the ALL symbol ---
         | (
@@ -151,11 +156,11 @@ export type CapturePath<T, Depth extends number = 6> = Depth extends 0
             | [typeof ALL, ChangeDetector<AllValueType<T>>]
             | [[typeof ALL], ChangeDetector<AllValueType<T>>]
             // Or [ALL, ...sub-path] with capture support (decrement depth)
-            | (CapturePath<Extract<T[keyof T], Record<string, any>>, Prev[Depth]> extends never
+            | (CapturePathTS<Extract<T[keyof T], Record<string, any>>, Prev[Depth]> extends never
                 ? never
                 :
-                    | [typeof ALL, ...CapturePath<Extract<T[keyof T], Record<string, any>>, Prev[Depth]>]
-                    | [[typeof ALL], ...CapturePath<Extract<T[keyof T], Record<string, any>>, Prev[Depth]>])
+                    | [typeof ALL, ...CapturePathTS<Extract<T[keyof T], Record<string, any>>, Prev[Depth]>]
+                    | [[typeof ALL], ...CapturePathTS<Extract<T[keyof T], Record<string, any>>, Prev[Depth]>])
           )
     : never;
 

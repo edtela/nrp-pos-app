@@ -128,11 +128,11 @@ export function isNestedGroup(group: MenuGroup): group is NestedGroup {
 }
 
 export function isCategory(item: MenuItem): boolean {
-  return item.price === undefined;
+  return !isSaleItem(item);
 }
 
 export function isSaleItem(item: MenuItem): boolean {
-  return item.price !== undefined;
+  return item.price !== undefined || item.variants !== undefined;
 }
 
 export function isVariantPrice(price?: number | VariantPrice): price is VariantPrice {
