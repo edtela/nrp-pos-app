@@ -1,0 +1,28 @@
+/**
+ * Global Styles
+ * CSS classes that can be referenced from data files
+ * These styles are not managed by Linaria to allow dynamic class names from JSON
+ */
+
+/* Menu group header styles - used by data files */
+.menu-group__header {
+  font: var(--md-sys-typescale-label-large-font);
+  color: var(--md-sys-color-on-surface-variant);
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+  margin: 24px 0 8px 0;
+  text-align: left;
+}
+
+.menu-group__header.menu-header-lg {
+  font: var(--md-sys-typescale-headline-small-font);
+  color: var(--md-sys-color-on-background);
+  text-align: center;
+  text-transform: none;
+  letter-spacing: normal;
+  margin: 0 0 16px 0;
+}
+
+.menu-group__header.included-header {
+  color: var(--md-sys-color-primary);
+}

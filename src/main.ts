@@ -1,6 +1,7 @@
 import { renderMenuPage } from '@/pages/menu-page';
 import { globals } from '@/styles/theme';
 import { initializeGlobalClickHandler } from '@/lib/html-template';
+import './styles/global.css';
 
 // Apply global styles
 document.documentElement.classList.add(globals);
