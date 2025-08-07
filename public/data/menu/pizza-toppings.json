@@ -50,14 +50,14 @@
         "options": { "extractIncluded": true },
         "header": {
           "text": "Included Toppings",
-          "classes": ["menu-group__header"]
+          "classes": ["menu-included-title"]
         },
         "items": []
       },
       {
         "header": {
           "text": "Cheese Options",
-          "classes": ["menu-group__header"]
+          "classes": ["menu-items-title"]
         },
         "items": [
           {
@@ -98,7 +98,7 @@
       {
         "header": {
           "text": "Sauce Options",
-          "classes": ["menu-group__header"]
+          "classes": ["menu-items-title"]
         },
         "items": [
           {
@@ -145,7 +145,7 @@
       {
         "header": {
           "text": "Meat Toppings",
-          "classes": ["menu-group__header"]
+          "classes": ["menu-items-title"]
         },
         "items": [
           {
@@ -213,7 +213,7 @@
       {
         "header": {
           "text": "Vegetable Toppings",
-          "classes": ["menu-group__header"]
+          "classes": ["menu-items-title"]
         },
         "items": [
           {
@@ -310,7 +310,7 @@
       {
         "header": {
           "text": "Premium Toppings",
-          "classes": ["menu-group__header"]
+          "classes": ["menu-items-title"]
         },
         "items": [
           {

@@ -17,7 +17,7 @@
       {
         "header": {
           "text": "Gelato Flavors",
-          "classes": ["menu-group__header"]
+          "classes": ["menu-items-title"]
         },
         "items": [
           {
@@ -80,7 +80,7 @@
       {
         "header": {
           "text": "Toppings",
-          "classes": ["menu-group__header"]
+          "classes": ["menu-items-title"]
         },
         "items": [
           {

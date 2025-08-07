@@ -28,8 +28,8 @@
   "content": {
     "header": [
       {
-        "text": "Pizza",
-        "classes": ["menu-group__header", "menu-header-lg"]
+        "text": "Pizza Menu",
+        "classes": ["menu-title"]
       },
       {
         "type": "variant-selection",
@@ -40,7 +40,7 @@
       {
         "header": {
           "text": "Classic Pizzas",
-          "classes": ["menu-group__header"]
+          "classes": ["menu-items-title"]
         },
         "items": [
           {
@@ -112,7 +112,7 @@
       {
         "header": {
           "text": "Build Your Own",
-          "classes": ["menu-group__header"]
+          "classes": ["menu-items-title"]
         },
         "items": [
           {
