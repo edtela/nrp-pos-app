@@ -179,6 +179,7 @@ const styles = {
 
   itemExpanded: css`
     background: ${mdColors.surface} !important;
+    border: 1px solid ${mdColors.outlineVariant};
     border-radius: ${mdShape.corner.medium};
     margin: ${mdSpacing.sm} 0;
     box-shadow: ${mdElevation.level2};

@@ -134,6 +134,7 @@ export const styles = {
 
   items: css`
     background: ${mdColors.surface};
+    border: 1px solid ${mdColors.outlineVariant};
     border-radius: ${mdShape.corner.medium};
     margin: ${mdSpacing.md} 0;
     overflow: hidden;
@@ -143,6 +144,7 @@ export const styles = {
   itemsWithExpanded: css`
     box-shadow: none;
     background: transparent;
+    border: none;
   `,
 
   empty: css`
