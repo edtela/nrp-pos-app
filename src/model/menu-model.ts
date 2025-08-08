@@ -14,6 +14,14 @@ export type OrderMenuItem = DisplayMenuItem & {
   unitPrice: number;
 };
 
+export function toOrderMenuItem(item: MenuItem) {
+  return { childrenPrice: 0, unitPrice: item.price ?? 0, quantity: 1, total: item.price ?? 0, ...item };
+}
+
+export function isOrderMenuItem(item: MenuItem | undefined): item is OrderMenuItem {
+  return item != null && "childrenPrice" in item;
+}
+
 export type MenuPageData = {
   order?: OrderMenuItem;
   variants: Record<string, VariantGroup>;

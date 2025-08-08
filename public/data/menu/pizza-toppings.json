@@ -45,6 +45,10 @@
     }
   },
   "content": {
+    "header": {
+      "type": "variant-selection",
+      "data": "pizza-size"
+    },
     "groups": [
       {
         "options": { "extractIncluded": true },

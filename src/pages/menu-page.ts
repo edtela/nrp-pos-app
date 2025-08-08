@@ -13,7 +13,7 @@ import * as AppHeader from "@/components/app-header";
 import * as AppBottomBar from "@/components/app-bottom-bar";
 import { styles as layoutStyles } from "@/components/app-layout";
 import { mdColors, mdSpacing } from "@/styles/theme";
-import { MenuPageData, MenuModel } from "@/model/menu-model";
+import { MenuPageData, MenuModel, toOrderMenuItem, OrderMenuItem } from "@/model/menu-model";
 import { DataChange, Update, UpdateResult, WHERE } from "@/lib/data-model-types";
 import { createStore } from "@/lib/storage";
 import { OPEN_MENU_EVENT, ORDER_ITEM_EVENT } from "@/components/menu-item";
@@ -76,74 +76,56 @@ export async function renderMenuPage(container: Element, menuFile: string = "ind
   const error = menuData ? undefined : "Failed to load menu data";
 
   render(template(menuData, error), container);
+  const page = container.querySelector(`.${layoutStyles.pageContainer}`) as HTMLElement;
+  if (!menuData || !page) return;
 
-  if (menuData) {
-    const changes = menuModel.setMenu(menuData);
-    update(changes);
+  let changes: UpdateResult<MenuPageData> | undefined = menuModel.setMenu(menuData);
 
-    crumbsStore.truncate(menuFile.slice(0, menuFile.length - 5));
-    const item = crumbsStore.getItem();
-    const subMenu = item?.subMenu;
-    console.log(item, subMenu);
-    if (subMenu) {
-      let changes: UpdateResult<MenuPageData> | undefined;
-
-      if (isSaleItem(item)) {
-        const addOrder: Update<MenuPageData> = {
-          order: [
-            {
-              ...item,
-              childrenPrice: 0,
-              unitPrice: item.price ?? 0,
-              quantity: 1,
-              total: item.price ?? 0,
-            },
-          ],
-        };
-        changes = menuModel.update(addOrder, changes);
-      }
-
-      const stmt = subMenu.included.reduce((u, key) => {
-        u[key.itemId] = { [WHERE]: (item: any) => item != null, included: 1 };
-        return u;
-      }, {} as any);
-
-      changes = menuModel.update({ menu: stmt }, changes);
-      update(changes);
-    }
-
-    // Attach event handlers to the pageContainer element (automatically cleaned up on re-render)
-    const menuPageElement = container.querySelector(`.${layoutStyles.pageContainer}`) as HTMLElement;
-    if (menuPageElement) {
-      if (subMenu) {
-        MenuContentUI.init(menuPageElement, subMenu);
-      }
-
-      MenuContentUI.addVariantHandler(menuPageElement, variantSelectHandler);
-
-      menuPageElement.addEventListener("app:state-update", (e: Event) => {
-        const customEvent = e as CustomEvent;
-        const change = menuModel.update(customEvent.detail);
-        update(change);
-      });
-
-      addEventHandler(menuPageElement, ORDER_ITEM_EVENT, (data) => {
-        const item = menuModel.getMenuItem(data.id);
-        if (item?.subMenu) {
-          crumbsStore.replace((c) => (c ? [...c, item] : [item]));
-          window.location.href = `/${item.subMenu.menuId}`;
-        }
-      });
-
-      addEventHandler(menuPageElement, OPEN_MENU_EVENT, (data) => {
-        const item = menuModel.getMenuItem(data.id);
-        if (item?.subMenu) {
-          crumbsStore.replace((c) => (c ? [...c, item] : [item]));
-          window.location.href = `/${item.subMenu.menuId}`;
-        }
-      });
-    }
+  crumbsStore.truncate(menuFile.slice(0, menuFile.length - 5)); //TODO properly handle ID
+  let menuItem = crumbsStore.getItem();
+  if (isSaleItem(menuItem)) {
+    menuItem = toOrderMenuItem(menuItem!);
+    const stmt: Update<MenuPageData> = { order: [menuItem as OrderMenuItem] };
+    changes = menuModel.update(stmt, changes);
   }
+
+  const subMenu = menuItem?.subMenu;
+  if (subMenu) {
+    const stmt = subMenu.included.reduce((u, key) => {
+      u[key.itemId] = { [WHERE]: (item: any) => item != null, included: 1 };
+      return u;
+    }, {} as any);
+
+    changes = menuModel.update({ menu: stmt }, changes);
+  }
+
+  MenuContentUI.init(page, menuItem);
+  update(changes);
+
+  // Attach event handlers to the pageContainer element (automatically cleaned up on re-render)
+  MenuContentUI.addVariantHandler(page, variantSelectHandler);
+
+  page.addEventListener("app:state-update", (e: Event) => {
+    const customEvent = e as CustomEvent;
+    const change = menuModel.update(customEvent.detail);
+    update(change);
+  });
+
+  addEventHandler(page, ORDER_ITEM_EVENT, (data) => {
+    const item = menuModel.getMenuItem(data.id);
+    if (item?.subMenu) {
+      crumbsStore.replace((c) => (c ? [...c, item] : [item]));
+      window.location.href = `/${item.subMenu.menuId}`;
+    }
+  });
+
+  addEventHandler(page, OPEN_MENU_EVENT, (data) => {
+    const item = menuModel.getMenuItem(data.id);
+    if (item?.subMenu) {
+      crumbsStore.replace((c) => (c ? [...c, item] : [item]));
+      window.location.href = `/${item.subMenu.menuId}`;
+    }
+  });
 }
 
 function template(menuData: Menu | null, error?: string) {
