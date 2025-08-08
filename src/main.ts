@@ -1,4 +1,5 @@
 import { renderMenuPage } from '@/pages/menu-page';
+import { renderOrderPage } from '@/pages/order-page';
 import { globals } from '@/styles/theme';
 import { initializeGlobalClickHandler } from '@/lib/html-template';
 import './styles/global.css';
@@ -31,6 +32,16 @@ async function init() {
     throw new Error('App root element not found');
   }
 
+  const path = window.location.pathname;
+  
+  // Route to order page
+  if (path === '/order' || path === '/order-empty') {
+    const showEmpty = path === '/order-empty';
+    await renderOrderPage(app, showEmpty);
+    return;
+  }
+
+  // Default to menu page
   const menuFile = getMenuFileFromPath();
   await renderMenuPage(app, menuFile);
 }
