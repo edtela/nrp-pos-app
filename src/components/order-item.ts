@@ -328,7 +328,6 @@ const styles = {
   expandedContent: css`
     background: transparent;
     border-top: none;
-    padding-bottom: ${mdSpacing.sm};
   `,
 
   expandedControls: css`
@@ -401,6 +400,8 @@ const styles = {
     padding: ${mdSpacing.sm} ${mdSpacing.md};
     background: ${mdColors.surfaceContainer};
     border-top: 1px solid ${mdColors.outlineVariant};
+    border-bottom-left-radius: ${mdShape.corner.medium};
+    border-bottom-right-radius: ${mdShape.corner.medium};
   `,
 
   actionsLeft: css`
