@@ -12,6 +12,7 @@ import { mdColors, mdSpacing, mdTypography, mdShape, mdElevation } from "@/style
 
 export interface OrderItemData extends OrderItem {
   expanded?: boolean;
+  flatMode?: boolean;
 }
 
 /**
@@ -78,8 +79,14 @@ export function template(item: OrderItemData): Template {
   const tokens = hasModifiers ? generateModificationTokens(item.modifiers) : [];
   const showQuantityInHeader = item.quantity > 1 && !item.expanded;
   
+  const itemClasses = [
+    styles.item,
+    item.expanded ? styles.itemExpanded : '',
+    item.flatMode && !item.expanded ? styles.itemFlat : ''
+  ].filter(Boolean).join(' ');
+  
   return html`
-    <div class="${styles.item} ${item.expanded ? styles.itemExpanded : ''}" id="order-item-${item.id}">
+    <div class="${itemClasses}" id="order-item-${item.id}">
       <div class="${styles.header}" data-action="toggle">
         <div class="${styles.info}">
           ${item.menuItem.icon ? html`<span class="${styles.icon}">${item.menuItem.icon}</span>` : ""}
@@ -158,7 +165,7 @@ const styles = {
   item: css`
     background: ${mdColors.surface};
     border-bottom: 1px solid ${mdColors.outlineVariant};
-    transition: background-color 200ms cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
     
     &:last-child {
       border-bottom: none;
@@ -167,10 +174,23 @@ const styles = {
     &:hover {
       background: ${mdColors.surfaceVariant};
     }
+
   `,
 
   itemExpanded: css`
-    background: ${mdColors.surfaceContainerLow} !important;
+    background: ${mdColors.surface} !important;
+    border-radius: ${mdShape.corner.medium};
+    margin: ${mdSpacing.sm} 0;
+    box-shadow: ${mdElevation.level2};
+  `,
+
+  itemFlat: css`
+    background: transparent !important;
+    border-bottom: none !important;
+    
+    &:hover {
+      background: transparent !important;
+    }
   `,
 
   header: css`

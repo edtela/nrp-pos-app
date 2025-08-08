@@ -32,12 +32,15 @@ function emptyOrderTemplate(): Template {
  * Order items list template
  */
 function orderItemsTemplate(items: OrderItem[]): Template {
+  const hasExpandedItem = expandedItems.size > 0;
+  
   return html`
     <div class="${styles.itemsContainer}">
-      <div class="${styles.items}">
+      <div class="${styles.items} ${hasExpandedItem ? styles.itemsWithExpanded : ''}">
         ${items.map(item => OrderItemUI.template({
           ...item,
-          expanded: expandedItems.has(item.id)
+          expanded: expandedItems.has(item.id),
+          flatMode: hasExpandedItem
         }))}
       </div>
     </div>
@@ -132,9 +135,14 @@ export const styles = {
   items: css`
     background: ${mdColors.surface};
     border-radius: ${mdShape.corner.medium};
-    margin: ${mdSpacing.md};
+    margin: ${mdSpacing.md} 0;
     overflow: hidden;
     box-shadow: ${mdElevation.level1};
+  `,
+
+  itemsWithExpanded: css`
+    box-shadow: none;
+    background: transparent;
   `,
 
   empty: css`
