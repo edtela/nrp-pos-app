@@ -126,6 +126,8 @@ export async function renderMenuPage(container: Element, menuFile: string = "ind
       window.location.href = `/${item.subMenu.menuId}`;
     }
   });
+
+  addEventHandler(page, OPEN_MENU_EVENT, (data) => {});
 }
 
 function template(menuData: Menu | null, error?: string) {

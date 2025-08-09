@@ -11,10 +11,12 @@ import * as OrderContentUI from "@/components/order-content";
 import * as AppHeader from "@/components/app-header";
 import * as AppBottomBar from "@/components/app-bottom-bar";
 import { styles as layoutStyles } from "@/components/app-layout";
+import { ALL, DataBinding } from "@/lib/data-model-types";
+import { createStore } from "@/lib/storage";
 
 // Data Types
 export type Order = {
-  orderIds: string[];
+  itemIds: string[];
   total: number;
 };
 
@@ -33,53 +35,40 @@ export type OrderModifier = {
   quantity: number;
 };
 
-// Mock data for testing
-const mockOrderItems: OrderItem[] = [
+export type OrderPageData = {
+  order: Order;
+  items: Record<string, OrderItem>;
+};
+
+const bindings: DataBinding<OrderPageData>[] = [
   {
-    id: "order-1",
-    menuItem: {
-      id: "pizza-1",
-      name: "Margherita Pizza",
-      description: "Fresh mozzarella, basil, tomato sauce",
-      icon: "🍕",
-      price: 12.99
+    onChange: ["items", [ALL], "quantity"],
+    update(item: OrderItem) {
+      return { items: { [item.id]: { total: item.quantity * item.unitPrice } } };
     },
-    modifiers: [
-      { menuItemId: "extra-cheese", name: "Extra Cheese", quantity: 1 },
-      { menuItemId: "olives", name: "Black Olives", quantity: 1 },
-      { menuItemId: "onions", name: "Onions", quantity: -1 }
-    ],
-    quantity: 2,
-    unitPrice: 14.99,
-    total: 29.98
   },
   {
-    id: "order-2",
-    menuItem: {
-      id: "pasta-1",
-      name: "Spaghetti Carbonara",
-      description: "Creamy sauce with pancetta and parmesan",
-      icon: "🍝",
-      price: 13.99
+    onChange: ["items"],
+    update(data: OrderPageData) {
+      let total = 0;
+      const orderIds = data.order.itemIds.filter((id) => data.items[id] != null);
+      for (const item of Object.values(data.items)) {
+        if (!orderIds.includes(item.id)) {
+          orderIds.push(item.id);
+        }
+        total += item.total;
+      }
+      return { order: [{ itemIds: orderIds, total }] };
     },
-    modifiers: [],
-    quantity: 1,
-    unitPrice: 13.99,
-    total: 13.99
-  }
+  },
 ];
-
-const mockOrder: Order = {
-  orderIds: ["order-1", "order-2"],
-  total: 43.97
-};
 
 // Template function
 function template(order: Order | null, orderItems: OrderItem[]) {
   const bottomBarData = {
     left: { value: orderItems.length, label: "Items" },
     action: { label: "Place Order" },
-    right: { value: `$${order?.total.toFixed(2) || "0.00"}`, label: "Total" }
+    right: { value: `$${order?.total.toFixed(2) || "0.00"}`, label: "Total" },
   };
 
   return html`
@@ -87,12 +76,8 @@ function template(order: Order | null, orderItems: OrderItem[]) {
       <header class="${layoutStyles.header}">
         ${AppHeader.template({ showBack: true, searchPlaceholder: "Search Order" })}
       </header>
-      <main class="${layoutStyles.content}">
-        ${OrderContentUI.template(order, orderItems)}
-      </main>
-      <div class="${layoutStyles.bottomBar}">
-        ${AppBottomBar.template(bottomBarData)}
-      </div>
+      <main class="${layoutStyles.content}">${OrderContentUI.template(order, orderItems)}</main>
+      <div class="${layoutStyles.bottomBar}">${AppBottomBar.template(bottomBarData)}</div>
     </div>
   `;
 }
@@ -100,8 +85,15 @@ function template(order: Order | null, orderItems: OrderItem[]) {
 // Export function to render order page
 export async function renderOrderPage(container: Element, showEmptyState: boolean = false) {
   // For testing: use empty arrays if showEmptyState is true
-  const order = showEmptyState ? null : mockOrder;
-  const orderItems = showEmptyState ? [] : mockOrderItems;
+  const order = createStore<Order>("order-v1-main", "session").get({ itemIds: [], total: 0 });
+  const items: OrderPageData["items"] = {};
+  for (const itemId in order.itemIds) {
+    const item = createStore<OrderItem>(`order-v1-${itemId}`, "session").get();
+    if (item) {
+      items[item.id] = item;
+    }
+  }
+  const orderItems = Object.values(items);
 
   render(template(order, orderItems), container);
 
