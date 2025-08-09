@@ -47,7 +47,7 @@ export async function init(container: Element) {
   container.addEventListener("app:state-update", (e: Event) => {
     const customEvent = e as CustomEvent;
     const changes = model.update(customEvent.detail);
-    update(changes);
+    update(container, changes, model.getData());
   });
 
   // Handle increase quantity event
@@ -58,7 +58,7 @@ export async function init(container: Element) {
       const changes = model.update({
         items: { [itemId]: { quantity: (q) => q + 1 } },
       });
-      update(changes);
+      update(container, changes, model.getData());
     }
   });
 
@@ -69,7 +69,7 @@ export async function init(container: Element) {
       const changes = model.update({
         items: { [itemId]: { quantity: (q) => Math.max(1, q - 1) } },
       });
-      update(changes);
+      update(container, changes, model.getData());
     }
   });
 
@@ -82,19 +82,21 @@ export async function init(container: Element) {
   });
 }
 
-function update(changes: UpdateResult<OrderPageData> | undefined) {
+function update(container: Element, changes: UpdateResult<OrderPageData> | undefined, data: OrderPageData) {
   if (!changes) return;
 
-  OrderContentUI.update(changes);
+  requestAnimationFrame(() => {
+    OrderContentUI.update(container, changes, data);
 
-  if (changes.order) {
-    const bottomBar = document.querySelector(`.${layoutStyles.bottomBar}`) as HTMLElement;
-    if (bottomBar) {
-      const stmt = { total: changes.order.total } as Partial<BottomBarData>;
-      if (Array.isArray(changes.order.itemIds)) {
-        stmt.itemCount = changes.order.itemIds.length;
+    if (changes.order) {
+      const bottomBar = container.querySelector(`.${layoutStyles.bottomBar}`) as HTMLElement;
+      if (bottomBar) {
+        const stmt = { total: changes.order.total } as Partial<BottomBarData>;
+        if (Array.isArray(changes.order.itemIds)) {
+          stmt.itemCount = changes.order.itemIds.length;
+        }
+        AppBottomBar.update(bottomBar, stmt);
       }
-      AppBottomBar.update(bottomBar, stmt);
     }
-  }
+  });
 }

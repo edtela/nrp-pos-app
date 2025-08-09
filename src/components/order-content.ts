@@ -66,65 +66,68 @@ export function init(container: HTMLElement, order: Order | null, orderItems: Or
 
   // Handle toggle events
   addEventHandler(container, OrderItemUI.TOGGLE_ITEM_EVENT, (data) => {
-    const itemId = data.itemId;
-    if (!itemId) return;
-
-    const itemElement = document.getElementById(`order-item-${itemId}`);
-    if (!itemElement) return;
-
-    // Batch all DOM updates in a single frame
-    requestAnimationFrame(() => {
-      // Get all items
-      const allItems = container.querySelectorAll('[id^="order-item-"]');
-      
-      // Check if clicking on already expanded item
-      const isExpanded = itemElement.getAttribute('data-expanded') === 'true';
-      
-      if (isExpanded) {
-        // Collapse the clicked item
-        itemElement.setAttribute('data-expanded', 'false');
-        
-        // No items expanded - remove flat mode
-        allItems.forEach(item => {
-          item.setAttribute('data-flat-mode', 'false');
-        });
-        
-        // Remove expanded class from container
-        const itemsContainer = container.querySelector(`.${styles.items}`);
-        if (itemsContainer) {
-          itemsContainer.classList.remove(styles.itemsWithExpanded);
-        }
-      } else {
-        // Collapse all other items and expand the clicked one
-        allItems.forEach(item => {
-          if (item === itemElement) {
-            item.setAttribute('data-expanded', 'true');
-          } else {
-            item.setAttribute('data-expanded', 'false');
-          }
-          item.setAttribute('data-flat-mode', 'true');
-        });
-        
-        // Add expanded class to container
-        const itemsContainer = container.querySelector(`.${styles.items}`);
-        if (itemsContainer) {
-          itemsContainer.classList.add(styles.itemsWithExpanded);
-        }
-      }
-    });
+    const itemElement = document.getElementById(`order-item-${data.itemId}`);
+    if (itemElement) {
+      requestAnimationFrame(() => toggleExpanded(container, itemElement));
+    }
   });
 }
 
-export function update(changes: UpdateResult<OrderPageData>) {
+export function update(container: Element, changes: UpdateResult<OrderPageData>, data: OrderPageData) {
   if (changes.items) {
     for (const itemId of Object.keys(changes.items)) {
-      const value = (changes.items as any)[itemId];
-      if (value === undefined) {
-        const itemElement = document.getElementById(`order-item-${itemId}`);
-        if (itemElement) {
+      const itemElement = document.getElementById(`order-item-${itemId}`);
+      if (itemElement) {
+        const change = (changes.items as any)[itemId];
+        if (change === undefined) {
+          const isExpanded = itemElement.getAttribute("data-expanded") === "true";
+          if (isExpanded) {
+            toggleExpanded(container, itemElement);
+          }
           itemElement.remove();
+        } else {
+          OrderItemUI.update(itemElement, change, data.items[itemId]);
         }
       }
+    }
+  }
+}
+
+function toggleExpanded(container: Element, itemElement: HTMLElement) {
+  const allItems = container.querySelectorAll('[id^="order-item-"]');
+
+  // Check if clicking on already expanded item
+  const isExpanded = itemElement.getAttribute("data-expanded") === "true";
+
+  if (isExpanded) {
+    // Collapse the clicked item
+    itemElement.setAttribute("data-expanded", "false");
+
+    // No items expanded - remove flat mode
+    allItems.forEach((item) => {
+      item.setAttribute("data-flat-mode", "false");
+    });
+
+    // Remove expanded class from container
+    const itemsContainer = container.querySelector(`.${styles.items}`);
+    if (itemsContainer) {
+      itemsContainer.classList.remove(styles.itemsWithExpanded);
+    }
+  } else {
+    // Collapse all other items and expand the clicked one
+    allItems.forEach((item) => {
+      if (item === itemElement) {
+        item.setAttribute("data-expanded", "true");
+      } else {
+        item.setAttribute("data-expanded", "false");
+      }
+      item.setAttribute("data-flat-mode", "true");
+    });
+
+    // Add expanded class to container
+    const itemsContainer = container.querySelector(`.${styles.items}`);
+    if (itemsContainer) {
+      itemsContainer.classList.add(styles.itemsWithExpanded);
     }
   }
 }

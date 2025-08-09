@@ -9,6 +9,7 @@ import { css } from "@linaria/core";
 import { html, Template, dataAttr, CLICK_EVENT, onClick } from "@/lib/html-template";
 import { OrderItem, OrderModifier } from "@/model/order-model";
 import { mdColors, mdSpacing, mdTypography, mdShape, mdElevation } from "@/styles/theme";
+import { UpdateResult } from "@/lib/data-model-types";
 
 // Event constants
 export const INCREASE_QUANTITY_EVENT = "increase-quantity-event";
@@ -91,7 +92,12 @@ export function template(item: OrderItemData): Template {
   const itemClasses = styles.item;
 
   return html`
-    <div class="${itemClasses}" id="order-item-${item.id}" data-expanded="${item.expanded ? 'true' : 'false'}" data-flat-mode="${item.flatMode ? 'true' : 'false'}">
+    <div
+      class="${itemClasses}"
+      id="order-item-${item.id}"
+      data-expanded="${item.expanded ? "true" : "false"}"
+      data-flat-mode="${item.flatMode ? "true" : "false"}"
+    >
       <div class="${styles.header}" data-item-id="${item.id}" ${onClick(TOGGLE_ITEM_EVENT)}>
         <div class="${styles.info}">
           ${item.menuItem.icon ? html`<span class="${styles.icon}">${item.menuItem.icon}</span>` : ""}
@@ -126,52 +132,103 @@ export function template(item: OrderItemData): Template {
       </div>
 
       <div class="${styles.expandedContent}">
-              <div class="${styles.expandedControls}">
-                <div class="${styles.tokens}">
-                  ${tokens.length > 0
-                    ? tokens.map((token) => modificationTokenTemplate(token))
-                    : html`<span class="${styles.noModifiers}">No modifications</span>`}
-                </div>
-                <div class="${styles.quantityControls}">
-                  <button class="${styles.quantityBtn}" data-item-id="${item.id}" ${onClick(DECREASE_QUANTITY_EVENT)} ${item.quantity <= 1 ? "disabled" : ""}>
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                      <path d="M5 12h14" />
-                    </svg>
-                  </button>
-                  <span class="${styles.quantityDisplay}">${item.quantity}</span>
-                  <button class="${styles.quantityBtn}" data-item-id="${item.id}" ${onClick(INCREASE_QUANTITY_EVENT)}>
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                      <path d="M5 12h14" />
-                      <path d="M12 5v14" />
-                    </svg>
-                  </button>
-                </div>
-              </div>
+        <div class="${styles.expandedControls}">
+          <div class="${styles.tokens}">
+            ${tokens.length > 0
+              ? tokens.map((token) => modificationTokenTemplate(token))
+              : html`<span class="${styles.noModifiers}">No modifications</span>`}
+          </div>
+          <div class="${styles.quantityControls}">
+            <button
+              class="${styles.quantityBtn}"
+              data-item-id="${item.id}"
+              ${onClick(DECREASE_QUANTITY_EVENT)}
+              ${item.quantity <= 1 ? "disabled" : ""}
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M5 12h14" />
+              </svg>
+            </button>
+            <span class="${styles.quantityDisplay}">${item.quantity}</span>
+            <button class="${styles.quantityBtn}" data-item-id="${item.id}" ${onClick(INCREASE_QUANTITY_EVENT)}>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M5 12h14" />
+                <path d="M12 5v14" />
+              </svg>
+            </button>
+          </div>
+        </div>
 
-              <div class="${styles.actions}">
-                <div class="${styles.actionsLeft}">
-                  <button class="${styles.actionBtn} ${styles.actionBtnDestructive}" ${dataAttr(CLICK_EVENT, {items: {[item.id]: []}})}>
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                      <path d="M3 6h18" />
-                      <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
-                      <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
-                    </svg>
-                    Remove
-                  </button>
-                </div>
-                <div class="${styles.actionsRight}">
-                  <button class="${styles.actionBtn} ${styles.actionBtnSecondary}" data-item-id="${item.id}" ${onClick(MODIFY_ITEM_EVENT)}>
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                      <path d="m17 3 4 4-9 9-4 1 1-4 9-9z" />
-                      <path d="m15 5 4 4" />
-                    </svg>
-                    Modify
-                  </button>
-                </div>
-              </div>
-            </div>
+        <div class="${styles.actions}">
+          <div class="${styles.actionsLeft}">
+            <button
+              class="${styles.actionBtn} ${styles.actionBtnDestructive}"
+              ${dataAttr(CLICK_EVENT, { items: { [item.id]: [] } })}
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 6h18" />
+                <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
+                <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
+              </svg>
+              Remove
+            </button>
+          </div>
+          <div class="${styles.actionsRight}">
+            <button
+              class="${styles.actionBtn} ${styles.actionBtnSecondary}"
+              data-item-id="${item.id}"
+              ${onClick(MODIFY_ITEM_EVENT)}
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="m17 3 4 4-9 9-4 1 1-4 9-9z" />
+                <path d="m15 5 4 4" />
+              </svg>
+              Modify
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   `;
+}
+
+export function update(container: Element, changes: UpdateResult<OrderItem>, data: OrderItem) {
+  // Update quantity display
+  if (changes.quantity !== undefined) {
+    const quantityDisplay = container.querySelector(`.${styles.quantityDisplay}`);
+    if (quantityDisplay) {
+      quantityDisplay.textContent = String(data.quantity);
+    }
+
+    // Update quantity in header if visible (only shown when collapsed and quantity > 1)
+    const isExpanded = container.getAttribute('data-expanded') === 'true';
+    const quantityHeader = container.querySelector(`.${styles.quantity}`);
+    if (quantityHeader) {
+      if (!isExpanded && data.quantity > 1) {
+        quantityHeader.textContent = `${data.quantity} × $${data.unitPrice.toFixed(2)}`;
+        quantityHeader.parentElement?.style.setProperty('display', '');
+      } else {
+        quantityHeader.parentElement?.style.setProperty('display', 'none');
+      }
+    }
+
+    // Update decrease button disabled state
+    const quantityControls = container.querySelector(`.${styles.quantityControls}`);
+    if (quantityControls) {
+      const decreaseBtn = quantityControls.querySelector('button:first-child') as HTMLButtonElement;
+      if (decreaseBtn) {
+        decreaseBtn.disabled = data.quantity <= 1;
+      }
+    }
+  }
+
+  // Update total price
+  if (changes.total !== undefined) {
+    const priceElement = container.querySelector(`.${styles.price}`);
+    if (priceElement) {
+      priceElement.textContent = `$${data.total.toFixed(2)}`;
+    }
+  }
 }
 
 /**
