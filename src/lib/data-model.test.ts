@@ -2262,7 +2262,7 @@ describe('data-model', () => {
                         data: { count: (_key, result) => {
                             const meta = result?.[META];
                             if (!meta || !meta.count) return false;
-                            return meta.count.original === 0 && result?.count && result.count > 0;
+                            return meta.count.original === 0 && result?.count && typeof result.count === 'number' && result.count > 0;
                         }}
                     }] as CapturePath<TestData>,
                     update: (module) => {

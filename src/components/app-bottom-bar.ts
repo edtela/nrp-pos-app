@@ -58,7 +58,6 @@ const CONFIGS: Record<BottomBarMode, BottomBarConfig> = {
   },
 };
 
-
 /**
  * Bottom bar template - Material Design 3 Bottom App Bar
  */
@@ -71,7 +70,9 @@ export function template(mode: BottomBarMode = "view"): Template {
       <div class="${styles.infoLabel}">${config.left.label}</div>
     </div>
 
-    <button class="${styles.actionButton}" data-bottom-bar-button ${onClick(config.action.onClick)}>${config.action.label}</button>
+    <button class="${styles.actionButton}" data-bottom-bar-button ${onClick(config.action.onClick)}>
+      ${config.action.label}
+    </button>
 
     <div class="${styles.infoSection}" data-bottom-bar-field="${config.right.field}">
       <div class="${styles.infoValue}">$0.00</div>
@@ -81,10 +82,10 @@ export function template(mode: BottomBarMode = "view"): Template {
 }
 
 // Field formatters for consistent value formatting
-const FIELD_FORMATTERS: Record<keyof Omit<BottomBarData, 'mode'>, (value: any) => string> = {
+const FIELD_FORMATTERS: Record<keyof Omit<BottomBarData, "mode">, (value: any) => string> = {
   itemCount: (value) => String(value || 0),
   quantity: (value) => String(value || 0),
-  total: (value) => `$${(value || 0).toFixed(2)}`
+  total: (value) => `$${(value || 0).toFixed(2)}`,
 };
 
 /**
@@ -94,12 +95,11 @@ const FIELD_FORMATTERS: Record<keyof Omit<BottomBarData, 'mode'>, (value: any) =
  */
 export function update(container: HTMLElement, updates: Partial<BottomBarData>): void {
   const { mode, ...rest } = updates;
-  
   // If mode changed, re-render with empty values
   if (mode !== undefined) {
     render(template(mode), container);
   }
-  
+
   // Update individual fields
   for (const [field, value] of Object.entries(rest)) {
     const element = container.querySelector(`[data-bottom-bar-field="${field}"]`);
@@ -165,4 +165,3 @@ export const styles = {
     }
   `,
 } as const;
-

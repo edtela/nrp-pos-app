@@ -69,9 +69,9 @@ function modificationTokenTemplate(token: ModificationToken): Template {
 }
 
 /**
- * Modifier detail template for expanded view
+ * Modifier detail template for expanded view (currently unused)
  */
-function modifierDetailTemplate(modifier: OrderModifier): Template {
+/* function _modifierDetailTemplate(modifier: OrderModifier): Template {
   const isRemoved = modifier.quantity < 0;
   return html`
     <div class="${styles.modifierDetail} ${isRemoved ? styles.modifierRemoved : ""}">
@@ -79,7 +79,7 @@ function modifierDetailTemplate(modifier: OrderModifier): Template {
       <span class="${styles.modifierQuantity}">×${Math.abs(modifier.quantity)}</span>
     </div>
   `;
-}
+} */
 
 /**
  * Order item template
@@ -200,22 +200,20 @@ export function update(container: Element, changes: UpdateResult<OrderItem>, dat
       quantityDisplay.textContent = String(data.quantity);
     }
 
-    // Update quantity in header if visible (only shown when collapsed and quantity > 1)
-    const isExpanded = container.getAttribute('data-expanded') === 'true';
-    const quantityHeader = container.querySelector(`.${styles.quantity}`);
+    const quantityHeader = container.querySelector(`.${styles.quantity}`) as HTMLElement;
     if (quantityHeader) {
-      if (!isExpanded && data.quantity > 1) {
+      if (data.quantity > 1) {
+        quantityHeader.style.setProperty("display", "");
         quantityHeader.textContent = `${data.quantity} × $${data.unitPrice.toFixed(2)}`;
-        quantityHeader.parentElement?.style.setProperty('display', '');
       } else {
-        quantityHeader.parentElement?.style.setProperty('display', 'none');
+        quantityHeader.style.setProperty("display", "none");
       }
     }
 
     // Update decrease button disabled state
     const quantityControls = container.querySelector(`.${styles.quantityControls}`);
     if (quantityControls) {
-      const decreaseBtn = quantityControls.querySelector('button:first-child') as HTMLButtonElement;
+      const decreaseBtn = quantityControls.querySelector("button:first-child") as HTMLButtonElement;
       if (decreaseBtn) {
         decreaseBtn.disabled = data.quantity <= 1;
       }

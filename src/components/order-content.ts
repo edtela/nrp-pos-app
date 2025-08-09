@@ -49,7 +49,7 @@ function orderItemsTemplate(items: OrderItem[]): Template {
 /**
  * Main template for order content
  */
-export function template(order: Order | null, orderItems: OrderItem[]): Template {
+export function template(_order: Order | null, orderItems: OrderItem[]): Template {
   const hasItems = orderItems && orderItems.length > 0;
 
   return html`

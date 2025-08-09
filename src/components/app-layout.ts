@@ -12,7 +12,7 @@ import { mdColors, mdSpacing } from '@/styles/theme';
  */
 const HEADER_HEIGHT = '64px';
 const BOTTOM_BAR_HEIGHT = '80px';
-const BOTTOM_BAR_PADDING = '16px'; // Vertical padding for content
+// const BOTTOM_BAR_PADDING = '16px'; // Vertical padding for content (unused)
 
 /**
  * App Layout Styles

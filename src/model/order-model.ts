@@ -47,7 +47,7 @@ export function getStore(id: string) {
 }
 
 export function getOrder() {
-  return createStore(storageKey(MAIN_ORDER_ID), "session").get({ items: [], total: 0 }) as Order;
+  return createStore(storageKey(MAIN_ORDER_ID), "session").get({ itemIds: [], total: 0 }) as Order;
 }
 
 export function getOrderItem(id: string) {
