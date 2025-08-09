@@ -67,6 +67,8 @@ export function template(order: Order | null, orderItems: OrderItem[]): Template
  * Returns update function for re-rendering
  */
 export function init(container: HTMLElement, order: Order | null, orderItems: OrderItem[]) {
+  render(template(order, orderItems), container);
+
   // Handle click events for item actions
   const handleClick = (event: Event) => {
     const target = event.target as HTMLElement;

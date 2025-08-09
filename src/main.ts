@@ -1,8 +1,8 @@
-import { renderMenuPage } from '@/pages/menu-page';
-import { renderOrderPage } from '@/pages/order-page';
-import { globals } from '@/styles/theme';
-import { initializeGlobalClickHandler } from '@/lib/html-template';
-import './styles/global.css';
+import * as MenuPage from "@/pages/menu-page";
+import * as OrderPage from "@/pages/order-page";
+import { globals } from "@/styles/theme";
+import { initializeGlobalClickHandler } from "@/lib/html-template";
+import "./styles/global.css";
 
 // Apply global styles
 document.documentElement.classList.add(globals);
@@ -11,7 +11,7 @@ document.documentElement.classList.add(globals);
 initializeGlobalClickHandler();
 
 // Get the root element
-const app = document.getElementById('app');
+const app = document.getElementById("app");
 
 // Extract menu file from URL path (e.g., /breakfast -> breakfast.json)
 function getMenuFileFromPath(): string {
@@ -19,8 +19,8 @@ function getMenuFileFromPath(): string {
   const menuName = path.slice(1); // Remove leading slash
 
   // Map common paths to actual files
-  if (!menuName || menuName === 'menu') {
-    return 'index.json';
+  if (!menuName || menuName === "menu") {
+    return "index.json";
   }
 
   return `${menuName}.json`;
@@ -29,27 +29,26 @@ function getMenuFileFromPath(): string {
 // Initialize the app
 async function init() {
   if (!app) {
-    throw new Error('App root element not found');
+    throw new Error("App root element not found");
   }
 
   const path = window.location.pathname;
-  
+
   // Route to order page
-  if (path === '/order' || path === '/order-empty') {
-    const showEmpty = path === '/order-empty';
-    await renderOrderPage(app, showEmpty);
+  if (path === "/order" || path === "/order-empty") {
+    await OrderPage.init(app);
     return;
   }
 
   // Default to menu page
   const menuFile = getMenuFileFromPath();
-  await renderMenuPage(app, menuFile);
+  await MenuPage.renderMenuPage(app, menuFile);
 }
 
 // Start the application
 init().catch(console.error);
 
 // Handle navigation (for development)
-window.addEventListener('popstate', () => {
+window.addEventListener("popstate", () => {
   init().catch(console.error);
 });
