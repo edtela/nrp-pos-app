@@ -11,7 +11,8 @@ import * as AppHeader from "@/components/app-header";
 import * as AppBottomBar from "@/components/app-bottom-bar";
 import { BottomBarData } from "@/components/app-bottom-bar";
 import { styles as layoutStyles } from "@/components/app-layout";
-import { Order, OrderItem, orderModel } from "@/model/order-model";
+import { Order, OrderItem, orderModel, OrderPageData } from "@/model/order-model";
+import { UpdateResult } from "@/lib/data-model-types";
 
 // Template function
 function template(order: Order | null, orderItems: OrderItem[]) {
@@ -48,6 +49,12 @@ export async function renderOrderPage(container: Element, showEmptyState: boolea
     OrderContentUI.init(orderContainer, data.order, orderItems);
   }
 
+  container.addEventListener("app:state-update", (e: Event) => {
+    const customEvent = e as CustomEvent;
+    const changes = model.update(customEvent.detail);
+    update(changes);
+  });
+
   // Handle empty state button click
   container.addEventListener("click", (event) => {
     const target = event.target as HTMLElement;
@@ -56,4 +63,13 @@ export async function renderOrderPage(container: Element, showEmptyState: boolea
       window.location.href = "/";
     }
   });
+}
+
+function update(changes: UpdateResult<OrderPageData> | undefined) {
+  if (!changes) return;
+
+  OrderContentUI.update(changes);
+
+  if (changes.order) {
+  }
 }

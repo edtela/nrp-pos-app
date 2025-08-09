@@ -7,9 +7,11 @@
 
 import { css } from "@linaria/core";
 import { html, Template, render } from "@/lib/html-template";
-import { Order, OrderItem } from "@/pages/order-page";
+import { Order, OrderItem } from "@/model/order-model";
 import * as OrderItemUI from "./order-item";
 import { mdColors, mdSpacing, mdElevation, mdShape, mdTypography } from "@/styles/theme";
+import { UpdateResult } from "@/lib/data-model-types";
+import { OrderPageData } from "@/model/order-model";
 
 // Track expanded state for items
 const expandedItems = new Set<string>();
@@ -33,15 +35,17 @@ function emptyOrderTemplate(): Template {
  */
 function orderItemsTemplate(items: OrderItem[]): Template {
   const hasExpandedItem = expandedItems.size > 0;
-  
+
   return html`
     <div class="${styles.itemsContainer}">
-      <div class="${styles.items} ${hasExpandedItem ? styles.itemsWithExpanded : ''}">
-        ${items.map(item => OrderItemUI.template({
-          ...item,
-          expanded: expandedItems.has(item.id),
-          flatMode: hasExpandedItem
-        }))}
+      <div class="${styles.items} ${hasExpandedItem ? styles.itemsWithExpanded : ""}">
+        ${items.map((item) =>
+          OrderItemUI.template({
+            ...item,
+            expanded: expandedItems.has(item.id),
+            flatMode: hasExpandedItem,
+          }),
+        )}
       </div>
     </div>
   `;
@@ -52,11 +56,9 @@ function orderItemsTemplate(items: OrderItem[]): Template {
  */
 export function template(order: Order | null, orderItems: OrderItem[]): Template {
   const hasItems = orderItems && orderItems.length > 0;
-  
+
   return html`
-    <div class="${styles.container}">
-      ${hasItems ? orderItemsTemplate(orderItems) : emptyOrderTemplate()}
-    </div>
+    <div class="${styles.container}">${hasItems ? orderItemsTemplate(orderItems) : emptyOrderTemplate()}</div>
   `;
 }
 
@@ -68,19 +70,19 @@ export function init(container: HTMLElement, order: Order | null, orderItems: Or
   // Handle click events for item actions
   const handleClick = (event: Event) => {
     const target = event.target as HTMLElement;
-    const action = target.closest('[data-action]') as HTMLElement;
-    
+    const action = target.closest("[data-action]") as HTMLElement;
+
     if (!action) return;
-    
+
     const actionType = action.dataset.action;
     const itemElement = action.closest('[id^="order-item-"]') as HTMLElement;
-    
+
     if (!itemElement) return;
-    
-    const itemId = itemElement.id.replace('order-item-', '');
-    
+
+    const itemId = itemElement.id.replace("order-item-", "");
+
     switch (actionType) {
-      case 'toggle':
+      case "toggle":
         if (expandedItems.has(itemId)) {
           expandedItems.delete(itemId);
         } else {
@@ -89,32 +91,46 @@ export function init(container: HTMLElement, order: Order | null, orderItems: Or
         // Re-render the content
         render(template(order, orderItems), container);
         break;
-        
-      case 'increase':
+
+      case "increase":
         console.log(`Increase quantity for item ${itemId}`);
         break;
-        
-      case 'decrease':
+
+      case "decrease":
         console.log(`Decrease quantity for item ${itemId}`);
         break;
-        
-      case 'remove':
+
+      case "remove":
         console.log(`Remove item ${itemId}`);
         break;
-        
-      case 'modify':
+
+      case "modify":
         console.log(`Modify item ${itemId}`);
         window.location.href = `/?modify=${itemId}`;
         break;
     }
   };
-  
-  container.addEventListener('click', handleClick);
-  
+
+  container.addEventListener("click", handleClick);
+
   // Return cleanup function
   return () => {
-    container.removeEventListener('click', handleClick);
+    container.removeEventListener("click", handleClick);
   };
+}
+
+export function update(changes: UpdateResult<OrderPageData>) {
+  if (changes.items) {
+    for (const itemId of Object.keys(changes.items)) {
+      const value = (changes.items as any)[itemId];
+      if (value === undefined) {
+        const itemElement = document.getElementById(`order-item-${itemId}`);
+        if (itemElement) {
+          itemElement.remove();
+        }
+      }
+    }
+  }
 }
 
 /**

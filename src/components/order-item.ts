@@ -1,13 +1,13 @@
 /**
  * Order Item Component
  * Displays a single order item with modifiers and pricing
- * 
+ *
  * @see /component-guidelines.md for component patterns and conventions
  */
 
 import { css } from "@linaria/core";
-import { html, Template } from "@/lib/html-template";
-import { OrderItem, OrderModifier } from "@/pages/order-page";
+import { html, Template, dataAttr, CLICK_EVENT } from "@/lib/html-template";
+import { OrderItem, OrderModifier } from "@/model/order-model";
 import { mdColors, mdSpacing, mdTypography, mdShape, mdElevation } from "@/styles/theme";
 
 export interface OrderItemData extends OrderItem {
@@ -18,7 +18,7 @@ export interface OrderItemData extends OrderItem {
 /**
  * Modification token types
  */
-type ModificationTokenType = 'removed' | 'added-free' | 'added-priced';
+type ModificationTokenType = "removed" | "added-free" | "added-priced";
 
 interface ModificationToken {
   name: string;
@@ -30,17 +30,17 @@ interface ModificationToken {
  * Generate modification tokens from modifiers
  */
 function generateModificationTokens(modifiers: OrderModifier[]): ModificationToken[] {
-  return modifiers.map(modifier => {
+  return modifiers.map((modifier) => {
     if (modifier.quantity < 0) {
-      return { name: `No ${modifier.name}`, type: 'removed' };
+      return { name: `No ${modifier.name}`, type: "removed" };
     } else {
       // In a real implementation, we'd check if the modifier has a price
       // For now, we'll randomly assign for demo purposes
       const hasPrice = Math.random() > 0.5;
-      return { 
-        name: modifier.name, 
-        type: hasPrice ? 'added-priced' : 'added-free',
-        price: hasPrice ? 2.00 : undefined
+      return {
+        name: modifier.name,
+        type: hasPrice ? "added-priced" : "added-free",
+        price: hasPrice ? 2.0 : undefined,
       };
     }
   });
@@ -50,11 +50,14 @@ function generateModificationTokens(modifiers: OrderModifier[]): ModificationTok
  * Modification token template
  */
 function modificationTokenTemplate(token: ModificationToken): Template {
-  const className = token.type === 'removed' ? styles.tokenRemoved :
-                   token.type === 'added-priced' ? styles.tokenPriced :
-                   styles.tokenFree;
-  const suffix = token.price ? ` (+$${token.price.toFixed(2)})` : '';
-  
+  const className =
+    token.type === "removed"
+      ? styles.tokenRemoved
+      : token.type === "added-priced"
+        ? styles.tokenPriced
+        : styles.tokenFree;
+  const suffix = token.price ? ` (+$${token.price.toFixed(2)})` : "";
+
   return html`<span class="${styles.token} ${className}">${token.name}${suffix}</span>`;
 }
 
@@ -64,7 +67,7 @@ function modificationTokenTemplate(token: ModificationToken): Template {
 function modifierDetailTemplate(modifier: OrderModifier): Template {
   const isRemoved = modifier.quantity < 0;
   return html`
-    <div class="${styles.modifierDetail} ${isRemoved ? styles.modifierRemoved : ''}">
+    <div class="${styles.modifierDetail} ${isRemoved ? styles.modifierRemoved : ""}">
       <span class="${styles.modifierName}">${modifier.name}</span>
       <span class="${styles.modifierQuantity}">×${Math.abs(modifier.quantity)}</span>
     </div>
@@ -78,13 +81,15 @@ export function template(item: OrderItemData): Template {
   const hasModifiers = item.modifiers && item.modifiers.length > 0;
   const tokens = hasModifiers ? generateModificationTokens(item.modifiers) : [];
   const showQuantityInHeader = item.quantity > 1 && !item.expanded;
-  
+
   const itemClasses = [
     styles.item,
-    item.expanded ? styles.itemExpanded : '',
-    item.flatMode && !item.expanded ? styles.itemFlat : ''
-  ].filter(Boolean).join(' ');
-  
+    item.expanded ? styles.itemExpanded : "",
+    item.flatMode && !item.expanded ? styles.itemFlat : "",
+  ]
+    .filter(Boolean)
+    .join(" ");
+
   return html`
     <div class="${itemClasses}" id="order-item-${item.id}">
       <div class="${styles.header}" data-action="toggle">
@@ -96,64 +101,80 @@ export function template(item: OrderItemData): Template {
               <div class="${styles.price}">$${item.total.toFixed(2)}</div>
             </div>
             <div class="${styles.descriptionSection}">
-              ${!item.expanded && tokens.length > 0 ? 
-                html`<div class="${styles.tokens}">${tokens.map(token => modificationTokenTemplate(token))}</div>` :
-                (item.menuItem.description ? html`<p class="${styles.description}">${item.menuItem.description}</p>` : "")
-              }
-              ${showQuantityInHeader ? html`<span class="${styles.quantity}">${item.quantity} × $${item.unitPrice.toFixed(2)}</span>` : ""}
+              ${!item.expanded && tokens.length > 0
+                ? html`<div class="${styles.tokens}">${tokens.map((token) => modificationTokenTemplate(token))}</div>`
+                : item.menuItem.description
+                  ? html`<p class="${styles.description}">${item.menuItem.description}</p>`
+                  : ""}
+              ${showQuantityInHeader
+                ? html`<span class="${styles.quantity}">${item.quantity} × $${item.unitPrice.toFixed(2)}</span>`
+                : ""}
             </div>
           </div>
         </div>
-        <svg class="${styles.toggle}" style="${item.expanded ? 'transform: rotate(180deg)' : ''}" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="m6 9 6 6 6-6"/>
+        <svg
+          class="${styles.toggle}"
+          style="${item.expanded ? "transform: rotate(180deg)" : ""}"
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path d="m6 9 6 6 6-6" />
         </svg>
       </div>
-      
-      ${item.expanded ? html`
-        <div class="${styles.expandedContent}">
-          <div class="${styles.expandedControls}">
-            <div class="${styles.tokens}">
-              ${tokens.length > 0 ? tokens.map(token => modificationTokenTemplate(token)) : html`<span class="${styles.noModifiers}">No modifications</span>`}
+
+      ${item.expanded
+        ? html`
+            <div class="${styles.expandedContent}">
+              <div class="${styles.expandedControls}">
+                <div class="${styles.tokens}">
+                  ${tokens.length > 0
+                    ? tokens.map((token) => modificationTokenTemplate(token))
+                    : html`<span class="${styles.noModifiers}">No modifications</span>`}
+                </div>
+                <div class="${styles.quantityControls}">
+                  <button class="${styles.quantityBtn}" data-action="decrease" ${item.quantity <= 1 ? "disabled" : ""}>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M5 12h14" />
+                    </svg>
+                  </button>
+                  <span class="${styles.quantityDisplay}">${item.quantity}</span>
+                  <button class="${styles.quantityBtn}" data-action="increase">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M5 12h14" />
+                      <path d="M12 5v14" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+
+              <div class="${styles.actions}">
+                <div class="${styles.actionsLeft}">
+                  <button class="${styles.actionBtn} ${styles.actionBtnDestructive}" ${dataAttr(CLICK_EVENT, {items: {[item.id]: []}})}>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M3 6h18" />
+                      <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
+                      <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
+                    </svg>
+                    Remove
+                  </button>
+                </div>
+                <div class="${styles.actionsRight}">
+                  <button class="${styles.actionBtn} ${styles.actionBtnSecondary}" data-action="modify">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="m17 3 4 4-9 9-4 1 1-4 9-9z" />
+                      <path d="m15 5 4 4" />
+                    </svg>
+                    Modify
+                  </button>
+                </div>
+              </div>
             </div>
-            <div class="${styles.quantityControls}">
-              <button class="${styles.quantityBtn}" data-action="decrease" ${item.quantity <= 1 ? 'disabled' : ''}>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M5 12h14"/>
-                </svg>
-              </button>
-              <span class="${styles.quantityDisplay}">${item.quantity}</span>
-              <button class="${styles.quantityBtn}" data-action="increase">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M5 12h14"/>
-                  <path d="M12 5v14"/>
-                </svg>
-              </button>
-            </div>
-          </div>
-          
-          <div class="${styles.actions}">
-            <div class="${styles.actionsLeft}">
-              <button class="${styles.actionBtn} ${styles.actionBtnDestructive}" data-action="remove">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M3 6h18"/>
-                  <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/>
-                  <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/>
-                </svg>
-                Remove
-              </button>
-            </div>
-            <div class="${styles.actionsRight}">
-              <button class="${styles.actionBtn} ${styles.actionBtnSecondary}" data-action="modify">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="m17 3 4 4-9 9-4 1 1-4 9-9z"/>
-                  <path d="m15 5 4 4"/>
-                </svg>
-                Modify
-              </button>
-            </div>
-          </div>
-        </div>
-      ` : ""}
+          `
+        : ""}
     </div>
   `;
 }
@@ -166,7 +187,7 @@ const styles = {
     background: ${mdColors.surface};
     border-bottom: 1px solid ${mdColors.outlineVariant};
     transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
-    
+
     &:last-child {
       border-bottom: none;
     }
@@ -174,7 +195,6 @@ const styles = {
     &:hover {
       background: ${mdColors.surfaceVariant};
     }
-
   `,
 
   itemExpanded: css`
@@ -188,7 +208,7 @@ const styles = {
   itemFlat: css`
     background: transparent !important;
     border-bottom: none !important;
-    
+
     &:hover {
       background: transparent !important;
     }
@@ -365,7 +385,7 @@ const styles = {
     }
 
     &:hover::before {
-      content: '';
+      content: "";
       position: absolute;
       inset: 0;
       background-color: ${mdColors.onSurface};
@@ -437,7 +457,7 @@ const styles = {
     }
 
     &:hover::before {
-      content: '';
+      content: "";
       position: absolute;
       inset: 0;
       background-color: ${mdColors.onSurface};

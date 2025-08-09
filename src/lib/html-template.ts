@@ -1,3 +1,5 @@
+export const CLICK_EVENT = "click-event";
+
 export interface Template {
   strings: TemplateStringsArray;
   values: any[];
@@ -21,7 +23,7 @@ export function classMap(classInfo: Record<string, boolean>): string {
   return Object.entries(classInfo)
     .filter(([_, value]) => value)
     .map(([className]) => className)
-    .join(' ');
+    .join(" ");
 }
 
 /**
@@ -33,10 +35,10 @@ export function styleMap(styleInfo: Record<string, any>): string {
   return Object.entries(styleInfo)
     .map(([property, value]) => {
       // Convert camelCase to kebab-case
-      const cssProperty = property.replace(/[A-Z]/g, match => `-${match.toLowerCase()}`);
+      const cssProperty = property.replace(/[A-Z]/g, (match) => `-${match.toLowerCase()}`);
       return `${cssProperty}: ${value}`;
     })
-    .join('; ');
+    .join("; ");
 }
 
 /**
@@ -47,17 +49,17 @@ export function styleMap(styleInfo: Record<string, any>): string {
  */
 export function dataAttr(name: string, value: any): string {
   if (value === undefined) {
-    return '';
+    return "";
   }
-  
+
   // Handle different value types
-  if (typeof value === 'object' && value !== null) {
+  if (typeof value === "object" && value !== null) {
     // For objects, JSON.stringify and escape quotes for HTML attribute
     const json = JSON.stringify(value);
-    const escaped = json.replace(/"/g, '&quot;');
+    const escaped = json.replace(/"/g, "&quot;");
     return `data-${name}="${escaped}"`;
   }
-  
+
   // For primitives, convert to string
   return `data-${name}="${String(value)}"`;
 }
@@ -72,13 +74,13 @@ export function dataAttr(name: string, value: any): string {
 export function replaceElements(container: Element, selector: string, template: Template | null | undefined): number {
   const elements = container.querySelectorAll(selector);
   let replacedCount = 0;
-  
-  elements.forEach(element => {
+
+  elements.forEach((element) => {
     if (template) {
       // Create a temporary container to render the template
-      const temp = document.createElement('div');
+      const temp = document.createElement("div");
       render(template, temp);
-      
+
       // Replace the element with all children from the temp container
       if (temp.firstElementChild) {
         element.replaceWith(temp.firstElementChild);
@@ -90,7 +92,7 @@ export function replaceElements(container: Element, selector: string, template: 
       replacedCount++;
     }
   });
-  
+
   return replacedCount;
 }
 
@@ -101,16 +103,16 @@ export function replaceElements(container: Element, selector: string, template: 
  */
 export function onClick(eventTypeOrUpdate: string | object | undefined): string {
   if (eventTypeOrUpdate === undefined) {
-    return '';
+    return "";
   }
-  
-  if (typeof eventTypeOrUpdate === 'string') {
+
+  if (typeof eventTypeOrUpdate === "string") {
     return `data-click-event="${eventTypeOrUpdate}"`;
   }
-  
+
   // For objects, JSON.stringify and escape quotes for HTML attribute
   const json = JSON.stringify(eventTypeOrUpdate);
-  const escaped = json.replace(/"/g, '&quot;');
+  const escaped = json.replace(/"/g, "&quot;");
   return `data-click-event="${escaped}"`;
 }
 
@@ -119,17 +121,17 @@ export function onClick(eventTypeOrUpdate: string | object | undefined): string 
  * Call this once during app initialization
  */
 export function initializeGlobalClickHandler(root: Element = document.body): void {
-  root.addEventListener('click', (e: Event) => {
+  root.addEventListener("click", (e: Event) => {
     const target = e.target as HTMLElement;
-    
+
     // Find the closest element with click event data
-    const eventElement = target.closest('[data-click-event]') as HTMLElement;
-    
+    const eventElement = target.closest("[data-click-event]") as HTMLElement;
+
     if (!eventElement) return;
-    
-    const clickEventData = eventElement.getAttribute('data-click-event');
+
+    const clickEventData = eventElement.getAttribute("data-click-event");
     if (!clickEventData) return; // Handle case where attribute exists but is empty
-    
+
     // Dispatch the custom event
     dispatchCustomEvent(eventElement, clickEventData, e as MouseEvent);
   });
@@ -141,16 +143,16 @@ export function initializeGlobalClickHandler(root: Element = document.body): voi
 function dispatchCustomEvent(target: HTMLElement, eventData: string, originalEvent: MouseEvent): void {
   let eventType: string;
   let detail: any;
-  
+
   // Try to parse as JSON first
   try {
     // Unescape HTML entities
     const unescaped = eventData.replace(/&quot;/g, '"');
     const parsed = JSON.parse(unescaped);
-    
-    if (typeof parsed === 'object' && parsed !== null) {
+
+    if (typeof parsed === "object" && parsed !== null) {
       // It's an object - use generic event type and pass the object as detail
-      eventType = 'state-update';
+      eventType = "state-update";
       detail = parsed;
     } else {
       // Parsed but not an object, treat as string
@@ -158,7 +160,7 @@ function dispatchCustomEvent(target: HTMLElement, eventData: string, originalEve
       detail = {
         target,
         dataset: { ...target.dataset },
-        originalEvent
+        originalEvent,
       };
     }
   } catch {
@@ -167,16 +169,16 @@ function dispatchCustomEvent(target: HTMLElement, eventData: string, originalEve
     detail = {
       target,
       dataset: { ...target.dataset },
-      originalEvent
+      originalEvent,
     };
   }
-  
+
   // Create and dispatch custom event
   const customEvent = new CustomEvent(`app:${eventType}`, {
     bubbles: true,
-    detail
+    detail,
   });
-  
+
   target.dispatchEvent(customEvent);
 }
 
@@ -188,17 +190,17 @@ function dispatchCustomEvent(target: HTMLElement, eventData: string, originalEve
 export function updateOnClick(element: HTMLElement, eventTypeOrUpdate: string | object | undefined): void {
   if (eventTypeOrUpdate === undefined) {
     // Remove the attribute if undefined
-    element.removeAttribute('data-click-event');
+    element.removeAttribute("data-click-event");
     return;
   }
-  
-  if (typeof eventTypeOrUpdate === 'string') {
-    element.setAttribute('data-click-event', eventTypeOrUpdate);
+
+  if (typeof eventTypeOrUpdate === "string") {
+    element.setAttribute("data-click-event", eventTypeOrUpdate);
   } else {
     // For objects, JSON.stringify and escape quotes
     const json = JSON.stringify(eventTypeOrUpdate);
-    const escaped = json.replace(/"/g, '&quot;');
-    element.setAttribute('data-click-event', escaped);
+    const escaped = json.replace(/"/g, "&quot;");
+    element.setAttribute("data-click-event", escaped);
   }
 }
 
@@ -216,17 +218,17 @@ export type AppEventHandler<T> = (data: T) => void;
 export function addEventHandler<T extends Record<string, any>>(
   element: Element,
   eventName: string,
-  handler: AppEventHandler<T>
+  handler: AppEventHandler<T>,
 ): void {
   element.addEventListener(`app:${eventName}`, (e: Event) => {
     const customEvent = e as CustomEvent;
     const { dataset } = customEvent.detail;
-    
+
     // Convert dataset strings to proper types based on common patterns
     const data = {} as T;
     for (const [key, value] of Object.entries(dataset)) {
-      if (value === 'true' || value === 'false') {
-        (data as any)[key] = value === 'true';
+      if (value === "true" || value === "false") {
+        (data as any)[key] = value === "true";
       } else if (value && !isNaN(Number(value))) {
         // Only convert to number if it's a valid number
         (data as any)[key] = Number(value);
@@ -234,38 +236,40 @@ export function addEventHandler<T extends Record<string, any>>(
         (data as any)[key] = value;
       }
     }
-    
+
     handler(data);
   });
 }
 
 function buildHTML(template: Template): string {
   const { strings, values } = template;
-  let result = '';
-  
+  let result = "";
+
   for (let i = 0; i < strings.length; i++) {
     result += strings[i];
-    
+
     if (i < values.length) {
       const value = values[i];
-      
-      if (value && typeof value === 'object' && 'strings' in value) {
+
+      if (value && typeof value === "object" && "strings" in value) {
         // Nested template
         result += buildHTML(value as Template);
       } else if (Array.isArray(value)) {
         // Array of templates or strings
-        result += value.map(item => {
-          if (item && typeof item === 'object' && 'strings' in item) {
-            return buildHTML(item as Template);
-          }
-          return String(item);
-        }).join('');
+        result += value
+          .map((item) => {
+            if (item && typeof item === "object" && "strings" in item) {
+              return buildHTML(item as Template);
+            }
+            return String(item);
+          })
+          .join("");
       } else if (value !== null && value !== undefined) {
         // Regular value
         result += String(value);
       }
     }
   }
-  
+
   return result;
 }
