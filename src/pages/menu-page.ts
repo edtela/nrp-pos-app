@@ -6,7 +6,7 @@
  */
 
 import { css } from "@linaria/core";
-import { addEventHandler, html, render } from "@/lib/html-template";
+import { addEventHandler, html, render, STATE_UPDATE_EVENT } from "@/lib/html-template";
 import { isSaleItem, Menu, MenuItem } from "@/types";
 import * as MenuContentUI from "@/components/menu-content";
 import * as AppHeader from "@/components/app-header";
@@ -115,7 +115,7 @@ export async function renderMenuPage(container: Element, menuFile: string = "ind
   // Attach event handlers to the pageContainer element (automatically cleaned up on re-render)
   MenuContentUI.addVariantHandler(page, variantSelectHandler);
 
-  page.addEventListener("app:state-update", (e: Event) => {
+  page.addEventListener(`app:${STATE_UPDATE_EVENT}`, (e: Event) => {
     const customEvent = e as CustomEvent;
     const change = menuModel.update(customEvent.detail);
     update(change);

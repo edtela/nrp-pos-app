@@ -5,7 +5,7 @@
  * @see /component-guidelines.md for component patterns and conventions
  */
 
-import { html, render, addEventHandler } from "@/lib/html-template";
+import { html, render, addEventHandler, STATE_UPDATE_EVENT } from "@/lib/html-template";
 import * as OrderContentUI from "@/components/order-content";
 import * as OrderItemUI from "@/components/order-item";
 import * as AppHeader from "@/components/app-header";
@@ -44,7 +44,7 @@ export async function init(container: Element) {
     OrderContentUI.init(contentContainer, data.order, orderItems);
   }
 
-  container.addEventListener("app:state-update", (e: Event) => {
+  container.addEventListener(`app:${STATE_UPDATE_EVENT}`, (e: Event) => {
     const customEvent = e as CustomEvent;
     const changes = model.update(customEvent.detail);
     update(container, changes, model.getData());

@@ -1,4 +1,5 @@
 export const CLICK_EVENT = "click-event";
+export const STATE_UPDATE_EVENT = "state-update";
 
 export interface Template {
   strings: TemplateStringsArray;
@@ -42,6 +43,21 @@ export function styleMap(styleInfo: Record<string, any>): string {
 }
 
 /**
+ * Helper to escape a value for HTML attributes
+ * @param value - The value to escape
+ * @returns Escaped string suitable for HTML attributes
+ */
+function escapeAttributeValue(value: any): string {
+  if (typeof value === "object" && value !== null) {
+    // For objects, JSON.stringify and escape quotes for HTML attribute
+    const json = JSON.stringify(value);
+    return json.replace(/"/g, "&quot;");
+  }
+  // For primitives, convert to string
+  return String(value);
+}
+
+/**
  * Conditionally outputs a data attribute if value is not undefined
  * @param name - The data attribute name (without 'data-' prefix)
  * @param value - The value to set (if undefined, returns empty string)
@@ -51,17 +67,21 @@ export function dataAttr(name: string, value: any): string {
   if (value === undefined) {
     return "";
   }
+  return `data-${name}="${escapeAttributeValue(value)}"`;
+}
 
-  // Handle different value types
-  if (typeof value === "object" && value !== null) {
-    // For objects, JSON.stringify and escape quotes for HTML attribute
-    const json = JSON.stringify(value);
-    const escaped = json.replace(/"/g, "&quot;");
-    return `data-${name}="${escaped}"`;
+/**
+ * Update a data attribute on an existing DOM element
+ * @param element - The element to update
+ * @param name - The data attribute name (without 'data-' prefix)
+ * @param value - The value to set (if undefined, removes the attribute)
+ */
+export function updateDataAttr(element: HTMLElement, name: string, value: any): void {
+  if (value === undefined) {
+    element.removeAttribute(`data-${name}`);
+  } else {
+    element.setAttribute(`data-${name}`, escapeAttributeValue(value));
   }
-
-  // For primitives, convert to string
-  return `data-${name}="${String(value)}"`;
 }
 
 /**
@@ -102,18 +122,7 @@ export function replaceElements(container: Element, selector: string, template: 
  * @returns Data attributes string
  */
 export function onClick(eventTypeOrUpdate: string | object | undefined): string {
-  if (eventTypeOrUpdate === undefined) {
-    return "";
-  }
-
-  if (typeof eventTypeOrUpdate === "string") {
-    return `data-click-event="${eventTypeOrUpdate}"`;
-  }
-
-  // For objects, JSON.stringify and escape quotes for HTML attribute
-  const json = JSON.stringify(eventTypeOrUpdate);
-  const escaped = json.replace(/"/g, "&quot;");
-  return `data-click-event="${escaped}"`;
+  return dataAttr(CLICK_EVENT, eventTypeOrUpdate);
 }
 
 /**
@@ -125,11 +134,11 @@ export function initializeGlobalClickHandler(root: Element = document.body): voi
     const target = e.target as HTMLElement;
 
     // Find the closest element with click event data
-    const eventElement = target.closest("[data-click-event]") as HTMLElement;
+    const eventElement = target.closest(`[data-${CLICK_EVENT}]`) as HTMLElement;
 
     if (!eventElement) return;
 
-    const clickEventData = eventElement.getAttribute("data-click-event");
+    const clickEventData = eventElement.getAttribute(`data-${CLICK_EVENT}`);
     if (!clickEventData) return; // Handle case where attribute exists but is empty
 
     // Dispatch the custom event
@@ -152,7 +161,7 @@ function dispatchCustomEvent(target: HTMLElement, eventData: string, originalEve
 
     if (typeof parsed === "object" && parsed !== null) {
       // It's an object - use generic event type and pass the object as detail
-      eventType = "state-update";
+      eventType = STATE_UPDATE_EVENT;
       detail = parsed;
     } else {
       // Parsed but not an object, treat as string
@@ -188,20 +197,7 @@ function dispatchCustomEvent(target: HTMLElement, eventData: string, originalEve
  * @param eventTypeOrUpdate The new click handler value
  */
 export function updateOnClick(element: HTMLElement, eventTypeOrUpdate: string | object | undefined): void {
-  if (eventTypeOrUpdate === undefined) {
-    // Remove the attribute if undefined
-    element.removeAttribute("data-click-event");
-    return;
-  }
-
-  if (typeof eventTypeOrUpdate === "string") {
-    element.setAttribute("data-click-event", eventTypeOrUpdate);
-  } else {
-    // For objects, JSON.stringify and escape quotes
-    const json = JSON.stringify(eventTypeOrUpdate);
-    const escaped = json.replace(/"/g, "&quot;");
-    element.setAttribute("data-click-event", escaped);
-  }
+  updateDataAttr(element, CLICK_EVENT, eventTypeOrUpdate);
 }
 
 /**
