@@ -11,12 +11,14 @@ import { isSaleItem, Menu, MenuItem } from "@/types";
 import * as MenuContentUI from "@/components/menu-content";
 import * as AppHeader from "@/components/app-header";
 import * as AppBottomBar from "@/components/app-bottom-bar";
+import { BottomBarData } from "@/components/app-bottom-bar";
 import { styles as layoutStyles } from "@/components/app-layout";
 import { mdColors, mdSpacing } from "@/styles/theme";
 import { MenuPageData, MenuModel, toOrderMenuItem, OrderMenuItem } from "@/model/menu-model";
 import { DataChange, Update, UpdateResult, WHERE } from "@/lib/data-model-types";
 import { createStore } from "@/lib/storage";
 import { OPEN_MENU_EVENT, ORDER_ITEM_EVENT } from "@/components/menu-item";
+import { typeChange } from "@/lib/data-model";
 
 type BreadCrumb = MenuItem;
 const crumbsStore = {
@@ -39,6 +41,7 @@ const crumbsStore = {
 };
 
 const menuModel = new MenuModel();
+let bottomBarData: BottomBarData = { mode: 'view', itemCount: 0, total: 0 };
 
 // HANDLERS
 function variantSelectHandler(groupId: string, selectedId: string) {
@@ -138,7 +141,7 @@ function template(menuData: Menu | null, error?: string) {
         ${error ? html` <div class="${styles.error}">Error: ${error}</div> ` : ""}
         ${menuData ? MenuContentUI.template(menuData) : ""}
       </main>
-      <div class="${layoutStyles.bottomBar}">${AppBottomBar.template(menuModel.data.bottom)}</div>
+      <div class="${layoutStyles.bottomBar}">${AppBottomBar.template(bottomBarData)}</div>
     </div>
   `;
 }
@@ -151,11 +154,27 @@ function update(event: DataChange<MenuPageData> | undefined) {
     MenuContentUI.update(container, event);
   }
 
-  // Update bottom bar if it changed
-  if (event.bottom) {
+  // Update bottom bar based on order state
+  if (event.order !== undefined || typeChange("order", event)) {
     const bottomBar = document.querySelector(`.${layoutStyles.bottomBar}`) as HTMLElement;
     if (bottomBar) {
-      render(AppBottomBar.template(menuModel.data.bottom), bottomBar);
+      if (menuModel.data.order) {
+        // Add mode when we have an order item
+        bottomBarData = {
+          mode: 'add',
+          quantity: menuModel.data.order.quantity,
+          total: menuModel.data.order.total
+        };
+      } else {
+        // View mode when no order item
+        // TODO: Get actual totals from storage
+        bottomBarData = {
+          mode: 'view',
+          itemCount: 0,
+          total: 0
+        };
+      }
+      render(AppBottomBar.template(bottomBarData), bottomBar);
     }
   }
 }

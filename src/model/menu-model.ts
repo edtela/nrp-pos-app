@@ -1,7 +1,6 @@
 import { iterateItems, Menu, MenuItem, VariantGroup } from "@/types";
 import { anyChange, state, typeChange } from "@/lib/data-model";
 import { ALL, DataBinding, Update, UpdateResult, WHERE } from "@/lib/data-model-types";
-import { BottomBarData } from "@/model/page-model";
 
 export type DisplayMenuItem = MenuItem & {
   selected?: boolean;
@@ -27,7 +26,6 @@ export type MenuPageData = {
   order?: OrderMenuItem;
   variants: Record<string, VariantGroup>;
   menu: Record<string, DisplayMenuItem>;
-  bottom: BottomBarData;
 };
 
 const bindings: DataBinding<MenuPageData>[] = [
@@ -142,57 +140,14 @@ const bindings: DataBinding<MenuPageData>[] = [
       return { order: { unitPrice, total } };
     },
   },
-  //update bottom ber
-  {
-    init: true,
-    onChange: [{ order: typeChange }],
-    update(page: MenuPageData) {
-      if (page.order) {
-        return {
-          bottom: {
-            left: {
-              label: "Quantity",
-            },
-            action: {
-              label: "Add to Order",
-            },
-            right: {
-              label: "Total",
-            },
-          },
-        };
-      }
-      return {};
-    },
-  },
-  {
-    onChange: [["order"], { total: anyChange, quantity: anyChange }],
-    update(order: OrderMenuItem) {
-      return { bottom: { left: { value: order.quantity }, right: { value: order.total.toFixed(2) } } };
-    },
-  },
 ];
 
-const bottom: BottomBarData = {
-  left: {
-    value: 0,
-    label: "Items",
-  },
-  action: {
-    label: "View Order",
-  },
-  right: {
-    value: 0,
-    label: "Total",
-  },
-};
-
 export class MenuModel {
-  data: MenuPageData = { variants: {}, menu: {}, bottom };
+  data: MenuPageData = { variants: {}, menu: {} };
   model = state(bindings);
 
   setMenu(menu: Menu) {
-    this.data = { variants: {}, menu: {}, bottom };
+    this.data = { variants: {}, menu: {} };
     for (let vg of Object.values(menu.variants ?? {})) {
       this.data.variants[vg.id] = { ...vg };
     }

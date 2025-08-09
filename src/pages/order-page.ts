@@ -10,6 +10,7 @@ import { MenuItem } from "@/types";
 import * as OrderContentUI from "@/components/order-content";
 import * as AppHeader from "@/components/app-header";
 import * as AppBottomBar from "@/components/app-bottom-bar";
+import { BottomBarData } from "@/components/app-bottom-bar";
 import { styles as layoutStyles } from "@/components/app-layout";
 import { ALL, DataBinding } from "@/lib/data-model-types";
 import { createStore } from "@/lib/storage";
@@ -65,10 +66,10 @@ const bindings: DataBinding<OrderPageData>[] = [
 
 // Template function
 function template(order: Order | null, orderItems: OrderItem[]) {
-  const bottomBarData = {
-    left: { value: orderItems.length, label: "Items" },
-    action: { label: "Place Order" },
-    right: { value: `$${order?.total.toFixed(2) || "0.00"}`, label: "Total" },
+  const bottomBarData: BottomBarData = {
+    mode: 'send',
+    itemCount: orderItems.length,
+    total: order?.total || 0
   };
 
   return html`
