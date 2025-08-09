@@ -14,6 +14,7 @@ import { mdColors, mdSpacing, mdTypography, mdShape, mdElevation } from "@/style
 export const INCREASE_QUANTITY_EVENT = "increase-quantity-event";
 export const DECREASE_QUANTITY_EVENT = "decrease-quantity-event";
 export const MODIFY_ITEM_EVENT = "modify-item-event";
+export const TOGGLE_ITEM_EVENT = "toggle-item-event";
 
 export interface OrderItemData extends OrderItem {
   expanded?: boolean;
@@ -87,17 +88,11 @@ export function template(item: OrderItemData): Template {
   const tokens = hasModifiers ? generateModificationTokens(item.modifiers) : [];
   const showQuantityInHeader = item.quantity > 1 && !item.expanded;
 
-  const itemClasses = [
-    styles.item,
-    item.expanded ? styles.itemExpanded : "",
-    item.flatMode && !item.expanded ? styles.itemFlat : "",
-  ]
-    .filter(Boolean)
-    .join(" ");
+  const itemClasses = styles.item;
 
   return html`
-    <div class="${itemClasses}" id="order-item-${item.id}">
-      <div class="${styles.header}" data-action="toggle">
+    <div class="${itemClasses}" id="order-item-${item.id}" data-expanded="${item.expanded ? 'true' : 'false'}" data-flat-mode="${item.flatMode ? 'true' : 'false'}">
+      <div class="${styles.header}" data-item-id="${item.id}" ${onClick(TOGGLE_ITEM_EVENT)}>
         <div class="${styles.info}">
           ${item.menuItem.icon ? html`<span class="${styles.icon}">${item.menuItem.icon}</span>` : ""}
           <div class="${styles.details}">
@@ -119,7 +114,6 @@ export function template(item: OrderItemData): Template {
         </div>
         <svg
           class="${styles.toggle}"
-          style="${item.expanded ? "transform: rotate(180deg)" : ""}"
           width="20"
           height="20"
           viewBox="0 0 24 24"
@@ -131,9 +125,7 @@ export function template(item: OrderItemData): Template {
         </svg>
       </div>
 
-      ${item.expanded
-        ? html`
-            <div class="${styles.expandedContent}">
+      <div class="${styles.expandedContent}">
               <div class="${styles.expandedControls}">
                 <div class="${styles.tokens}">
                   ${tokens.length > 0
@@ -178,8 +170,6 @@ export function template(item: OrderItemData): Template {
                 </div>
               </div>
             </div>
-          `
-        : ""}
     </div>
   `;
 }
@@ -200,22 +190,24 @@ const styles = {
     &:hover {
       background: ${mdColors.surfaceVariant};
     }
-  `,
 
-  itemExpanded: css`
-    background: ${mdColors.surface} !important;
-    border: 1px solid ${mdColors.outlineVariant};
-    border-radius: ${mdShape.corner.medium};
-    margin: ${mdSpacing.sm} 0;
-    box-shadow: ${mdElevation.level2};
-  `,
+    /* Expanded item styling */
+    &[data-expanded="true"] {
+      background: ${mdColors.surface} !important;
+      border: 1px solid ${mdColors.outlineVariant};
+      border-radius: ${mdShape.corner.medium};
+      margin: ${mdSpacing.sm} 0;
+      box-shadow: ${mdElevation.level2};
+    }
 
-  itemFlat: css`
-    background: transparent !important;
-    border-bottom: none !important;
-
-    &:hover {
+    /* Flat mode styling for collapsed items */
+    &[data-flat-mode="true"][data-expanded="false"] {
       background: transparent !important;
+      border-bottom: none !important;
+
+      &:hover {
+        background: transparent !important;
+      }
     }
   `,
 
@@ -318,6 +310,10 @@ const styles = {
     height: 20px;
     align-self: flex-start;
     margin-top: 2px;
+
+    [data-expanded="true"] & {
+      transform: rotate(180deg);
+    }
   `,
 
   tokens: css`
@@ -354,6 +350,10 @@ const styles = {
   expandedContent: css`
     background: transparent;
     border-top: none;
+
+    [data-expanded="false"] & {
+      display: none;
+    }
   `,
 
   expandedControls: css`

@@ -6,15 +6,12 @@
  */
 
 import { css } from "@linaria/core";
-import { html, Template, render } from "@/lib/html-template";
+import { html, Template, render, addEventHandler } from "@/lib/html-template";
 import { Order, OrderItem } from "@/model/order-model";
 import * as OrderItemUI from "./order-item";
 import { mdColors, mdSpacing, mdElevation, mdShape, mdTypography } from "@/styles/theme";
 import { UpdateResult } from "@/lib/data-model-types";
 import { OrderPageData } from "@/model/order-model";
-
-// Track expanded state for items
-const expandedItems = new Set<string>();
 
 /**
  * Empty order state template
@@ -34,16 +31,14 @@ function emptyOrderTemplate(): Template {
  * Order items list template
  */
 function orderItemsTemplate(items: OrderItem[]): Template {
-  const hasExpandedItem = expandedItems.size > 0;
-
   return html`
     <div class="${styles.itemsContainer}">
-      <div class="${styles.items} ${hasExpandedItem ? styles.itemsWithExpanded : ""}">
+      <div class="${styles.items}">
         ${items.map((item) =>
           OrderItemUI.template({
             ...item,
-            expanded: expandedItems.has(item.id),
-            flatMode: hasExpandedItem,
+            expanded: false,
+            flatMode: false,
           }),
         )}
       </div>
@@ -69,37 +64,38 @@ export function template(order: Order | null, orderItems: OrderItem[]): Template
 export function init(container: HTMLElement, order: Order | null, orderItems: OrderItem[]) {
   render(template(order, orderItems), container);
 
-  // Handle click events for item toggle
-  const handleClick = (event: Event) => {
-    const target = event.target as HTMLElement;
-    const action = target.closest("[data-action]") as HTMLElement;
+  // Handle toggle events
+  addEventHandler(container, OrderItemUI.TOGGLE_ITEM_EVENT, (data) => {
+    const itemId = data.itemId;
+    if (!itemId) return;
 
-    if (!action) return;
-
-    const actionType = action.dataset.action;
-    const itemElement = action.closest('[id^="order-item-"]') as HTMLElement;
-
+    const itemElement = document.getElementById(`order-item-${itemId}`);
     if (!itemElement) return;
 
-    const itemId = itemElement.id.replace("order-item-", "");
+    // Toggle the expanded state
+    const isExpanded = itemElement.getAttribute('data-expanded') === 'true';
+    itemElement.setAttribute('data-expanded', isExpanded ? 'false' : 'true');
 
-    if (actionType === "toggle") {
-      if (expandedItems.has(itemId)) {
-        expandedItems.delete(itemId);
+    // Update flat mode for all items
+    const allItems = container.querySelectorAll('[id^="order-item-"]');
+    const hasExpandedItem = Array.from(allItems).some(
+      item => item.getAttribute('data-expanded') === 'true'
+    );
+
+    allItems.forEach(item => {
+      item.setAttribute('data-flat-mode', hasExpandedItem ? 'true' : 'false');
+    });
+
+    // Update items container class
+    const itemsContainer = container.querySelector(`.${styles.items}`);
+    if (itemsContainer) {
+      if (hasExpandedItem) {
+        itemsContainer.classList.add(styles.itemsWithExpanded);
       } else {
-        expandedItems.add(itemId);
+        itemsContainer.classList.remove(styles.itemsWithExpanded);
       }
-      // Re-render the content
-      render(template(order, orderItems), container);
     }
-  };
-
-  container.addEventListener("click", handleClick);
-
-  // Return cleanup function
-  return () => {
-    container.removeEventListener("click", handleClick);
-  };
+  });
 }
 
 export function update(changes: UpdateResult<OrderPageData>) {
