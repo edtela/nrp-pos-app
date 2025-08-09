@@ -72,29 +72,32 @@ export function init(container: HTMLElement, order: Order | null, orderItems: Or
     const itemElement = document.getElementById(`order-item-${itemId}`);
     if (!itemElement) return;
 
-    // Toggle the expanded state
-    const isExpanded = itemElement.getAttribute('data-expanded') === 'true';
-    itemElement.setAttribute('data-expanded', isExpanded ? 'false' : 'true');
+    // Batch all DOM updates in a single frame
+    requestAnimationFrame(() => {
+      // Toggle the expanded state
+      const isExpanded = itemElement.getAttribute('data-expanded') === 'true';
+      itemElement.setAttribute('data-expanded', isExpanded ? 'false' : 'true');
 
-    // Update flat mode for all items
-    const allItems = container.querySelectorAll('[id^="order-item-"]');
-    const hasExpandedItem = Array.from(allItems).some(
-      item => item.getAttribute('data-expanded') === 'true'
-    );
+      // Update flat mode for all items
+      const allItems = container.querySelectorAll('[id^="order-item-"]');
+      const hasExpandedItem = Array.from(allItems).some(
+        item => item.getAttribute('data-expanded') === 'true'
+      );
 
-    allItems.forEach(item => {
-      item.setAttribute('data-flat-mode', hasExpandedItem ? 'true' : 'false');
-    });
+      allItems.forEach(item => {
+        item.setAttribute('data-flat-mode', hasExpandedItem ? 'true' : 'false');
+      });
 
-    // Update items container class
-    const itemsContainer = container.querySelector(`.${styles.items}`);
-    if (itemsContainer) {
-      if (hasExpandedItem) {
-        itemsContainer.classList.add(styles.itemsWithExpanded);
-      } else {
-        itemsContainer.classList.remove(styles.itemsWithExpanded);
+      // Update items container class
+      const itemsContainer = container.querySelector(`.${styles.items}`);
+      if (itemsContainer) {
+        if (hasExpandedItem) {
+          itemsContainer.classList.add(styles.itemsWithExpanded);
+        } else {
+          itemsContainer.classList.remove(styles.itemsWithExpanded);
+        }
       }
-    }
+    });
   });
 }
 
