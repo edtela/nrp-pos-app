@@ -6,7 +6,7 @@
  */
 
 import { css } from "@linaria/core";
-import { html, Template } from "@/lib/html-template";
+import { html, onClick, Template } from "@/lib/html-template";
 import { mdColors, mdTypography, mdSpacing, mdElevation, mdShape } from "@/styles/theme";
 
 // Event types
@@ -15,7 +15,7 @@ export const ADD_TO_ORDER_EVENT = "add-to-order-event";
 export const SEND_ORDER_EVENT = "send-order-event";
 
 // Type definitions
-export type BottomBarMode = 'view' | 'add' | 'send';
+export type BottomBarMode = "view" | "add" | "send";
 
 export type BottomBarData = {
   mode: BottomBarMode;
@@ -40,22 +40,25 @@ type BottomBarConfig = {
 };
 
 // Configuration for each mode
-const CONFIGS: Record<BottomBarMode, Omit<BottomBarConfig, 'left' | 'right'> & { left: { label: string }, right: { label: string } }> = {
+const CONFIGS: Record<
+  BottomBarMode,
+  Omit<BottomBarConfig, "left" | "right"> & { left: { label: string }; right: { label: string } }
+> = {
   view: {
     left: { label: "Items" },
-    action: { label: "View Order" },
-    right: { label: "Total" }
+    action: { label: "View Order", onClick: VIEW_ORDER_EVENT },
+    right: { label: "Total" },
   },
   add: {
     left: { label: "Quantity" },
-    action: { label: "Add to Order" },
-    right: { label: "Total" }
+    action: { label: "Add to Order", onClick: ADD_TO_ORDER_EVENT },
+    right: { label: "Total" },
   },
   send: {
     left: { label: "Items" },
-    action: { label: "Place Order" },
-    right: { label: "Total" }
-  }
+    action: { label: "Place Order", onClick: SEND_ORDER_EVENT },
+    right: { label: "Total" },
+  },
 };
 
 /**
@@ -76,19 +79,17 @@ function infoDisplay(value: string | number, label: string): Template {
 export function template(data?: BottomBarData): Template {
   if (!data) {
     // Default to view mode with zero values
-    data = { mode: 'view', itemCount: 0, total: 0 };
+    data = { mode: "view", itemCount: 0, total: 0 };
   }
 
   const config = CONFIGS[data.mode];
-  const leftValue = data.mode === 'add' ? (data.quantity || 0) : (data.itemCount || 0);
+  const leftValue = data.mode === "add" ? data.quantity || 0 : data.itemCount || 0;
   const rightValue = `$${(data.total || 0).toFixed(2)}`;
 
   return html`
     ${infoDisplay(leftValue, config.left.label)}
 
-    <button class="${styles.actionButton}">
-      ${config.action.label}
-    </button>
+    <button class="${styles.actionButton}" ${onClick(config.action.onClick)}>${config.action.label}</button>
 
     ${infoDisplay(rightValue, config.right.label)}
   `;

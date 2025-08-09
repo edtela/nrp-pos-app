@@ -14,6 +14,7 @@ import { BottomBarData } from "@/components/app-bottom-bar";
 import { styles as layoutStyles } from "@/components/app-layout";
 import { ALL, DataBinding } from "@/lib/data-model-types";
 import { createStore } from "@/lib/storage";
+import { getOrder, getOrderItem } from "@/model/order-model";
 
 // Data Types
 export type Order = {
@@ -67,9 +68,9 @@ const bindings: DataBinding<OrderPageData>[] = [
 // Template function
 function template(order: Order | null, orderItems: OrderItem[]) {
   const bottomBarData: BottomBarData = {
-    mode: 'send',
+    mode: "send",
     itemCount: orderItems.length,
-    total: order?.total || 0
+    total: order?.total || 0,
   };
 
   return html`
@@ -86,10 +87,10 @@ function template(order: Order | null, orderItems: OrderItem[]) {
 // Export function to render order page
 export async function renderOrderPage(container: Element, showEmptyState: boolean = false) {
   // For testing: use empty arrays if showEmptyState is true
-  const order = createStore<Order>("order-v1-main", "session").get({ itemIds: [], total: 0 });
+  const order = getOrder();
   const items: OrderPageData["items"] = {};
-  for (const itemId in order.itemIds) {
-    const item = createStore<OrderItem>(`order-v1-${itemId}`, "session").get();
+  for (const itemId of order.itemIds) {
+    const item = getOrderItem(itemId);
     if (item) {
       items[item.id] = item;
     }

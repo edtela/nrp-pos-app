@@ -19,6 +19,8 @@ import { DataChange, Update, UpdateResult, WHERE } from "@/lib/data-model-types"
 import { createStore } from "@/lib/storage";
 import { OPEN_MENU_EVENT, ORDER_ITEM_EVENT } from "@/components/menu-item";
 import { typeChange } from "@/lib/data-model";
+import { OrderItem } from "./order-page";
+import { saveOrderItem } from "@/model/order-model";
 
 type BreadCrumb = MenuItem;
 const crumbsStore = {
@@ -41,7 +43,7 @@ const crumbsStore = {
 };
 
 const menuModel = new MenuModel();
-let bottomBarData: BottomBarData = { mode: 'view', itemCount: 0, total: 0 };
+let bottomBarData: BottomBarData = { mode: "view", itemCount: 0, total: 0 };
 
 // HANDLERS
 function variantSelectHandler(groupId: string, selectedId: string) {
@@ -117,6 +119,8 @@ export async function renderMenuPage(container: Element, menuFile: string = "ind
   addEventHandler(page, ORDER_ITEM_EVENT, (data) => {
     const item = menuModel.getMenuItem(data.id);
     if (item?.subMenu) {
+      item.quantity = 1;
+      item.total = item.price ?? 0;
       crumbsStore.replace((c) => (c ? [...c, item] : [item]));
       window.location.href = `/${item.subMenu.menuId}`;
     }
@@ -130,7 +134,26 @@ export async function renderMenuPage(container: Element, menuFile: string = "ind
     }
   });
 
-  addEventHandler(page, OPEN_MENU_EVENT, (data) => {});
+  addEventHandler(page, AppBottomBar.ADD_TO_ORDER_EVENT, () => {
+    const order = menuModel.data.order;
+    if (order) {
+      const modifiers = Object.values(menuModel.data.menu)
+        .filter((item) => item.quantity != 0)
+        .map((item) => ({ menuItemId: item.id, name: item.name, quantity: item.quantity }));
+
+      const orderItem: OrderItem = {
+        id: "",
+        menuItem: order,
+        quantity: order.quantity,
+        modifiers,
+        unitPrice: order.unitPrice,
+        total: order.total,
+      };
+
+      saveOrderItem(orderItem);
+      window.history.back();
+    }
+  });
 }
 
 function template(menuData: Menu | null, error?: string) {
@@ -161,17 +184,17 @@ function update(event: DataChange<MenuPageData> | undefined) {
       if (menuModel.data.order) {
         // Add mode when we have an order item
         bottomBarData = {
-          mode: 'add',
+          mode: "add",
           quantity: menuModel.data.order.quantity,
-          total: menuModel.data.order.total
+          total: menuModel.data.order.total,
         };
       } else {
         // View mode when no order item
         // TODO: Get actual totals from storage
         bottomBarData = {
-          mode: 'view',
+          mode: "view",
           itemCount: 0,
-          total: 0
+          total: 0,
         };
       }
       render(AppBottomBar.template(bottomBarData), bottomBar);
