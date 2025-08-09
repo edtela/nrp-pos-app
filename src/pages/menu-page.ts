@@ -19,8 +19,7 @@ import { DataChange, Update, UpdateResult, WHERE } from "@/lib/data-model-types"
 import { createStore } from "@/lib/storage";
 import { OPEN_MENU_EVENT, ORDER_ITEM_EVENT } from "@/components/menu-item";
 import { typeChange } from "@/lib/data-model";
-import { OrderItem } from "./order-page";
-import { saveOrderItem } from "@/model/order-model";
+import { saveOrderItem, OrderItem } from "@/model/order-model";
 
 type BreadCrumb = MenuItem;
 const crumbsStore = {
