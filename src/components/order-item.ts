@@ -6,9 +6,14 @@
  */
 
 import { css } from "@linaria/core";
-import { html, Template, dataAttr, CLICK_EVENT } from "@/lib/html-template";
+import { html, Template, dataAttr, CLICK_EVENT, onClick } from "@/lib/html-template";
 import { OrderItem, OrderModifier } from "@/model/order-model";
 import { mdColors, mdSpacing, mdTypography, mdShape, mdElevation } from "@/styles/theme";
+
+// Event constants
+export const INCREASE_QUANTITY_EVENT = "increase-quantity-event";
+export const DECREASE_QUANTITY_EVENT = "decrease-quantity-event";
+export const MODIFY_ITEM_EVENT = "modify-item-event";
 
 export interface OrderItemData extends OrderItem {
   expanded?: boolean;
@@ -136,13 +141,13 @@ export function template(item: OrderItemData): Template {
                     : html`<span class="${styles.noModifiers}">No modifications</span>`}
                 </div>
                 <div class="${styles.quantityControls}">
-                  <button class="${styles.quantityBtn}" data-action="decrease" ${item.quantity <= 1 ? "disabled" : ""}>
+                  <button class="${styles.quantityBtn}" data-item-id="${item.id}" ${onClick(DECREASE_QUANTITY_EVENT)} ${item.quantity <= 1 ? "disabled" : ""}>
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                       <path d="M5 12h14" />
                     </svg>
                   </button>
                   <span class="${styles.quantityDisplay}">${item.quantity}</span>
-                  <button class="${styles.quantityBtn}" data-action="increase">
+                  <button class="${styles.quantityBtn}" data-item-id="${item.id}" ${onClick(INCREASE_QUANTITY_EVENT)}>
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                       <path d="M5 12h14" />
                       <path d="M12 5v14" />
@@ -163,7 +168,7 @@ export function template(item: OrderItemData): Template {
                   </button>
                 </div>
                 <div class="${styles.actionsRight}">
-                  <button class="${styles.actionBtn} ${styles.actionBtnSecondary}" data-action="modify">
+                  <button class="${styles.actionBtn} ${styles.actionBtnSecondary}" data-item-id="${item.id}" ${onClick(MODIFY_ITEM_EVENT)}>
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                       <path d="m17 3 4 4-9 9-4 1 1-4 9-9z" />
                       <path d="m15 5 4 4" />

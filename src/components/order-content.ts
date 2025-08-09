@@ -69,7 +69,7 @@ export function template(order: Order | null, orderItems: OrderItem[]): Template
 export function init(container: HTMLElement, order: Order | null, orderItems: OrderItem[]) {
   render(template(order, orderItems), container);
 
-  // Handle click events for item actions
+  // Handle click events for item toggle
   const handleClick = (event: Event) => {
     const target = event.target as HTMLElement;
     const action = target.closest("[data-action]") as HTMLElement;
@@ -83,33 +83,14 @@ export function init(container: HTMLElement, order: Order | null, orderItems: Or
 
     const itemId = itemElement.id.replace("order-item-", "");
 
-    switch (actionType) {
-      case "toggle":
-        if (expandedItems.has(itemId)) {
-          expandedItems.delete(itemId);
-        } else {
-          expandedItems.add(itemId);
-        }
-        // Re-render the content
-        render(template(order, orderItems), container);
-        break;
-
-      case "increase":
-        console.log(`Increase quantity for item ${itemId}`);
-        break;
-
-      case "decrease":
-        console.log(`Decrease quantity for item ${itemId}`);
-        break;
-
-      case "remove":
-        console.log(`Remove item ${itemId}`);
-        break;
-
-      case "modify":
-        console.log(`Modify item ${itemId}`);
-        window.location.href = `/?modify=${itemId}`;
-        break;
+    if (actionType === "toggle") {
+      if (expandedItems.has(itemId)) {
+        expandedItems.delete(itemId);
+      } else {
+        expandedItems.add(itemId);
+      }
+      // Re-render the content
+      render(template(order, orderItems), container);
     }
   };
 

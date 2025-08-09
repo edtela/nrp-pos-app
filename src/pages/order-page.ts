@@ -5,8 +5,9 @@
  * @see /component-guidelines.md for component patterns and conventions
  */
 
-import { html, render } from "@/lib/html-template";
+import { html, render, addEventHandler } from "@/lib/html-template";
 import * as OrderContentUI from "@/components/order-content";
+import * as OrderItemUI from "@/components/order-item";
 import * as AppHeader from "@/components/app-header";
 import * as AppBottomBar from "@/components/app-bottom-bar";
 import { BottomBarData } from "@/components/app-bottom-bar";
@@ -47,6 +48,37 @@ export async function init(container: Element) {
     const customEvent = e as CustomEvent;
     const changes = model.update(customEvent.detail);
     update(changes);
+  });
+
+  // Handle increase quantity event
+  addEventHandler(container, OrderItemUI.INCREASE_QUANTITY_EVENT, (data) => {
+    console.log(data);
+    const itemId = data.itemId;
+    if (itemId) {
+      const changes = model.update({
+        items: { [itemId]: { quantity: (q) => q + 1 } },
+      });
+      update(changes);
+    }
+  });
+
+  // Handle decrease quantity event
+  addEventHandler(container, OrderItemUI.DECREASE_QUANTITY_EVENT, (data) => {
+    const itemId = data.itemId;
+    if (itemId) {
+      const changes = model.update({
+        items: { [itemId]: { quantity: (q) => Math.max(1, q - 1) } },
+      });
+      update(changes);
+    }
+  });
+
+  // Handle modify item event
+  addEventHandler(container, OrderItemUI.MODIFY_ITEM_EVENT, (data) => {
+    const itemId = data.itemId;
+    if (itemId) {
+      window.location.href = `/?modify=${itemId}`;
+    }
   });
 }
 
