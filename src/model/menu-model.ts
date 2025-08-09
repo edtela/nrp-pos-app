@@ -1,6 +1,7 @@
 import { iterateItems, Menu, MenuItem, VariantGroup } from "@/types";
 import { anyChange, state, typeChange } from "@/lib/data-model";
 import { ALL, DataBinding, Update, UpdateResult, WHERE } from "@/lib/data-model-types";
+import { BottomBarData } from "@/model/page-model";
 
 export type DisplayMenuItem = MenuItem & {
   selected?: boolean;
@@ -27,21 +28,6 @@ export type MenuPageData = {
   variants: Record<string, VariantGroup>;
   menu: Record<string, DisplayMenuItem>;
   bottom: BottomBarData;
-};
-
-export type BottomBarData = {
-  left: {
-    value: string | number;
-    label: string;
-  };
-  action: {
-    onClick?: any;
-    label: string;
-  };
-  right: {
-    value: string | number;
-    label: string;
-  };
 };
 
 const bindings: DataBinding<MenuPageData>[] = [

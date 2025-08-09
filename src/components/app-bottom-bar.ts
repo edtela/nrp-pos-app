@@ -8,7 +8,7 @@
 import { css } from '@linaria/core';
 import { html, Template } from '@/lib/html-template';
 import { mdColors, mdTypography, mdSpacing, mdElevation, mdShape } from '@/styles/theme';
-import { BottomBarData } from '@/model/menu-model';
+import { BottomBarData } from '@/model/page-model';
 
 /**
  * Info display template for left/right sections
