@@ -74,27 +74,41 @@ export function init(container: HTMLElement, order: Order | null, orderItems: Or
 
     // Batch all DOM updates in a single frame
     requestAnimationFrame(() => {
-      // Toggle the expanded state
-      const isExpanded = itemElement.getAttribute('data-expanded') === 'true';
-      itemElement.setAttribute('data-expanded', isExpanded ? 'false' : 'true');
-
-      // Update flat mode for all items
+      // Get all items
       const allItems = container.querySelectorAll('[id^="order-item-"]');
-      const hasExpandedItem = Array.from(allItems).some(
-        item => item.getAttribute('data-expanded') === 'true'
-      );
-
-      allItems.forEach(item => {
-        item.setAttribute('data-flat-mode', hasExpandedItem ? 'true' : 'false');
-      });
-
-      // Update items container class
-      const itemsContainer = container.querySelector(`.${styles.items}`);
-      if (itemsContainer) {
-        if (hasExpandedItem) {
-          itemsContainer.classList.add(styles.itemsWithExpanded);
-        } else {
+      
+      // Check if clicking on already expanded item
+      const isExpanded = itemElement.getAttribute('data-expanded') === 'true';
+      
+      if (isExpanded) {
+        // Collapse the clicked item
+        itemElement.setAttribute('data-expanded', 'false');
+        
+        // No items expanded - remove flat mode
+        allItems.forEach(item => {
+          item.setAttribute('data-flat-mode', 'false');
+        });
+        
+        // Remove expanded class from container
+        const itemsContainer = container.querySelector(`.${styles.items}`);
+        if (itemsContainer) {
           itemsContainer.classList.remove(styles.itemsWithExpanded);
+        }
+      } else {
+        // Collapse all other items and expand the clicked one
+        allItems.forEach(item => {
+          if (item === itemElement) {
+            item.setAttribute('data-expanded', 'true');
+          } else {
+            item.setAttribute('data-expanded', 'false');
+          }
+          item.setAttribute('data-flat-mode', 'true');
+        });
+        
+        // Add expanded class to container
+        const itemsContainer = container.querySelector(`.${styles.items}`);
+        if (itemsContainer) {
+          itemsContainer.classList.add(styles.itemsWithExpanded);
         }
       }
     });
