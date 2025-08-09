@@ -16,19 +16,13 @@ import { UpdateResult } from "@/lib/data-model-types";
 
 // Template function
 function template(order: Order | null, orderItems: OrderItem[]) {
-  const bottomBarData: BottomBarData = {
-    mode: "send",
-    itemCount: orderItems.length,
-    total: order?.total || 0,
-  };
-
   return html`
     <div class="${layoutStyles.pageContainer}">
       <header class="${layoutStyles.header}">
         ${AppHeader.template({ showBack: true, searchPlaceholder: "Search Order" })}
       </header>
       <main class="${layoutStyles.content}">${OrderContentUI.template(order, orderItems)}</main>
-      <div class="${layoutStyles.bottomBar}">${AppBottomBar.template(bottomBarData)}</div>
+      <div class="${layoutStyles.bottomBar}">${AppBottomBar.template("send")}</div>
     </div>
   `;
 }
@@ -71,5 +65,13 @@ function update(changes: UpdateResult<OrderPageData> | undefined) {
   OrderContentUI.update(changes);
 
   if (changes.order) {
+    const bottomBar = document.querySelector(`.${layoutStyles.bottomBar}`) as HTMLElement;
+    if (bottomBar) {
+      const stmt = { total: changes.order.total } as Partial<BottomBarData>;
+      if (Array.isArray(changes.order.itemIds)) {
+        stmt.itemCount = changes.order.itemIds.length;
+      }
+      AppBottomBar.update(bottomBar, stmt);
+    }
   }
 }
