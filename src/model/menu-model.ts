@@ -4,7 +4,7 @@ import { ALL, DataBinding, Update, UpdateResult, WHERE } from "@/lib/data-model-
 
 export type DisplayMenuItem = MenuItem & {
   selected?: boolean;
-  included?: number;
+  included?: boolean;
   quantity: number;
   total: number;
 };
@@ -71,7 +71,7 @@ const bindings: DataBinding<MenuPageData>[] = [
     onChange: ["menu", [ALL], "included"],
     update(item: DisplayMenuItem) {
       if (item.included) {
-        return { menu: { [item.id]: { selected: true, quantity: item.included } } };
+        return { menu: { [item.id]: { selected: true, quantity: 1 } } };
       }
       return {};
     },
@@ -98,7 +98,7 @@ const bindings: DataBinding<MenuPageData>[] = [
     onChange: ["menu", [ALL], "selected"],
     update(item: DisplayMenuItem) {
       if (item.selected === true) {
-        return { menu: { [item.id]: { quantity: item.included ?? 1 } } };
+        return { menu: { [item.id]: { quantity: 1 } } };
       }
 
       if (item.selected === false) {
@@ -113,7 +113,7 @@ const bindings: DataBinding<MenuPageData>[] = [
   {
     onChange: ["menu", [ALL], { price: anyChange, quantity: anyChange, included: anyChange }],
     update(item: DisplayMenuItem) {
-      const additionalQty = (item.quantity ?? 0) - (item.included ?? 0);
+      const additionalQty = item.quantity - (item.included ? 1 : 0);
       const total = additionalQty * (item.price ?? 0);
       return { menu: { [item.id]: { total } } };
     },

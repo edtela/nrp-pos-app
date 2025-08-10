@@ -66,18 +66,18 @@ export async function renderMenuPage(container: Element, menuFile: string = "ind
   // Truncate navigation stack and get current context
   const menuId = menuFile.slice(0, menuFile.length - 5); // Remove .json extension
   const navItem = router.truncateStack(menuId);
-  
+
   if (navItem) {
-    if (navItem.type === 'modify') {
+    if (navItem.type === "modify") {
       // Modify mode: editing an existing order item
       const orderItem = navItem.item;
       const menuItem = toOrderMenuItem(orderItem.menuItem);
       menuItem.quantity = orderItem.quantity;
       menuItem.total = orderItem.total;
-      
+
       const stmt: Update<MenuPageData> = { order: [menuItem as OrderMenuItem] };
       changes = menuModel.update(stmt, changes);
-      
+
       // TODO: Also restore modifiers state
     } else {
       // Browse mode: navigating through menu
@@ -102,7 +102,7 @@ export async function renderMenuPage(container: Element, menuFile: string = "ind
   // Handle submenu includes if we have a navigation context
   let contextMenuItem: MenuItem | undefined;
   if (navItem) {
-    contextMenuItem = navItem.type === 'modify' ? navItem.item.menuItem : navItem.item;
+    contextMenuItem = navItem.type === "modify" ? navItem.item.menuItem : navItem.item;
     const subMenu = contextMenuItem?.subMenu;
     if (subMenu?.included) {
       const stmt = subMenu.included.reduce((u, key) => {
@@ -147,13 +147,18 @@ export async function renderMenuPage(container: Element, menuFile: string = "ind
     const order = menuModel.data.order;
     if (order) {
       const modifiers = Object.values(menuModel.data.menu)
-        .filter((item) => item.quantity != 0)
-        .map((item) => ({ menuItemId: item.id, name: item.name, quantity: item.quantity }));
+        .filter((item) => item.quantity - (item.included ? 1 : 0) != 0)
+        .map((item) => ({
+          menuItemId: item.id,
+          name: item.name,
+          quantity: item.quantity - (item.included ? 1 : 0),
+          price: item.price ?? 0,
+        }));
 
       // Check if we're in modify mode
       if (router.context.isModifying()) {
         const currentItem = router.context.getCurrentItem();
-        if (currentItem?.type === 'modify') {
+        if (currentItem?.type === "modify") {
           // Update existing order item
           const orderItem: OrderItem = {
             ...currentItem.item,

@@ -22,6 +22,7 @@ export type OrderModifier = {
   menuItemId: string;
   name: string;
   quantity: number;
+  price: number;
 };
 
 export type DisplayItem = {
