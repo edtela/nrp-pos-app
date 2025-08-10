@@ -37,21 +37,24 @@ interface ModificationToken {
 function generateModificationTokens(modifiers: OrderModifier[]): ModificationToken[] {
   return modifiers.map((modifier) => {
     if (modifier.quantity < 0) {
-      return { name: `No ${modifier.name}`, type: "removed" };
-    } else {
-      // TODO: Get actual price from modifier data
-      // For now, treating all positive modifiers as free
+      return { name: modifier.name, type: "removed" };
+    } else if (modifier.price === 0) {
       return {
         name: modifier.name,
         type: "added-free",
-        price: undefined,
+      };
+    } else {
+      return {
+        name: modifier.name,
+        type: "added-priced",
+        price: modifier.price,
       };
     }
   });
 }
 
 /**
- * Modification token template
+ * Modification token template for collapsed view (horizontal, no prices)
  */
 function modificationTokenTemplate(token: ModificationToken): Template {
   const className =
@@ -60,9 +63,32 @@ function modificationTokenTemplate(token: ModificationToken): Template {
       : token.type === "added-priced"
         ? styles.tokenPriced
         : styles.tokenFree;
-  const suffix = token.price ? ` (+$${token.price.toFixed(2)})` : "";
+  
+  const prefix = token.type === "removed" ? "-" : token.type === "added-priced" ? "+" : "";
+  
+  return html`<span class="${styles.token} ${className}">${prefix}${token.name}</span>`;
+}
 
-  return html`<span class="${styles.token} ${className}">${token.name}${suffix}</span>`;
+/**
+ * Modification item template for expanded view (vertical list with prices)
+ */
+function modificationItemTemplate(modifier: OrderModifier): Template {
+  const isRemoved = modifier.quantity < 0;
+  const hasPriceDisplay = modifier.price > 0;
+  const className = isRemoved
+    ? styles.modItemRemoved
+    : modifier.price > 0
+      ? styles.modItemPriced
+      : styles.modItemFree;
+  
+  const prefix = isRemoved ? "-" : modifier.price > 0 ? "+" : "";
+  
+  return html`
+    <div class="${styles.modItem} ${className}">
+      <span class="${styles.modItemName}">${prefix}${modifier.name}</span>
+      ${hasPriceDisplay ? html`<span class="${styles.modItemPrice}">$${modifier.price.toFixed(2)}</span>` : ""}
+    </div>
+  `;
 }
 
 /**
@@ -92,15 +118,13 @@ export function template(displayItem: DisplayItem): Template {
               <div class="${styles.price}">$${item.total.toFixed(2)}</div>
             </div>
             <div class="${styles.descriptionSection}">
-              ${displayItem.expanded
-                ? item.menuItem.description
-                  ? html`<p class="${styles.description}">${item.menuItem.description}</p>`
-                  : ""
-                : tokens.length > 0
+              ${!displayItem.expanded
+                ? tokens.length > 0
                   ? html`<div class="${styles.tokens}">${tokens.map((token) => modificationTokenTemplate(token))}</div>`
                   : item.menuItem.description
                     ? html`<p class="${styles.description}">${item.menuItem.description}</p>`
-                    : ""}
+                    : ""
+                : ""}
               ${showQuantityInHeader
                 ? html`<span class="${styles.quantity}">${item.quantity} × $${item.unitPrice.toFixed(2)}</span>`
                 : ""}
@@ -122,13 +146,17 @@ export function template(displayItem: DisplayItem): Template {
 
       ${displayItem.expanded ? html`
       <div class="${styles.expandedContent}">
+        ${item.menuItem.description
+          ? html`<p class="${styles.expandedDescription}">${item.menuItem.description}</p>`
+          : ""}
+        ${hasModifiers
+          ? html`<div class="${styles.modificationsList}">
+              ${item.modifiers.map((modifier) => modificationItemTemplate(modifier))}
+            </div>`
+          : ""}
         <div class="${styles.expandedControls}">
-          <div class="${styles.tokens}">
-            ${tokens.length > 0
-              ? tokens.map((token) => modificationTokenTemplate(token))
-              : html`<span class="${styles.noModifiers}">No modifications</span>`}
-          </div>
           <div class="${styles.quantityControls}">
+            <span class="${styles.quantityLabel}">Quantity:</span>
             <button
               class="${styles.quantityBtn}"
               data-item-id="${item.id}"
@@ -291,7 +319,7 @@ const styles = {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 4px;
+    margin-bottom: ${mdSpacing.xs};
   `,
 
   name: css`
@@ -355,15 +383,17 @@ const styles = {
 
   tokens: css`
     display: flex;
-    flex-wrap: wrap;
     gap: ${mdSpacing.sm};
     align-items: center;
+    overflow: hidden;
+    white-space: nowrap;
   `,
 
   token: css`
     font-size: ${mdTypography.bodySmall.fontSize};
     line-height: ${mdTypography.bodySmall.lineHeight};
     display: inline;
+    flex-shrink: 0;
   `,
 
   tokenRemoved: css`
@@ -371,7 +401,7 @@ const styles = {
   `,
 
   tokenPriced: css`
-    color: ${mdColors.primary};
+    color: ${mdColors.secondary};
   `,
 
   tokenFree: css`
@@ -389,12 +419,60 @@ const styles = {
     border-top: none;
   `,
 
-  expandedControls: css`
+  expandedDescription: css`
+    font-size: ${mdTypography.bodyMedium.fontSize};
+    line-height: ${mdTypography.bodyMedium.lineHeight};
+    color: ${mdColors.onSurfaceVariant};
+    margin: 0;
+    padding: 0 ${mdSpacing.md} ${mdSpacing.sm} ${mdSpacing.md};
+  `,
+
+  modificationsList: css`
+    display: flex;
+    flex-direction: column;
+    gap: ${mdSpacing.xs};
     padding: ${mdSpacing.sm} ${mdSpacing.md};
+    border-top: 1px solid ${mdColors.outlineVariant};
+  `,
+
+  modItem: css`
     display: flex;
     justify-content: space-between;
     align-items: center;
+    font-size: ${mdTypography.bodyMedium.fontSize};
+    line-height: ${mdTypography.bodyMedium.lineHeight};
+  `,
+
+  modItemName: css`
+    flex: 1;
+  `,
+
+  modItemPrice: css`
+    font-weight: 500;
+    margin-left: ${mdSpacing.lg};
+    min-width: 60px;
+    text-align: right;
+  `,
+
+  modItemRemoved: css`
+    color: ${mdColors.error};
+  `,
+
+  modItemPriced: css`
+    color: ${mdColors.secondary};
+  `,
+
+  modItemFree: css`
+    color: ${mdColors.onSurface};
+  `,
+
+  expandedControls: css`
+    padding: ${mdSpacing.sm} ${mdSpacing.md};
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
     gap: ${mdSpacing.lg};
+    border-top: 1px solid ${mdColors.outlineVariant};
   `,
 
   quantityControls: css`
@@ -402,6 +480,12 @@ const styles = {
     align-items: center;
     gap: ${mdSpacing.sm};
     flex-shrink: 0;
+  `,
+
+  quantityLabel: css`
+    font-size: ${mdTypography.bodyMedium.fontSize};
+    color: ${mdColors.onSurfaceVariant};
+    margin-right: ${mdSpacing.sm};
   `,
 
   quantityBtn: css`
