@@ -245,9 +245,6 @@ function extractBindingUpdates(
 
   function extractSingle(key: string, addToArgs = false) {
     const keyChange = change === true ? change : change[key];
-    if (keyChange === undefined) {
-      return {};
-    }
 
     let keyArgs = args;
     if (addToArgs) {
@@ -261,6 +258,10 @@ function extractBindingUpdates(
 
     if (tail.length === 0) {
       return binding.update(...keyArgs);
+    }
+
+    if (keyChange === undefined) {
+      return {};
     }
 
     const keyBinding = { ...binding, onChange: tail as any };

@@ -24,9 +24,16 @@ export type OrderModifier = {
   quantity: number;
 };
 
+export type DisplayItem = {
+  item: OrderItem;
+  expanded: boolean;
+  flatMode: boolean;
+};
+
 export type OrderPageData = {
   order: Order;
-  items: Record<string, OrderItem>;
+  items: Record<string, DisplayItem>;
+  expandedId?: string;
 };
 
 export const MAIN_ORDER_ID = "main";
@@ -39,7 +46,7 @@ export function generateOptimisticId(): string {
 }
 
 export function storageKey(id: string) {
-  return `order-v2-${id}`;
+  return `order-v3-${id}`;
 }
 
 export function getStore(id: string) {
@@ -87,7 +94,11 @@ export function readOrderData() {
   for (const itemId of order.itemIds) {
     const item = getOrderItem(itemId);
     if (item) {
-      items[item.id] = item;
+      items[item.id] = {
+        item,
+        expanded: false,
+        flatMode: false,
+      };
     }
   }
   return { order, items };
@@ -96,9 +107,10 @@ export function readOrderData() {
 export function orderModel() {
   const bindings: DataBinding<OrderPageData>[] = [
     {
-      onChange: ["items", [ALL], "quantity"],
-      update(item: OrderItem) {
-        return { items: { [item.id]: { total: item.quantity * item.unitPrice } } };
+      onChange: ["items", [ALL], "item", "quantity"],
+      update(displayItem: DisplayItem) {
+        const item = displayItem.item;
+        return { items: { [item.id]: { item: { total: item.quantity * item.unitPrice } } } };
       },
     },
     {
@@ -106,13 +118,37 @@ export function orderModel() {
       update(data: OrderPageData) {
         let total = 0;
         const orderIds = data.order.itemIds.filter((id) => data.items[id] != null);
-        for (const item of Object.values(data.items)) {
+        for (const displayItem of Object.values(data.items)) {
+          const item = displayItem.item;
           if (!orderIds.includes(item.id)) {
             orderIds.push(item.id);
           }
           total += item.total;
         }
         return { order: [{ itemIds: orderIds, total }] };
+      },
+    },
+    // unset expandedId when expanded item is deleted
+    {
+      onChange: ["items", ALL],
+      update(data: OrderPageData, id: string) {
+        if (data.expandedId === id && data.items[id] == null) {
+          return { expandedId: undefined };
+        }
+        return {};
+      },
+    },
+    {
+      onChange: [["expandedId"]],
+      update(expandedId: string | undefined) {
+        return {
+          items: {
+            [ALL]: {
+              expanded: (_, item) => item.item.id === expandedId,
+              flatMode: (_, item) => expandedId != null && item.item.id !== expandedId,
+            },
+          },
+        };
       },
     },
   ];
@@ -133,8 +169,10 @@ export function orderModel() {
 
       if (changes?.items) {
         Object.keys(changes.items).forEach((key) => {
-          const item = data.items[key];
-          getStore(key).set(item);
+          const displayItem = data.items[key];
+          if (displayItem) {
+            getStore(key).set(displayItem.item);
+          }
         });
       }
 

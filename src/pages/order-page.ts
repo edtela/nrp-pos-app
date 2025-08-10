@@ -37,12 +37,12 @@ export async function init(container: Element) {
   const model = orderModel();
   const data = model.getData();
 
-  const orderItems = Object.values(data.items);
+  const displayItems = Object.values(data.items);
 
   // Update with actual data
   const contentContainer = container.querySelector(`.${layoutStyles.content}`) as HTMLElement;
   if (contentContainer) {
-    OrderContentUI.init(contentContainer, data.order, orderItems);
+    OrderContentUI.init(contentContainer, data.order, displayItems);
   }
 
   container.addEventListener(`app:${STATE_UPDATE_EVENT}`, (e: Event) => {
@@ -57,7 +57,7 @@ export async function init(container: Element) {
     const itemId = data.itemId;
     if (itemId) {
       const changes = model.update({
-        items: { [itemId]: { quantity: (q) => q + 1 } },
+        items: { [itemId]: { item: { quantity: (q) => q + 1 } } },
       });
       update(container, changes, model.getData());
     }
@@ -68,7 +68,7 @@ export async function init(container: Element) {
     const itemId = data.itemId;
     if (itemId) {
       const changes = model.update({
-        items: { [itemId]: { quantity: (q) => Math.max(1, q - 1) } },
+        items: { [itemId]: { item: { quantity: (q) => Math.max(1, q - 1) } } },
       });
       update(container, changes, model.getData());
     }
@@ -79,11 +79,18 @@ export async function init(container: Element) {
     const itemId = data.itemId;
     if (itemId) {
       // Get the order item and navigate to modify it
-      const orderItem = model.getData().items[itemId];
-      if (orderItem) {
-        router.goto.modifyOrderItem(orderItem);
+      const displayItem = model.getData().items[itemId];
+      if (displayItem) {
+        router.goto.modifyOrderItem(displayItem.item);
       }
     }
+  });
+
+  // Handle toggle events - update expanded state in model
+  addEventHandler(container, OrderItemUI.TOGGLE_ITEM_EVENT, (data) => {
+    const stmt = { expandedId: (current?: string) => (current === data.itemId ? undefined : data.itemId) };
+    const changes = model.update(stmt);
+    update(container, changes, model.getData());
   });
 }
 
@@ -91,7 +98,10 @@ function update(container: Element, changes: UpdateResult<OrderPageData> | undef
   if (!changes) return;
 
   requestAnimationFrame(() => {
-    OrderContentUI.update(container, changes, data);
+    const contentContainer = container.querySelector(`.${layoutStyles.content}`) as HTMLElement;
+    if (contentContainer) {
+      OrderContentUI.update(contentContainer, changes, data);
+    }
 
     if (changes.order) {
       const bottomBar = container.querySelector(`.${layoutStyles.bottomBar}`) as HTMLElement;

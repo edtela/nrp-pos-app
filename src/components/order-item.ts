@@ -7,7 +7,7 @@
 
 import { css } from "@linaria/core";
 import { html, Template, dataAttr, CLICK_EVENT, onClick } from "@/lib/html-template";
-import { OrderItem, OrderModifier } from "@/model/order-model";
+import { OrderItem, OrderModifier, DisplayItem } from "@/model/order-model";
 import { mdColors, mdSpacing, mdTypography, mdShape, mdElevation } from "@/styles/theme";
 import { UpdateResult } from "@/lib/data-model-types";
 
@@ -17,10 +17,7 @@ export const DECREASE_QUANTITY_EVENT = "decrease-quantity-event";
 export const MODIFY_ITEM_EVENT = "modify-item-event";
 export const TOGGLE_ITEM_EVENT = "toggle-item-event";
 
-export interface OrderItemData extends OrderItem {
-  expanded?: boolean;
-  flatMode?: boolean;
-}
+// Removed OrderItemData - using DisplayItem from model instead
 
 /**
  * Modification token types
@@ -84,10 +81,11 @@ function modificationTokenTemplate(token: ModificationToken): Template {
 /**
  * Order item template
  */
-export function template(item: OrderItemData): Template {
+export function template(displayItem: DisplayItem): Template {
+  const item = displayItem.item;
   const hasModifiers = item.modifiers && item.modifiers.length > 0;
   const tokens = hasModifiers ? generateModificationTokens(item.modifiers) : [];
-  const showQuantityInHeader = item.quantity > 1 && !item.expanded;
+  const showQuantityInHeader = item.quantity > 1 && !displayItem.expanded;
 
   const itemClasses = styles.item;
 
@@ -95,8 +93,8 @@ export function template(item: OrderItemData): Template {
     <div
       class="${itemClasses}"
       id="order-item-${item.id}"
-      data-expanded="${item.expanded ? "true" : "false"}"
-      data-flat-mode="${item.flatMode ? "true" : "false"}"
+      data-expanded="${displayItem.expanded ? "true" : "false"}"
+      data-flat-mode="${displayItem.flatMode ? "true" : "false"}"
     >
       <div class="${styles.header}" data-item-id="${item.id}" ${onClick(TOGGLE_ITEM_EVENT)}>
         <div class="${styles.info}">
@@ -107,7 +105,7 @@ export function template(item: OrderItemData): Template {
               <div class="${styles.price}">$${item.total.toFixed(2)}</div>
             </div>
             <div class="${styles.descriptionSection}">
-              ${!item.expanded && tokens.length > 0
+              ${!displayItem.expanded && tokens.length > 0
                 ? html`<div class="${styles.tokens}">${tokens.map((token) => modificationTokenTemplate(token))}</div>`
                 : item.menuItem.description
                   ? html`<p class="${styles.description}">${item.menuItem.description}</p>`
@@ -192,7 +190,8 @@ export function template(item: OrderItemData): Template {
   `;
 }
 
-export function update(container: Element, changes: UpdateResult<OrderItem>, data: OrderItem) {
+export function update(container: Element, changes: UpdateResult<OrderItem>, displayItem: DisplayItem) {
+  const data = displayItem.item;
   // Update quantity display
   if (changes.quantity !== undefined) {
     const quantityDisplay = container.querySelector(`.${styles.quantityDisplay}`);

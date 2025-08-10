@@ -6,8 +6,8 @@
  */
 
 import { css } from "@linaria/core";
-import { html, Template, render, addEventHandler } from "@/lib/html-template";
-import { Order, OrderItem } from "@/model/order-model";
+import { html, Template, render } from "@/lib/html-template";
+import { Order, DisplayItem } from "@/model/order-model";
 import * as OrderItemUI from "./order-item";
 import { mdColors, mdSpacing, mdElevation, mdShape, mdTypography } from "@/styles/theme";
 import { UpdateResult } from "@/lib/data-model-types";
@@ -30,16 +30,15 @@ function emptyOrderTemplate(): Template {
 /**
  * Order items list template
  */
-function orderItemsTemplate(items: OrderItem[]): Template {
+function orderItemsTemplate(displayItems: DisplayItem[]): Template {
+  // Check if any item is expanded to apply the flat styling
+  const hasExpanded = displayItems.some(d => d.expanded);
+  
   return html`
     <div class="${styles.itemsContainer}">
-      <div class="${styles.items}">
-        ${items.map((item) =>
-          OrderItemUI.template({
-            ...item,
-            expanded: false,
-            flatMode: false,
-          }),
+      <div class="${styles.items} ${hasExpanded ? styles.itemsWithExpanded : ''}">
+        ${displayItems.map((displayItem) =>
+          OrderItemUI.template(displayItem)
         )}
       </div>
     </div>
@@ -49,11 +48,11 @@ function orderItemsTemplate(items: OrderItem[]): Template {
 /**
  * Main template for order content
  */
-export function template(_order: Order | null, orderItems: OrderItem[]): Template {
-  const hasItems = orderItems && orderItems.length > 0;
+export function template(_order: Order | null, displayItems: DisplayItem[]): Template {
+  const hasItems = displayItems && displayItems.length > 0;
 
   return html`
-    <div class="${styles.container}">${hasItems ? orderItemsTemplate(orderItems) : emptyOrderTemplate()}</div>
+    <div class="${styles.container}">${hasItems ? orderItemsTemplate(displayItems) : emptyOrderTemplate()}</div>
   `;
 }
 
@@ -61,76 +60,49 @@ export function template(_order: Order | null, orderItems: OrderItem[]): Templat
  * Initialize order content with event handlers
  * Returns update function for re-rendering
  */
-export function init(container: HTMLElement, order: Order | null, orderItems: OrderItem[]) {
-  render(template(order, orderItems), container);
-
-  // Handle toggle events
-  addEventHandler(container, OrderItemUI.TOGGLE_ITEM_EVENT, (data) => {
-    const itemElement = document.getElementById(`order-item-${data.itemId}`);
-    if (itemElement) {
-      requestAnimationFrame(() => toggleExpanded(container, itemElement));
-    }
-  });
+export function init(container: HTMLElement, order: Order | null, displayItems: DisplayItem[]) {
+  render(template(order, displayItems), container);
+  
+  // Toggle events are now handled in order-page.ts through the model
 }
 
 export function update(container: Element, changes: UpdateResult<OrderPageData>, data: OrderPageData) {
+  // Check if we need to re-render the entire list (for expand/collapse state changes)
+  let needsFullRerender = false;
   if (changes.items) {
+    for (const itemId of Object.keys(changes.items)) {
+      const change = (changes.items as any)[itemId];
+      if (change && (change.expanded !== undefined || change.flatMode !== undefined)) {
+        needsFullRerender = true;
+        break;
+      }
+    }
+  }
+  
+  if (needsFullRerender) {
+    // Re-render the entire list to update expand/collapse states
+    const displayItems = Object.values(data.items);
+    render(template(data.order, displayItems), container);
+  } else if (changes.items) {
+    // Update individual items
     for (const itemId of Object.keys(changes.items)) {
       const itemElement = document.getElementById(`order-item-${itemId}`);
       if (itemElement) {
         const change = (changes.items as any)[itemId];
         if (change === undefined) {
-          const isExpanded = itemElement.getAttribute("data-expanded") === "true";
-          if (isExpanded) {
-            toggleExpanded(container, itemElement);
-          }
           itemElement.remove();
         } else {
-          OrderItemUI.update(itemElement, change, data.items[itemId]);
+          const displayItem = data.items[itemId];
+          if (displayItem && change.item) {
+            OrderItemUI.update(itemElement, change.item, displayItem);
+          }
         }
       }
     }
   }
 }
 
-function toggleExpanded(container: Element, itemElement: HTMLElement) {
-  const allItems = container.querySelectorAll('[id^="order-item-"]');
-
-  // Check if clicking on already expanded item
-  const isExpanded = itemElement.getAttribute("data-expanded") === "true";
-
-  if (isExpanded) {
-    // Collapse the clicked item
-    itemElement.setAttribute("data-expanded", "false");
-
-    // No items expanded - remove flat mode
-    allItems.forEach((item) => {
-      item.setAttribute("data-flat-mode", "false");
-    });
-
-    // Remove expanded class from container
-    const itemsContainer = container.querySelector(`.${styles.items}`);
-    if (itemsContainer) {
-      itemsContainer.classList.remove(styles.itemsWithExpanded);
-    }
-  } else {
-    // Collapse all other items and expand the clicked one
-    allItems.forEach((item) => {
-      if (item === itemElement) {
-        item.setAttribute("data-expanded", "true");
-      } else {
-        item.setAttribute("data-expanded", "false");
-      }
-      item.setAttribute("data-flat-mode", "true");
-    });
-
-    // Add expanded class to container
-    const itemsContainer = container.querySelector(`.${styles.items}`);
-    if (itemsContainer) {
-      itemsContainer.classList.add(styles.itemsWithExpanded);
-    }
-  }
-}
+// Removed toggleExpanded function - state is now managed through the model
 
 /**
  * Order Content Styles
