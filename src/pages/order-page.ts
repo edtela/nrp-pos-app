@@ -6,6 +6,7 @@
  */
 
 import { html, render, addEventHandler, STATE_UPDATE_EVENT } from "@/lib/html-template";
+import { router } from "@/pages/page-router";
 import * as OrderContentUI from "@/components/order-content";
 import * as OrderItemUI from "@/components/order-item";
 import * as AppHeader from "@/components/app-header";
@@ -77,7 +78,7 @@ export async function init(container: Element) {
   addEventHandler(container, OrderItemUI.MODIFY_ITEM_EVENT, (data) => {
     const itemId = data.itemId;
     if (itemId) {
-      window.location.href = `/?modify=${itemId}`;
+      router.goto.home({ modify: itemId });
     }
   });
 }

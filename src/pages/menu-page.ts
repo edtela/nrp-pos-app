@@ -8,6 +8,7 @@
 import { css } from "@linaria/core";
 import { addEventHandler, html, render, STATE_UPDATE_EVENT } from "@/lib/html-template";
 import { isSaleItem, Menu, MenuItem } from "@/types";
+import { router } from "@/pages/page-router";
 import * as MenuContentUI from "@/components/menu-content";
 import * as AppHeader from "@/components/app-header";
 import * as AppBottomBar from "@/components/app-bottom-bar";
@@ -127,7 +128,7 @@ export async function renderMenuPage(container: Element, menuFile: string = "ind
       item.quantity = 1;
       item.total = item.price ?? 0;
       crumbsStore.replace((c) => (c ? [...c, item] : [item]));
-      window.location.href = `/${item.subMenu.menuId}`;
+      router.goto.menu(item.subMenu.menuId);
     }
   });
 
@@ -135,7 +136,7 @@ export async function renderMenuPage(container: Element, menuFile: string = "ind
     const item = menuModel.getMenuItem(data.id);
     if (item?.subMenu) {
       crumbsStore.replace((c) => (c ? [...c, item] : [item]));
-      window.location.href = `/${item.subMenu.menuId}`;
+      router.goto.menu(item.subMenu.menuId);
     }
   });
 
@@ -156,8 +157,12 @@ export async function renderMenuPage(container: Element, menuFile: string = "ind
       };
 
       saveOrderItem(orderItem);
-      window.history.back();
+      router.goto.back();
     }
+  });
+
+  addEventHandler(page, AppBottomBar.VIEW_ORDER_EVENT, () => {
+    router.goto.order();
   });
 }
 
