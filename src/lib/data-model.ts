@@ -66,6 +66,11 @@ export function updateImpl(data: any, statement?: any, changes?: any): any {
 
     if (!replace && newValue != null && typeof newValue === "object") {
       if (oldValue == null || typeof oldValue !== "object") {
+        //check the where statement before throwing error
+        const where = newValue[WHERE];
+        if (where && !where(oldValue)) {
+          return;
+        }
         console.error(`Can't partially update a non-object: ${key}`);
         return;
       }
@@ -284,7 +289,10 @@ function extractBindingUpdates(
   }
 
   if (typeof field === "string") {
-    return extractSingle(field);
+    if (change === true || field in change) {
+      return extractSingle(field);
+    }
+    return {};
   }
 
   if (change === true || hasChanges(change, field)) {
