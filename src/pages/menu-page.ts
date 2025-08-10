@@ -8,7 +8,7 @@
 import { css } from "@linaria/core";
 import { addEventHandler, html, render, STATE_UPDATE_EVENT } from "@/lib/html-template";
 import { isSaleItem, Menu, MenuItem } from "@/types";
-import { router } from "@/pages/page-router";
+import { router } from "@/pages/app-router";
 import * as MenuContentUI from "@/components/menu-content";
 import * as AppHeader from "@/components/app-header";
 import * as AppBottomBar from "@/components/app-bottom-bar";
@@ -16,30 +16,9 @@ import { styles as layoutStyles } from "@/components/app-layout";
 import { mdColors, mdSpacing } from "@/styles/theme";
 import { MenuPageData, MenuModel, toOrderMenuItem, OrderMenuItem } from "@/model/menu-model";
 import { DataChange, Update, UpdateResult, WHERE } from "@/lib/data-model-types";
-import { createStore } from "@/lib/storage";
 import { OPEN_MENU_EVENT, ORDER_ITEM_EVENT } from "@/components/menu-item";
 import { typeChange } from "@/lib/data-model";
 import { saveOrderItem, OrderItem, getOrder } from "@/model/order-model";
-
-type BreadCrumb = MenuItem;
-const crumbsStore = {
-  ...createStore<BreadCrumb[]>("crumbs-v2", "session"),
-  append(c: BreadCrumb) {
-    crumbsStore.replace((s) => (s ? [...s, c] : [c]));
-  },
-  truncate(menuId: string) {
-    let crumbs = crumbsStore.get([]);
-    const idx = crumbs.findIndex((crumb) => crumb.subMenu?.menuId === menuId);
-    if (idx != crumbs.length - 1) {
-      crumbs = crumbs.slice(0, idx + 1);
-      crumbsStore.set(crumbs);
-    }
-  },
-  getItem(): MenuItem | undefined {
-    const a = crumbsStore.get([]);
-    return a.length > 0 ? a[a.length - 1] : undefined;
-  },
-};
 
 const menuModel = new MenuModel();
 
@@ -84,13 +63,33 @@ export async function renderMenuPage(container: Element, menuFile: string = "ind
 
   let changes: UpdateResult<MenuPageData> | undefined = menuModel.setMenu(menuData);
 
-  crumbsStore.truncate(menuFile.slice(0, menuFile.length - 5)); //TODO properly handle ID
-  let menuItem = crumbsStore.getItem();
-  if (isSaleItem(menuItem)) {
-    menuItem = toOrderMenuItem(menuItem!);
-    const stmt: Update<MenuPageData> = { order: [menuItem as OrderMenuItem] };
-    changes = menuModel.update(stmt, changes);
+  // Truncate navigation stack and get current context
+  const menuId = menuFile.slice(0, menuFile.length - 5); // Remove .json extension
+  const navItem = router.truncateStack(menuId);
+  
+  if (navItem) {
+    if (navItem.type === 'modify') {
+      // Modify mode: editing an existing order item
+      const orderItem = navItem.item;
+      const menuItem = toOrderMenuItem(orderItem.menuItem);
+      menuItem.quantity = orderItem.quantity;
+      menuItem.total = orderItem.total;
+      
+      const stmt: Update<MenuPageData> = { order: [menuItem as OrderMenuItem] };
+      changes = menuModel.update(stmt, changes);
+      
+      // TODO: Also restore modifiers state
+    } else {
+      // Browse mode: navigating through menu
+      const menuItem = navItem.item;
+      if (isSaleItem(menuItem)) {
+        const orderMenuItem = toOrderMenuItem(menuItem);
+        const stmt: Update<MenuPageData> = { order: [orderMenuItem as OrderMenuItem] };
+        changes = menuModel.update(stmt, changes);
+      }
+    }
   } else {
+    // No navigation context - show order summary in bottom bar
     const bottomBar = document.querySelector(`.${layoutStyles.bottomBar}`) as HTMLElement;
     const mainOrder = getOrder();
     AppBottomBar.update(bottomBar, {
@@ -100,17 +99,22 @@ export async function renderMenuPage(container: Element, menuFile: string = "ind
     });
   }
 
-  const subMenu = menuItem?.subMenu;
-  if (subMenu) {
-    const stmt = subMenu.included.reduce((u, key) => {
-      u[key.itemId] = { [WHERE]: (item: any) => item != null, included: 1 };
-      return u;
-    }, {} as any);
+  // Handle submenu includes if we have a navigation context
+  let contextMenuItem: MenuItem | undefined;
+  if (navItem) {
+    contextMenuItem = navItem.type === 'modify' ? navItem.item.menuItem : navItem.item;
+    const subMenu = contextMenuItem?.subMenu;
+    if (subMenu?.included) {
+      const stmt = subMenu.included.reduce((u, key) => {
+        u[key.itemId] = { [WHERE]: (item: any) => item != null, included: 1 };
+        return u;
+      }, {} as any);
 
-    changes = menuModel.update({ menu: stmt }, changes);
+      changes = menuModel.update({ menu: stmt }, changes);
+    }
   }
 
-  MenuContentUI.init(page, menuItem);
+  MenuContentUI.init(page, contextMenuItem);
   update(changes);
 
   // Attach event handlers to the pageContainer element (automatically cleaned up on re-render)
@@ -125,18 +129,17 @@ export async function renderMenuPage(container: Element, menuFile: string = "ind
   addEventHandler(page, ORDER_ITEM_EVENT, (data) => {
     const item = menuModel.getMenuItem(data.id);
     if (item?.subMenu) {
+      // Set initial quantity and total for sale items
       item.quantity = 1;
       item.total = item.price ?? 0;
-      crumbsStore.replace((c) => (c ? [...c, item] : [item]));
-      router.goto.menu(item.subMenu.menuId);
+      router.goto.menuItem(item);
     }
   });
 
   addEventHandler(page, OPEN_MENU_EVENT, (data) => {
     const item = menuModel.getMenuItem(data.id);
     if (item?.subMenu) {
-      crumbsStore.replace((c) => (c ? [...c, item] : [item]));
-      router.goto.menu(item.subMenu.menuId);
+      router.goto.menuItem(item);
     }
   });
 
@@ -147,17 +150,36 @@ export async function renderMenuPage(container: Element, menuFile: string = "ind
         .filter((item) => item.quantity != 0)
         .map((item) => ({ menuItemId: item.id, name: item.name, quantity: item.quantity }));
 
-      const orderItem: OrderItem = {
-        id: "",
-        menuItem: order,
-        quantity: order.quantity,
-        modifiers,
-        unitPrice: order.unitPrice,
-        total: order.total,
-      };
-
-      saveOrderItem(orderItem);
-      router.goto.back();
+      // Check if we're in modify mode
+      if (router.context.isModifying()) {
+        const currentItem = router.context.getCurrentItem();
+        if (currentItem?.type === 'modify') {
+          // Update existing order item
+          const orderItem: OrderItem = {
+            ...currentItem.item,
+            quantity: order.quantity,
+            modifiers,
+            unitPrice: order.unitPrice,
+            total: order.total,
+          };
+          saveOrderItem(orderItem);
+          // Clear navigation stack and go to order page
+          router.context.clearStack();
+          router.goto.order();
+        }
+      } else {
+        // Create new order item
+        const orderItem: OrderItem = {
+          id: "",
+          menuItem: order,
+          quantity: order.quantity,
+          modifiers,
+          unitPrice: order.unitPrice,
+          total: order.total,
+        };
+        saveOrderItem(orderItem);
+        router.goto.back();
+      }
     }
   });
 

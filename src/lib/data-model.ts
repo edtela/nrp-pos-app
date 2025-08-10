@@ -66,7 +66,7 @@ export function updateImpl(data: any, statement?: any, changes?: any): any {
 
     if (!replace && newValue != null && typeof newValue === "object") {
       if (oldValue == null || typeof oldValue !== "object") {
-        console.error(`Can't partially update a non-object`);
+        console.error(`Can't partially update a non-object: ${key}`);
         return;
       }
 
