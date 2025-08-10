@@ -8,7 +8,8 @@
 import { css } from "@linaria/core";
 import { html, Template, dataAttr, CLICK_EVENT, onClick } from "@/lib/html-template";
 import { OrderItem, OrderModifier, DisplayItem } from "@/model/order-model";
-import { mdColors, mdSpacing, mdTypography, mdShape, mdElevation } from "@/styles/theme";
+import { mdColors, mdSpacing, mdTypography, mdShape } from "@/styles/theme";
+import { styles as itemListStyles } from "./item-list";
 import { UpdateResult } from "@/lib/data-model-types";
 
 // Event constants
@@ -87,7 +88,7 @@ export function template(displayItem: DisplayItem): Template {
   const tokens = hasModifiers ? generateModificationTokens(item.modifiers) : [];
   const showQuantityInHeader = item.quantity > 1 && !displayItem.expanded;
 
-  const itemClasses = styles.item;
+  const itemClasses = `${itemListStyles.item} ${styles.orderItem}`;
 
   return html`
     <div
@@ -192,6 +193,10 @@ export function template(displayItem: DisplayItem): Template {
 
 export function update(container: Element, changes: UpdateResult<OrderItem>, displayItem: DisplayItem) {
   const data = displayItem.item;
+  
+  // Note: expanded and flatMode changes are handled by ItemList.updateItemState in order-content.ts
+  // This function only needs to handle OrderItem property changes
+  
   // Update quantity display
   if (changes.quantity !== undefined) {
     const quantityDisplay = container.querySelector(`.${styles.quantityDisplay}`);
@@ -232,37 +237,10 @@ export function update(container: Element, changes: UpdateResult<OrderItem>, dis
  * Order Item Styles
  */
 const styles = {
-  item: css`
-    background: ${mdColors.surface};
-    border-bottom: 1px solid ${mdColors.outlineVariant};
-    transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
-
-    &:last-child {
-      border-bottom: none;
-    }
-
-    &:hover {
-      background: ${mdColors.surfaceVariant};
-    }
-
-    /* Expanded item styling */
-    &[data-expanded="true"] {
-      background: ${mdColors.surface} !important;
-      border: 1px solid ${mdColors.outlineVariant};
-      border-radius: ${mdShape.corner.medium};
-      margin: ${mdSpacing.sm} 0;
-      box-shadow: ${mdElevation.level2};
-    }
-
-    /* Flat mode styling for collapsed items */
-    &[data-flat-mode="true"][data-expanded="false"] {
-      background: transparent !important;
-      border-bottom: none !important;
-
-      &:hover {
-        background: transparent !important;
-      }
-    }
+  // Using shared item styles from item-list.ts
+  // Additional styles specific to order items
+  orderItem: css`
+    /* Order item specific styles can be added here if needed */
   `,
 
   header: css`
