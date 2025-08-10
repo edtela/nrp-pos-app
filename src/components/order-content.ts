@@ -6,11 +6,10 @@
  */
 
 import { html, Template, render } from "@/lib/html-template";
-import { Order, DisplayItem } from "@/model/order-model";
+import { OrderPageData } from "@/model/order-model";
 import * as OrderItemUI from "./order-item";
 import { styles as itemListStyles } from "./item-list";
 import { UpdateResult } from "@/lib/data-model-types";
-import { OrderPageData } from "@/model/order-model";
 
 /**
  * Empty order state template
@@ -29,15 +28,14 @@ function emptyOrderTemplate(): Template {
 /**
  * Order items list template
  */
-function orderItemsTemplate(displayItems: DisplayItem[]): Template {
-  const hasExpanded = displayItems.some(d => d.expanded);
-  
+function orderItemsTemplate(data: OrderPageData): Template {
+  // Use orderIds for proper ordering
+  const orderedItems = data.order.itemIds.map((id) => data.items[id]).filter((item) => item != null);
+
   return html`
     <div class="${itemListStyles.scrollContainer}">
-      <div class="${itemListStyles.items}" data-has-expanded="${hasExpanded}">
-        ${displayItems.map((displayItem) =>
-          OrderItemUI.template(displayItem)
-        )}
+      <div class="${itemListStyles.items}" data-has-expanded="${data.expandedId != null}">
+        ${orderedItems.map((displayItem) => OrderItemUI.template(displayItem))}
       </div>
     </div>
   `;
@@ -46,11 +44,11 @@ function orderItemsTemplate(displayItems: DisplayItem[]): Template {
 /**
  * Main template for order content
  */
-export function template(_order: Order | null, displayItems: DisplayItem[]): Template {
-  const hasItems = displayItems && displayItems.length > 0;
+export function template(data: OrderPageData): Template {
+  const hasItems = data.order.itemIds.length > 0;
 
   return html`
-    <div class="${itemListStyles.container}">${hasItems ? orderItemsTemplate(displayItems) : emptyOrderTemplate()}</div>
+    <div class="${itemListStyles.container}">${hasItems ? orderItemsTemplate(data) : emptyOrderTemplate()}</div>
   `;
 }
 
@@ -58,8 +56,8 @@ export function template(_order: Order | null, displayItems: DisplayItem[]): Tem
  * Initialize order content with event handlers
  * Returns update function for re-rendering
  */
-export function init(container: HTMLElement, order: Order | null, displayItems: DisplayItem[]) {
-  render(template(order, displayItems), container);
+export function init(container: HTMLElement, data: OrderPageData) {
+  render(template(data), container);
 }
 
 export function update(container: Element, changes: UpdateResult<OrderPageData>, data: OrderPageData) {
@@ -83,10 +81,10 @@ export function update(container: Element, changes: UpdateResult<OrderPageData>,
 
   // Update the list container's expanded state if needed
   if (expandedStateChanged) {
-    const hasExpanded = Object.values(data.items).some(d => d.expanded);
+    const hasExpanded = Object.values(data.items).some((d) => d.expanded);
     const itemsElement = container.querySelector(`.${itemListStyles.items}`);
     if (itemsElement) {
-      itemsElement.setAttribute('data-has-expanded', String(hasExpanded));
+      itemsElement.setAttribute("data-has-expanded", String(hasExpanded));
     }
   }
 
@@ -101,8 +99,7 @@ export function update(container: Element, changes: UpdateResult<OrderPageData>,
       itemElement?.remove();
     } else if (!itemElement && displayItem) {
       // New item added - need to re-render the whole list
-      const displayItems = Object.values(data.items);
-      render(template(data.order, displayItems), container);
+      render(template(data), container);
       break;
     } else if (itemElement && displayItem) {
       // Update existing item
@@ -118,8 +115,8 @@ export function update(container: Element, changes: UpdateResult<OrderPageData>,
       } else {
         // Update item state and content
         if (change.expanded !== undefined || change.flatMode !== undefined) {
-          itemElement.setAttribute('data-expanded', String(displayItem.expanded));
-          itemElement.setAttribute('data-flat-mode', String(displayItem.flatMode));
+          itemElement.setAttribute("data-expanded", String(displayItem.expanded));
+          itemElement.setAttribute("data-flat-mode", String(displayItem.flatMode));
         }
         if (change.item) {
           OrderItemUI.update(itemElement, change.item, displayItem);

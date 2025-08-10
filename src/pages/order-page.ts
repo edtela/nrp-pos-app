@@ -23,7 +23,7 @@ function template() {
       <header class="${layoutStyles.header}">
         ${AppHeader.template({ showBack: true, searchPlaceholder: "Search Order" })}
       </header>
-      <main class="${layoutStyles.content}">${OrderContentUI.template(null, [])}</main>
+      <main class="${layoutStyles.content}">${OrderContentUI.template({ order: { itemIds: [], total: 0 }, items: {} })}</main>
       <div class="${layoutStyles.bottomBar}">${AppBottomBar.template("send")}</div>
     </div>
   `;
@@ -37,12 +37,10 @@ export async function init(container: Element) {
   const model = orderModel();
   const data = model.getData();
 
-  const displayItems = Object.values(data.items);
-
   // Update with actual data
   const contentContainer = container.querySelector(`.${layoutStyles.content}`) as HTMLElement;
   if (contentContainer) {
-    OrderContentUI.init(contentContainer, data.order, displayItems);
+    OrderContentUI.init(contentContainer, data);
   }
 
   container.addEventListener(`app:${STATE_UPDATE_EVENT}`, (e: Event) => {
