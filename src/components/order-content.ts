@@ -10,6 +10,7 @@ import { OrderPageData } from "@/model/order-model";
 import * as OrderItemUI from "./order-item";
 import { styles as itemListStyles } from "./item-list";
 import { UpdateResult } from "@/lib/data-model-types";
+import { typeChange } from "@/lib/data-model";
 
 /**
  * Empty order state template
@@ -61,66 +62,40 @@ export function init(container: HTMLElement, data: OrderPageData) {
 }
 
 export function update(container: Element, changes: UpdateResult<OrderPageData>, data: OrderPageData) {
-  if (!changes.items) return;
-
-  // Track if we need to update the list's expanded state
-  let expandedStateChanged = false;
-  let itemToRerender: string | null = null;
-
-  // First pass: check what changed
-  for (const itemId of Object.keys(changes.items)) {
-    const change = (changes.items as any)[itemId];
-    if (change && (change.expanded !== undefined || change.flatMode !== undefined)) {
-      expandedStateChanged = true;
-      // If an item's expanded state changed, we'll re-render just that item
-      if (change.expanded !== undefined) {
-        itemToRerender = itemId;
-      }
-    }
-  }
-
-  // Update the list container's expanded state if needed
-  if (expandedStateChanged) {
-    const hasExpanded = Object.values(data.items).some((d) => d.expanded);
+  // Update list container if expandedId changed
+  if ("expandedId" in changes) {
     const itemsElement = container.querySelector(`.${itemListStyles.items}`);
     if (itemsElement) {
-      itemsElement.setAttribute("data-has-expanded", String(hasExpanded));
+      itemsElement.setAttribute("data-has-expanded", String(data.expandedId != null));
     }
   }
 
-  // Second pass: update individual items
+  if (!changes.items) return;
+
+  // Check if any items are new (using typeChange to detect new keys)
+  const hasNewItem = Object.keys(changes.items).some(
+    (itemId) => typeChange(itemId, changes.items) && (changes.items as any)[itemId] != null,
+  );
+
+  if (hasNewItem) {
+    // Re-render everything to maintain proper order
+    render(template(data), container);
+    return;
+  }
+
+  // Handle updates and deletions for existing items
   for (const itemId of Object.keys(changes.items)) {
-    const itemElement = document.getElementById(`order-item-${itemId}`);
     const change = (changes.items as any)[itemId];
-    const displayItem = data.items[itemId];
+    const itemElement = document.getElementById(`order-item-${itemId}`);
 
     if (change === undefined) {
       // Item was deleted
       itemElement?.remove();
-    } else if (!itemElement && displayItem) {
-      // New item added - need to re-render the whole list
-      render(template(data), container);
-      break;
-    } else if (itemElement && displayItem) {
-      // Update existing item
-      if (itemId === itemToRerender && change.expanded !== undefined) {
-        // Re-render this specific item when expanded state changes
-        const newItemHtml = OrderItemUI.template(displayItem);
-        const tempDiv = document.createElement("div");
-        render(newItemHtml, tempDiv);
-        const newElement = tempDiv.firstElementChild;
-        if (newElement) {
-          itemElement.replaceWith(newElement);
-        }
-      } else {
-        // Update item state and content
-        if (change.expanded !== undefined || change.flatMode !== undefined) {
-          itemElement.setAttribute("data-expanded", String(displayItem.expanded));
-          itemElement.setAttribute("data-flat-mode", String(displayItem.flatMode));
-        }
-        if (change.item) {
-          OrderItemUI.update(itemElement, change.item, displayItem);
-        }
+    } else if (itemElement) {
+      // Update existing item - let order-item handle all its updates
+      const displayItem = data.items[itemId];
+      if (displayItem) {
+        OrderItemUI.update(itemElement, change, displayItem);
       }
     }
   }

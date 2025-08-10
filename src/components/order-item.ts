@@ -6,8 +6,8 @@
  */
 
 import { css } from "@linaria/core";
-import { html, Template, dataAttr, CLICK_EVENT, onClick } from "@/lib/html-template";
-import { OrderItem, OrderModifier, DisplayItem } from "@/model/order-model";
+import { html, Template, dataAttr, CLICK_EVENT, onClick, replaceElement } from "@/lib/html-template";
+import { OrderModifier, DisplayItem } from "@/model/order-model";
 import { mdColors, mdSpacing, mdTypography, mdShape } from "@/styles/theme";
 import { styles as itemListStyles } from "./item-list";
 import { UpdateResult } from "@/lib/data-model-types";
@@ -191,14 +191,26 @@ export function template(displayItem: DisplayItem): Template {
   `;
 }
 
-export function update(container: Element, changes: UpdateResult<OrderItem>, displayItem: DisplayItem) {
+export function update(container: Element, changes: UpdateResult<DisplayItem>, displayItem: DisplayItem) {
+  // Handle expanded state changes - requires re-render
+  if ("expanded" in changes) {
+    replaceElement(container, template(displayItem));
+    return;
+  }
+
+  // Handle flatMode changes - just update attribute
+  if ("flatMode" in changes) {
+    container.setAttribute("data-flat-mode", String(displayItem.flatMode === true));
+  }
+
+  // Handle item property changes
+  const itemChanges = changes.item;
+  if (!itemChanges) return;
+
   const data = displayItem.item;
-  
-  // Note: expanded and flatMode changes are handled by ItemList.updateItemState in order-content.ts
-  // This function only needs to handle OrderItem property changes
-  
+
   // Update quantity display
-  if (changes.quantity !== undefined) {
+  if (itemChanges.quantity !== undefined) {
     const quantityDisplay = container.querySelector(`.${styles.quantityDisplay}`);
     if (quantityDisplay) {
       quantityDisplay.textContent = String(data.quantity);
@@ -225,7 +237,7 @@ export function update(container: Element, changes: UpdateResult<OrderItem>, dis
   }
 
   // Update total price
-  if (changes.total !== undefined) {
+  if (itemChanges.total !== undefined) {
     const priceElement = container.querySelector(`.${styles.price}`);
     if (priceElement) {
       priceElement.textContent = `$${data.total.toFixed(2)}`;

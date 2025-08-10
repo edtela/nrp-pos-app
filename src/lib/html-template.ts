@@ -91,6 +91,23 @@ export function updateDataAttr(element: HTMLElement, name: string, value: any): 
  * @param template The template to render as replacement (null/undefined to remove)
  * @returns The number of elements replaced
  */
+/**
+ * Replace a single element with a rendered template
+ * @param element - The element to replace
+ * @param template - The template to render
+ * @returns true if replacement was successful
+ */
+export function replaceElement(element: Element, template: Template): boolean {
+  const temp = document.createElement("div");
+  render(template, temp);
+  
+  if (temp.firstElementChild) {
+    element.replaceWith(temp.firstElementChild);
+    return true;
+  }
+  return false;
+}
+
 export function replaceElements(container: Element, selector: string, template: Template | null | undefined): number {
   const elements = container.querySelectorAll(selector);
   let replacedCount = 0;
