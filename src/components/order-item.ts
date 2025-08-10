@@ -39,13 +39,12 @@ function generateModificationTokens(modifiers: OrderModifier[]): ModificationTok
     if (modifier.quantity < 0) {
       return { name: `No ${modifier.name}`, type: "removed" };
     } else {
-      // In a real implementation, we'd check if the modifier has a price
-      // For now, we'll randomly assign for demo purposes
-      const hasPrice = Math.random() > 0.5;
+      // TODO: Get actual price from modifier data
+      // For now, treating all positive modifiers as free
       return {
         name: modifier.name,
-        type: hasPrice ? "added-priced" : "added-free",
-        price: hasPrice ? 2.0 : undefined,
+        type: "added-free",
+        price: undefined,
       };
     }
   });
@@ -65,19 +64,6 @@ function modificationTokenTemplate(token: ModificationToken): Template {
 
   return html`<span class="${styles.token} ${className}">${token.name}${suffix}</span>`;
 }
-
-/**
- * Modifier detail template for expanded view (currently unused)
- */
-/* function _modifierDetailTemplate(modifier: OrderModifier): Template {
-  const isRemoved = modifier.quantity < 0;
-  return html`
-    <div class="${styles.modifierDetail} ${isRemoved ? styles.modifierRemoved : ""}">
-      <span class="${styles.modifierName}">${modifier.name}</span>
-      <span class="${styles.modifierQuantity}">×${Math.abs(modifier.quantity)}</span>
-    </div>
-  `;
-} */
 
 /**
  * Order item template
@@ -106,11 +92,15 @@ export function template(displayItem: DisplayItem): Template {
               <div class="${styles.price}">$${item.total.toFixed(2)}</div>
             </div>
             <div class="${styles.descriptionSection}">
-              ${!displayItem.expanded && tokens.length > 0
-                ? html`<div class="${styles.tokens}">${tokens.map((token) => modificationTokenTemplate(token))}</div>`
-                : item.menuItem.description
+              ${displayItem.expanded
+                ? item.menuItem.description
                   ? html`<p class="${styles.description}">${item.menuItem.description}</p>`
-                  : ""}
+                  : ""
+                : tokens.length > 0
+                  ? html`<div class="${styles.tokens}">${tokens.map((token) => modificationTokenTemplate(token))}</div>`
+                  : item.menuItem.description
+                    ? html`<p class="${styles.description}">${item.menuItem.description}</p>`
+                    : ""}
               ${showQuantityInHeader
                 ? html`<span class="${styles.quantity}">${item.quantity} × $${item.unitPrice.toFixed(2)}</span>`
                 : ""}
@@ -130,6 +120,7 @@ export function template(displayItem: DisplayItem): Template {
         </svg>
       </div>
 
+      ${displayItem.expanded ? html`
       <div class="${styles.expandedContent}">
         <div class="${styles.expandedControls}">
           <div class="${styles.tokens}">
@@ -187,6 +178,7 @@ export function template(displayItem: DisplayItem): Template {
           </div>
         </div>
       </div>
+      ` : ""}
     </div>
   `;
 }
@@ -218,11 +210,11 @@ export function update(container: Element, changes: UpdateResult<DisplayItem>, d
 
     const quantityHeader = container.querySelector(`.${styles.quantity}`) as HTMLElement;
     if (quantityHeader) {
+      quantityHeader.textContent = `${data.quantity} × $${data.unitPrice.toFixed(2)}`;
       if (data.quantity > 1) {
-        quantityHeader.style.setProperty("display", "");
-        quantityHeader.textContent = `${data.quantity} × $${data.unitPrice.toFixed(2)}`;
+        quantityHeader.classList.remove(styles.quantityHidden);
       } else {
-        quantityHeader.style.setProperty("display", "none");
+        quantityHeader.classList.add(styles.quantityHidden);
       }
     }
 
@@ -250,10 +242,7 @@ export function update(container: Element, changes: UpdateResult<DisplayItem>, d
  */
 const styles = {
   // Using shared item styles from item-list.ts
-  // Additional styles specific to order items
-  orderItem: css`
-    /* Order item specific styles can be added here if needed */
-  `,
+  orderItem: css``, // Empty but keeping for potential future use
 
   header: css`
     display: flex;
@@ -346,6 +335,10 @@ const styles = {
     white-space: nowrap;
   `,
 
+  quantityHidden: css`
+    display: none !important;
+  `,
+
   toggle: css`
     color: ${mdColors.onSurfaceVariant};
     transition: transform 200ms cubic-bezier(0.4, 0, 0.2, 1);
@@ -394,10 +387,6 @@ const styles = {
   expandedContent: css`
     background: transparent;
     border-top: none;
-
-    [data-expanded="false"] & {
-      display: none;
-    }
   `,
 
   expandedControls: css`
@@ -533,26 +522,5 @@ const styles = {
     }
   `,
 
-  modifierDetail: css`
-    display: flex;
-    justify-content: space-between;
-    font-size: ${mdTypography.bodySmall.fontSize};
-    line-height: ${mdTypography.bodySmall.lineHeight};
-    color: ${mdColors.onSurfaceVariant};
-    padding: 2px 0;
-  `,
-
-  modifierRemoved: css`
-    text-decoration: line-through;
-    color: ${mdColors.onSurfaceVariant};
-  `,
-
-  modifierName: css`
-    flex: 1;
-  `,
-
-  modifierQuantity: css`
-    flex-shrink: 0;
-    margin-left: ${mdSpacing.sm};
-  `,
+  // Removed unused modifier detail styles
 } as const;
