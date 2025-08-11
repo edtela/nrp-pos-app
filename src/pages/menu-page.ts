@@ -17,22 +17,15 @@ import { DataChange, Update, UpdateResult, WHERE } from "@/lib/data-model-types"
 import { OPEN_MENU_EVENT, ORDER_ITEM_EVENT } from "@/components/menu-item";
 import { typeChange } from "@/lib/data-model";
 import { saveOrderItem, OrderItem, getOrder } from "@/model/order-model";
-
-const menuModel = new MenuModel();
-
-// HANDLERS
-function variantSelectHandler(groupId: string, selectedId: string) {
-  update(menuModel.update({ variants: { [groupId]: { selectedId } } }));
-}
+import { VARIANT_SELECT_EVENT } from "@/components/variant";
+import { ADD_TO_ORDER_EVENT, VIEW_ORDER_EVENT } from "@/components/app-bottom-bar";
 
 // Template function - pure rendering with data
 export function template(displayMenu: DisplayMenu): Template {
   return html`
     <div class="${layoutStyles.pageContainer}">
       <header class="${layoutStyles.header}">${AppHeader.template()}</header>
-      <main class="${layoutStyles.content}">
-        ${MenuContentUI.template(displayMenu)}
-      </main>
+      <main class="${layoutStyles.content}">${MenuContentUI.template(displayMenu)}</main>
       <div class="${layoutStyles.bottomBar}">${AppBottomBar.template("view")}</div>
     </div>
   `;
@@ -44,8 +37,14 @@ export function hydrate(container: Element, displayMenu: DisplayMenu) {
   if (!page) return;
 
   // Initialize model
+  const menuModel = new MenuModel();
+  function runUpdate(stmt: Update<MenuPageData>) {
+    const result = menuModel.update(stmt);
+    update(result, menuModel.data);
+  }
+
   let changes: UpdateResult<MenuPageData> | undefined = menuModel.setMenu(displayMenu);
-  
+
   // Add order to displayMenu if present
   if (menuModel.data.order) {
     (displayMenu as any).order = menuModel.data.order;
@@ -54,7 +53,6 @@ export function hydrate(container: Element, displayMenu: DisplayMenu) {
   // Handle navigation context from session
   const menuId = displayMenu.id;
   const navItem = router.truncateStack(menuId);
-
   if (navItem) {
     if (navItem.type === "modify") {
       // Modify mode: editing an existing order item
@@ -105,35 +103,37 @@ export function hydrate(container: Element, displayMenu: DisplayMenu) {
   }
 
   MenuContentUI.init(page, contextMenuItem);
-  update(changes);
+  update(changes, menuModel.data);
 
   // Attach event handlers to the pageContainer element (automatically cleaned up on re-render)
-  MenuContentUI.addVariantHandler(page, variantSelectHandler);
 
   page.addEventListener(`app:${STATE_UPDATE_EVENT}`, (e: Event) => {
-    const customEvent = e as CustomEvent;
-    const change = menuModel.update(customEvent.detail);
-    update(change);
+    runUpdate((e as CustomEvent).detail);
+  });
+
+  addEventHandler(page, VARIANT_SELECT_EVENT, (data) => {
+    runUpdate({ variants: { [data.variantGroupId]: { selectedId: data.variantId } } });
   });
 
   addEventHandler(page, ORDER_ITEM_EVENT, (data) => {
-    const item = menuModel.getMenuItem(data.id);
+    const item = menuModel.data.menu[data.id];
     if (item?.data.subMenu) {
-      // Set initial quantity and total for sale items
-      item.quantity = 1;
-      item.total = item.data.price ?? 0;
       router.goto.menuItem(item.data);
     }
   });
 
   addEventHandler(page, OPEN_MENU_EVENT, (data) => {
-    const item = menuModel.getMenuItem(data.id);
+    const item = menuModel.data.menu[data.id];
     if (item?.data.subMenu) {
       router.goto.menuItem(item.data);
     }
   });
 
-  addEventHandler(page, AppBottomBar.ADD_TO_ORDER_EVENT, () => {
+  addEventHandler(page, VIEW_ORDER_EVENT, () => {
+    router.goto.order();
+  });
+
+  addEventHandler(page, ADD_TO_ORDER_EVENT, () => {
     const order = menuModel.data.order;
     if (order) {
       const modifiers = Object.values(menuModel.data.menu)
@@ -177,14 +177,9 @@ export function hydrate(container: Element, displayMenu: DisplayMenu) {
       }
     }
   });
-
-  addEventHandler(page, AppBottomBar.VIEW_ORDER_EVENT, () => {
-    router.goto.order();
-  });
 }
 
-
-function update(event: DataChange<MenuPageData> | undefined) {
+function update(event: DataChange<MenuPageData> | undefined, data: MenuPageData) {
   if (!event) return;
 
   const container = document.querySelector(`.${MenuContentUI.menuContainer}`) as HTMLElement;
@@ -196,12 +191,12 @@ function update(event: DataChange<MenuPageData> | undefined) {
   if (event.order !== undefined || typeChange("order", event)) {
     const bottomBar = document.querySelector(`.${layoutStyles.bottomBar}`) as HTMLElement;
     if (bottomBar) {
-      if (menuModel.data.order) {
+      if (data.order) {
         // Add mode when we have an order item
         AppBottomBar.update(bottomBar, {
           mode: "add",
-          quantity: menuModel.data.order.quantity,
-          total: menuModel.data.order.total,
+          quantity: data.order.quantity,
+          total: data.order.total,
         });
       } else {
         // View mode when no order item
@@ -209,4 +204,3 @@ function update(event: DataChange<MenuPageData> | undefined) {
     }
   }
 }
-
