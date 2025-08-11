@@ -12,7 +12,7 @@ import { headerCells, DataCellRenderer } from "./menu-header";
 import * as MenuItemUI from "./menu-item";
 import * as VariantGroupUI from "./variant";
 import { mdColors, mdSpacing, mdElevation, mdShape, mdTypography } from "@/styles/theme";
-import { DisplayMenuItem, isOrderMenuItem, MenuPageData, OrderMenuItem } from "@/model/menu-model";
+import { DisplayMenuItem, isOrderMenuItem, MenuPageData, OrderMenuItem, DisplayMenu } from "@/model/menu-model";
 import { DataChange } from "@/lib/data-model-types";
 
 /**
@@ -25,10 +25,10 @@ function orderItemTemplate(order: OrderMenuItem | undefined): Template {
     <div class="${styles.orderItem}">
       <div class="${styles.orderContent}">
         <div class="${styles.orderInfo}">
-          ${order.icon ? html`<span class="${styles.orderIcon}">${order.icon}</span>` : ""}
+          ${order.data.icon ? html`<span class="${styles.orderIcon}">${order.data.icon}</span>` : ""}
           <div class="${styles.orderDetails}">
-            <h3 class="${styles.orderName}">${order.name}</h3>
-            ${order.description ? html`<p class="${styles.orderDescription}">${order.description}</p>` : ""}
+            <h3 class="${styles.orderName}">${order.data.name}</h3>
+            ${order.data.description ? html`<p class="${styles.orderDescription}">${order.data.description}</p>` : ""}
           </div>
         </div>
         <span class="${styles.price}">$${order.total.toFixed(2)}</span>
@@ -41,7 +41,7 @@ function orderItemTemplate(order: OrderMenuItem | undefined): Template {
  * DataCell renderer for menu content
  * Handles variant selection and other data-driven cells
  */
-function createDataCellRenderer(menu: Menu): DataCellRenderer {
+function createDataCellRenderer(menu: Menu | DisplayMenu): DataCellRenderer {
   return (cell: DataCell): Template => {
     if (cell.type === "variant-selection" && typeof cell.data === "string") {
       // Find the variant group by ID
@@ -58,17 +58,24 @@ function createDataCellRenderer(menu: Menu): DataCellRenderer {
 /**
  * Template for menu group
  */
-function menuGroupTemplate(group: MenuGroup, dataRenderer: DataCellRenderer): Template {
+function menuGroupTemplate<T>(group: MenuGroup<T>, dataRenderer: DataCellRenderer): Template {
   return html`
     <div class="${styles.group}" ${dataAttr("included", group.options?.extractIncluded)}>
       ${group.header ? headerCells(group.header, dataRenderer) : ""}
       ${"items" in group
         ? html`
             <div class="${styles.groupItems}">
-              ${(group as ItemGroup).items.map((itemData) => MenuItemUI.template(itemData as DisplayMenuItem))}
+              ${(group as ItemGroup<T>).items.map((itemData) => {
+                // Type check: if it's a DisplayMenuItem, use it directly
+                if ('quantity' in (itemData as any) && 'data' in (itemData as any)) {
+                  return MenuItemUI.template(itemData as DisplayMenuItem);
+                }
+                // Otherwise it's a MenuItem, wrap it
+                return MenuItemUI.template({ data: itemData as MenuItem, quantity: 0, total: 0 });
+              })}
             </div>
           `
-        : html` ${(group as NestedGroup).groups.map((nestedGroup) => menuGroupTemplate(nestedGroup, dataRenderer))} `}
+        : html` ${(group as NestedGroup<T>).groups.map((nestedGroup) => menuGroupTemplate(nestedGroup, dataRenderer))} `}
     </div>
   `;
 }
@@ -76,11 +83,11 @@ function menuGroupTemplate(group: MenuGroup, dataRenderer: DataCellRenderer): Te
 /**
  * Main template for menu content
  */
-export function template(data: Menu & { order?: OrderMenuItem }): Template {
+export function template(data: (Menu | DisplayMenu) & { order?: OrderMenuItem }): Template {
   const dataRenderer = createDataCellRenderer(data);
   return html`
     <div class="${styles.container}">
-      ${orderItemTemplate(data.order)} ${menuGroupTemplate(data.content, dataRenderer)}
+      ${orderItemTemplate(data.order)} ${menuGroupTemplate(data.content as MenuGroup<any>, dataRenderer)}
     </div>
   `;
 }
@@ -127,11 +134,11 @@ export function init(container: HTMLElement, item: MenuItem | undefined) {
  */
 export function update(container: HTMLElement, event: DataChange<MenuPageData>) {
   // Handle order updates
-  if (event.order && "price" in event.order) {
+  if (event.order && "total" in event.order) {
     // Update just the price
     const priceElement = container.querySelector(`.${styles.orderItem} .${styles.price}`);
-    if (priceElement) {
-      priceElement.textContent = `$${event.order.price!.toFixed(2)}`;
+    if (priceElement && typeof event.order.total === 'number') {
+      priceElement.textContent = `$${event.order.total.toFixed(2)}`;
     }
   }
 

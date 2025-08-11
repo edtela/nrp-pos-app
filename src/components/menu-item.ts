@@ -29,11 +29,11 @@ function priceTemplate(price?: number): Template {
  * Menu item template - pure function
  */
 export function template(item: DisplayMenuItem): Template {
-  const iType = item.constraints?.choice?.single ? "radio" : item.subMenu ? "none" : "checkbox";
+  const iType = item.data.constraints?.choice?.single ? "radio" : item.data.subMenu ? "none" : "checkbox";
 
   function clickAction() {
-    if (item.subMenu) {
-      if (isSaleItem(item)) {
+    if (item.data.subMenu) {
+      if (isSaleItem(item.data)) {
         return ORDER_ITEM_EVENT;
       }
       return OPEN_MENU_EVENT;
@@ -43,26 +43,26 @@ export function template(item: DisplayMenuItem): Template {
       return undefined;
     }
 
-    return { menu: { [item.id]: { selected: !item.selected } } };
+    return { menu: { [item.data.id]: { selected: !item.selected } } };
   }
 
   return html`
     <div
       class="${styles.item}"
-      id="menu-item-${item.id}"
+      id="menu-item-${item.data.id}"
       data-type="menu-item"
-      data-id="${item.id}"
+      data-id="${item.data.id}"
       data-interaction-type="${iType}"
       data-selected=${item.selected ? "true" : "false"}
       ${onClick(clickAction())}
     >
       <div class="${styles.content}">
-        <span class="${styles.icon} ${iconClassName}">${item.icon || ""}</span>
+        <span class="${styles.icon} ${iconClassName}">${item.data.icon || ""}</span>
         <div class="${styles.text}">
-          <span class="${styles.name}">${item.name}</span>
-          ${item.description ? html`<p class="${styles.description}">${item.description}</p>` : ""}
+          <span class="${styles.name}">${item.data.name}</span>
+          ${item.data.description ? html`<p class="${styles.description}">${item.data.description}</p>` : ""}
         </div>
-        ${priceTemplate(item.price)}
+        ${priceTemplate(item.data.price)}
       </div>
     </div>
   `;
@@ -73,8 +73,8 @@ export function template(item: DisplayMenuItem): Template {
  */
 export function update(element: HTMLElement, event: DataChange<DisplayMenuItem>) {
   // Check if price or selectedVariantId has changed
-  if ("price" in event) {
-    replaceElements(element, `.${styles.price}`, priceTemplate(event.price));
+  if ("data" in event && event.data && "price" in event.data) {
+    replaceElements(element, `.${styles.price}`, priceTemplate(event.data.price));
   }
 
   if ("selected" in event) {

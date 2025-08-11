@@ -17,17 +17,17 @@ export interface MenuOptions {
 /**
  * Menu groups allow organizing items into sections with optional headers
  */
-export type MenuGroup = ItemGroup | NestedGroup;
-export type ItemGroup = { header?: Cells; items: MenuItem[]; options?: MenuOptions };
-export type NestedGroup = { header?: Cells; groups: MenuGroup[]; options?: MenuOptions };
+export type MenuGroup<T = MenuItem> = ItemGroup<T> | NestedGroup<T>;
+export type ItemGroup<T = MenuItem> = { header?: Cells; items: T[]; options?: MenuOptions };
+export type NestedGroup<T = MenuItem> = { header?: Cells; groups: MenuGroup<T>[]; options?: MenuOptions };
 
 /**
  * Menu container that holds menu groups
  */
-export interface Menu {
+export interface Menu<T = MenuItem> {
   id: string;
   name: string;
-  content: MenuGroup;
+  content: MenuGroup<T>;
   choices?: Record<string, Choice>; // Choice definitions referenced by items via choiceId
   variants?: Record<string, VariantGroup>; // Variant definitions referenced by items
   modifierMenu?: boolean; // If true, requires an OrderItem in the stack to display
@@ -119,11 +119,11 @@ export type VariantPrice = {
 /**
  * Type guards
  */
-export function isItemGroup(group: MenuGroup): group is ItemGroup {
+export function isItemGroup<T>(group: MenuGroup<T>): group is ItemGroup<T> {
   return "items" in group;
 }
 
-export function isNestedGroup(group: MenuGroup): group is NestedGroup {
+export function isNestedGroup<T>(group: MenuGroup<T>): group is NestedGroup<T> {
   return "groups" in group;
 }
 
@@ -147,7 +147,7 @@ export function hasFixedPricing(item: MenuItem): item is MenuItem & { price: num
   return typeof item.price === "number";
 }
 
-export function* iterateGroups(group: MenuGroup): Generator<ItemGroup> {
+export function* iterateGroups<T>(group: MenuGroup<T>): Generator<ItemGroup<T>> {
   if (isItemGroup(group)) {
     yield group;
   } else {
@@ -157,10 +157,30 @@ export function* iterateGroups(group: MenuGroup): Generator<ItemGroup> {
   }
 }
 
-export function* iterateItems(group: MenuGroup): Generator<MenuItem> {
+export function* iterateItems<T>(group: MenuGroup<T>): Generator<T> {
   for (const itemGroup of iterateGroups(group)) {
     for (const item of itemGroup.items) {
       yield item;
     }
+  }
+}
+
+/**
+ * Map items in a menu group to a new type
+ */
+export function mapItems<I, O>(
+  group: MenuGroup<I>,
+  mapper: (item: I) => O
+): MenuGroup<O> {
+  if (isItemGroup(group)) {
+    return {
+      ...group,
+      items: group.items.map(mapper)
+    } as ItemGroup<O>;
+  } else {
+    return {
+      ...group,
+      groups: group.groups.map(g => mapItems(g, mapper))
+    } as NestedGroup<O>;
   }
 }

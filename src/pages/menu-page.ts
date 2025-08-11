@@ -7,14 +7,14 @@
 
 import { css } from "@linaria/core";
 import { addEventHandler, html, render, STATE_UPDATE_EVENT } from "@/lib/html-template";
-import { isSaleItem, Menu, MenuItem } from "@/types";
+import { isSaleItem, Menu, MenuItem, mapItems } from "@/types";
 import { router } from "@/pages/app-router";
 import * as MenuContentUI from "@/components/menu-content";
 import * as AppHeader from "@/components/app-header";
 import * as AppBottomBar from "@/components/app-bottom-bar";
 import { styles as layoutStyles } from "@/components/app-layout";
 import { mdColors, mdSpacing } from "@/styles/theme";
-import { MenuPageData, MenuModel, toOrderMenuItem, OrderMenuItem } from "@/model/menu-model";
+import { MenuPageData, MenuModel, toOrderMenuItem, OrderMenuItem, DisplayMenu } from "@/model/menu-model";
 import { DataChange, Update, UpdateResult, WHERE } from "@/lib/data-model-types";
 import { OPEN_MENU_EVENT, ORDER_ITEM_EVENT } from "@/components/menu-item";
 import { typeChange } from "@/lib/data-model";
@@ -57,11 +57,25 @@ export async function renderMenuPage(container: Element, menuFile: string = "ind
   const menuData = await loadMenuData(menuFile);
   const error = menuData ? undefined : "Failed to load menu data";
 
-  render(template(menuData, error), container);
+  render(template(menuData, undefined, error), container);
   const page = container.querySelector(`.${layoutStyles.pageContainer}`) as HTMLElement;
   if (!menuData || !page) return;
 
   let changes: UpdateResult<MenuPageData> | undefined = menuModel.setMenu(menuData);
+  
+  // Create DisplayMenu by mapping items from the model
+  const displayMenu: DisplayMenu = {
+    ...menuData,
+    content: mapItems(menuData.content, (item) => {
+      return menuModel.data.menu[item.id] || { data: item, quantity: 0, total: 0 };
+    })
+  };
+  menuModel.data.displayMenu = displayMenu;
+  
+  // Add order to displayMenu if present
+  if (menuModel.data.order) {
+    (displayMenu as any).order = menuModel.data.order;
+  }
 
   // Truncate navigation stack and get current context
   const menuId = menuFile.slice(0, menuFile.length - 5); // Remove .json extension
@@ -114,6 +128,13 @@ export async function renderMenuPage(container: Element, menuFile: string = "ind
     }
   }
 
+  // Re-render with DisplayMenu
+  const mainContent = page.querySelector(`.${layoutStyles.content}`) as HTMLElement;
+  if (mainContent && menuModel.data.displayMenu) {
+    mainContent.innerHTML = '';
+    render(MenuContentUI.template(menuModel.data.displayMenu), mainContent);
+  }
+  
   MenuContentUI.init(page, contextMenuItem);
   update(changes);
 
@@ -128,18 +149,18 @@ export async function renderMenuPage(container: Element, menuFile: string = "ind
 
   addEventHandler(page, ORDER_ITEM_EVENT, (data) => {
     const item = menuModel.getMenuItem(data.id);
-    if (item?.subMenu) {
+    if (item?.data.subMenu) {
       // Set initial quantity and total for sale items
       item.quantity = 1;
-      item.total = item.price ?? 0;
-      router.goto.menuItem(item);
+      item.total = item.data.price ?? 0;
+      router.goto.menuItem(item.data);
     }
   });
 
   addEventHandler(page, OPEN_MENU_EVENT, (data) => {
     const item = menuModel.getMenuItem(data.id);
-    if (item?.subMenu) {
-      router.goto.menuItem(item);
+    if (item?.data.subMenu) {
+      router.goto.menuItem(item.data);
     }
   });
 
@@ -149,10 +170,10 @@ export async function renderMenuPage(container: Element, menuFile: string = "ind
       const modifiers = Object.values(menuModel.data.menu)
         .filter((item) => item.quantity - (item.included ? 1 : 0) != 0)
         .map((item) => ({
-          menuItemId: item.id,
-          name: item.name,
+          menuItemId: item.data.id,
+          name: item.data.name,
           quantity: item.quantity - (item.included ? 1 : 0),
-          price: item.price ?? 0,
+          price: item.data.price ?? 0,
         }));
 
       // Check if we're in modify mode
@@ -176,7 +197,7 @@ export async function renderMenuPage(container: Element, menuFile: string = "ind
         // Create new order item
         const orderItem: OrderItem = {
           id: "",
-          menuItem: order,
+          menuItem: order.data,
           quantity: order.quantity,
           modifiers,
           unitPrice: order.unitPrice,
@@ -193,13 +214,13 @@ export async function renderMenuPage(container: Element, menuFile: string = "ind
   });
 }
 
-function template(menuData: Menu | null, error?: string) {
+function template(menuData: Menu | null, displayMenu?: DisplayMenu, error?: string) {
   return html`
     <div class="${layoutStyles.pageContainer}">
       <header class="${layoutStyles.header}">${AppHeader.template()}</header>
       <main class="${layoutStyles.content}">
         ${error ? html` <div class="${styles.error}">Error: ${error}</div> ` : ""}
-        ${menuData ? MenuContentUI.template(menuData) : ""}
+        ${displayMenu ? MenuContentUI.template(displayMenu) : menuData ? MenuContentUI.template(menuData) : ""}
       </main>
       <div class="${layoutStyles.bottomBar}">${AppBottomBar.template("view")}</div>
     </div>
