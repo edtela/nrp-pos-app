@@ -5,7 +5,7 @@
  * @see /component-guidelines.md for component patterns and conventions
  */
 
-import { html, render, addEventHandler, STATE_UPDATE_EVENT } from "@/lib/html-template";
+import { html, addEventHandler, STATE_UPDATE_EVENT } from "@/lib/html-template";
 import { router } from "@/pages/app-router";
 import * as OrderContentUI from "@/components/order-content";
 import * as OrderItemUI from "@/components/order-item";
@@ -16,33 +16,47 @@ import { styles as layoutStyles } from "@/components/app-layout";
 import { orderModel, OrderPageData } from "@/model/order-model";
 import { UpdateResult } from "@/lib/data-model-types";
 
-// Template function
-function template() {
+// Template function - accepts data for static generation
+export function template(data: OrderPageData) {
   return html`
     <div class="${layoutStyles.pageContainer}">
       <header class="${layoutStyles.header}">
         ${AppHeader.template({ showBack: true, searchPlaceholder: "Search Order" })}
       </header>
-      <main class="${layoutStyles.content}">${OrderContentUI.template({ order: { itemIds: [], total: 0 }, items: {} })}</main>
-      <div class="${layoutStyles.bottomBar}">${AppBottomBar.template("send")}</div>
+      <main class="${layoutStyles.content}">
+        ${OrderContentUI.template(data)}
+      </main>
+      <div class="${layoutStyles.bottomBar}">
+        ${AppBottomBar.template("send")}
+      </div>
     </div>
   `;
 }
 
-// Export function to initialize order page
-export async function init(container: Element) {
-  // Render empty template first
-  render(template(), container);
-
+// Hydrate function - loads session data and attaches event handlers
+export function hydrate(container: Element) {
+  // Load session data
   const model = orderModel();
-  const data = model.getData();
+  const sessionData = model.getData();
 
-  // Update with actual data
-  const contentContainer = container.querySelector(`.${layoutStyles.content}`) as HTMLElement;
-  if (contentContainer) {
-    OrderContentUI.init(contentContainer, data);
+  // Only update if we have actual order items (not empty state)
+  if (sessionData.order.itemIds.length > 0) {
+    const contentContainer = container.querySelector(`.${layoutStyles.content}`) as HTMLElement;
+    if (contentContainer) {
+      OrderContentUI.init(contentContainer, sessionData);
+    }
+
+    // Update bottom bar with actual counts
+    const bottomBar = container.querySelector(`.${layoutStyles.bottomBar}`) as HTMLElement;
+    if (bottomBar) {
+      AppBottomBar.update(bottomBar, {
+        itemCount: sessionData.order.itemIds.length,
+        total: sessionData.order.total
+      } as Partial<BottomBarData>);
+    }
   }
 
+  // Attach event handlers
   container.addEventListener(`app:${STATE_UPDATE_EVENT}`, (e: Event) => {
     const customEvent = e as CustomEvent;
     const changes = model.update(customEvent.detail);
@@ -51,7 +65,6 @@ export async function init(container: Element) {
 
   // Handle increase quantity event
   addEventHandler(container, OrderItemUI.INCREASE_QUANTITY_EVENT, (data) => {
-    console.log(data);
     const itemId = data.itemId;
     if (itemId) {
       const changes = model.update({

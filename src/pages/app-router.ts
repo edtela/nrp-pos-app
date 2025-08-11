@@ -8,9 +8,14 @@
  * - Automatic state restoration on page load
  */
 
-import { MenuItem } from "@/types";
+import { MenuItem, Menu, mapItems } from "@/types";
 import { OrderItem } from "@/model/order-model";
+import { DisplayMenu } from "@/model/menu-model";
 import { createStore } from "@/lib/storage";
+import { PageStaticData } from "@/types/page-data";
+import { render } from "@/lib/html-template";
+import * as MenuPage from "./menu-page";
+import * as OrderPage from "./order-page";
 
 /**
  * Navigation stack item types
@@ -156,6 +161,77 @@ class AppRouter {
       return this.navStack.get([]);
     },
   };
+
+  /**
+   * Get menu file from URL path
+   */
+  private getMenuFileFromPath(path: string): string {
+    const menuName = path.slice(1); // Remove leading slash
+    if (!menuName || menuName === "menu") {
+      return "index.json";
+    }
+    return `${menuName}.json`;
+  }
+
+  /**
+   * Fetch static data for a page (menu data or empty order)
+   */
+  async fetchStaticData(path: string): Promise<PageStaticData> {
+    if (path === "/order") {
+      // Order page returns empty data structure
+      return {
+        type: "order",
+        data: {
+          order: { itemIds: [], total: 0 },
+          items: {}
+        }
+      };
+    }
+    
+    // Menu pages fetch menu data
+    const menuFile = this.getMenuFileFromPath(path);
+    const response = await fetch(`/data/menu/${menuFile}`);
+    if (!response.ok) {
+      throw new Error(`Failed to load menu: ${response.statusText}`);
+    }
+    const rawMenu: Menu = await response.json();
+    
+    const displayMenu: DisplayMenu = {
+      ...rawMenu,
+      content: mapItems(rawMenu.content, (item) => ({
+        data: item,
+        quantity: 0,
+        total: 0
+      }))
+    };
+    
+    return {
+      type: "menu",
+      data: displayMenu
+    };
+  }
+
+  /**
+   * Render a page with static data
+   */
+  renderPage(container: Element, pageData: PageStaticData): void {
+    if (pageData.type === "order") {
+      render(OrderPage.template(pageData.data), container);
+    } else {
+      render(MenuPage.template(pageData.data), container);
+    }
+  }
+
+  /**
+   * Hydrate a page with event handlers and session data
+   */
+  hydratePage(container: Element, pageData: PageStaticData): void {
+    if (pageData.type === "order") {
+      OrderPage.hydrate(container);
+    } else {
+      MenuPage.hydrate(container, pageData.data);
+    }
+  }
 }
 
 /**

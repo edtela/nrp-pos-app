@@ -5,15 +5,13 @@
  * @see /component-guidelines.md for component patterns and conventions
  */
 
-import { css } from "@linaria/core";
-import { addEventHandler, html, render, STATE_UPDATE_EVENT } from "@/lib/html-template";
-import { isSaleItem, Menu, MenuItem, mapItems } from "@/types";
+import { addEventHandler, html, Template, STATE_UPDATE_EVENT } from "@/lib/html-template";
+import { isSaleItem, MenuItem } from "@/types";
 import { router } from "@/pages/app-router";
 import * as MenuContentUI from "@/components/menu-content";
 import * as AppHeader from "@/components/app-header";
 import * as AppBottomBar from "@/components/app-bottom-bar";
 import { styles as layoutStyles } from "@/components/app-layout";
-import { mdColors, mdSpacing } from "@/styles/theme";
 import { MenuPageData, MenuModel, toOrderMenuItem, OrderMenuItem, DisplayMenu } from "@/model/menu-model";
 import { DataChange, Update, UpdateResult, WHERE } from "@/lib/data-model-types";
 import { OPEN_MENU_EVENT, ORDER_ITEM_EVENT } from "@/components/menu-item";
@@ -27,52 +25,25 @@ function variantSelectHandler(groupId: string, selectedId: string) {
   update(menuModel.update({ variants: { [groupId]: { selectedId } } }));
 }
 
-// Function to load menu data based on path
-async function loadMenuData(menuFile: string): Promise<DisplayMenu | null> {
-  try {
-    const response = await fetch(`/data/menu/${menuFile}`);
-    if (!response.ok) {
-      throw new Error(`Failed to load menu: ${response.statusText}`);
-    }
-    const rawMenu: Menu = await response.json();
-    
-    // Transform to DisplayMenu immediately
-    const displayMenu: DisplayMenu = {
-      ...rawMenu,
-      content: mapItems(rawMenu.content, (item) => ({
-        data: item,
-        quantity: 0,
-        total: 0
-      }))
-    };
-    
-    return displayMenu;
-  } catch (error) {
-    console.error("Error loading menu data:", error);
-    return null;
-  }
+// Template function - pure rendering with data
+export function template(displayMenu: DisplayMenu): Template {
+  return html`
+    <div class="${layoutStyles.pageContainer}">
+      <header class="${layoutStyles.header}">${AppHeader.template()}</header>
+      <main class="${layoutStyles.content}">
+        ${MenuContentUI.template(displayMenu)}
+      </main>
+      <div class="${layoutStyles.bottomBar}">${AppBottomBar.template("view")}</div>
+    </div>
+  `;
 }
 
-// Export function to render menu page
-export async function renderMenuPage(container: Element, menuFile: string = "index.json") {
-  // Initial render with loading state
-  render(
-    html`
-      <div class="${layoutStyles.pageContainer}">
-        <div class="${styles.loading}">Loading menu...</div>
-      </div>
-    `,
-    container,
-  );
-
-  // Load and render menu data
-  const displayMenu = await loadMenuData(menuFile);
-  const error = displayMenu ? undefined : "Failed to load menu data";
-
-  render(template(displayMenu, error), container);
+// Hydrate function - attaches event handlers and loads session data
+export function hydrate(container: Element, displayMenu: DisplayMenu) {
   const page = container.querySelector(`.${layoutStyles.pageContainer}`) as HTMLElement;
-  if (!displayMenu || !page) return;
+  if (!page) return;
 
+  // Initialize model
   let changes: UpdateResult<MenuPageData> | undefined = menuModel.setMenu(displayMenu);
   
   // Add order to displayMenu if present
@@ -80,8 +51,8 @@ export async function renderMenuPage(container: Element, menuFile: string = "ind
     (displayMenu as any).order = menuModel.data.order;
   }
 
-  // Truncate navigation stack and get current context
-  const menuId = menuFile.slice(0, menuFile.length - 5); // Remove .json extension
+  // Handle navigation context from session
+  const menuId = displayMenu.id;
   const navItem = router.truncateStack(menuId);
 
   if (navItem) {
@@ -107,13 +78,15 @@ export async function renderMenuPage(container: Element, menuFile: string = "ind
     }
   } else {
     // No navigation context - show order summary in bottom bar
-    const bottomBar = document.querySelector(`.${layoutStyles.bottomBar}`) as HTMLElement;
+    const bottomBar = page.querySelector(`.${layoutStyles.bottomBar}`) as HTMLElement;
     const mainOrder = getOrder();
-    AppBottomBar.update(bottomBar, {
-      mode: "view",
-      itemCount: mainOrder.itemIds.length,
-      total: mainOrder.total,
-    });
+    if (bottomBar) {
+      AppBottomBar.update(bottomBar, {
+        mode: "view",
+        itemCount: mainOrder.itemIds.length,
+        total: mainOrder.total,
+      });
+    }
   }
 
   // Handle submenu includes if we have a navigation context
@@ -210,18 +183,6 @@ export async function renderMenuPage(container: Element, menuFile: string = "ind
   });
 }
 
-function template(displayMenu: DisplayMenu | null, error?: string) {
-  return html`
-    <div class="${layoutStyles.pageContainer}">
-      <header class="${layoutStyles.header}">${AppHeader.template()}</header>
-      <main class="${layoutStyles.content}">
-        ${error ? html` <div class="${styles.error}">Error: ${error}</div> ` : ""}
-        ${displayMenu ? MenuContentUI.template(displayMenu) : ""}
-      </main>
-      <div class="${layoutStyles.bottomBar}">${AppBottomBar.template("view")}</div>
-    </div>
-  `;
-}
 
 function update(event: DataChange<MenuPageData> | undefined) {
   if (!event) return;
@@ -249,18 +210,3 @@ function update(event: DataChange<MenuPageData> | undefined) {
   }
 }
 
-const styles = {
-  loading: css`
-    text-align: center;
-    padding: 40px;
-    color: ${mdColors.onSurfaceVariant};
-  `,
-
-  error: css`
-    background-color: ${mdColors.errorContainer};
-    color: ${mdColors.onErrorContainer};
-    padding: ${mdSpacing.md};
-    border-radius: 12px;
-    margin-top: ${mdSpacing.lg};
-  `,
-} as const;
