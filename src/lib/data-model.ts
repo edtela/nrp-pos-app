@@ -324,5 +324,17 @@ export function state<T extends object>(bindings: DataBinding<T>[]) {
       }
       return changes;
     },
+    updateAll: (statements: Update<T>[], changes?: UpdateResult<T>) => {
+      if (data == null) throw Error("No data");
+
+      for (const stmt of statements) {
+        changes = update(data, stmt, changes);
+      }
+
+      if (changes) {
+        applyBindings(data, changes, bindings);
+      }
+      return changes;
+    },
   };
 }

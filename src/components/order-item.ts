@@ -36,20 +36,22 @@ interface ModificationToken {
  */
 function generateModificationTokens(modifiers: OrderModifier[]): ModificationToken[] {
   return modifiers.map((modifier) => {
-    if (modifier.quantity < 0) {
-      return { name: modifier.name, type: "removed" };
-    } else if (modifier.price === 0) {
+    if (modifier.quantity === 0) {
+      return { name: modifier.name, type: "removed", price: modifier.price };
+    }
+
+    if (modifier.price === 0) {
       return {
         name: modifier.name,
         type: "added-free",
       };
-    } else {
-      return {
-        name: modifier.name,
-        type: "added-priced",
-        price: modifier.price,
-      };
     }
+
+    return {
+      name: modifier.name,
+      type: "added-priced",
+      price: modifier.price,
+    };
   });
 }
 
@@ -63,9 +65,9 @@ function modificationTokenTemplate(token: ModificationToken): Template {
       : token.type === "added-priced"
         ? styles.tokenPriced
         : styles.tokenFree;
-  
+
   const prefix = token.type === "removed" ? "-" : token.type === "added-priced" ? "+" : "";
-  
+
   return html`<span class="${styles.token} ${className}">${prefix}${token.name}</span>`;
 }
 
@@ -73,16 +75,12 @@ function modificationTokenTemplate(token: ModificationToken): Template {
  * Modification item template for expanded view (vertical list with prices)
  */
 function modificationItemTemplate(modifier: OrderModifier): Template {
-  const isRemoved = modifier.quantity < 0;
+  const isRemoved = modifier.quantity === 0;
   const hasPriceDisplay = modifier.price > 0;
-  const className = isRemoved
-    ? styles.modItemRemoved
-    : modifier.price > 0
-      ? styles.modItemPriced
-      : styles.modItemFree;
-  
+  const className = isRemoved ? styles.modItemRemoved : modifier.price > 0 ? styles.modItemPriced : styles.modItemFree;
+
   const prefix = isRemoved ? "-" : modifier.price > 0 ? "+" : "";
-  
+
   return html`
     <div class="${styles.modItem} ${className}">
       <span class="${styles.modItemName}">${prefix}${modifier.name}</span>
@@ -144,69 +142,71 @@ export function template(displayItem: DisplayItem): Template {
         </svg>
       </div>
 
-      ${displayItem.expanded ? html`
-      <div class="${styles.expandedContent}">
-        ${item.menuItem.description
-          ? html`<p class="${styles.expandedDescription}">${item.menuItem.description}</p>`
-          : ""}
-        ${hasModifiers
-          ? html`<div class="${styles.modificationsList}">
-              ${item.modifiers.map((modifier) => modificationItemTemplate(modifier))}
-            </div>`
-          : ""}
-        <div class="${styles.expandedControls}">
-          <div class="${styles.quantityControls}">
-            <span class="${styles.quantityLabel}">Quantity:</span>
-            <button
-              class="${styles.quantityBtn}"
-              data-item-id="${item.id}"
-              ${onClick(DECREASE_QUANTITY_EVENT)}
-              ${item.quantity <= 1 ? "disabled" : ""}
-            >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M5 12h14" />
-              </svg>
-            </button>
-            <span class="${styles.quantityDisplay}">${item.quantity}</span>
-            <button class="${styles.quantityBtn}" data-item-id="${item.id}" ${onClick(INCREASE_QUANTITY_EVENT)}>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M5 12h14" />
-                <path d="M12 5v14" />
-              </svg>
-            </button>
-          </div>
-        </div>
+      ${displayItem.expanded
+        ? html`
+            <div class="${styles.expandedContent}">
+              ${item.menuItem.description
+                ? html`<p class="${styles.expandedDescription}">${item.menuItem.description}</p>`
+                : ""}
+              ${hasModifiers
+                ? html`<div class="${styles.modificationsList}">
+                    ${item.modifiers.map((modifier) => modificationItemTemplate(modifier))}
+                  </div>`
+                : ""}
+              <div class="${styles.expandedControls}">
+                <div class="${styles.quantityControls}">
+                  <span class="${styles.quantityLabel}">Quantity:</span>
+                  <button
+                    class="${styles.quantityBtn}"
+                    data-item-id="${item.id}"
+                    ${onClick(DECREASE_QUANTITY_EVENT)}
+                    ${item.quantity <= 1 ? "disabled" : ""}
+                  >
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M5 12h14" />
+                    </svg>
+                  </button>
+                  <span class="${styles.quantityDisplay}">${item.quantity}</span>
+                  <button class="${styles.quantityBtn}" data-item-id="${item.id}" ${onClick(INCREASE_QUANTITY_EVENT)}>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M5 12h14" />
+                      <path d="M12 5v14" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
 
-        <div class="${styles.actions}">
-          <div class="${styles.actionsLeft}">
-            <button
-              class="${styles.actionBtn} ${styles.actionBtnDestructive}"
-              ${dataAttr(CLICK_EVENT, { items: { [item.id]: [] } })}
-            >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M3 6h18" />
-                <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
-                <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
-              </svg>
-              Remove
-            </button>
-          </div>
-          <div class="${styles.actionsRight}">
-            <button
-              class="${styles.actionBtn} ${styles.actionBtnSecondary}"
-              data-item-id="${item.id}"
-              ${onClick(MODIFY_ITEM_EVENT)}
-            >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="m17 3 4 4-9 9-4 1 1-4 9-9z" />
-                <path d="m15 5 4 4" />
-              </svg>
-              Modify
-            </button>
-          </div>
-        </div>
-      </div>
-      ` : ""}
+              <div class="${styles.actions}">
+                <div class="${styles.actionsLeft}">
+                  <button
+                    class="${styles.actionBtn} ${styles.actionBtnDestructive}"
+                    ${dataAttr(CLICK_EVENT, { items: { [item.id]: [] } })}
+                  >
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M3 6h18" />
+                      <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
+                      <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
+                    </svg>
+                    Remove
+                  </button>
+                </div>
+                <div class="${styles.actionsRight}">
+                  <button
+                    class="${styles.actionBtn} ${styles.actionBtnSecondary}"
+                    data-item-id="${item.id}"
+                    ${onClick(MODIFY_ITEM_EVENT)}
+                  >
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="m17 3 4 4-9 9-4 1 1-4 9-9z" />
+                      <path d="m15 5 4 4" />
+                    </svg>
+                    Modify
+                  </button>
+                </div>
+              </div>
+            </div>
+          `
+        : ""}
     </div>
   `;
 }

@@ -47,7 +47,7 @@ export function generateOptimisticId(): string {
 }
 
 export function storageKey(id: string) {
-  return `order-v3-${id}`;
+  return `order-v4-${id}`;
 }
 
 export function getStore(id: string) {

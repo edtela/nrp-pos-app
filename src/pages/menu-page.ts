@@ -6,14 +6,14 @@
  */
 
 import { addEventHandler, html, Template, STATE_UPDATE_EVENT } from "@/lib/html-template";
-import { isSaleItem, MenuItem } from "@/types";
-import { router } from "@/pages/app-router";
+import { isSaleItem } from "@/types";
+import { NavStackItem, router } from "@/pages/app-router";
 import * as MenuContentUI from "@/components/menu-content";
 import * as AppHeader from "@/components/app-header";
 import * as AppBottomBar from "@/components/app-bottom-bar";
 import { styles as layoutStyles } from "@/components/app-layout";
-import { MenuPageData, MenuModel, toOrderMenuItem, OrderMenuItem, DisplayMenu } from "@/model/menu-model";
-import { DataChange, Update, UpdateResult, WHERE } from "@/lib/data-model-types";
+import { MenuPageData, MenuModel, toOrderMenuItem, DisplayMenu } from "@/model/menu-model";
+import { DataChange, Update, UpdateResult } from "@/lib/data-model-types";
 import { OPEN_MENU_EVENT, ORDER_ITEM_EVENT } from "@/components/menu-item";
 import { typeChange } from "@/lib/data-model";
 import { saveOrderItem, OrderItem, getOrder } from "@/model/order-model";
@@ -31,54 +31,44 @@ export function template(displayMenu: DisplayMenu): Template {
   `;
 }
 
+function toContext(navItem?: NavStackItem) {
+  if (!navItem) return {};
+
+  if (navItem.type === "modify") {
+    const order = toOrderMenuItem(navItem.item.menuItem);
+    order.order = navItem.item;
+    order.quantity = navItem.item.quantity;
+    return { menuItem: navItem.item.menuItem, order, modifiers: navItem.item.modifiers };
+  }
+
+  const menuItem = navItem.item;
+  if (isSaleItem(menuItem)) {
+    const order = toOrderMenuItem(menuItem);
+    return { menuItem, order };
+  }
+
+  return { menuItem };
+}
+
 // Hydrate function - attaches event handlers and loads session data
 export function hydrate(container: Element, displayMenu: DisplayMenu) {
   const page = container.querySelector(`.${layoutStyles.pageContainer}`) as HTMLElement;
   if (!page) return;
 
-  // Initialize model
-  const menuModel = new MenuModel();
-  function runUpdate(stmt: Update<MenuPageData>) {
-    const result = menuModel.update(stmt);
-    update(result, menuModel.data);
-  }
+  const navItem = router.truncateStack(displayMenu.id);
+  const context = toContext(navItem);
+  MenuContentUI.init(page, context.menuItem?.subMenu, context.order);
 
-  let changes: UpdateResult<MenuPageData> | undefined = menuModel.setMenu(displayMenu);
-
-  // Add order to displayMenu if present
-  if (menuModel.data.order) {
-    (displayMenu as any).order = menuModel.data.order;
-  }
-
-  // Handle navigation context from session
-  const menuId = displayMenu.id;
-  const navItem = router.truncateStack(menuId);
-  if (navItem) {
-    if (navItem.type === "modify") {
-      // Modify mode: editing an existing order item
-      const orderItem = navItem.item;
-      const menuItem = toOrderMenuItem(orderItem.menuItem);
-      menuItem.quantity = orderItem.quantity;
-      menuItem.total = orderItem.total;
-
-      const stmt: Update<MenuPageData> = { order: [menuItem as OrderMenuItem] };
-      changes = menuModel.update(stmt, changes);
-
-      // TODO: Also restore modifiers state
+  const bottomBar = page.querySelector(`.${layoutStyles.bottomBar}`) as HTMLElement;
+  if (bottomBar) {
+    if (context.order) {
+      AppBottomBar.update(bottomBar, {
+        mode: "add",
+        quantity: context.order.quantity,
+        total: context.order.total,
+      });
     } else {
-      // Browse mode: navigating through menu
-      const menuItem = navItem.item;
-      if (isSaleItem(menuItem)) {
-        const orderMenuItem = toOrderMenuItem(menuItem);
-        const stmt: Update<MenuPageData> = { order: [orderMenuItem as OrderMenuItem] };
-        changes = menuModel.update(stmt, changes);
-      }
-    }
-  } else {
-    // No navigation context - show order summary in bottom bar
-    const bottomBar = page.querySelector(`.${layoutStyles.bottomBar}`) as HTMLElement;
-    const mainOrder = getOrder();
-    if (bottomBar) {
+      const mainOrder = getOrder();
       AppBottomBar.update(bottomBar, {
         mode: "view",
         itemCount: mainOrder.itemIds.length,
@@ -87,26 +77,20 @@ export function hydrate(container: Element, displayMenu: DisplayMenu) {
     }
   }
 
-  // Handle submenu includes if we have a navigation context
-  let contextMenuItem: MenuItem | undefined;
-  if (navItem) {
-    contextMenuItem = navItem.type === "modify" ? navItem.item.menuItem : navItem.item;
-    const subMenu = contextMenuItem?.subMenu;
-    if (subMenu?.included) {
-      const stmt = subMenu.included.reduce((u, key) => {
-        u[key.itemId] = { [WHERE]: (item: any) => item != null, included: 1 };
-        return u;
-      }, {} as any);
-
-      changes = menuModel.update({ menu: stmt }, changes);
-    }
+  // Initialize model
+  const model = new MenuModel();
+  function runUpdate(stmt: Update<MenuPageData>) {
+    const result = model.update(stmt);
+    update(result, model.data);
   }
 
-  MenuContentUI.init(page, contextMenuItem);
-  update(changes, menuModel.data);
+  let changes: UpdateResult<MenuPageData> | undefined = model.setMenu(displayMenu);
+  if (context.order) {
+    changes = model.update({ order: [context.order] });
+  }
+  update(changes, model.data);
 
   // Attach event handlers to the pageContainer element (automatically cleaned up on re-render)
-
   page.addEventListener(`app:${STATE_UPDATE_EVENT}`, (e: Event) => {
     runUpdate((e as CustomEvent).detail);
   });
@@ -116,14 +100,14 @@ export function hydrate(container: Element, displayMenu: DisplayMenu) {
   });
 
   addEventHandler(page, ORDER_ITEM_EVENT, (data) => {
-    const item = menuModel.data.menu[data.id];
+    const item = model.data.menu[data.id];
     if (item?.data.subMenu) {
       router.goto.menuItem(item.data);
     }
   });
 
   addEventHandler(page, OPEN_MENU_EVENT, (data) => {
-    const item = menuModel.data.menu[data.id];
+    const item = model.data.menu[data.id];
     if (item?.data.subMenu) {
       router.goto.menuItem(item.data);
     }
@@ -134,45 +118,37 @@ export function hydrate(container: Element, displayMenu: DisplayMenu) {
   });
 
   addEventHandler(page, ADD_TO_ORDER_EVENT, () => {
-    const order = menuModel.data.order;
+    const order = model.data.order;
     if (order) {
-      const modifiers = Object.values(menuModel.data.menu)
-        .filter((item) => item.quantity - (item.included ? 1 : 0) != 0)
+      const modifiers = Object.values(model.data.menu)
+        .filter((item) => {
+          if (item.included) {
+            return item.quantity !== 1 && !item.data.constraints?.choice?.single;
+          }
+          return item.quantity > 0;
+        })
         .map((item) => ({
           menuItemId: item.data.id,
           name: item.data.name,
-          quantity: item.quantity - (item.included ? 1 : 0),
+          quantity: item.quantity,
           price: item.data.price ?? 0,
         }));
 
+      const orderItem: OrderItem = {
+        ...(order.order ?? { id: "" }),
+        menuItem: order.menuItem,
+        quantity: order.quantity,
+        modifiers,
+        unitPrice: order.unitPrice,
+        total: order.total,
+      };
+      saveOrderItem(orderItem);
+
       // Check if we're in modify mode
-      if (router.context.isModifying()) {
-        const currentItem = router.context.getCurrentItem();
-        if (currentItem?.type === "modify") {
-          // Update existing order item
-          const orderItem: OrderItem = {
-            ...currentItem.item,
-            quantity: order.quantity,
-            modifiers,
-            unitPrice: order.unitPrice,
-            total: order.total,
-          };
-          saveOrderItem(orderItem);
-          // Clear navigation stack and go to order page
-          router.context.clearStack();
-          router.goto.order();
-        }
+      if (order.order) {
+        router.context.clearStack();
+        router.goto.order();
       } else {
-        // Create new order item
-        const orderItem: OrderItem = {
-          id: "",
-          menuItem: order.data,
-          quantity: order.quantity,
-          modifiers,
-          unitPrice: order.unitPrice,
-          total: order.total,
-        };
-        saveOrderItem(orderItem);
         router.goto.back();
       }
     }
@@ -188,7 +164,7 @@ function update(event: DataChange<MenuPageData> | undefined, data: MenuPageData)
   }
 
   // Update bottom bar based on order state
-  if (event.order !== undefined || typeChange("order", event)) {
+  if (typeChange("order", event)) {
     const bottomBar = document.querySelector(`.${layoutStyles.bottomBar}`) as HTMLElement;
     if (bottomBar) {
       if (data.order) {

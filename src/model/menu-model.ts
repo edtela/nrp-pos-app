@@ -1,6 +1,7 @@
 import { iterateItems, Menu, MenuItem, VariantGroup } from "@/types";
 import { anyChange, state, typeChange } from "@/lib/data-model";
 import { ALL, DataBinding, Update, UpdateResult, WHERE } from "@/lib/data-model-types";
+import { OrderItem } from "./order-model";
 
 export type DisplayMenuItem = {
   data: MenuItem;
@@ -11,9 +12,8 @@ export type DisplayMenuItem = {
 };
 
 export type OrderMenuItem = {
-  data: MenuItem;
-  selected?: boolean;
-  included?: boolean;
+  order?: OrderItem;
+  menuItem: MenuItem;
   quantity: number;
   total: number;
   childrenPrice: number;
@@ -24,7 +24,7 @@ export type DisplayMenu = Menu<DisplayMenuItem>;
 
 export function toOrderMenuItem(item: MenuItem): OrderMenuItem {
   return {
-    data: item,
+    menuItem: item,
     childrenPrice: 0,
     unitPrice: item.price ?? 0,
     quantity: 1,
@@ -32,15 +32,10 @@ export function toOrderMenuItem(item: MenuItem): OrderMenuItem {
   };
 }
 
-export function isOrderMenuItem(item: any): item is OrderMenuItem {
-  return item != null && "childrenPrice" in item && "data" in item;
-}
-
 export type MenuPageData = {
   order?: OrderMenuItem;
   variants: Record<string, VariantGroup>;
   menu: Record<string, DisplayMenuItem>;
-  displayMenu?: DisplayMenu;
 };
 
 const bindings: DataBinding<MenuPageData>[] = [
@@ -48,19 +43,46 @@ const bindings: DataBinding<MenuPageData>[] = [
   {
     onChange: [{ order: typeChange }],
     update: (data: MenuPageData) => {
-      console.log("PARENT SET");
-      const variants = data.order?.data.variants;
-      if (variants?.selectedId) {
-        return {
-          variants: {
-            [variants.groupId]: {
-              [WHERE]: (v: VariantGroup) => v != null,
-              selectedId: variants.selectedId,
-            },
+      const order = data.order;
+      if (order == null) return {};
+
+      const stmt: Update<MenuPageData> = { menu: {} };
+      if (order.menuItem.subMenu?.included) {
+        order.menuItem.subMenu.included.reduce((u, includedItem) => {
+          (u as any)[includedItem.itemId] = {
+            [WHERE]: (item: any) => item != null,
+            included: true,
+            selected: true,
+            quantity: 1,
+          };
+          return u;
+        }, stmt.menu);
+      }
+
+      if (order.order) {
+        //override selected and quantity for included
+        order.order.modifiers.reduce((u, mod) => {
+          (u as any)[mod.menuItemId] = {
+            ...((u as any)[mod.menuItemId] ?? {}),
+            [WHERE]: (item: any) => item != null,
+            selected: mod.quantity > 0,
+            quantity: mod.quantity,
+          };
+          return u;
+        }, stmt.menu);
+      }
+
+      if (order.menuItem.variants?.selectedId) {
+        const variants = order.menuItem.variants;
+        stmt.variants = {
+          [variants.groupId]: {
+            [WHERE]: (v: VariantGroup) => v != null,
+            selectedId: variants.selectedId,
           },
         };
       }
-      return {};
+
+      return stmt;
     },
   },
   // Variant selection, update menu items and order
@@ -69,8 +91,8 @@ const bindings: DataBinding<MenuPageData>[] = [
     onChange: ["variants", [ALL], "selectedId"],
     update: (group: VariantGroup) => ({
       order: {
-        [WHERE]: (order) => order != null && order.data.variants?.groupId === group.id,
-        data: {
+        [WHERE]: (order) => order != null && order.menuItem.variants?.groupId === group.id,
+        menuItem: {
           variants: { selectedId: group.selectedId },
           price: (_, item) => item.variants?.price[group.selectedId],
         },
@@ -85,15 +107,6 @@ const bindings: DataBinding<MenuPageData>[] = [
         },
       },
     }),
-  },
-  {
-    onChange: ["menu", [ALL], "included"],
-    update(item: DisplayMenuItem) {
-      if (item.included) {
-        return { menu: { [item.data.id]: { selected: true, quantity: 1 } } };
-      }
-      return {};
-    },
   },
   // Choice selection. On single selection, unselect others
   {
@@ -117,7 +130,10 @@ const bindings: DataBinding<MenuPageData>[] = [
     onChange: ["menu", [ALL], "selected"],
     update(item: DisplayMenuItem) {
       if (item.selected === true) {
-        return { menu: { [item.data.id]: { quantity: 1 } } };
+        if (item.quantity === 0) {
+          return { menu: { [item.data.id]: { quantity: 1 } } };
+        }
+        return {};
       }
 
       if (item.selected === false) {
@@ -153,7 +169,7 @@ const bindings: DataBinding<MenuPageData>[] = [
       const order = data.order;
       if (!order) return {};
 
-      const price = order.data.price ?? 0;
+      const price = order.menuItem.price ?? 0;
       const unitPrice = price + Math.max(0, order.childrenPrice);
       const total = order.quantity * unitPrice;
       return { order: { unitPrice, total } };
@@ -166,18 +182,18 @@ export class MenuModel {
   model = state(bindings);
 
   setMenu(displayMenu: DisplayMenu) {
-    this.data = { variants: {}, menu: {}, displayMenu };
-    
+    this.data = { variants: {}, menu: {} };
+
     // Copy variants
     for (let vg of Object.values(displayMenu.variants ?? {})) {
       this.data.variants[vg.id] = { ...vg };
     }
-    
+
     // Build menu map from DisplayMenu items
     for (let item of iterateItems(displayMenu.content)) {
       this.data.menu[item.data.id] = item;
     }
-    
+
     return this.model.setData(this.data);
   }
 
@@ -187,8 +203,16 @@ export class MenuModel {
 
   update(stmt: Update<MenuPageData>, changes?: UpdateResult<MenuPageData>) {
     try {
-      const dc = this.model.update(stmt, changes);
-      return dc;
+      return this.model.update(stmt, changes);
+    } catch (e) {
+      console.error(e);
+    }
+    return undefined;
+  }
+
+  updateAll(stmts: Update<MenuPageData>[], changes?: UpdateResult<MenuPageData>) {
+    try {
+      return this.model.updateAll(stmts, changes);
     } catch (e) {
       console.error(e);
     }

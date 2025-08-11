@@ -7,12 +7,12 @@
 
 import { css } from "@linaria/core";
 import { dataAttr, html, Template, replaceElements } from "@/lib/html-template";
-import { ItemGroup, Menu, MenuGroup, NestedGroup, DataCell, MenuItem } from "@/types";
+import { ItemGroup, Menu, MenuGroup, NestedGroup, DataCell, MenuItem, SubMenu } from "@/types";
 import { headerCells, DataCellRenderer } from "./menu-header";
 import * as MenuItemUI from "./menu-item";
 import * as VariantGroupUI from "./variant";
 import { mdColors, mdSpacing, mdElevation, mdShape, mdTypography } from "@/styles/theme";
-import { DisplayMenuItem, isOrderMenuItem, MenuPageData, OrderMenuItem, DisplayMenu } from "@/model/menu-model";
+import { DisplayMenuItem, MenuPageData, OrderMenuItem, DisplayMenu } from "@/model/menu-model";
 import { DataChange } from "@/lib/data-model-types";
 
 /**
@@ -25,10 +25,12 @@ function orderItemTemplate(order: OrderMenuItem | undefined): Template {
     <div class="${styles.orderItem}">
       <div class="${styles.orderContent}">
         <div class="${styles.orderInfo}">
-          ${order.data.icon ? html`<span class="${styles.orderIcon}">${order.data.icon}</span>` : ""}
+          ${order.menuItem.icon ? html`<span class="${styles.orderIcon}">${order.menuItem.icon}</span>` : ""}
           <div class="${styles.orderDetails}">
-            <h3 class="${styles.orderName}">${order.data.name}</h3>
-            ${order.data.description ? html`<p class="${styles.orderDescription}">${order.data.description}</p>` : ""}
+            <h3 class="${styles.orderName}">${order.menuItem.name}</h3>
+            ${order.menuItem.description
+              ? html`<p class="${styles.orderDescription}">${order.menuItem.description}</p>`
+              : ""}
           </div>
         </div>
         <span class="${styles.price}">$${order.total.toFixed(2)}</span>
@@ -67,7 +69,7 @@ function menuGroupTemplate<T>(group: MenuGroup<T>, dataRenderer: DataCellRendere
             <div class="${styles.groupItems}">
               ${(group as ItemGroup<T>).items.map((itemData) => {
                 // Type check: if it's a DisplayMenuItem, use it directly
-                if ('quantity' in (itemData as any) && 'data' in (itemData as any)) {
+                if ("quantity" in (itemData as any) && "data" in (itemData as any)) {
                   return MenuItemUI.template(itemData as DisplayMenuItem);
                 }
                 // Otherwise it's a MenuItem, wrap it
@@ -75,7 +77,9 @@ function menuGroupTemplate<T>(group: MenuGroup<T>, dataRenderer: DataCellRendere
               })}
             </div>
           `
-        : html` ${(group as NestedGroup<T>).groups.map((nestedGroup) => menuGroupTemplate(nestedGroup, dataRenderer))} `}
+        : html`
+            ${(group as NestedGroup<T>).groups.map((nestedGroup) => menuGroupTemplate(nestedGroup, dataRenderer))}
+          `}
     </div>
   `;
 }
@@ -92,12 +96,11 @@ export function template(data: (Menu | DisplayMenu) & { order?: OrderMenuItem })
   `;
 }
 
-export function init(container: HTMLElement, item: MenuItem | undefined) {
-  if (item && isOrderMenuItem(item)) {
-    replaceElements(container, `.${styles.orderItem}`, orderItemTemplate(item));
+export function init(container: HTMLElement, subMenu?: SubMenu, order?: OrderMenuItem) {
+  if (order) {
+    replaceElements(container, `.${styles.orderItem}`, orderItemTemplate(order));
   }
 
-  const subMenu = item?.subMenu;
   if (!subMenu?.included) return;
 
   // Find the included section
@@ -134,11 +137,10 @@ export function init(container: HTMLElement, item: MenuItem | undefined) {
  */
 export function update(container: HTMLElement, event: DataChange<MenuPageData>) {
   // Handle order updates
-  if (event.order && "total" in event.order) {
-    // Update just the price
+  if (event.order?.menuItem && "price" in event.order.menuItem) {
     const priceElement = container.querySelector(`.${styles.orderItem} .${styles.price}`);
-    if (priceElement && typeof event.order.total === 'number') {
-      priceElement.textContent = `$${event.order.total.toFixed(2)}`;
+    if (priceElement && typeof event.order.menuItem.price === "number") {
+      priceElement.textContent = `$${event.order.menuItem.price.toFixed(2)}`;
     }
   }
 
