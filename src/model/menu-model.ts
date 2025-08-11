@@ -165,16 +165,19 @@ export class MenuModel {
   data: MenuPageData = { variants: {}, menu: {} };
   model = state(bindings);
 
-  setMenu(menu: Menu) {
-    this.data = { variants: {}, menu: {} };
-    for (let vg of Object.values(menu.variants ?? {})) {
+  setMenu(displayMenu: DisplayMenu) {
+    this.data = { variants: {}, menu: {}, displayMenu };
+    
+    // Copy variants
+    for (let vg of Object.values(displayMenu.variants ?? {})) {
       this.data.variants[vg.id] = { ...vg };
     }
-
-    for (let item of iterateItems(menu.content)) {
-      this.data.menu[item.id] = { data: item, quantity: 0, total: 0 };
+    
+    // Build menu map from DisplayMenu items
+    for (let item of iterateItems(displayMenu.content)) {
+      this.data.menu[item.data.id] = item;
     }
-
+    
     return this.model.setData(this.data);
   }
 

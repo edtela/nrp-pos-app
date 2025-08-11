@@ -28,13 +28,25 @@ function variantSelectHandler(groupId: string, selectedId: string) {
 }
 
 // Function to load menu data based on path
-async function loadMenuData(menuFile: string): Promise<Menu | null> {
+async function loadMenuData(menuFile: string): Promise<DisplayMenu | null> {
   try {
     const response = await fetch(`/data/menu/${menuFile}`);
     if (!response.ok) {
       throw new Error(`Failed to load menu: ${response.statusText}`);
     }
-    return await response.json();
+    const rawMenu: Menu = await response.json();
+    
+    // Transform to DisplayMenu immediately
+    const displayMenu: DisplayMenu = {
+      ...rawMenu,
+      content: mapItems(rawMenu.content, (item) => ({
+        data: item,
+        quantity: 0,
+        total: 0
+      }))
+    };
+    
+    return displayMenu;
   } catch (error) {
     console.error("Error loading menu data:", error);
     return null;
@@ -54,23 +66,14 @@ export async function renderMenuPage(container: Element, menuFile: string = "ind
   );
 
   // Load and render menu data
-  const menuData = await loadMenuData(menuFile);
-  const error = menuData ? undefined : "Failed to load menu data";
+  const displayMenu = await loadMenuData(menuFile);
+  const error = displayMenu ? undefined : "Failed to load menu data";
 
-  render(template(menuData, undefined, error), container);
+  render(template(displayMenu, error), container);
   const page = container.querySelector(`.${layoutStyles.pageContainer}`) as HTMLElement;
-  if (!menuData || !page) return;
+  if (!displayMenu || !page) return;
 
-  let changes: UpdateResult<MenuPageData> | undefined = menuModel.setMenu(menuData);
-  
-  // Create DisplayMenu by mapping items from the model
-  const displayMenu: DisplayMenu = {
-    ...menuData,
-    content: mapItems(menuData.content, (item) => {
-      return menuModel.data.menu[item.id] || { data: item, quantity: 0, total: 0 };
-    })
-  };
-  menuModel.data.displayMenu = displayMenu;
+  let changes: UpdateResult<MenuPageData> | undefined = menuModel.setMenu(displayMenu);
   
   // Add order to displayMenu if present
   if (menuModel.data.order) {
@@ -128,13 +131,6 @@ export async function renderMenuPage(container: Element, menuFile: string = "ind
     }
   }
 
-  // Re-render with DisplayMenu
-  const mainContent = page.querySelector(`.${layoutStyles.content}`) as HTMLElement;
-  if (mainContent && menuModel.data.displayMenu) {
-    mainContent.innerHTML = '';
-    render(MenuContentUI.template(menuModel.data.displayMenu), mainContent);
-  }
-  
   MenuContentUI.init(page, contextMenuItem);
   update(changes);
 
@@ -214,13 +210,13 @@ export async function renderMenuPage(container: Element, menuFile: string = "ind
   });
 }
 
-function template(menuData: Menu | null, displayMenu?: DisplayMenu, error?: string) {
+function template(displayMenu: DisplayMenu | null, error?: string) {
   return html`
     <div class="${layoutStyles.pageContainer}">
       <header class="${layoutStyles.header}">${AppHeader.template()}</header>
       <main class="${layoutStyles.content}">
         ${error ? html` <div class="${styles.error}">Error: ${error}</div> ` : ""}
-        ${displayMenu ? MenuContentUI.template(displayMenu) : menuData ? MenuContentUI.template(menuData) : ""}
+        ${displayMenu ? MenuContentUI.template(displayMenu) : ""}
       </main>
       <div class="${layoutStyles.bottomBar}">${AppBottomBar.template("view")}</div>
     </div>
