@@ -46,6 +46,14 @@ export function template(item: DisplayMenuItem): Template {
     return { menu: { [item.data.id]: { selected: !item.selected } } };
   }
 
+  // Show icon only when:
+  // - Never for radio buttons (iType === "radio")
+  // - For checkboxes, only when NOT selected (no checkmark showing)
+  // - Always for navigation items (iType === "none")
+  const showIcon = iType === "radio" ? false : 
+                   iType === "checkbox" ? !item.selected : 
+                   true;
+  
   return html`
     <div
       class="${styles.item}"
@@ -57,7 +65,7 @@ export function template(item: DisplayMenuItem): Template {
       ${onClick(clickAction())}
     >
       <div class="${styles.content}">
-        <span class="${styles.icon} ${iconClassName}">${item.data.icon || ""}</span>
+        <span class="${styles.icon} ${iconClassName}">${showIcon && item.data.icon ? item.data.icon : ""}</span>
         <div class="${styles.text}">
           <span class="${styles.name}">${item.data.name}</span>
           ${item.data.description ? html`<p class="${styles.description}">${item.data.description}</p>` : ""}
