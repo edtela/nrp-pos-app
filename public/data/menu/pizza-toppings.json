@@ -67,6 +67,7 @@
           {
             "id": "regular-mozzarella",
             "name": "Regular Mozzarella",
+            "icon": "🧀",
             "price": 0,
             "constraints": {
               "choice": {
@@ -78,6 +79,7 @@
           {
             "id": "vegan-cheese",
             "name": "Vegan Cheese",
+            "icon": "🌱",
             "price": 0,
             "constraints": {
               "choice": {
@@ -89,6 +91,7 @@
           {
             "id": "fresh-mozzarella",
             "name": "Fresh Mozzarella",
+            "icon": "🧀",
             "price": 1,
             "constraints": {
               "choice": {
@@ -108,6 +111,7 @@
           {
             "id": "tomato-sauce",
             "name": "Tomato Sauce",
+            "icon": "🍅",
             "price": 0,
             "constraints": {
               "min": 0,
@@ -121,6 +125,7 @@
           {
             "id": "white-sauce",
             "name": "White Sauce",
+            "icon": "🥛",
             "price": 0,
             "constraints": {
               "min": 0,
@@ -134,6 +139,7 @@
           {
             "id": "bbq-sauce",
             "name": "BBQ Sauce",
+            "icon": "🍖",
             "price": 0,
             "constraints": {
               "min": 0,
@@ -155,6 +161,7 @@
           {
             "id": "pepperoni",
             "name": "Pepperoni",
+            "icon": "🍕",
             "variants": {
               "groupId": "pizza-size",
               "price": {
@@ -167,6 +174,7 @@
           {
             "id": "italian-sausage",
             "name": "Italian Sausage",
+            "icon": "🌭",
             "variants": {
               "groupId": "pizza-size",
               "price": {
@@ -179,6 +187,7 @@
           {
             "id": "ham",
             "name": "Ham",
+            "icon": "🍖",
             "variants": {
               "groupId": "pizza-size",
               "price": {
@@ -191,6 +200,7 @@
           {
             "id": "bacon",
             "name": "Bacon",
+            "icon": "🥓",
             "variants": {
               "groupId": "pizza-size",
               "price": {
@@ -203,6 +213,7 @@
           {
             "id": "grilled-chicken",
             "name": "Grilled Chicken",
+            "icon": "🍗",
             "variants": {
               "groupId": "pizza-size",
               "price": {
@@ -223,6 +234,7 @@
           {
             "id": "mushrooms",
             "name": "Mushrooms",
+            "icon": "🍄",
             "variants": {
               "groupId": "pizza-size",
               "price": {
@@ -235,6 +247,7 @@
           {
             "id": "onions",
             "name": "Onions",
+            "icon": "🧅",
             "variants": {
               "groupId": "pizza-size",
               "price": {
@@ -247,6 +260,7 @@
           {
             "id": "bell-peppers",
             "name": "Bell Peppers",
+            "icon": "🫑",
             "variants": {
               "groupId": "pizza-size",
               "price": {
@@ -259,6 +273,7 @@
           {
             "id": "black-olives",
             "name": "Black Olives",
+            "icon": "🫒",
             "variants": {
               "groupId": "pizza-size",
               "price": {
@@ -271,6 +286,7 @@
           {
             "id": "tomatoes",
             "name": "Fresh Tomatoes",
+            "icon": "🍅",
             "variants": {
               "groupId": "pizza-size",
               "price": {
@@ -283,6 +299,7 @@
           {
             "id": "jalapenos",
             "name": "Jalapeños",
+            "icon": "🌶️",
             "variants": {
               "groupId": "pizza-size",
               "price": {
@@ -295,6 +312,7 @@
           {
             "id": "pineapple",
             "name": "Pineapple",
+            "icon": "🍍",
             "variants": {
               "groupId": "pizza-size",
               "price": {
@@ -307,6 +325,7 @@
           {
             "id": "fresh-basil",
             "name": "Fresh Basil",
+            "icon": "🌿",
             "price": 0
           }
         ]
@@ -320,6 +339,7 @@
           {
             "id": "prosciutto",
             "name": "Prosciutto",
+            "icon": "🥩",
             "variants": {
               "groupId": "pizza-size",
               "price": {
@@ -332,6 +352,7 @@
           {
             "id": "truffle-oil",
             "name": "Truffle Oil",
+            "icon": "🍄",
             "variants": {
               "groupId": "pizza-size",
               "price": {
@@ -344,6 +365,7 @@
           {
             "id": "artichokes",
             "name": "Artichoke Hearts",
+            "icon": "🥬",
             "variants": {
               "groupId": "pizza-size",
               "price": {
@@ -356,6 +378,7 @@
           {
             "id": "sun-dried-tomatoes",
             "name": "Sun-Dried Tomatoes",
+            "icon": "☀️",
             "variants": {
               "groupId": "pizza-size",
               "price": {
