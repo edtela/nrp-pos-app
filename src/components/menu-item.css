@@ -34,8 +34,19 @@
     background: var(--md-sys-color-surface-container);
 }
 
-/* Checkmark for check items */
-.menu-item[data-interaction-type="check"][data-selected="true"] .menu-item-icon::after {
+/* Control element styling */
+.menu-item-control {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Checkmark for selected check items */
+.menu-item[data-control-type="check"][data-selected="true"] .menu-item-control::after {
     content: "check";
     font-family: "Material Icons";
     font-size: 24px;
@@ -56,8 +67,30 @@
     font-feature-settings: "liga";
 }
 
-/* Radio button selection */
-.menu-item[data-interaction-type="radio"] .menu-item-icon::before {
+/* Red minus for included but not selected check items */
+.menu-item[data-control-type="check"][data-included="true"]:not([data-selected="true"]) .menu-item-control::after {
+    content: "remove";
+    font-family: "Material Icons";
+    font-size: 24px;
+    color: var(--md-sys-color-error);
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    font-weight: 400;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-feature-settings: "liga";
+}
+
+/* Radio button circle */
+.menu-item[data-control-type="radio"] .menu-item-control::before {
     content: "";
     position: absolute;
     left: 2px;
@@ -70,12 +103,17 @@
     box-sizing: border-box;
 }
 
+/* Red circle for required but not selected radio */
+.menu-item[data-control-type="radio"][data-included="true"]:not([data-selected="true"]) .menu-item-control::before {
+    border-color: var(--md-sys-color-error);
+}
+
 /* Selected state for radio buttons */
-.menu-item[data-interaction-type="radio"][data-selected="true"] .menu-item-icon::before {
+.menu-item[data-control-type="radio"][data-selected="true"] .menu-item-control::before {
     border-color: var(--md-sys-color-primary);
 }
 
-.menu-item[data-interaction-type="radio"][data-selected="true"] .menu-item-icon::after {
+.menu-item[data-control-type="radio"][data-selected="true"] .menu-item-control::after {
     content: "";
     position: absolute;
     left: 8px;
@@ -86,10 +124,33 @@
     background: var(--md-sys-color-primary);
 }
 
-/* Override checkmark for radio button items */
-.menu-item[data-interaction-type="radio"] .menu-item-icon::after {
-    font-family: inherit;
-    content: "";
+/* Control/Icon Visibility Rules */
+
+/* Radio: Never show icon */
+.menu-item[data-control-type="radio"] .menu-item-icon {
+    display: none;
+}
+
+/* Checkbox: Show control when selected OR included */
+.menu-item[data-control-type="check"][data-selected="true"] .menu-item-control,
+.menu-item[data-control-type="check"][data-included="true"] .menu-item-control {
+    display: flex;
+}
+
+/* Checkbox: Hide control by default (when not selected and not included) */
+.menu-item[data-control-type="check"]:not([data-selected="true"]):not([data-included="true"]) .menu-item-control {
+    display: none;
+}
+
+/* Checkbox: Hide icon when control is shown (selected or included) */
+.menu-item[data-control-type="check"][data-selected="true"] .menu-item-icon,
+.menu-item[data-control-type="check"][data-included="true"] .menu-item-icon {
+    display: none;
+}
+
+/* Nav: Hide control, always show icon */
+.menu-item[data-control-type="nav"] .menu-item-control {
+    display: none;
 }
 
 .menu-item-icon {
@@ -101,7 +162,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    position: relative;
 }
 
 .menu-item-content {

@@ -9,7 +9,6 @@ import "./menu-item.css";
 import { html, Template, replaceElements, onClick, dataAttr, setDataAttribute } from "@/lib/html-template";
 import { DataChange } from "@/lib/data-model-types";
 import { DisplayMenuItem } from "@/model/menu-model";
-import { isSaleItem } from "@/types";
 
 export const ORDER_ITEM_EVENT = "order-item";
 export const OPEN_MENU_EVENT = "open-menu";
@@ -29,13 +28,7 @@ function priceTemplate(price?: number): Template {
  * Menu item template - pure function
  */
 export function template(item: DisplayMenuItem): Template {
-  const iType = item.data.constraints?.choice?.single ? "radio" : item.data.subMenu ? "none" : "check";
-
-  // Show icon only when:
-  // - Never for radio buttons (iType === "radio")
-  // - For checkboxes, only when NOT selected (no checkmark showing)
-  // - Always for navigation items (iType === "none")
-  const showIcon = iType === "radio" ? false : iType === "check" ? !item.selected : true;
+  const controlType = item.data.constraints?.choice?.single ? "radio" : item.data.subMenu ? "nav" : "check";
 
   return html`
     <div
@@ -43,13 +36,14 @@ export function template(item: DisplayMenuItem): Template {
       id="menu-item-${item.data.id}"
       data-type="menu-item"
       data-id="${item.data.id}"
-      data-interaction-type="${iType}"
+      data-control-type="${controlType}"
       ${dataAttr("included", item.included)}
       ${dataAttr("selected", item.selected)}
       ${onClick(MENU_ITEM_CLICK)}
     >
       <div class="${classes.content}">
-        <span class="${classes.icon} ${iconClassName}">${showIcon && item.data.icon ? item.data.icon : ""}</span>
+        <span class="${classes.control}"></span>
+        <span class="${classes.icon}">${item.data.icon || ""}</span>
         <div class="${classes.text}">
           <span class="${classes.name}">${item.data.name}</span>
           ${item.data.description ? html`<p class="${classes.description}">${item.data.description}</p>` : ""}
@@ -72,18 +66,20 @@ export function update(element: HTMLElement, event: DataChange<DisplayMenuItem>)
   if ("selected" in event) {
     setDataAttribute(element, "selected", event.selected);
   }
-}
 
-// Class name for icon element (needed for style references)
-const iconClassName = "menu-item-icon";
+  if ("included" in event) {
+    setDataAttribute(element, "included", event.included);
+  }
+}
 
 /**
  * Menu Item Class Names
  */
 export const classes = {
   item: "menu-item",
-  icon: "menu-item-icon",
   content: "menu-item-content",
+  control: "menu-item-control",
+  icon: "menu-item-icon",
   text: "menu-item-text",
   name: "menu-item-name",
   description: "menu-item-description",

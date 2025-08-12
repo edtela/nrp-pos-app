@@ -14,7 +14,7 @@ import * as AppBottomBar from "@/components/app-bottom-bar";
 import { styles as layoutStyles } from "@/components/app-layout";
 import { MenuPageData, MenuModel, toOrderMenuItem, DisplayMenu } from "@/model/menu-model";
 import { DataChange, Update, UpdateResult } from "@/lib/data-model-types";
-import { MENU_ITEM_CLICK, OPEN_MENU_EVENT, ORDER_ITEM_EVENT } from "@/components/menu-item";
+import { MENU_ITEM_CLICK, OPEN_MENU_EVENT } from "@/components/menu-item";
 import { typeChange } from "@/lib/data-model";
 import { saveOrderItem, OrderItem, getOrder } from "@/model/order-model";
 import { VARIANT_SELECT_EVENT } from "@/components/variant";
