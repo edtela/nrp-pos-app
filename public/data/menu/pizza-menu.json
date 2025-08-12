@@ -1,35 +1,13 @@
 {
   "id": "pizza-menu",
   "name": "Pizza Menu",
-  "variants": {
-    "pizza-size": {
-      "id": "pizza-size",
-      "name": "Size",
-      "variants": [
-        {
-          "id": "small",
-          "name": "Small 10\"",
-          "icon": "🍕"
-        },
-        {
-          "id": "medium",
-          "name": "Medium 12\"",
-          "icon": "🍕"
-        },
-        {
-          "id": "large",
-          "name": "Large 14\"",
-          "icon": "🍕"
-        }
-      ],
-      "selectedId": "medium"
-    }
-  },
   "content": {
     "header": [
       {
         "text": "Pizza Menu",
-        "classes": ["menu-title"]
+        "classes": [
+          "menu-title"
+        ]
       },
       {
         "type": "variant-selection",
@@ -40,7 +18,9 @@
       {
         "header": {
           "text": "Classic Pizzas",
-          "classes": ["menu-items-title"]
+          "classes": [
+            "menu-items-title"
+          ]
         },
         "items": [
           {
@@ -58,9 +38,16 @@
             "subMenu": {
               "menuId": "pizza-toppings",
               "included": [
-                { "itemId": "fresh-mozzarella" },
-                { "itemId": "tomato-sauce" },
-                { "itemId": "fresh-basil", "display": "included" }
+                {
+                  "itemId": "fresh-mozzarella"
+                },
+                {
+                  "itemId": "tomato-sauce"
+                },
+                {
+                  "itemId": "fresh-basil",
+                  "display": "included"
+                }
               ]
             }
           },
@@ -79,9 +66,16 @@
             "subMenu": {
               "menuId": "pizza-toppings",
               "included": [
-                { "itemId": "pepperoni", "display": "included" },
-                { "itemId": "regular-mozzarella" },
-                { "itemId": "tomato-sauce" }
+                {
+                  "itemId": "pepperoni",
+                  "display": "included"
+                },
+                {
+                  "itemId": "regular-mozzarella"
+                },
+                {
+                  "itemId": "tomato-sauce"
+                }
               ]
             }
           },
@@ -100,10 +94,20 @@
             "subMenu": {
               "menuId": "pizza-toppings",
               "included": [
-                { "itemId": "ham", "display": "included" },
-                { "itemId": "pineapple", "display": "included" },
-                { "itemId": "regular-mozzarella" },
-                { "itemId": "tomato-sauce" }
+                {
+                  "itemId": "ham",
+                  "display": "included"
+                },
+                {
+                  "itemId": "pineapple",
+                  "display": "included"
+                },
+                {
+                  "itemId": "regular-mozzarella"
+                },
+                {
+                  "itemId": "tomato-sauce"
+                }
               ]
             }
           }
@@ -112,7 +116,9 @@
       {
         "header": {
           "text": "Build Your Own",
-          "classes": ["menu-items-title"]
+          "classes": [
+            "menu-items-title"
+          ]
         },
         "items": [
           {
@@ -129,11 +135,42 @@
             },
             "subMenu": {
               "menuId": "pizza-toppings",
-              "included": [{ "itemId": "regular-mozzarella" }, { "itemId": "tomato-sauce" }]
+              "included": [
+                {
+                  "itemId": "regular-mozzarella"
+                },
+                {
+                  "itemId": "tomato-sauce"
+                }
+              ]
             }
           }
         ]
       }
     ]
+  },
+  "variants": {
+    "pizza-size": {
+      "id": "pizza-size",
+      "variants": [
+        {
+          "id": "small",
+          "name": "Small 10\"",
+          "icon": "🍕"
+        },
+        {
+          "id": "medium",
+          "name": "Medium 12\"",
+          "icon": "🍕"
+        },
+        {
+          "id": "large",
+          "name": "Large 14\"",
+          "icon": "🍕"
+        }
+      ],
+      "selectedId": "medium",
+      "name": "Size"
+    }
   }
 }

@@ -8,6 +8,10 @@ dist/
 build/
 .linaria-cache/
 
+# Generated menu files
+public/data/menu/
+!public/data/menu/.gitkeep
+
 # Development
 *.local
 .env*.local

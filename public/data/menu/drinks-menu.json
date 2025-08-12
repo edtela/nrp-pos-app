@@ -1,36 +1,14 @@
 {
   "id": "drinks-menu",
   "name": "Beverages",
-  "variants": {
-    "drink-size": {
-      "id": "drink-size",
-      "name": "Size",
-      "variants": [
-        {
-          "id": "small",
-          "name": "Small",
-          "icon": "🥤"
-        },
-        {
-          "id": "medium",
-          "name": "Medium", 
-          "icon": "🥤"
-        },
-        {
-          "id": "large",
-          "name": "Large",
-          "icon": "🥤"
-        }
-      ],
-      "selectedId": "medium"
-    }
-  },
   "content": {
     "groups": [
       {
         "header": {
           "text": "Soft Drinks",
-          "classes": ["menu-items-title"]
+          "classes": [
+            "menu-items-title"
+          ]
         },
         "items": [
           {
@@ -48,7 +26,7 @@
           },
           {
             "id": "sprite",
-            "name": "Sprite", 
+            "name": "Sprite",
             "description": "Lemon-lime soda",
             "variants": {
               "groupId": "drink-size",
@@ -77,7 +55,9 @@
       {
         "header": {
           "text": "Beer & Wine",
-          "classes": ["menu-items-title"]
+          "classes": [
+            "menu-items-title"
+          ]
         },
         "items": [
           {
@@ -93,27 +73,31 @@
             "price": 6.99
           }
         ]
-      },
-      {
-        "header": {
-          "text": "Hot Beverages",
-          "classes": ["menu-items-title"]
-        },
-        "items": [
-          {
-            "id": "coffee",
-            "name": "Coffee",
-            "description": "Freshly brewed",
-            "price": 2.49
-          },
-          {
-            "id": "tea",
-            "name": "Tea",
-            "description": "Assorted varieties",
-            "price": 2.49
-          }
-        ]
       }
     ]
+  },
+  "variants": {
+    "drink-size": {
+      "id": "drink-size",
+      "variants": [
+        {
+          "id": "small",
+          "name": "Small",
+          "icon": "🥤"
+        },
+        {
+          "id": "medium",
+          "name": "Medium",
+          "icon": "🥤"
+        },
+        {
+          "id": "large",
+          "name": "Large",
+          "icon": "🥤"
+        }
+      ],
+      "selectedId": "medium",
+      "name": "Size"
+    }
   }
 }

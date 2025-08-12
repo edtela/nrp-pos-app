@@ -1,6 +1,70 @@
 {
   "id": "pizza-toppings",
-  "name": "Customize Your Pizza",
+  "name": {
+    "en": "Customize Your Pizza",
+    "it": "Personalizza la Tua Pizza"
+  },
+  "modifierMenu": true,
+  "variants": {
+    "pizza-size": {
+      "id": "pizza-size",
+      "name": {
+        "en": "Size",
+        "it": "Dimensione"
+      },
+      "variants": [
+        {
+          "id": "small",
+          "name": {
+            "en": "Small 10\"",
+            "it": "Piccola 25cm"
+          },
+          "icon": "🍕"
+        },
+        {
+          "id": "medium",
+          "name": {
+            "en": "Medium 12\"",
+            "it": "Media 30cm"
+          },
+          "icon": "🍕"
+        },
+        {
+          "id": "large",
+          "name": {
+            "en": "Large 14\"",
+            "it": "Grande 35cm"
+          },
+          "icon": "🍕"
+        }
+      ],
+      "selectedId": "medium"
+    }
+  },
+  "choices": {
+    "cheese-choice": {
+      "id": "cheese-choice",
+      "name": {
+        "en": "Cheese Selection",
+        "it": "Selezione Formaggio"
+      },
+      "constraints": {
+        "min": 1,
+        "max": 1
+      }
+    },
+    "sauce-choice": {
+      "id": "sauce-choice",
+      "name": {
+        "en": "Sauce Selection",
+        "it": "Selezione Salsa"
+      },
+      "constraints": {
+        "min": 1,
+        "max": 1
+      }
+    }
+  },
   "content": {
     "header": {
       "type": "variant-selection",
@@ -8,28 +72,31 @@
     },
     "groups": [
       {
-        "options": {
-          "extractIncluded": true
-        },
+        "options": { "extractIncluded": true },
         "header": {
-          "text": "Included Toppings",
-          "classes": [
-            "menu-included-title"
-          ]
+          "text": {
+            "en": "Included Toppings",
+            "it": "Ingredienti Inclusi"
+          },
+          "classes": ["menu-included-title"]
         },
         "items": []
       },
       {
         "header": {
-          "text": "Cheese Options",
-          "classes": [
-            "menu-items-title"
-          ]
+          "text": {
+            "en": "Cheese Options",
+            "it": "Opzioni Formaggio"
+          },
+          "classes": ["menu-items-title"]
         },
         "items": [
           {
             "id": "regular-mozzarella",
-            "name": "Regular Mozzarella",
+            "name": {
+              "en": "Regular Mozzarella",
+              "it": "Mozzarella Normale"
+            },
             "icon": "🧀",
             "price": 0,
             "constraints": {
@@ -41,7 +108,10 @@
           },
           {
             "id": "vegan-cheese",
-            "name": "Vegan Cheese",
+            "name": {
+              "en": "Vegan Cheese",
+              "it": "Formaggio Vegano"
+            },
             "icon": "🌱",
             "price": 0,
             "constraints": {
@@ -53,7 +123,10 @@
           },
           {
             "id": "fresh-mozzarella",
-            "name": "Fresh Mozzarella",
+            "name": {
+              "en": "Fresh Mozzarella",
+              "it": "Mozzarella Fresca"
+            },
             "icon": "🧀",
             "price": 1,
             "constraints": {
@@ -67,15 +140,19 @@
       },
       {
         "header": {
-          "text": "Sauce Options",
-          "classes": [
-            "menu-items-title"
-          ]
+          "text": {
+            "en": "Sauce Options",
+            "it": "Opzioni Salsa"
+          },
+          "classes": ["menu-items-title"]
         },
         "items": [
           {
             "id": "tomato-sauce",
-            "name": "Tomato Sauce",
+            "name": {
+              "en": "Tomato Sauce",
+              "it": "Salsa di Pomodoro"
+            },
             "icon": "🍅",
             "price": 0,
             "constraints": {
@@ -89,7 +166,10 @@
           },
           {
             "id": "white-sauce",
-            "name": "White Sauce",
+            "name": {
+              "en": "White Sauce",
+              "it": "Salsa Bianca"
+            },
             "icon": "🥛",
             "price": 0,
             "constraints": {
@@ -103,7 +183,10 @@
           },
           {
             "id": "bbq-sauce",
-            "name": "BBQ Sauce",
+            "name": {
+              "en": "BBQ Sauce",
+              "it": "Salsa BBQ"
+            },
             "icon": "🍖",
             "price": 0,
             "constraints": {
@@ -119,15 +202,19 @@
       },
       {
         "header": {
-          "text": "Meat Toppings",
-          "classes": [
-            "menu-items-title"
-          ]
+          "text": {
+            "en": "Meat Toppings",
+            "it": "Ingredienti di Carne"
+          },
+          "classes": ["menu-items-title"]
         },
         "items": [
           {
             "id": "pepperoni",
-            "name": "Pepperoni",
+            "name": {
+              "en": "Pepperoni",
+              "it": "Salame Piccante"
+            },
             "icon": "🍕",
             "variants": {
               "groupId": "pizza-size",
@@ -140,7 +227,10 @@
           },
           {
             "id": "italian-sausage",
-            "name": "Italian Sausage",
+            "name": {
+              "en": "Italian Sausage",
+              "it": "Salsiccia Italiana"
+            },
             "icon": "🌭",
             "variants": {
               "groupId": "pizza-size",
@@ -153,7 +243,10 @@
           },
           {
             "id": "ham",
-            "name": "Ham",
+            "name": {
+              "en": "Ham",
+              "it": "Prosciutto Cotto"
+            },
             "icon": "🍖",
             "variants": {
               "groupId": "pizza-size",
@@ -166,7 +259,10 @@
           },
           {
             "id": "bacon",
-            "name": "Bacon",
+            "name": {
+              "en": "Bacon",
+              "it": "Pancetta"
+            },
             "icon": "🥓",
             "variants": {
               "groupId": "pizza-size",
@@ -179,7 +275,10 @@
           },
           {
             "id": "grilled-chicken",
-            "name": "Grilled Chicken",
+            "name": {
+              "en": "Grilled Chicken",
+              "it": "Pollo Grigliato"
+            },
             "icon": "🍗",
             "variants": {
               "groupId": "pizza-size",
@@ -194,15 +293,19 @@
       },
       {
         "header": {
-          "text": "Vegetable Toppings",
-          "classes": [
-            "menu-items-title"
-          ]
+          "text": {
+            "en": "Vegetable Toppings",
+            "it": "Ingredienti Vegetali"
+          },
+          "classes": ["menu-items-title"]
         },
         "items": [
           {
             "id": "mushrooms",
-            "name": "Mushrooms",
+            "name": {
+              "en": "Mushrooms",
+              "it": "Funghi"
+            },
             "icon": "🍄",
             "variants": {
               "groupId": "pizza-size",
@@ -215,7 +318,10 @@
           },
           {
             "id": "onions",
-            "name": "Onions",
+            "name": {
+              "en": "Onions",
+              "it": "Cipolle"
+            },
             "icon": "🧅",
             "variants": {
               "groupId": "pizza-size",
@@ -228,7 +334,10 @@
           },
           {
             "id": "bell-peppers",
-            "name": "Bell Peppers",
+            "name": {
+              "en": "Bell Peppers",
+              "it": "Peperoni"
+            },
             "icon": "🫑",
             "variants": {
               "groupId": "pizza-size",
@@ -241,7 +350,10 @@
           },
           {
             "id": "black-olives",
-            "name": "Black Olives",
+            "name": {
+              "en": "Black Olives",
+              "it": "Olive Nere"
+            },
             "icon": "🫒",
             "variants": {
               "groupId": "pizza-size",
@@ -254,7 +366,10 @@
           },
           {
             "id": "tomatoes",
-            "name": "Fresh Tomatoes",
+            "name": {
+              "en": "Fresh Tomatoes",
+              "it": "Pomodori Freschi"
+            },
             "icon": "🍅",
             "variants": {
               "groupId": "pizza-size",
@@ -267,7 +382,10 @@
           },
           {
             "id": "jalapenos",
-            "name": "Jalapeños",
+            "name": {
+              "en": "Jalapeños",
+              "it": "Jalapeños"
+            },
             "icon": "🌶️",
             "variants": {
               "groupId": "pizza-size",
@@ -280,7 +398,10 @@
           },
           {
             "id": "pineapple",
-            "name": "Pineapple",
+            "name": {
+              "en": "Pineapple",
+              "it": "Ananas"
+            },
             "icon": "🍍",
             "variants": {
               "groupId": "pizza-size",
@@ -293,7 +414,10 @@
           },
           {
             "id": "fresh-basil",
-            "name": "Fresh Basil",
+            "name": {
+              "en": "Fresh Basil",
+              "it": "Basilico Fresco"
+            },
             "icon": "🌿",
             "price": 0
           }
@@ -301,15 +425,19 @@
       },
       {
         "header": {
-          "text": "Premium Toppings",
-          "classes": [
-            "menu-items-title"
-          ]
+          "text": {
+            "en": "Premium Toppings",
+            "it": "Ingredienti Premium"
+          },
+          "classes": ["menu-items-title"]
         },
         "items": [
           {
             "id": "prosciutto",
-            "name": "Prosciutto",
+            "name": {
+              "en": "Prosciutto",
+              "it": "Prosciutto Crudo"
+            },
             "icon": "🥩",
             "variants": {
               "groupId": "pizza-size",
@@ -322,7 +450,10 @@
           },
           {
             "id": "truffle-oil",
-            "name": "Truffle Oil",
+            "name": {
+              "en": "Truffle Oil",
+              "it": "Olio al Tartufo"
+            },
             "icon": "🍄",
             "variants": {
               "groupId": "pizza-size",
@@ -335,7 +466,10 @@
           },
           {
             "id": "artichokes",
-            "name": "Artichoke Hearts",
+            "name": {
+              "en": "Artichoke Hearts",
+              "it": "Cuori di Carciofo"
+            },
             "icon": "🥬",
             "variants": {
               "groupId": "pizza-size",
@@ -348,7 +482,10 @@
           },
           {
             "id": "sun-dried-tomatoes",
-            "name": "Sun-Dried Tomatoes",
+            "name": {
+              "en": "Sun-Dried Tomatoes",
+              "it": "Pomodori Secchi"
+            },
             "icon": "☀️",
             "variants": {
               "groupId": "pizza-size",
@@ -362,48 +499,5 @@
         ]
       }
     ]
-  },
-  "choices": {
-    "cheese-choice": {
-      "id": "cheese-choice",
-      "name": "Cheese Selection",
-      "constraints": {
-        "min": 1,
-        "max": 1
-      }
-    },
-    "sauce-choice": {
-      "id": "sauce-choice",
-      "name": "Sauce Selection",
-      "constraints": {
-        "min": 1,
-        "max": 1
-      }
-    }
-  },
-  "variants": {
-    "pizza-size": {
-      "id": "pizza-size",
-      "variants": [
-        {
-          "id": "small",
-          "name": "Small 10\"",
-          "icon": "🍕"
-        },
-        {
-          "id": "medium",
-          "name": "Medium 12\"",
-          "icon": "🍕"
-        },
-        {
-          "id": "large",
-          "name": "Large 14\"",
-          "icon": "🍕"
-        }
-      ],
-      "selectedId": "medium",
-      "name": "Size"
-    }
-  },
-  "modifierMenu": true
+  }
 }

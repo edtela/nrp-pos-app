@@ -4,8 +4,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build && npm run generate-static",
+    "build": "tsc && vite build && npm run generate-menus && npm run generate-static",
     "build:client": "tsc && vite build",
+    "generate-menus": "tsx build/generate-menus.ts",
     "generate-static": "tsx --loader ./build/css-loader.mjs build/generate-static.ts",
     "preview": "vite preview",
     "test": "vitest",

@@ -1,19 +1,38 @@
 {
   "id": "gelato-customize",
-  "name": "Choose Your Gelato",
+  "name": {
+    "en": "Choose Your Gelato",
+    "it": "Scegli il Tuo Gelato"
+  },
+  "modifierMenu": true,
+  "choices": {
+    "flavor-choice": {
+      "id": "flavor-choice",
+      "name": {
+        "en": "Flavor Selection",
+        "it": "Selezione Gusto"
+      },
+      "min": 1,
+      "max": 2
+    }
+  },
   "content": {
     "groups": [
       {
         "header": {
-          "text": "Gelato Flavors",
-          "classes": [
-            "menu-items-title"
-          ]
+          "text": {
+            "en": "Gelato Flavors",
+            "it": "Gusti di Gelato"
+          },
+          "classes": ["menu-items-title"]
         },
         "items": [
           {
             "id": "vanilla",
-            "name": "Vanilla",
+            "name": {
+              "en": "Vanilla",
+              "it": "Vaniglia"
+            },
             "icon": "🍦",
             "price": 0,
             "constraints": {
@@ -25,7 +44,10 @@
           },
           {
             "id": "chocolate",
-            "name": "Chocolate",
+            "name": {
+              "en": "Chocolate",
+              "it": "Cioccolato"
+            },
             "icon": "🍫",
             "price": 0,
             "constraints": {
@@ -37,7 +59,10 @@
           },
           {
             "id": "strawberry",
-            "name": "Strawberry",
+            "name": {
+              "en": "Strawberry",
+              "it": "Fragola"
+            },
             "icon": "🍓",
             "price": 0,
             "constraints": {
@@ -49,7 +74,10 @@
           },
           {
             "id": "pistachio",
-            "name": "Pistachio",
+            "name": {
+              "en": "Pistachio",
+              "it": "Pistacchio"
+            },
             "icon": "🥜",
             "price": 0,
             "constraints": {
@@ -62,14 +90,5 @@
         ]
       }
     ]
-  },
-  "choices": {
-    "flavor-choice": {
-      "id": "flavor-choice",
-      "name": "Flavor Selection",
-      "min": 1,
-      "max": 2
-    }
-  },
-  "modifierMenu": true
+  }
 }

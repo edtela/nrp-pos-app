@@ -1,0 +1,144 @@
+{
+  "id": "drinks-menu",
+  "name": {
+    "en": "Beverages",
+    "it": "Bevande"
+  },
+  "variants": {
+    "drink-size": {
+      "id": "drink-size",
+      "name": {
+        "en": "Size",
+        "it": "Dimensione"
+      },
+      "variants": [
+        {
+          "id": "small",
+          "name": {
+            "en": "Small",
+            "it": "Piccolo"
+          },
+          "icon": "🥤"
+        },
+        {
+          "id": "medium",
+          "name": {
+            "en": "Medium",
+            "it": "Medio"
+          },
+          "icon": "🥤"
+        },
+        {
+          "id": "large",
+          "name": {
+            "en": "Large",
+            "it": "Grande"
+          },
+          "icon": "🥤"
+        }
+      ],
+      "selectedId": "medium"
+    }
+  },
+  "content": {
+    "groups": [
+      {
+        "header": {
+          "text": {
+            "en": "Soft Drinks",
+            "it": "Bibite"
+          },
+          "classes": ["menu-items-title"]
+        },
+        "items": [
+          {
+            "id": "coca-cola",
+            "name": "Coca-Cola",
+            "description": {
+              "en": "Classic cola",
+              "it": "Cola classica"
+            },
+            "variants": {
+              "groupId": "drink-size",
+              "price": {
+                "small": 2.49,
+                "medium": 2.99,
+                "large": 3.49
+              }
+            }
+          },
+          {
+            "id": "sprite",
+            "name": "Sprite",
+            "description": {
+              "en": "Lemon-lime soda",
+              "it": "Bibita al limone"
+            },
+            "variants": {
+              "groupId": "drink-size",
+              "price": {
+                "small": 2.49,
+                "medium": 2.99,
+                "large": 3.49
+              }
+            }
+          },
+          {
+            "id": "orange-juice",
+            "name": {
+              "en": "Orange Juice",
+              "it": "Succo d'Arancia"
+            },
+            "description": {
+              "en": "Freshly squeezed",
+              "it": "Spremuta fresca"
+            },
+            "variants": {
+              "groupId": "drink-size",
+              "price": {
+                "small": 3.49,
+                "medium": 3.99,
+                "large": 4.49
+              }
+            }
+          }
+        ]
+      },
+      {
+        "header": {
+          "text": {
+            "en": "Beer & Wine",
+            "it": "Birra e Vino"
+          },
+          "classes": ["menu-items-title"]
+        },
+        "items": [
+          {
+            "id": "draft-beer",
+            "name": {
+              "en": "Draft Beer",
+              "it": "Birra alla Spina"
+            },
+            "description": {
+              "en": "Local craft beer on tap",
+              "it": "Birra artigianale locale"
+            },
+            "price": 5.99
+          },
+          {
+            "id": "house-wine",
+            "name": {
+              "en": "House Wine",
+              "it": "Vino della Casa"
+            },
+            "description": {
+              "en": "Red or white",
+              "it": "Rosso o bianco"
+            },
+            "price": 6.99
+          }
+        ]
+      }
+    ]
+  }
+}

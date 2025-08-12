@@ -14,7 +14,7 @@
         }
       },
       {
-        "id": "drinks", 
+        "id": "drinks",
         "name": "Drinks",
         "description": "Refreshing beverages",
         "icon": "🥤",
@@ -25,7 +25,7 @@
       },
       {
         "id": "desserts",
-        "name": "Desserts", 
+        "name": "Desserts",
         "description": "Sweet treats to finish your meal",
         "icon": "🍰",
         "subMenu": {
