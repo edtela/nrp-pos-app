@@ -172,6 +172,7 @@ const bindings: DataBinding<MenuPageData>[] = [
             quantity: item.quantity,
             price: item.data.price ?? 0,
           }));
+        console.log("SETTIGN MODS: ");
         return { order: { modifiers: [modifiers] } };
       }
       return {};

@@ -123,7 +123,9 @@ export function undoUpdate<T extends object>(data: T, result: UpdateResult<T> | 
 }
 
 function undoUpdateImpl(data: any, result: any) {
-  if (result === undefined) return data;
+  if (data == null || typeof data !== "object" || result === undefined) {
+    return data;
+  }
 
   const { [META]: meta, ...rest } = result;
   for (const key in rest) {
@@ -131,7 +133,7 @@ function undoUpdateImpl(data: any, result: any) {
     if (meta && key in meta) {
       data[key] = meta[key].original;
     } else {
-      undoUpdate(data[key], change);
+      undoUpdateImpl(data[key], change);
     }
   }
 }

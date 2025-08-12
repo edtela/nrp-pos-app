@@ -14,7 +14,6 @@ import * as VariantGroupUI from "./variant";
 import { DisplayMenuItem, MenuPageData, OrderMenuItem, DisplayMenu } from "@/model/menu-model";
 import { DataChange } from "@/lib/data-model-types";
 
-
 /**
  * Modification token types
  */
@@ -76,7 +75,6 @@ function orderItemTemplate(order: OrderMenuItem | undefined): Template {
 
   const hasModifiers = order.modifiers && order.modifiers.length > 0;
   const tokens = hasModifiers ? generateModificationTokens(order.modifiers) : [];
-  const modifierPrice = order.modifiers?.reduce((sum, mod) => sum + mod.price * mod.quantity, 0) || 0;
 
   return html`
     <div class="${classes.orderItem}">
@@ -91,8 +89,8 @@ function orderItemTemplate(order: OrderMenuItem | undefined): Template {
             ? html`
                 <div class="${classes.tokensWrapper}">
                   <div class="${classes.tokens}">${tokens.map((token) => modificationTokenTemplate(token))}</div>
-                  ${modifierPrice > 0
-                    ? html`<span class="${classes.modifierPrice}">+$${modifierPrice.toFixed(2)}</span>`
+                  ${order.modifiersPrice > 0
+                    ? html`<span class="${classes.modifierPrice}">+$${order.modifiersPrice.toFixed(2)}</span>`
                     : ""}
                 </div>
               `
@@ -208,11 +206,20 @@ export function update(container: HTMLElement, event: DataChange<MenuPageData>, 
     if (event.order.modifiers) {
       replaceElements(container, `.${classes.orderItem}`, orderItemTemplate(data.order));
     } else {
-      // Update total price if changed
+      // Update price if changed
       if (event.order.menuItem?.price !== undefined) {
-        const priceElement = container.querySelector(`.${classes.orderItem} .${classes.price}`);
-        if (priceElement) {
-          priceElement.textContent = `$${event.order.menuItem.price.toFixed(2)}`;
+        const elt = container.querySelector(`.${classes.orderItem} .${classes.price}`);
+        if (elt) {
+          elt.textContent = `$${event.order.menuItem.price.toFixed(2)}`;
+        }
+      }
+
+      // Update modifierPrice if changed
+      if ("modifiersPrice" in event.order) {
+        const elt = container.querySelector(`.${classes.orderItem} .${classes.modifierPrice}`);
+        if (elt) {
+          const value = event.order.modifiersPrice;
+          elt.textContent = value ? `+$${value.toFixed(2)}` : "";
         }
       }
     }

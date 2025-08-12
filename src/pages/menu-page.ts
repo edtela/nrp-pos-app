@@ -5,7 +5,7 @@
  * @see /component-guidelines.md for component patterns and conventions
  */
 
-import { addEventHandler, html, Template, STATE_UPDATE_EVENT } from "@/lib/html-template";
+import { addEventHandler, html, Template } from "@/lib/html-template";
 import { isSaleItem } from "@/types";
 import { NavStackItem, getRouter } from "@/pages/app-router";
 import * as MenuContentUI from "@/components/menu-content";
@@ -14,7 +14,7 @@ import * as AppBottomBar from "@/components/app-bottom-bar";
 import { styles as layoutStyles } from "@/components/app-layout";
 import { MenuPageData, MenuModel, toOrderMenuItem, DisplayMenu } from "@/model/menu-model";
 import { DataChange, Update, UpdateResult } from "@/lib/data-model-types";
-import { MENU_ITEM_CLICK, OPEN_MENU_EVENT } from "@/components/menu-item";
+import { MENU_ITEM_CLICK } from "@/components/menu-item";
 import { saveOrderItem, OrderItem, getOrder } from "@/model/order-model";
 import { VARIANT_SELECT_EVENT } from "@/components/variant";
 import { ADD_TO_ORDER_EVENT, VIEW_ORDER_EVENT } from "@/components/app-bottom-bar";
@@ -25,7 +25,7 @@ export function template(displayMenu: DisplayMenu): Template {
     <div class="${layoutStyles.pageContainer}">
       <header class="${layoutStyles.header}">${AppHeader.template()}</header>
       <main class="${layoutStyles.content}">${MenuContentUI.template(displayMenu)}</main>
-      <div class="${layoutStyles.bottomBar}">${AppBottomBar.template("view")}</div>
+      <div class="${layoutStyles.bottomBar}">${AppBottomBar.template(displayMenu.modifierMenu ? "add" : "view")}</div>
     </div>
   `;
 }
@@ -37,7 +37,7 @@ function toContext(navItem?: NavStackItem) {
     const order = toOrderMenuItem(navItem.item.menuItem);
     order.order = navItem.item;
     order.quantity = navItem.item.quantity;
-    return { menuItem: navItem.item.menuItem, order, modifiers: navItem.item.modifiers };
+    return { menuItem: navItem.item.menuItem, order };
   }
 
   const menuItem = navItem.item;
@@ -63,14 +63,12 @@ export function hydrate(container: Element, displayMenu: DisplayMenu) {
   if (bottomBar) {
     if (context.order) {
       AppBottomBar.update(bottomBar, {
-        mode: "add",
         quantity: context.order.quantity,
         total: context.order.total,
       });
     } else {
       const mainOrder = getOrder();
       AppBottomBar.update(bottomBar, {
-        mode: "view",
         itemCount: mainOrder.itemIds.length,
         total: mainOrder.total,
       });
@@ -90,11 +88,6 @@ export function hydrate(container: Element, displayMenu: DisplayMenu) {
   }
   update(page, changes, model.data);
 
-  // Attach event handlers to the pageContainer element (automatically cleaned up on re-render)
-  page.addEventListener(`app:${STATE_UPDATE_EVENT}`, (e: Event) => {
-    runUpdate((e as CustomEvent).detail);
-  });
-
   addEventHandler(page, VARIANT_SELECT_EVENT, (data) => {
     runUpdate({ variants: { [data.variantGroupId]: { selectedId: data.variantId } } });
   });
@@ -106,13 +99,6 @@ export function hydrate(container: Element, displayMenu: DisplayMenu) {
       router.goto.menuItem(item.data);
     } else {
       runUpdate({ menu: { [item.data.id]: { selected: (v) => !v } } });
-    }
-  });
-
-  addEventHandler(page, OPEN_MENU_EVENT, (data) => {
-    const item = model.data.menu[data.id];
-    if (item?.data.subMenu) {
-      router.goto.menuItem(item.data);
     }
   });
 
