@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Menu Item Component Test Harness</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <!-- Will be replaced with actual CSS path during test -->
+  <link id="component-styles" rel="stylesheet" href="">
+  <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+      padding: 20px;
+      background: #f5f5f5;
+    }
+    
+    #test-container {
+      max-width: 500px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    
+    .test-info {
+      padding: 10px;
+      background: #e0e0e0;
+      font-size: 12px;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <div class="test-info">
+    Menu Item Component Test Harness
+  </div>
+  <div id="test-container"></div>
+
+  <script type="module">
+    // Import the component and dependencies  
+    // Note: menu-item imports CSS which Vite will handle
+    import { template, update, classes } from '/src/components/menu-item.ts';
+    import { render } from '/src/lib/html-template.ts';
+    
+    // Expose functions globally for test access
+    window.menuItemTest = {
+      // Render a menu item with given data
+      render: (itemData) => {
+        const container = document.getElementById('test-container');
+        container.innerHTML = ''; // Clear previous content
+        render(template(itemData), container);
+        return container.firstElementChild;
+      },
+      
+      // Update an existing menu item
+      update: (element, changes) => {
+        update(element, changes);
+      },
+      
+      // Clear the test container
+      clear: () => {
+        document.getElementById('test-container').innerHTML = '';
+      },
+      
+      // Get the rendered element
+      getElement: () => {
+        return document.querySelector('.menu-item');
+      },
+      
+      // Utility to create test data
+      createTestItem: (overrides = {}) => {
+        return {
+          data: {
+            id: 'test-item',
+            name: 'Test Item',
+            icon: '🍕',
+            ...overrides.data
+          },
+          selected: false,
+          included: false,
+          quantity: 0,
+          total: 0,
+          ...overrides
+        };
+      },
+      
+      // Classes for testing
+      classes
+    };
+    
+    // Load component styles dynamically
+    const loadStyles = (cssPath) => {
+      const styleLink = document.getElementById('component-styles');
+      styleLink.href = cssPath;
+    };
+    
+    window.menuItemTest.loadStyles = loadStyles;
+    
+    // Signal that the harness is ready
+    window.menuItemTestReady = true;
+  </script>
+</body>
+</html>

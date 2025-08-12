@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Component Gallery - Menu Item States</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <style>
+    :root {
+      --md-sys-color-primary: #1B6C3F;
+      --md-sys-color-on-primary: #FFFFFF;
+      --md-sys-color-error: #B3261E;
+      --md-sys-color-on-surface: #1D1B20;
+      --md-sys-color-on-surface-variant: #49454F;
+      --md-sys-color-outline: #79747E;
+      --md-sys-color-outline-variant: #CAC4D0;
+      --md-sys-color-surface: #FDFCF8;
+      --md-sys-color-surface-container: #F1F0EC;
+      --md-sys-spacing-md: 16px;
+      --md-sys-typescale-body-large-size: 16px;
+      --md-sys-typescale-body-large-line-height: 24px;
+      --md-sys-typescale-body-medium-size: 14px;
+      --md-sys-typescale-body-medium-line-height: 20px;
+      --md-sys-typescale-title-medium-size: 16px;
+      --md-sys-typescale-title-medium-weight: 500;
+    }
+    
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: #f5f5f5;
+      padding: 20px;
+      margin: 0;
+    }
+    
+    h1 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 30px;
+    }
+    
+    .gallery-section {
+      max-width: 1200px;
+      margin: 0 auto 40px;
+    }
+    
+    h2 {
+      color: #666;
+      border-bottom: 2px solid #ddd;
+      padding-bottom: 10px;
+      margin-bottom: 20px;
+    }
+    
+    .states-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+    }
+    
+    .state-card {
+      background: white;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .state-label {
+      padding: 10px;
+      background: #e0e0e0;
+      font-size: 12px;
+      font-weight: 500;
+      color: #666;
+    }
+    
+    .state-content {
+      min-height: 80px;
+      border-bottom: 1px solid var(--md-sys-color-outline-variant);
+    }
+    
+    .state-attributes {
+      padding: 10px;
+      font-size: 11px;
+      color: #999;
+      font-family: monospace;
+      background: #f9f9f9;
+    }
+  </style>
+  <!-- Component styles will be loaded here -->
+  <link id="component-styles" rel="stylesheet" href="">
+</head>
+<body>
+  <h1>Menu Item Component Gallery</h1>
+
+  <!-- Checkbox States -->
+  <div class="gallery-section">
+    <h2>Checkbox States</h2>
+    <div class="states-grid">
+      
+      <div class="state-card" data-test="checkbox-default">
+        <div class="state-label">Default (icon visible, control hidden)</div>
+        <div class="state-content">
+          <div class="menu-item" data-control-type="check">
+            <div class="menu-item-content">
+              <span class="menu-item-control"></span>
+              <span class="menu-item-icon">🍕</span>
+              <div class="menu-item-text">
+                <span class="menu-item-name">Pepperoni</span>
+                <p class="menu-item-description">Classic pepperoni pizza topping</p>
+              </div>
+              <span class="menu-item-price">$1.50</span>
+            </div>
+          </div>
+        </div>
+        <div class="state-attributes">
+          control-type="check"
+        </div>
+      </div>
+
+      <div class="state-card" data-test="checkbox-selected">
+        <div class="state-label">Selected (checkmark visible, icon hidden)</div>
+        <div class="state-content">
+          <div class="menu-item" data-control-type="check" data-selected="true">
+            <div class="menu-item-content">
+              <span class="menu-item-control"></span>
+              <span class="menu-item-icon">🍕</span>
+              <div class="menu-item-text">
+                <span class="menu-item-name">Pepperoni</span>
+                <p class="menu-item-description">Classic pepperoni pizza topping</p>
+              </div>
+              <span class="menu-item-price">$1.50</span>
+            </div>
+          </div>
+        </div>
+        <div class="state-attributes">
+          control-type="check" data-selected="true"
+        </div>
+      </div>
+
+      <div class="state-card" data-test="checkbox-included">
+        <div class="state-label">Included Not Selected (red minus visible)</div>
+        <div class="state-content">
+          <div class="menu-item" data-control-type="check" data-included="true">
+            <div class="menu-item-content">
+              <span class="menu-item-control"></span>
+              <span class="menu-item-icon">🍕</span>
+              <div class="menu-item-text">
+                <span class="menu-item-name">Pepperoni</span>
+                <p class="menu-item-description">Already included with your pizza</p>
+              </div>
+              <span class="menu-item-price">$1.50</span>
+            </div>
+          </div>
+        </div>
+        <div class="state-attributes">
+          control-type="check" data-included="true"
+        </div>
+      </div>
+
+      <div class="state-card" data-test="checkbox-included-selected">
+        <div class="state-label">Included and Selected (checkmark visible)</div>
+        <div class="state-content">
+          <div class="menu-item" data-control-type="check" data-included="true" data-selected="true">
+            <div class="menu-item-content">
+              <span class="menu-item-control"></span>
+              <span class="menu-item-icon">🍕</span>
+              <div class="menu-item-text">
+                <span class="menu-item-name">Pepperoni</span>
+                <p class="menu-item-description">Already included with your pizza</p>
+              </div>
+              <span class="menu-item-price">$1.50</span>
+            </div>
+          </div>
+        </div>
+        <div class="state-attributes">
+          control-type="check" data-included="true" data-selected="true"
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Radio States -->
+  <div class="gallery-section">
+    <h2>Radio Button States</h2>
+    <div class="states-grid">
+      
+      <div class="state-card" data-test="radio-default">
+        <div class="state-label">Default (normal circle, no icon)</div>
+        <div class="state-content">
+          <div class="menu-item" data-control-type="radio">
+            <div class="menu-item-content">
+              <span class="menu-item-control"></span>
+              <span class="menu-item-icon">🧀</span>
+              <div class="menu-item-text">
+                <span class="menu-item-name">Regular Mozzarella</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="state-attributes">
+          control-type="radio"
+        </div>
+      </div>
+
+      <div class="state-card" data-test="radio-selected">
+        <div class="state-label">Selected (filled circle, no icon)</div>
+        <div class="state-content">
+          <div class="menu-item" data-control-type="radio" data-selected="true">
+            <div class="menu-item-content">
+              <span class="menu-item-control"></span>
+              <span class="menu-item-icon">🧀</span>
+              <div class="menu-item-text">
+                <span class="menu-item-name">Regular Mozzarella</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="state-attributes">
+          control-type="radio" data-selected="true"
+        </div>
+      </div>
+
+      <div class="state-card" data-test="radio-required">
+        <div class="state-label">Required Not Selected (red circle)</div>
+        <div class="state-content">
+          <div class="menu-item" data-control-type="radio" data-included="true">
+            <div class="menu-item-content">
+              <span class="menu-item-control"></span>
+              <span class="menu-item-icon">🧀</span>
+              <div class="menu-item-text">
+                <span class="menu-item-name">Choose a cheese</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="state-attributes">
+          control-type="radio" data-included="true"
+        </div>
+      </div>
+
+      <div class="state-card" data-test="radio-required-selected">
+        <div class="state-label">Required and Selected (filled circle)</div>
+        <div class="state-content">
+          <div class="menu-item" data-control-type="radio" data-included="true" data-selected="true">
+            <div class="menu-item-content">
+              <span class="menu-item-control"></span>
+              <span class="menu-item-icon">🧀</span>
+              <div class="menu-item-text">
+                <span class="menu-item-name">Regular Mozzarella</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="state-attributes">
+          control-type="radio" data-included="true" data-selected="true"
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Navigation States -->
+  <div class="gallery-section">
+    <h2>Navigation States</h2>
+    <div class="states-grid">
+      
+      <div class="state-card" data-test="nav-default">
+        <div class="state-label">Navigation Item (icon visible, no control)</div>
+        <div class="state-content">
+          <div class="menu-item" data-control-type="nav">
+            <div class="menu-item-content">
+              <span class="menu-item-control"></span>
+              <span class="menu-item-icon">🍕</span>
+              <div class="menu-item-text">
+                <span class="menu-item-name">Pizza Menu</span>
+                <p class="menu-item-description">Browse our pizza selection</p>
+              </div>
+              <span class="menu-item-price material-icons">chevron_right</span>
+            </div>
+          </div>
+        </div>
+        <div class="state-attributes">
+          control-type="nav"
+        </div>
+      </div>
+
+      <div class="state-card" data-test="nav-no-icon">
+        <div class="state-label">Navigation without Icon</div>
+        <div class="state-content">
+          <div class="menu-item" data-control-type="nav">
+            <div class="menu-item-content">
+              <span class="menu-item-control"></span>
+              <span class="menu-item-icon"></span>
+              <div class="menu-item-text">
+                <span class="menu-item-name">View All</span>
+              </div>
+              <span class="menu-item-price material-icons">chevron_right</span>
+            </div>
+          </div>
+        </div>
+        <div class="state-attributes">
+          control-type="nav" (no icon)
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script type="module">
+    // Load the actual component CSS
+    const loadComponentStyles = async () => {
+      try {
+        // Try to load from dist first
+        const response = await fetch('/dist/assets/');
+        const text = await response.text();
+        const cssFile = text.match(/index-[\w]+\.css/)?.[0];
+        
+        if (cssFile) {
+          document.getElementById('component-styles').href = `/dist/assets/${cssFile}`;
+        }
+      } catch (e) {
+        // Fallback to localhost if available
+        const localCss = 'http://localhost:4175/assets/index-BSXaKesc.css';
+        document.getElementById('component-styles').href = localCss;
+      }
+    };
+    
+    loadComponentStyles();
+    
+    // Add interactive behavior for testing
+    document.querySelectorAll('.menu-item').forEach(item => {
+      item.addEventListener('click', () => {
+        const controlType = item.getAttribute('data-control-type');
+        
+        if (controlType === 'check') {
+          const isSelected = item.getAttribute('data-selected') === 'true';
+          item.setAttribute('data-selected', !isSelected);
+        } else if (controlType === 'radio') {
+          // Deselect all radios in the same section
+          item.closest('.states-grid').querySelectorAll('[data-control-type="radio"]').forEach(radio => {
+            radio.setAttribute('data-selected', 'false');
+          });
+          item.setAttribute('data-selected', 'true');
+        }
+      });
+    });
+  </script>
+</body>
+</html>
