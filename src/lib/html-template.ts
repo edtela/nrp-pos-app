@@ -85,6 +85,43 @@ export function updateDataAttr(element: HTMLElement, name: string, value: any): 
 }
 
 /**
+ * Build HTML string from a template
+ * @param template The template to convert to HTML
+ * @returns HTML string
+ */
+export function buildHTML(template: Template): string {
+  const { strings, values } = template;
+  let result = "";
+
+  for (let i = 0; i < strings.length; i++) {
+    result += strings[i];
+
+    if (i < values.length) {
+      const value = values[i];
+
+      if (value && typeof value === "object" && "strings" in value) {
+        // Nested template
+        result += buildHTML(value as Template);
+      } else if (Array.isArray(value)) {
+        // Array of templates or strings
+        result += value
+          .map((item) => {
+            if (item && typeof item === "object" && "strings" in item) {
+              return buildHTML(item as Template);
+            }
+            return String(item);
+          })
+          .join("");
+      } else if (value !== null && value !== undefined) {
+        result += String(value);
+      }
+    }
+  }
+
+  return result;
+}
+
+/**
  * Replace elements matching a selector with a new template
  * @param container The container element to search within
  * @param selector The CSS selector to find elements to replace
@@ -252,37 +289,4 @@ export function addEventHandler<T extends Record<string, any>>(
 
     handler(data);
   });
-}
-
-function buildHTML(template: Template): string {
-  const { strings, values } = template;
-  let result = "";
-
-  for (let i = 0; i < strings.length; i++) {
-    result += strings[i];
-
-    if (i < values.length) {
-      const value = values[i];
-
-      if (value && typeof value === "object" && "strings" in value) {
-        // Nested template
-        result += buildHTML(value as Template);
-      } else if (Array.isArray(value)) {
-        // Array of templates or strings
-        result += value
-          .map((item) => {
-            if (item && typeof item === "object" && "strings" in item) {
-              return buildHTML(item as Template);
-            }
-            return String(item);
-          })
-          .join("");
-      } else if (value !== null && value !== undefined) {
-        // Regular value
-        result += String(value);
-      }
-    }
-  }
-
-  return result;
 }

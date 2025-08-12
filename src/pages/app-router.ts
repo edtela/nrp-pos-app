@@ -28,7 +28,32 @@ export type NavStackItem =
  * Application-specific router with navigation stack
  */
 class AppRouter {
-  private navStack = createStore<NavStackItem[]>("nav-stack-v1", "session");
+  private navStack: ReturnType<typeof createStore<NavStackItem[]>> | null = null;
+
+  /**
+   * Initialize the router (only in browser environment)
+   */
+  private init(): void {
+    if (!this.navStack && typeof window !== 'undefined' && typeof sessionStorage !== 'undefined') {
+      this.navStack = createStore<NavStackItem[]>("nav-stack-v1", "session");
+    }
+  }
+
+  /**
+   * Get the nav stack, initializing if needed
+   */
+  private getNavStack(): ReturnType<typeof createStore<NavStackItem[]>> {
+    this.init();
+    if (!this.navStack) {
+      // Return a mock store for non-browser environments
+      return {
+        get: (defaultValue?: any) => defaultValue ?? [],
+        set: () => {},
+        replace: () => []
+      } as any;
+    }
+    return this.navStack;
+  }
 
   /**
    * Truncate the navigation stack to a specific menu
@@ -37,7 +62,8 @@ class AppRouter {
    * @returns The current navigation item after truncation, or undefined
    */
   truncateStack(menuId: string): NavStackItem | undefined {
-    let stack = this.navStack.get([]);
+    const navStack = this.getNavStack();
+    let stack = navStack.get([]);
 
     // Find the item in stack that matches this menuId
     const idx = stack.findIndex((stackItem) => {
@@ -53,14 +79,14 @@ class AppRouter {
       if (idx !== stack.length - 1) {
         // Truncate everything after this item
         stack = stack.slice(0, idx + 1);
-        this.navStack.set(stack);
+        navStack.set(stack);
       }
       // Return the item at this position
       return stack[idx];
     }
 
     // Menu not found in stack - clear it (direct navigation)
-    this.navStack.set([]);
+    navStack.set([]);
     return undefined;
   }
 
@@ -79,9 +105,10 @@ class AppRouter {
       }
 
       // Add to navigation stack
-      const stack = this.navStack.get([]);
+      const navStack = this.getNavStack();
+      const stack = navStack.get([]);
       stack.push({ type: "browse", item });
-      this.navStack.set(stack);
+      navStack.set(stack);
 
       // Navigate
       window.location.href = `/${item.subMenu.menuId}`;
@@ -95,7 +122,8 @@ class AppRouter {
       const menuItem = orderItem.menuItem;
 
       // Set up modify context in the stack
-      this.navStack.set([{ type: "modify", item: orderItem }]);
+      const navStack = this.getNavStack();
+      navStack.set([{ type: "modify", item: orderItem }]);
 
       // Navigate to the menu page where this item came from
       const menuId = menuItem.subMenu?.menuId || "index";
@@ -133,7 +161,8 @@ class AppRouter {
      * @returns The current item or undefined if stack is empty
      */
     getCurrentItem: (): NavStackItem | undefined => {
-      const stack = this.navStack.get([]);
+      const navStack = this.getNavStack();
+      const stack = navStack.get([]);
       return stack.length > 0 ? stack[stack.length - 1] : undefined;
     },
 
@@ -150,7 +179,8 @@ class AppRouter {
      * Clear the entire navigation stack
      */
     clearStack: (): void => {
-      this.navStack.set([]);
+      const navStack = this.getNavStack();
+      navStack.set([]);
     },
 
     /**
@@ -158,7 +188,8 @@ class AppRouter {
      * @returns The complete navigation stack
      */
     getStack: (): NavStackItem[] => {
-      return this.navStack.get([]);
+      const navStack = this.getNavStack();
+      return navStack.get([]);
     },
   };
 
@@ -235,9 +266,30 @@ class AppRouter {
 }
 
 /**
- * Singleton router instance
+ * Singleton router instance (lazy initialization)
  */
-export const router = new AppRouter();
+let routerInstance: AppRouter | null = null;
+
+/**
+ * Get the router instance, creating it if needed
+ * This ensures the router is only created in browser environments
+ */
+export function getRouter(): AppRouter {
+  if (!routerInstance) {
+    routerInstance = new AppRouter();
+  }
+  return routerInstance;
+}
+
+/**
+ * Export router for backward compatibility (will be removed)
+ * @deprecated Use getRouter() instead
+ */
+export const router = new Proxy({} as AppRouter, {
+  get(_target, prop) {
+    return (getRouter() as any)[prop];
+  }
+});
 
 /**
  * Type exports for consumers
