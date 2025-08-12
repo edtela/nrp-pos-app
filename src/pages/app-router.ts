@@ -287,7 +287,13 @@ export function getRouter(): AppRouter {
  */
 export const router = new Proxy({} as AppRouter, {
   get(_target, prop) {
-    return (getRouter() as any)[prop];
+    const instance = getRouter();
+    const value = (instance as any)[prop];
+    // If it's a function, bind it to the instance to preserve 'this' context
+    if (typeof value === 'function') {
+      return value.bind(instance);
+    }
+    return value;
   }
 });
 

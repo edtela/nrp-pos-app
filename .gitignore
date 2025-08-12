@@ -34,6 +34,9 @@ lerna-debug.log*
 coverage/
 *.lcov
 .nyc_output/
+test-results/
+playwright-report/
+tests/screenshots/
 
 # Misc
 .npm
