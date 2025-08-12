@@ -1,0 +1,62 @@
+/**
+ * App Layout Styles
+ * Defines the overall layout structure for pages with fixed header and bottom bar
+ * Following Material Design 3 guidelines
+ */
+
+.app-layout-page-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: var(--md-sys-color-background);
+  color: var(--md-sys-color-on-background);
+  position: relative;
+}
+
+.app-layout-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 64px;
+  background-color: var(--md-sys-color-surface);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  padding: 0 var(--md-sys-spacing-sm);
+  gap: var(--md-sys-spacing-sm);
+}
+
+.app-layout-content {
+  flex: 1;
+  overflow-y: auto;
+  padding-top: calc(64px + var(--md-sys-spacing-md));
+  padding-bottom: calc(80px + var(--md-sys-spacing-lg) + env(safe-area-inset-bottom, 0));
+  padding-left: var(--md-sys-spacing-md);
+  padding-right: var(--md-sys-spacing-md);
+  background-color: var(--md-sys-color-background);
+  position: relative;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  /* Ensure content doesn't bleed through */
+  z-index: 1;
+}
+
+.app-layout-bottom-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  /* Adjust height: reduce base height slightly since we're adding explicit padding */
+  height: calc(64px + env(safe-area-inset-bottom, 0));
+  background-color: var(--md-sys-color-surface);
+  border-top: 1px solid var(--md-sys-color-outline-variant);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  /* Use symmetric padding on top, and safe area padding on bottom */
+  padding: var(--md-sys-spacing-sm) var(--md-sys-spacing-md);
+  padding-bottom: calc(var(--md-sys-spacing-sm) + env(safe-area-inset-bottom, 0));
+  box-sizing: border-box;
+}

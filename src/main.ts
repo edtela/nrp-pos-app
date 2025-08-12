@@ -1,10 +1,7 @@
 import { router } from "@/pages/app-router";
-import { globals } from "@/styles/theme";
 import { initializeGlobalClickHandler } from "@/lib/html-template";
+import "./styles/theme.css";
 import "./styles/global.css";
-
-// Apply global styles
-document.documentElement.classList.add(globals);
 
 // Initialize global click handler
 initializeGlobalClickHandler();

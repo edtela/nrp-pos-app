@@ -5,9 +5,8 @@
  * @see /component-guidelines.md for component patterns and conventions
  */
 
-import { css } from "@linaria/core";
+import './app-bottom-bar.css';
 import { html, onClick, Template, render } from "@/lib/html-template";
-import { mdColors, mdTypography, mdSpacing, mdElevation, mdShape } from "@/styles/theme";
 
 // Event types
 export const VIEW_ORDER_EVENT = "view-order-event";
@@ -65,18 +64,18 @@ export function template(mode: BottomBarMode = "view"): Template {
   const config = CONFIGS[mode];
 
   return html`
-    <div class="${styles.infoSection}" data-bottom-bar-field="${config.left.field}">
-      <div class="${styles.infoValue}">0</div>
-      <div class="${styles.infoLabel}">${config.left.label}</div>
+    <div class="${classes.infoSection}" data-bottom-bar-field="${config.left.field}">
+      <div class="${classes.infoValue}">0</div>
+      <div class="${classes.infoLabel}">${config.left.label}</div>
     </div>
 
-    <button class="${styles.actionButton}" data-bottom-bar-button ${onClick(config.action.onClick)}>
+    <button class="${classes.actionButton}" data-bottom-bar-button ${onClick(config.action.onClick)}>
       ${config.action.label}
     </button>
 
-    <div class="${styles.infoSection}" data-bottom-bar-field="${config.right.field}">
-      <div class="${styles.infoValue}">$0.00</div>
-      <div class="${styles.infoLabel}">${config.right.label}</div>
+    <div class="${classes.infoSection}" data-bottom-bar-field="${config.right.field}">
+      <div class="${classes.infoValue}">$0.00</div>
+      <div class="${classes.infoLabel}">${config.right.label}</div>
     </div>
   `;
 }
@@ -104,7 +103,7 @@ export function update(container: HTMLElement, updates: Partial<BottomBarData>):
   for (const [field, value] of Object.entries(rest)) {
     const element = container.querySelector(`[data-bottom-bar-field="${field}"]`);
     if (element) {
-      const valueElement = element.querySelector(`.${styles.infoValue}`);
+      const valueElement = element.querySelector(`.${classes.infoValue}`);
       if (valueElement && field in FIELD_FORMATTERS) {
         valueElement.textContent = FIELD_FORMATTERS[field as keyof typeof FIELD_FORMATTERS](value);
       }
@@ -113,55 +112,14 @@ export function update(container: HTMLElement, updates: Partial<BottomBarData>):
 }
 
 /**
- * App Bottom Bar Styles
+ * App Bottom Bar Class Names
  */
-export const styles = {
-  infoSection: css`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    min-width: 80px;
-  `,
-
-  infoValue: css`
-    font-size: ${mdTypography.headlineSmall.fontSize};
-    line-height: ${mdTypography.headlineSmall.lineHeight};
-    font-weight: ${mdTypography.headlineSmall.fontWeight};
-    color: ${mdColors.onSurface};
-  `,
-
-  infoLabel: css`
-    font-size: ${mdTypography.labelSmall.fontSize};
-    line-height: ${mdTypography.labelSmall.lineHeight};
-    font-weight: ${mdTypography.labelSmall.fontWeight};
-    color: ${mdColors.onSurfaceVariant};
-    margin-top: 2px;
-  `,
-
-  actionButton: css`
-    background-color: ${mdColors.primary};
-    color: ${mdColors.onPrimary};
-    border: none;
-    border-radius: ${mdShape.corner.full};
-    padding: 0 ${mdSpacing.xl};
-    height: 40px;
-    min-width: 120px;
-    font-size: ${mdTypography.labelLarge.fontSize};
-    line-height: ${mdTypography.labelLarge.lineHeight};
-    font-weight: ${mdTypography.labelLarge.fontWeight};
-    letter-spacing: ${mdTypography.labelLarge.letterSpacing};
-    cursor: pointer;
-    transition: all 200ms ease;
-    box-shadow: ${mdElevation.level1};
-
-    &:hover {
-      box-shadow: ${mdElevation.level2};
-      background-color: ${mdColors.primary}E6;
-    }
-
-    &:active {
-      box-shadow: ${mdElevation.level1};
-      transform: scale(0.98);
-    }
-  `,
+export const classes = {
+  infoSection: 'app-bottom-bar-info-section',
+  infoValue: 'app-bottom-bar-info-value',
+  infoLabel: 'app-bottom-bar-info-label',
+  actionButton: 'app-bottom-bar-action-button'
 } as const;
+
+// Export as styles for backward compatibility
+export const styles = classes;

@@ -6,16 +6,13 @@
     "dev": "vite",
     "build": "tsc && vite build && npm run generate-static",
     "build:client": "tsc && vite build",
-    "generate-static": "tsx build/generate-static.ts",
+    "generate-static": "tsx --loader ./build/css-loader.mjs build/generate-static.ts",
     "preview": "vite preview",
     "test": "vitest",
     "test:run": "vitest run",
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
-    "@babel/preset-typescript": "^7.23.3",
-    "@linaria/core": "^5.0.2",
-    "@linaria/vite": "^5.0.4",
     "@types/node": "^20.11.5",
     "tsx": "^4.20.3",
     "typescript": "^5.3.3",

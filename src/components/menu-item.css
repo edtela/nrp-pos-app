@@ -1,0 +1,163 @@
+/**
+ * Menu Item Component Styles
+ * Individual menu item with selection states
+ */
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  padding: var(--md-sys-spacing-md);
+  background: transparent;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  width: 100%;
+  transition: background-color 200ms cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  min-height: 80px;
+  position: relative;
+  text-align: left;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+  outline: none;
+}
+
+.menu-item:focus {
+  outline: none;
+}
+
+.menu-item:last-child {
+  border-bottom: none;
+}
+
+.menu-item:hover {
+  background: var(--md-sys-color-surface-container);
+}
+
+/* Checkmark for checkbox items */
+.menu-item[data-interaction-type="checkbox"][data-selected="true"] .menu-item-icon::after {
+  content: "check";
+  font-family: "Material Icons";
+  font-size: 24px;
+  color: var(--md-sys-color-primary);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  font-weight: 400;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: "liga";
+}
+
+/* Radio button selection */
+.menu-item[data-interaction-type="radio"] .menu-item-icon::before {
+  content: "";
+  position: absolute;
+  left: 2px;
+  top: 2px;
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--md-sys-color-outline);
+  border-radius: 50%;
+  background: var(--md-sys-color-surface);
+  box-sizing: border-box;
+}
+
+/* Selected state for radio buttons */
+.menu-item[data-interaction-type="radio"][data-selected="true"] .menu-item-icon::before {
+  border-color: var(--md-sys-color-primary);
+}
+
+.menu-item[data-interaction-type="radio"][data-selected="true"] .menu-item-icon::after {
+  content: "";
+  position: absolute;
+  left: 8px;
+  top: 8px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--md-sys-color-primary);
+}
+
+/* Override checkmark for radio button items */
+.menu-item[data-interaction-type="radio"] .menu-item-icon::after {
+  font-family: inherit;
+  content: "";
+}
+
+.menu-item-icon {
+  font-size: 24px;
+  line-height: 1;
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.menu-item-content {
+  display: flex;
+  align-items: center;
+  gap: var(--md-sys-spacing-md);
+  width: 100%;
+}
+
+.menu-item-text {
+  flex: 1;
+  min-width: 0;
+  padding-right: 80px; /* Space for price */
+}
+
+.menu-item-name {
+  font-size: var(--md-sys-typescale-body-large-size);
+  line-height: var(--md-sys-typescale-body-large-line-height);
+  font-weight: 500;
+  margin: 0 0 4px 0;
+  color: var(--md-sys-color-on-surface);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.menu-item-description {
+  font-size: var(--md-sys-typescale-body-medium-size);
+  line-height: var(--md-sys-typescale-body-medium-line-height);
+  color: var(--md-sys-color-on-surface-variant);
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.menu-item-price {
+  font-size: var(--md-sys-typescale-title-medium-size);
+  font-weight: var(--md-sys-typescale-title-medium-weight);
+  color: var(--md-sys-color-primary);
+  white-space: nowrap;
+  position: absolute;
+  right: var(--md-sys-spacing-md);
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+/* Chevron icon for categories */
+.menu-item-price.material-icons {
+  font-family: "Material Icons";
+  font-size: 24px;
+  color: var(--md-sys-color-on-surface-variant);
+  font-weight: 400;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: "liga";
+  line-height: 1;
+}

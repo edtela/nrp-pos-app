@@ -146,7 +146,7 @@ const bindings: DataBinding<MenuPageData>[] = [
   },
   //update item total price
   {
-    onChange: ["menu", [ALL], { price: anyChange, quantity: anyChange, included: anyChange }],
+    onChange: ["menu", [ALL], { data: { price: anyChange }, quantity: anyChange, included: anyChange }],
     update(item: DisplayMenuItem) {
       const additionalQty = item.quantity - (item.included ? 1 : 0);
       const total = additionalQty * (item.data.price ?? 0);

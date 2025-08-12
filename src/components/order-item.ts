@@ -5,10 +5,9 @@
  * @see /component-guidelines.md for component patterns and conventions
  */
 
-import { css } from "@linaria/core";
+import "./order-item.css";
 import { html, Template, dataAttr, CLICK_EVENT, onClick, replaceElement } from "@/lib/html-template";
 import { OrderModifier, DisplayItem } from "@/model/order-model";
-import { mdColors, mdSpacing, mdTypography, mdShape } from "@/styles/theme";
 import { styles as itemListStyles } from "./item-list";
 import { UpdateResult } from "@/lib/data-model-types";
 
@@ -61,14 +60,14 @@ function generateModificationTokens(modifiers: OrderModifier[]): ModificationTok
 function modificationTokenTemplate(token: ModificationToken): Template {
   const className =
     token.type === "removed"
-      ? styles.tokenRemoved
+      ? classes.tokenRemoved
       : token.type === "added-priced"
-        ? styles.tokenPriced
-        : styles.tokenFree;
+        ? classes.tokenPriced
+        : classes.tokenFree;
 
   const prefix = token.type === "removed" ? "-" : token.type === "added-priced" ? "+" : "";
 
-  return html`<span class="${styles.token} ${className}">${prefix}${token.name}</span>`;
+  return html`<span class="${classes.token} ${className}">${prefix}${token.name}</span>`;
 }
 
 /**
@@ -77,14 +76,14 @@ function modificationTokenTemplate(token: ModificationToken): Template {
 function modificationItemTemplate(modifier: OrderModifier): Template {
   const isRemoved = modifier.quantity === 0;
   const hasPriceDisplay = modifier.price > 0;
-  const className = isRemoved ? styles.modItemRemoved : modifier.price > 0 ? styles.modItemPriced : styles.modItemFree;
+  const className = isRemoved ? classes.modItemRemoved : modifier.price > 0 ? classes.modItemPriced : classes.modItemFree;
 
   const prefix = isRemoved ? "-" : modifier.price > 0 ? "+" : "";
 
   return html`
-    <div class="${styles.modItem} ${className}">
-      <span class="${styles.modItemName}">${prefix}${modifier.name}</span>
-      ${hasPriceDisplay ? html`<span class="${styles.modItemPrice}">$${modifier.price.toFixed(2)}</span>` : ""}
+    <div class="${classes.modItem} ${className}">
+      <span class="${classes.modItemName}">${prefix}${modifier.name}</span>
+      ${hasPriceDisplay ? html`<span class="${classes.modItemPrice}">$${modifier.price.toFixed(2)}</span>` : ""}
     </div>
   `;
 }
@@ -98,7 +97,7 @@ export function template(displayItem: DisplayItem): Template {
   const tokens = hasModifiers ? generateModificationTokens(item.modifiers) : [];
   const showQuantityInHeader = item.quantity > 1 && !displayItem.expanded;
 
-  const itemClasses = `${itemListStyles.item} ${styles.orderItem}`;
+  const itemClasses = `${itemListStyles.item} ${classes.orderItem}`;
 
   return html`
     <div
@@ -107,30 +106,30 @@ export function template(displayItem: DisplayItem): Template {
       data-expanded="${displayItem.expanded ? "true" : "false"}"
       data-flat-mode="${displayItem.flatMode ? "true" : "false"}"
     >
-      <div class="${styles.header}" data-item-id="${item.id}" ${onClick(TOGGLE_ITEM_EVENT)}>
-        <div class="${styles.info}">
-          ${item.menuItem.icon ? html`<span class="${styles.icon}">${item.menuItem.icon}</span>` : ""}
-          <div class="${styles.details}">
-            <div class="${styles.titleSection}">
-              <h3 class="${styles.name}">${item.menuItem.name}</h3>
-              <div class="${styles.price}">$${item.total.toFixed(2)}</div>
+      <div class="${classes.header}" data-item-id="${item.id}" ${onClick(TOGGLE_ITEM_EVENT)}>
+        <div class="${classes.info}">
+          ${item.menuItem.icon ? html`<span class="${classes.icon}">${item.menuItem.icon}</span>` : ""}
+          <div class="${classes.details}">
+            <div class="${classes.titleSection}">
+              <h3 class="${classes.name}">${item.menuItem.name}</h3>
+              <div class="${classes.price}">$${item.total.toFixed(2)}</div>
             </div>
-            <div class="${styles.descriptionSection}">
+            <div class="${classes.descriptionSection}">
               ${!displayItem.expanded
                 ? tokens.length > 0
-                  ? html`<div class="${styles.tokens}">${tokens.map((token) => modificationTokenTemplate(token))}</div>`
+                  ? html`<div class="${classes.tokens}">${tokens.map((token) => modificationTokenTemplate(token))}</div>`
                   : item.menuItem.description
-                    ? html`<p class="${styles.description}">${item.menuItem.description}</p>`
+                    ? html`<p class="${classes.description}">${item.menuItem.description}</p>`
                     : ""
                 : ""}
               ${showQuantityInHeader
-                ? html`<span class="${styles.quantity}">${item.quantity} × $${item.unitPrice.toFixed(2)}</span>`
+                ? html`<span class="${classes.quantity}">${item.quantity} × $${item.unitPrice.toFixed(2)}</span>`
                 : ""}
             </div>
           </div>
         </div>
         <svg
-          class="${styles.toggle}"
+          class="${classes.toggle}"
           width="20"
           height="20"
           viewBox="0 0 24 24"
@@ -144,20 +143,20 @@ export function template(displayItem: DisplayItem): Template {
 
       ${displayItem.expanded
         ? html`
-            <div class="${styles.expandedContent}">
+            <div class="${classes.expandedContent}">
               ${item.menuItem.description
-                ? html`<p class="${styles.expandedDescription}">${item.menuItem.description}</p>`
+                ? html`<p class="${classes.expandedDescription}">${item.menuItem.description}</p>`
                 : ""}
               ${hasModifiers
-                ? html`<div class="${styles.modificationsList}">
+                ? html`<div class="${classes.modificationsList}">
                     ${item.modifiers.map((modifier) => modificationItemTemplate(modifier))}
                   </div>`
                 : ""}
-              <div class="${styles.expandedControls}">
-                <div class="${styles.quantityControls}">
-                  <span class="${styles.quantityLabel}">Quantity:</span>
+              <div class="${classes.expandedControls}">
+                <div class="${classes.quantityControls}">
+                  <span class="${classes.quantityLabel}">Quantity:</span>
                   <button
-                    class="${styles.quantityBtn}"
+                    class="${classes.quantityBtn}"
                     data-item-id="${item.id}"
                     ${onClick(DECREASE_QUANTITY_EVENT)}
                     ${item.quantity <= 1 ? "disabled" : ""}
@@ -166,8 +165,8 @@ export function template(displayItem: DisplayItem): Template {
                       <path d="M5 12h14" />
                     </svg>
                   </button>
-                  <span class="${styles.quantityDisplay}">${item.quantity}</span>
-                  <button class="${styles.quantityBtn}" data-item-id="${item.id}" ${onClick(INCREASE_QUANTITY_EVENT)}>
+                  <span class="${classes.quantityDisplay}">${item.quantity}</span>
+                  <button class="${classes.quantityBtn}" data-item-id="${item.id}" ${onClick(INCREASE_QUANTITY_EVENT)}>
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                       <path d="M5 12h14" />
                       <path d="M12 5v14" />
@@ -176,10 +175,10 @@ export function template(displayItem: DisplayItem): Template {
                 </div>
               </div>
 
-              <div class="${styles.actions}">
-                <div class="${styles.actionsLeft}">
+              <div class="${classes.actions}">
+                <div class="${classes.actionsLeft}">
                   <button
-                    class="${styles.actionBtn} ${styles.actionBtnDestructive}"
+                    class="${classes.actionBtn} ${classes.actionBtnDestructive}"
                     ${dataAttr(CLICK_EVENT, { items: { [item.id]: [] } })}
                   >
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -190,9 +189,9 @@ export function template(displayItem: DisplayItem): Template {
                     Remove
                   </button>
                 </div>
-                <div class="${styles.actionsRight}">
+                <div class="${classes.actionsRight}">
                   <button
-                    class="${styles.actionBtn} ${styles.actionBtnSecondary}"
+                    class="${classes.actionBtn} ${classes.actionBtnSecondary}"
                     data-item-id="${item.id}"
                     ${onClick(MODIFY_ITEM_EVENT)}
                   >
@@ -231,23 +230,23 @@ export function update(container: Element, changes: UpdateResult<DisplayItem>, d
 
   // Update quantity display
   if (itemChanges.quantity !== undefined) {
-    const quantityDisplay = container.querySelector(`.${styles.quantityDisplay}`);
+    const quantityDisplay = container.querySelector(`.${classes.quantityDisplay}`);
     if (quantityDisplay) {
       quantityDisplay.textContent = String(data.quantity);
     }
 
-    const quantityHeader = container.querySelector(`.${styles.quantity}`) as HTMLElement;
+    const quantityHeader = container.querySelector(`.${classes.quantity}`) as HTMLElement;
     if (quantityHeader) {
       quantityHeader.textContent = `${data.quantity} × $${data.unitPrice.toFixed(2)}`;
       if (data.quantity > 1) {
-        quantityHeader.classList.remove(styles.quantityHidden);
+        quantityHeader.classList.remove(classes.quantityHidden);
       } else {
-        quantityHeader.classList.add(styles.quantityHidden);
+        quantityHeader.classList.add(classes.quantityHidden);
       }
     }
 
     // Update decrease button disabled state
-    const quantityControls = container.querySelector(`.${styles.quantityControls}`);
+    const quantityControls = container.querySelector(`.${classes.quantityControls}`);
     if (quantityControls) {
       const decreaseBtn = quantityControls.querySelector("button:first-child") as HTMLButtonElement;
       if (decreaseBtn) {
@@ -258,7 +257,7 @@ export function update(container: Element, changes: UpdateResult<DisplayItem>, d
 
   // Update total price
   if (itemChanges.total !== undefined) {
-    const priceElement = container.querySelector(`.${styles.price}`);
+    const priceElement = container.querySelector(`.${classes.price}`);
     if (priceElement) {
       priceElement.textContent = `$${data.total.toFixed(2)}`;
     }
@@ -266,345 +265,49 @@ export function update(container: Element, changes: UpdateResult<DisplayItem>, d
 }
 
 /**
- * Order Item Styles
+ * CSS class names
  */
-const styles = {
-  // Using shared item styles from item-list.ts
-  orderItem: css``, // Empty but keeping for potential future use
-
-  header: css`
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    padding: ${mdSpacing.md};
-    gap: ${mdSpacing.md};
-    cursor: pointer;
-    user-select: none;
-    transition: background-color 200ms cubic-bezier(0.4, 0, 0.2, 1);
-
-    &:hover {
-      background: ${mdColors.surfaceContainer};
-    }
-
-    &:active {
-      background: ${mdColors.surfaceContainerHigh};
-    }
-  `,
-
-  info: css`
-    display: flex;
-    align-items: flex-start;
-    gap: ${mdSpacing.md};
-    flex: 1;
-    min-width: 0;
-  `,
-
-  icon: css`
-    font-size: 32px;
-    flex-shrink: 0;
-    width: 32px;
-    height: 32px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  `,
-
-  details: css`
-    flex: 1;
-    text-align: left;
-    min-width: 0;
-  `,
-
-  titleSection: css`
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: ${mdSpacing.xs};
-  `,
-
-  name: css`
-    font-size: ${mdTypography.titleMedium.fontSize};
-    line-height: ${mdTypography.titleMedium.lineHeight};
-    font-weight: ${mdTypography.titleMedium.fontWeight};
-    color: ${mdColors.onSurface};
-    margin: 0;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  `,
-
-  price: css`
-    font-size: ${mdTypography.titleMedium.fontSize};
-    line-height: ${mdTypography.titleMedium.lineHeight};
-    font-weight: ${mdTypography.titleMedium.fontWeight};
-    color: ${mdColors.primary};
-    white-space: nowrap;
-    margin-left: ${mdSpacing.md};
-  `,
-
-  descriptionSection: css`
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  `,
-
-  description: css`
-    font-size: ${mdTypography.bodyMedium.fontSize};
-    line-height: ${mdTypography.bodyMedium.lineHeight};
-    color: ${mdColors.onSurfaceVariant};
-    margin: 0;
-  `,
-
-  quantity: css`
-    font-size: ${mdTypography.bodySmall.fontSize};
-    line-height: ${mdTypography.bodySmall.lineHeight};
-    color: ${mdColors.onSurfaceVariant};
-    margin-left: ${mdSpacing.md};
-    white-space: nowrap;
-  `,
-
-  quantityHidden: css`
-    display: none !important;
-  `,
-
-  toggle: css`
-    color: ${mdColors.onSurfaceVariant};
-    transition: transform 200ms cubic-bezier(0.4, 0, 0.2, 1);
-    flex-shrink: 0;
-    width: 20px;
-    height: 20px;
-    align-self: flex-start;
-    margin-top: 2px;
-
-    [data-expanded="true"] & {
-      transform: rotate(180deg);
-    }
-  `,
-
-  tokens: css`
-    display: flex;
-    gap: ${mdSpacing.sm};
-    align-items: center;
-    overflow: hidden;
-    white-space: nowrap;
-  `,
-
-  token: css`
-    font-size: ${mdTypography.bodySmall.fontSize};
-    line-height: ${mdTypography.bodySmall.lineHeight};
-    display: inline;
-    flex-shrink: 0;
-  `,
-
-  tokenRemoved: css`
-    color: ${mdColors.error};
-  `,
-
-  tokenPriced: css`
-    color: ${mdColors.secondary};
-  `,
-
-  tokenFree: css`
-    color: ${mdColors.onSurfaceVariant};
-  `,
-
-  noModifiers: css`
-    font-size: ${mdTypography.bodySmall.fontSize};
-    color: ${mdColors.onSurfaceVariant};
-    font-style: italic;
-  `,
-
-  expandedContent: css`
-    background: transparent;
-    border-top: none;
-  `,
-
-  expandedDescription: css`
-    font-size: ${mdTypography.bodyMedium.fontSize};
-    line-height: ${mdTypography.bodyMedium.lineHeight};
-    color: ${mdColors.onSurfaceVariant};
-    margin: 0;
-    padding: 0 ${mdSpacing.md} ${mdSpacing.sm} ${mdSpacing.md};
-  `,
-
-  modificationsList: css`
-    display: flex;
-    flex-direction: column;
-    gap: ${mdSpacing.xs};
-    padding: ${mdSpacing.sm} ${mdSpacing.md};
-    border-top: 1px solid ${mdColors.outlineVariant};
-  `,
-
-  modItem: css`
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: ${mdTypography.bodyMedium.fontSize};
-    line-height: ${mdTypography.bodyMedium.lineHeight};
-  `,
-
-  modItemName: css`
-    flex: 1;
-  `,
-
-  modItemPrice: css`
-    font-weight: 500;
-    margin-left: ${mdSpacing.lg};
-    min-width: 60px;
-    text-align: right;
-  `,
-
-  modItemRemoved: css`
-    color: ${mdColors.error};
-  `,
-
-  modItemPriced: css`
-    color: ${mdColors.secondary};
-  `,
-
-  modItemFree: css`
-    color: ${mdColors.onSurface};
-  `,
-
-  expandedControls: css`
-    padding: ${mdSpacing.sm} ${mdSpacing.md};
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    gap: ${mdSpacing.lg};
-    border-top: 1px solid ${mdColors.outlineVariant};
-  `,
-
-  quantityControls: css`
-    display: flex;
-    align-items: center;
-    gap: ${mdSpacing.sm};
-    flex-shrink: 0;
-  `,
-
-  quantityLabel: css`
-    font-size: ${mdTypography.bodyMedium.fontSize};
-    color: ${mdColors.onSurfaceVariant};
-    margin-right: ${mdSpacing.sm};
-  `,
-
-  quantityBtn: css`
-    width: 36px;
-    height: 36px;
-    border-radius: ${mdShape.corner.full};
-    border: none;
-    background: transparent;
-    color: ${mdColors.onSurfaceVariant};
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
-    position: relative;
-
-    &:hover {
-      background: ${mdColors.surfaceContainerHighest};
-    }
-
-    &:hover::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background-color: ${mdColors.onSurface};
-      opacity: 0.08;
-      border-radius: inherit;
-    }
-
-    &:disabled {
-      opacity: 0.38;
-      cursor: not-allowed;
-    }
-
-    &:disabled:hover {
-      background: transparent;
-    }
-
-    &:disabled:hover::before {
-      display: none;
-    }
-  `,
-
-  quantityDisplay: css`
-    min-width: 32px;
-    text-align: center;
-    font-size: ${mdTypography.bodyMedium.fontSize};
-    color: ${mdColors.onSurface};
-  `,
-
-  actions: css`
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: ${mdSpacing.sm} ${mdSpacing.md};
-    background: ${mdColors.surfaceContainer};
-    border-top: 1px solid ${mdColors.outlineVariant};
-    border-bottom-left-radius: ${mdShape.corner.medium};
-    border-bottom-right-radius: ${mdShape.corner.medium};
-  `,
-
-  actionsLeft: css`
-    display: flex;
-    gap: ${mdSpacing.sm};
-    align-items: center;
-  `,
-
-  actionsRight: css`
-    display: flex;
-    gap: ${mdSpacing.sm};
-    align-items: center;
-  `,
-
-  actionBtn: css`
-    padding: ${mdSpacing.sm} ${mdSpacing.md};
-    border: 1px solid ${mdColors.outline};
-    border-radius: ${mdShape.corner.medium};
-    background: ${mdColors.surface};
-    color: ${mdColors.onSurface};
-    cursor: pointer;
-    font-size: ${mdTypography.labelMedium.fontSize};
-    font-weight: ${mdTypography.labelMedium.fontWeight};
-    transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
-    display: flex;
-    align-items: center;
-    gap: ${mdSpacing.xs};
-    position: relative;
-
-    &:hover {
-      background: ${mdColors.surfaceContainer};
-    }
-
-    &:hover::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background-color: ${mdColors.onSurface};
-      opacity: 0.08;
-      border-radius: inherit;
-    }
-  `,
-
-  actionBtnDestructive: css`
-    color: ${mdColors.error};
-    border-color: ${mdColors.error};
-
-    &:hover::before {
-      background-color: ${mdColors.error};
-    }
-  `,
-
-  actionBtnSecondary: css`
-    color: ${mdColors.primary};
-    border-color: ${mdColors.primary};
-
-    &:hover::before {
-      background-color: ${mdColors.primary};
-    }
-  `,
-
-  // Removed unused modifier detail styles
+export const classes = {
+  orderItem: "order-item-order-item",
+  header: "order-item-header",
+  info: "order-item-info",
+  icon: "order-item-icon",
+  details: "order-item-details",
+  titleSection: "order-item-title-section",
+  name: "order-item-name",
+  price: "order-item-price",
+  descriptionSection: "order-item-description-section",
+  description: "order-item-description",
+  quantity: "order-item-quantity",
+  quantityHidden: "order-item-quantity-hidden",
+  toggle: "order-item-toggle",
+  tokens: "order-item-tokens",
+  token: "order-item-token",
+  tokenRemoved: "order-item-token-removed",
+  tokenPriced: "order-item-token-priced",
+  tokenFree: "order-item-token-free",
+  noModifiers: "order-item-no-modifiers",
+  expandedContent: "order-item-expanded-content",
+  expandedDescription: "order-item-expanded-description",
+  modificationsList: "order-item-modifications-list",
+  modItem: "order-item-mod-item",
+  modItemName: "order-item-mod-item-name",
+  modItemPrice: "order-item-mod-item-price",
+  modItemRemoved: "order-item-mod-item-removed",
+  modItemPriced: "order-item-mod-item-priced",
+  modItemFree: "order-item-mod-item-free",
+  expandedControls: "order-item-expanded-controls",
+  quantityControls: "order-item-quantity-controls",
+  quantityLabel: "order-item-quantity-label",
+  quantityBtn: "order-item-quantity-btn",
+  quantityDisplay: "order-item-quantity-display",
+  actions: "order-item-actions",
+  actionsLeft: "order-item-actions-left",
+  actionsRight: "order-item-actions-right",
+  actionBtn: "order-item-action-btn",
+  actionBtnDestructive: "order-item-action-btn-destructive",
+  actionBtnSecondary: "order-item-action-btn-secondary",
 } as const;
+
+// Export for backward compatibility
+export const styles = classes;

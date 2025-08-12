@@ -1,0 +1,119 @@
+/**
+ * Item List Styles
+ * Shared styles for list containers and items across the application
+ * Following Material Design 3 guidelines
+ */
+
+.item-list-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.item-list-scroll-container {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.item-list-items {
+  background: var(--md-sys-color-surface);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: var(--md-sys-shape-corner-medium);
+  margin: var(--md-sys-spacing-md) 0;
+  overflow: hidden;
+  box-shadow: var(--md-sys-elevation-level1);
+}
+
+/* When an item is expanded, flatten the list appearance */
+.item-list-items[data-has-expanded="true"] {
+  box-shadow: none;
+  background: transparent;
+  border: none;
+}
+
+.item-list-item {
+  background: var(--md-sys-color-surface);
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.item-list-item:last-child {
+  border-bottom: none;
+}
+
+.item-list-item:hover {
+  background: var(--md-sys-color-surface-variant);
+}
+
+/* Expanded item styling */
+.item-list-item[data-expanded="true"] {
+  background: var(--md-sys-color-surface) !important;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: var(--md-sys-shape-corner-medium);
+  margin: var(--md-sys-spacing-sm) 0;
+  box-shadow: var(--md-sys-elevation-level2);
+}
+
+/* Flat mode styling for collapsed items when another is expanded */
+.item-list-item[data-flat-mode="true"][data-expanded="false"] {
+  background: transparent !important;
+  border-bottom: none !important;
+}
+
+.item-list-item[data-flat-mode="true"][data-expanded="false"]:hover {
+  background: transparent !important;
+}
+
+.item-list-empty-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--md-sys-spacing-xl);
+  text-align: center;
+}
+
+.item-list-empty-icon {
+  font-size: 64px;
+  margin-bottom: var(--md-sys-spacing-lg);
+  opacity: 0.5;
+}
+
+.item-list-empty-title {
+  font-size: var(--md-sys-typescale-headline-medium-size);
+  line-height: var(--md-sys-typescale-headline-medium-line-height);
+  font-weight: var(--md-sys-typescale-headline-medium-weight);
+  color: var(--md-sys-color-on-surface);
+  margin: 0 0 var(--md-sys-spacing-sm) 0;
+}
+
+.item-list-empty-message {
+  font-size: var(--md-sys-typescale-body-large-size);
+  line-height: var(--md-sys-typescale-body-large-line-height);
+  color: var(--md-sys-color-on-surface-variant);
+  margin: 0 0 var(--md-sys-spacing-xl) 0;
+  max-width: 300px;
+}
+
+.item-list-empty-action {
+  background: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+  border: none;
+  border-radius: var(--md-sys-shape-corner-full);
+  padding: var(--md-sys-spacing-sm) var(--md-sys-spacing-lg);
+  font-size: var(--md-sys-typescale-label-large-size);
+  line-height: var(--md-sys-typescale-label-large-line-height);
+  font-weight: var(--md-sys-typescale-label-large-weight);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.item-list-empty-action:hover {
+  background: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+}
+
+.item-list-empty-action:active {
+  transform: scale(0.98);
+}

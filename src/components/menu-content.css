@@ -1,0 +1,87 @@
+/**
+ * Menu Content Component Styles
+ * Container and layout for menu content
+ */
+
+.menu-content-container {
+  text-align: center;
+}
+
+.menu-content-container .loading {
+  padding: 40px;
+  text-align: center;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.menu-content-group {
+  margin-bottom: var(--md-sys-spacing-lg);
+  text-align: left;
+}
+
+.menu-content-group-items {
+  background: var(--md-sys-color-surface);
+  border-radius: var(--md-sys-shape-corner-medium);
+  margin-bottom: var(--md-sys-spacing-lg);
+  overflow: hidden;
+  box-shadow: var(--md-sys-elevation-level1);
+  width: 100%;
+}
+
+.menu-content-order-item {
+  background: var(--md-sys-color-surface);
+  border-radius: var(--md-sys-shape-corner-medium);
+  margin-bottom: var(--md-sys-spacing-xl);
+  padding: var(--md-sys-spacing-md);
+}
+
+.menu-content-order-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--md-sys-spacing-md);
+}
+
+.menu-content-order-info {
+  display: flex;
+  align-items: center;
+  gap: var(--md-sys-spacing-md);
+  flex: 1;
+}
+
+.menu-content-order-icon {
+  font-size: 32px;
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.menu-content-order-details {
+  flex: 1;
+  text-align: left;
+}
+
+.menu-content-order-name {
+  font-size: var(--md-sys-typescale-headline-small-size);
+  line-height: var(--md-sys-typescale-headline-small-line-height);
+  font-weight: var(--md-sys-typescale-headline-small-weight);
+  color: var(--md-sys-color-on-surface);
+  margin: 0;
+}
+
+.menu-content-order-description {
+  font-size: var(--md-sys-typescale-body-medium-size);
+  line-height: var(--md-sys-typescale-body-medium-line-height);
+  color: var(--md-sys-color-on-surface-variant);
+  margin: 4px 0 0 0;
+}
+
+.menu-content-price {
+  font-size: var(--md-sys-typescale-title-medium-size);
+  line-height: var(--md-sys-typescale-title-medium-line-height);
+  font-weight: var(--md-sys-typescale-title-medium-weight);
+  color: var(--md-sys-color-primary);
+  flex-shrink: 0;
+}

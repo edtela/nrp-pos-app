@@ -5,10 +5,9 @@
  * @see /component-guidelines.md for component patterns and conventions
  */
 
-import { css } from '@linaria/core';
+import './variant.css';
 import { html, Template, onClick, addEventHandler } from '@/lib/html-template';
 import { VariantGroup } from '@/types';
-import { mdColors, mdTypography, mdSpacing } from '@/styles/theme';
 import { DataChange } from '@/lib/data-model-types';
 
 /**
@@ -21,12 +20,12 @@ export const VARIANT_SELECT_EVENT = 'variant-select';
  */
 export function template(data: VariantGroup): Template {
   return html`
-    <div class="${styles.group}" id="variant-group-${data.id}" data-id="${data.id}">
-      <span class="${styles.label}">${data.name || 'Size'}</span>
-      <div class="${styles.buttons}">
+    <div class="${classes.group}" id="variant-group-${data.id}" data-id="${data.id}">
+      <span class="${classes.label}">${data.name || 'Size'}</span>
+      <div class="${classes.buttons}">
         ${data.variants.map((variant) => html`
           <button 
-            class="${styles.button}"
+            class="${classes.button}"
             data-type="variant"
             data-variant-id="${variant.id}"
             data-variant-group-id="${data.id}"
@@ -65,55 +64,15 @@ export function addSelectEventHandler(container: HTMLElement, handler: (groupId:
 }
 
 /**
- * Variant Selector Styles
+ * CSS class names
  */
-export const styles = {
-  group: css`
-    display: flex;
-    gap: 0;
-    border: 1px solid ${mdColors.outline};
-    border-radius: 9999px;
-    overflow: hidden;
-    width: fit-content;
-    margin: 0 auto ${mdSpacing.md} auto;
-  `,
-
-  label: css`
-    display: none; /* Label not shown in ARP design */
-  `,
-
-  buttons: css`
-    display: contents;
-  `,
-
-  button: css`
-    min-width: 100px;
-    max-width: 150px;
-    padding: 0 ${mdSpacing.lg};
-    border: none;
-    background: transparent;
-    font-size: ${mdTypography.labelLarge.fontSize};
-    line-height: 40px;
-    font-weight: ${mdTypography.labelLarge.fontWeight};
-    letter-spacing: ${mdTypography.labelLarge.letterSpacing};
-    height: 40px;
-    color: ${mdColors.onSurface};
-    cursor: pointer;
-    transition: background-color 200ms ease;
-
-    &:not(:last-child) {
-      border-right: 1px solid ${mdColors.outline};
-    }
-
-    &[data-selected="true"] {
-      background: ${mdColors.secondaryContainer};
-      color: ${mdColors.onSecondaryContainer};
-      font-weight: 500;
-    }
-
-    &:hover:not([data-selected="true"]) {
-      background: ${mdColors.surfaceContainer};
-    }
-  `
+export const classes = {
+  group: "variant-group",
+  label: "variant-label",
+  buttons: "variant-buttons",
+  button: "variant-button",
 } as const;
+
+// Export for backward compatibility
+export const styles = classes;
 

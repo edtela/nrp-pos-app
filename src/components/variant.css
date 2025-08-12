@@ -1,0 +1,52 @@
+/**
+ * Variant Selector Component Styles
+ * Segmented button for selecting variants (e.g., sizes)
+ */
+
+.variant-group {
+  display: flex;
+  gap: 0;
+  border: 1px solid var(--md-sys-color-outline);
+  border-radius: 9999px;
+  overflow: hidden;
+  width: fit-content;
+  margin: 0 auto var(--md-sys-spacing-md) auto;
+}
+
+.variant-label {
+  display: none; /* Label not shown in ARP design */
+}
+
+.variant-buttons {
+  display: contents;
+}
+
+.variant-button {
+  min-width: 100px;
+  max-width: 150px;
+  padding: 0 var(--md-sys-spacing-lg);
+  border: none;
+  background: transparent;
+  font-size: var(--md-sys-typescale-label-large-size);
+  line-height: 40px;
+  font-weight: var(--md-sys-typescale-label-large-weight);
+  letter-spacing: var(--md-sys-typescale-label-large-tracking);
+  height: 40px;
+  color: var(--md-sys-color-on-surface);
+  cursor: pointer;
+  transition: background-color 200ms ease;
+}
+
+.variant-button:not(:last-child) {
+  border-right: 1px solid var(--md-sys-color-outline);
+}
+
+.variant-button[data-selected="true"] {
+  background: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+  font-weight: 500;
+}
+
+.variant-button:hover:not([data-selected="true"]) {
+  background: var(--md-sys-color-surface-container);
+}

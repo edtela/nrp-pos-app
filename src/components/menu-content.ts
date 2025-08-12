@@ -5,13 +5,12 @@
  * @see /component-guidelines.md for component patterns and conventions
  */
 
-import { css } from "@linaria/core";
+import "./menu-content.css";
 import { dataAttr, html, Template, replaceElements } from "@/lib/html-template";
 import { ItemGroup, Menu, MenuGroup, NestedGroup, DataCell, MenuItem, SubMenu } from "@/types";
 import { headerCells, DataCellRenderer } from "./menu-header";
 import * as MenuItemUI from "./menu-item";
 import * as VariantGroupUI from "./variant";
-import { mdColors, mdSpacing, mdElevation, mdShape, mdTypography } from "@/styles/theme";
 import { DisplayMenuItem, MenuPageData, OrderMenuItem, DisplayMenu } from "@/model/menu-model";
 import { DataChange } from "@/lib/data-model-types";
 
@@ -19,21 +18,21 @@ import { DataChange } from "@/lib/data-model-types";
  * Order item template - displays the current order item
  */
 function orderItemTemplate(order: OrderMenuItem | undefined): Template {
-  if (!order) return html`<div class="${styles.orderItem}" style="display: none"></div>`;
+  if (!order) return html`<div class="${classes.orderItem}" style="display: none"></div>`;
 
   return html`
-    <div class="${styles.orderItem}">
-      <div class="${styles.orderContent}">
-        <div class="${styles.orderInfo}">
-          ${order.menuItem.icon ? html`<span class="${styles.orderIcon}">${order.menuItem.icon}</span>` : ""}
-          <div class="${styles.orderDetails}">
-            <h3 class="${styles.orderName}">${order.menuItem.name}</h3>
+    <div class="${classes.orderItem}">
+      <div class="${classes.orderContent}">
+        <div class="${classes.orderInfo}">
+          ${order.menuItem.icon ? html`<span class="${classes.orderIcon}">${order.menuItem.icon}</span>` : ""}
+          <div class="${classes.orderDetails}">
+            <h3 class="${classes.orderName}">${order.menuItem.name}</h3>
             ${order.menuItem.description
-              ? html`<p class="${styles.orderDescription}">${order.menuItem.description}</p>`
+              ? html`<p class="${classes.orderDescription}">${order.menuItem.description}</p>`
               : ""}
           </div>
         </div>
-        <span class="${styles.price}">$${order.total.toFixed(2)}</span>
+        <span class="${classes.price}">$${order.total.toFixed(2)}</span>
       </div>
     </div>
   `;
@@ -62,11 +61,11 @@ function createDataCellRenderer(menu: Menu | DisplayMenu): DataCellRenderer {
  */
 function menuGroupTemplate<T>(group: MenuGroup<T>, dataRenderer: DataCellRenderer): Template {
   return html`
-    <div class="${styles.group}" ${dataAttr("included", group.options?.extractIncluded)}>
+    <div class="${classes.group}" ${dataAttr("included", group.options?.extractIncluded)}>
       ${group.header ? headerCells(group.header, dataRenderer) : ""}
       ${"items" in group
         ? html`
-            <div class="${styles.groupItems}">
+            <div class="${classes.groupItems}">
               ${(group as ItemGroup<T>).items.map((itemData) => {
                 // Type check: if it's a DisplayMenuItem, use it directly
                 if ("quantity" in (itemData as any) && "data" in (itemData as any)) {
@@ -90,7 +89,7 @@ function menuGroupTemplate<T>(group: MenuGroup<T>, dataRenderer: DataCellRendere
 export function template(data: (Menu | DisplayMenu) & { order?: OrderMenuItem }): Template {
   const dataRenderer = createDataCellRenderer(data);
   return html`
-    <div class="${styles.container}">
+    <div class="${classes.container}">
       ${orderItemTemplate(data.order)} ${menuGroupTemplate(data.content as MenuGroup<any>, dataRenderer)}
     </div>
   `;
@@ -98,14 +97,14 @@ export function template(data: (Menu | DisplayMenu) & { order?: OrderMenuItem })
 
 export function init(container: HTMLElement, subMenu?: SubMenu, order?: OrderMenuItem) {
   if (order) {
-    replaceElements(container, `.${styles.orderItem}`, orderItemTemplate(order));
+    replaceElements(container, `.${classes.orderItem}`, orderItemTemplate(order));
   }
 
   if (!subMenu?.included) return;
 
   // Find the included section
   const includedSection = container.querySelector('[data-included="true"]');
-  const includedGroupItems = includedSection?.querySelector(`.${styles.groupItems}`);
+  const includedGroupItems = includedSection?.querySelector(`.${classes.groupItems}`);
 
   // Process each included item
   for (const includedItem of subMenu.included) {
@@ -123,9 +122,9 @@ export function init(container: HTMLElement, subMenu?: SubMenu, order?: OrderMen
   }
 
   // Hide all sections that have empty .groupItems
-  const allGroups = container.querySelectorAll(`.${styles.group}`);
+  const allGroups = container.querySelectorAll(`.${classes.group}`);
   allGroups.forEach((group) => {
-    const groupItems = group.querySelector(`:scope > .${styles.groupItems}`);
+    const groupItems = group.querySelector(`:scope > .${classes.groupItems}`);
     if (groupItems && groupItems.children.length === 0) {
       (group as HTMLElement).style.display = "none";
     }
@@ -138,7 +137,7 @@ export function init(container: HTMLElement, subMenu?: SubMenu, order?: OrderMen
 export function update(container: HTMLElement, event: DataChange<MenuPageData>) {
   // Handle order updates
   if (event.order?.menuItem && "price" in event.order.menuItem) {
-    const priceElement = container.querySelector(`.${styles.orderItem} .${styles.price}`);
+    const priceElement = container.querySelector(`.${classes.orderItem} .${classes.price}`);
     if (priceElement && typeof event.order.menuItem.price === "number") {
       priceElement.textContent = `$${event.order.menuItem.price.toFixed(2)}`;
     }
@@ -166,92 +165,22 @@ export function update(container: HTMLElement, event: DataChange<MenuPageData>) 
 export const addVariantHandler = VariantGroupUI.addSelectEventHandler;
 
 /**
- * Menu Content Styles
+ * CSS class names
  */
-export const styles = {
-  container: css`
-    text-align: center;
-
-    .loading {
-      padding: 40px;
-      text-align: center;
-      color: ${mdColors.onSurfaceVariant};
-    }
-  `,
-
-  group: css`
-    margin-bottom: ${mdSpacing.lg};
-    text-align: left;
-  `,
-
-  groupItems: css`
-    background: ${mdColors.surface};
-    border-radius: ${mdShape.corner.medium};
-    margin-bottom: ${mdSpacing.lg};
-    overflow: hidden;
-    box-shadow: ${mdElevation.level1};
-    width: 100%;
-  `,
-
-  orderItem: css`
-    background: ${mdColors.surface};
-    border-radius: ${mdShape.corner.medium};
-    margin-bottom: ${mdSpacing.xl};
-    padding: ${mdSpacing.md};
-  `,
-
-  orderContent: css`
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: ${mdSpacing.md};
-  `,
-
-  orderInfo: css`
-    display: flex;
-    align-items: center;
-    gap: ${mdSpacing.md};
-    flex: 1;
-  `,
-
-  orderIcon: css`
-    font-size: 32px;
-    flex-shrink: 0;
-    width: 32px;
-    height: 32px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  `,
-
-  orderDetails: css`
-    flex: 1;
-    text-align: left;
-  `,
-
-  orderName: css`
-    font-size: ${mdTypography.headlineSmall.fontSize};
-    line-height: ${mdTypography.headlineSmall.lineHeight};
-    font-weight: ${mdTypography.headlineSmall.fontWeight};
-    color: ${mdColors.onSurface};
-    margin: 0;
-  `,
-
-  orderDescription: css`
-    font-size: ${mdTypography.bodyMedium.fontSize};
-    line-height: ${mdTypography.bodyMedium.lineHeight};
-    color: ${mdColors.onSurfaceVariant};
-    margin: 4px 0 0 0;
-  `,
-
-  price: css`
-    font-size: ${mdTypography.titleMedium.fontSize};
-    line-height: ${mdTypography.titleMedium.lineHeight};
-    font-weight: ${mdTypography.titleMedium.fontWeight};
-    color: ${mdColors.primary};
-    flex-shrink: 0;
-  `,
+export const classes = {
+  container: "menu-content-container",
+  group: "menu-content-group",
+  groupItems: "menu-content-group-items",
+  orderItem: "menu-content-order-item",
+  orderContent: "menu-content-order-content",
+  orderInfo: "menu-content-order-info",
+  orderIcon: "menu-content-order-icon",
+  orderDetails: "menu-content-order-details",
+  orderName: "menu-content-order-name",
+  orderDescription: "menu-content-order-description",
+  price: "menu-content-price",
 } as const;
 
-// Export for selector usage in menu-page
-export const menuContainer = styles.container;
+// Export for backward compatibility and selector usage in menu-page
+export const styles = classes;
+export const menuContainer = classes.container;
