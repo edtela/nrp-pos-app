@@ -76,7 +76,7 @@ export function dataAttr(name: string, value: any): string {
  * @param name - The data attribute name (without 'data-' prefix)
  * @param value - The value to set (if undefined, removes the attribute)
  */
-export function updateDataAttr(element: HTMLElement, name: string, value: any): void {
+export function setDataAttribute(element: HTMLElement, name: string, value: any): void {
   if (value === undefined) {
     element.removeAttribute(`data-${name}`);
   } else {
@@ -137,7 +137,7 @@ export function buildHTML(template: Template): string {
 export function replaceElement(element: Element, template: Template): boolean {
   const temp = document.createElement("div");
   render(template, temp);
-  
+
   if (temp.firstElementChild) {
     element.replaceWith(temp.firstElementChild);
     return true;
@@ -251,7 +251,7 @@ function dispatchCustomEvent(target: HTMLElement, eventData: string, originalEve
  * @param eventTypeOrUpdate The new click handler value
  */
 export function updateOnClick(element: HTMLElement, eventTypeOrUpdate: string | object | undefined): void {
-  updateDataAttr(element, CLICK_EVENT, eventTypeOrUpdate);
+  setDataAttribute(element, CLICK_EVENT, eventTypeOrUpdate);
 }
 
 /**

@@ -6,7 +6,7 @@
  */
 
 import "./menu-item.css";
-import { html, Template, replaceElements, onClick, updateOnClick } from "@/lib/html-template";
+import { html, Template, replaceElements, onClick, dataAttr, setDataAttribute } from "@/lib/html-template";
 import { DataChange } from "@/lib/data-model-types";
 import { DisplayMenuItem } from "@/model/menu-model";
 import { isSaleItem } from "@/types";
@@ -29,13 +29,13 @@ function priceTemplate(price?: number): Template {
  * Menu item template - pure function
  */
 export function template(item: DisplayMenuItem): Template {
-  const iType = item.data.constraints?.choice?.single ? "radio" : item.data.subMenu ? "none" : "checkbox";
+  const iType = item.data.constraints?.choice?.single ? "radio" : item.data.subMenu ? "none" : "check";
 
   // Show icon only when:
   // - Never for radio buttons (iType === "radio")
   // - For checkboxes, only when NOT selected (no checkmark showing)
   // - Always for navigation items (iType === "none")
-  const showIcon = iType === "radio" ? false : iType === "checkbox" ? !item.selected : true;
+  const showIcon = iType === "radio" ? false : iType === "check" ? !item.selected : true;
 
   return html`
     <div
@@ -44,7 +44,8 @@ export function template(item: DisplayMenuItem): Template {
       data-type="menu-item"
       data-id="${item.data.id}"
       data-interaction-type="${iType}"
-      data-selected=${item.selected ? "true" : "false"}
+      ${dataAttr("included", item.included)}
+      ${dataAttr("selected", item.selected)}
       ${onClick(MENU_ITEM_CLICK)}
     >
       <div class="${classes.content}">
@@ -69,7 +70,7 @@ export function update(element: HTMLElement, event: DataChange<DisplayMenuItem>)
   }
 
   if ("selected" in event) {
-    element.setAttribute("data-selected", event.selected ? "true" : "false");
+    setDataAttribute(element, "selected", event.selected);
   }
 }
 
