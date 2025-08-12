@@ -1,19 +1,19 @@
 /**
  * Variant Selector Component
  * Segmented button for selecting variants (e.g., sizes)
- * 
+ *
  * @see /component-guidelines.md for component patterns and conventions
  */
 
-import './variant.css';
-import { html, Template, onClick, addEventHandler } from '@/lib/html-template';
-import { VariantGroup } from '@/types';
-import { DataChange } from '@/lib/data-model-types';
+import "./variant.css";
+import { html, Template, onClick } from "@/lib/html-template";
+import { VariantGroup } from "@/types";
+import { DataChange } from "@/lib/data-model-types";
 
 /**
  * Event constants
  */
-export const VARIANT_SELECT_EVENT = 'variant-select';
+export const VARIANT_SELECT_EVENT = "variant-select";
 
 /**
  * Variant selector template - pure function
@@ -21,20 +21,22 @@ export const VARIANT_SELECT_EVENT = 'variant-select';
 export function template(data: VariantGroup): Template {
   return html`
     <div class="${classes.group}" id="variant-group-${data.id}" data-id="${data.id}">
-      <span class="${classes.label}">${data.name || 'Size'}</span>
+      <span class="${classes.label}">${data.name || "Size"}</span>
       <div class="${classes.buttons}">
-        ${data.variants.map((variant) => html`
-          <button 
-            class="${classes.button}"
-            data-type="variant"
-            data-variant-id="${variant.id}"
-            data-variant-group-id="${data.id}"
-            data-selected="${variant.id === data.selectedId}"
-            ${onClick(VARIANT_SELECT_EVENT)}
-          >
-          ${variant.name}
-          </button>
-      `)}
+        ${data.variants.map(
+          (variant) => html`
+            <button
+              class="${classes.button}"
+              data-type="variant"
+              data-variant-id="${variant.id}"
+              data-variant-group-id="${data.id}"
+              data-selected="${variant.id === data.selectedId}"
+              ${onClick(VARIANT_SELECT_EVENT)}
+            >
+              ${variant.name}
+            </button>
+          `,
+        )}
       </div>
     </div>
   `;
@@ -47,20 +49,10 @@ export function update(variantGroupElement: HTMLElement, variantEvent: DataChang
 
     // Update the selected state for each button
     buttons.forEach((button) => {
-      const variantId = button.getAttribute('data-variant-id');
-      button.setAttribute('data-selected', variantId === variantEvent.selectedId ? 'true' : 'false');
+      const variantId = button.getAttribute("data-variant-id");
+      button.setAttribute("data-selected", variantId === variantEvent.selectedId ? "true" : "false");
     });
   }
-}
-
-/**
- * Attach select event handler
- * Handles variant selection within a group
- */
-export function addSelectEventHandler(container: HTMLElement, handler: (groupId: string, variantId: string) => void): void {
-  addEventHandler(container, VARIANT_SELECT_EVENT, (data) => {
-    handler(data.variantGroupId, data.variantId);
-  });
 }
 
 /**
@@ -75,4 +67,3 @@ export const classes = {
 
 // Export for backward compatibility
 export const styles = classes;
-

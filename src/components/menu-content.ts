@@ -159,12 +159,6 @@ export function update(container: HTMLElement, event: DataChange<MenuPageData>) 
 }
 
 /**
- * Event handler forwarding
- * Direct assignment for simple event forwarding to child components
- */
-export const addVariantHandler = VariantGroupUI.addSelectEventHandler;
-
-/**
  * CSS class names
  */
 export const classes = {
