@@ -54,6 +54,12 @@ export function hydrate(container: Element, displayMenu: DisplayMenu) {
   const page = container.querySelector(`.${layoutStyles.pageContainer}`) as HTMLElement;
   if (!page) return;
 
+  // Hydrate header for language switching
+  const header = page.querySelector(`.${layoutStyles.header}`) as HTMLElement;
+  if (header) {
+    AppHeader.hydrate(header);
+  }
+
   const router = getRouter();
   const navItem = router.truncateStack(displayMenu.id);
   const context = toContext(navItem);

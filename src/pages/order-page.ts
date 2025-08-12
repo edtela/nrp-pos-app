@@ -35,6 +35,12 @@ export function template(data: OrderPageData) {
 
 // Hydrate function - loads session data and attaches event handlers
 export function hydrate(container: Element) {
+  // Hydrate header for language switching
+  const header = container.querySelector(`.${layoutStyles.header}`) as HTMLElement;
+  if (header) {
+    AppHeader.hydrate(header);
+  }
+
   // Load session data
   const model = orderModel();
   const sessionData = model.getData();

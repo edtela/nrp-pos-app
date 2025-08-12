@@ -14,6 +14,7 @@ import { DisplayMenu } from "@/model/menu-model";
 import { createStore } from "@/lib/storage";
 import { PageStaticData } from "@/types/page-data";
 import { render } from "@/lib/html-template";
+import { getCurrentLanguage, parseLanguageFromUrl, buildLanguageUrl } from "@/lib/language";
 import * as MenuPage from "./menu-page";
 import * as OrderPage from "./order-page";
 
@@ -110,8 +111,9 @@ class AppRouter {
       stack.push({ type: "browse", item });
       navStack.set(stack);
 
-      // Navigate
-      window.location.href = `/${item.subMenu.menuId}`;
+      // Navigate with language support
+      const lang = getCurrentLanguage();
+      window.location.href = buildLanguageUrl(`/${item.subMenu.menuId}`, lang);
     },
 
     /**
@@ -125,23 +127,26 @@ class AppRouter {
       const navStack = this.getNavStack();
       navStack.set([{ type: "modify", item: orderItem }]);
 
-      // Navigate to the menu page where this item came from
+      // Navigate to the menu page where this item came from with language support
       const menuId = menuItem.subMenu?.menuId || "index";
-      window.location.href = `/${menuId}`;
+      const lang = getCurrentLanguage();
+      window.location.href = buildLanguageUrl(`/${menuId}`, lang);
     },
 
     /**
      * Navigate to the order page
      */
     order: (): void => {
-      window.location.href = "/order";
+      const lang = getCurrentLanguage();
+      window.location.href = buildLanguageUrl("/order", lang);
     },
 
     /**
      * Navigate to the home page
      */
     home: (): void => {
-      window.location.href = "/";
+      const lang = getCurrentLanguage();
+      window.location.href = buildLanguageUrl("/", lang);
     },
 
     /**
@@ -197,7 +202,9 @@ class AppRouter {
    * Get menu file from URL path
    */
   private getMenuFileFromPath(path: string): string {
-    const menuName = path.slice(1); // Remove leading slash
+    // Parse language from path
+    const { path: cleanPath } = parseLanguageFromUrl(path);
+    const menuName = cleanPath.slice(1); // Remove leading slash
     if (!menuName || menuName === "menu") {
       return "index.json";
     }
@@ -208,7 +215,10 @@ class AppRouter {
    * Fetch static data for a page (menu data or empty order)
    */
   async fetchStaticData(path: string): Promise<PageStaticData> {
-    if (path === "/order") {
+    // Parse language from path
+    const { language, path: cleanPath } = parseLanguageFromUrl(path);
+    
+    if (cleanPath === "/order") {
       // Order page returns empty data structure
       return {
         type: "order",
@@ -219,14 +229,27 @@ class AppRouter {
       };
     }
     
-    // Menu pages fetch menu data
-    const menuFile = this.getMenuFileFromPath(path);
-    const response = await fetch(`/data/menu/${menuFile}`);
+    // Menu pages fetch menu data with language support
+    const menuFile = this.getMenuFileFromPath(cleanPath);
+    const response = await fetch(`/data/menu/${language}/${menuFile}`);
     if (!response.ok) {
-      throw new Error(`Failed to load menu: ${response.statusText}`);
+      // Fallback to default language if not found
+      const fallbackResponse = await fetch(`/data/menu/${menuFile}`);
+      if (!fallbackResponse.ok) {
+        throw new Error(`Failed to load menu: ${response.statusText}`);
+      }
+      const rawMenu: Menu = await fallbackResponse.json();
+      return this.transformToDisplayMenu(rawMenu);
     }
     const rawMenu: Menu = await response.json();
     
+    return this.transformToDisplayMenu(rawMenu);
+  }
+
+  /**
+   * Transform raw menu to display menu
+   */
+  private transformToDisplayMenu(rawMenu: Menu): PageStaticData {
     const displayMenu: DisplayMenu = {
       ...rawMenu,
       content: mapItems(rawMenu.content, (item) => ({

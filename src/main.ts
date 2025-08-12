@@ -1,7 +1,11 @@
 import { router } from "@/pages/app-router";
 import { initializeGlobalClickHandler } from "@/lib/html-template";
+import { initTheme } from "@/lib/theme";
 import "./styles/theme.css";
 import "./styles/global.css";
+
+// Initialize theme system
+initTheme();
 
 // Initialize global click handler
 initializeGlobalClickHandler();

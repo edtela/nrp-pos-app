@@ -7,6 +7,7 @@
 
 import './app-header.css';
 import { html, Template } from '@/lib/html-template';
+import * as AppMenu from './app-menu';
 
 /**
  * Header data interface
@@ -23,22 +24,26 @@ export function template(data: HeaderData = {}): Template {
   const { searchPlaceholder = "Search Menu" } = data;
   
   return html`
-    <button class="${classes.iconButton} ${classes.backButton}">
-      <span class="material-icons">arrow_back</span>
-    </button>
-    
-    <div class="${classes.searchContainer}">
-      <span class="material-icons ${classes.searchIcon}">search</span>
-      <input 
-        type="text" 
-        class="${classes.searchInput}"
-        placeholder="${searchPlaceholder}"
-      />
+    <div class="${classes.headerContent}">
+      <button class="${classes.iconButton} ${classes.backButton}">
+        <span class="material-icons">arrow_back</span>
+      </button>
+      
+      <div class="${classes.searchContainer}">
+        <span class="material-icons ${classes.searchIcon}">search</span>
+        <input 
+          type="text" 
+          class="${classes.searchInput}"
+          placeholder="${searchPlaceholder}"
+        />
+      </div>
+      
+      <button class="${classes.iconButton} ${classes.menuButton}" data-action="toggle-app-menu">
+        <span class="material-icons">menu</span>
+      </button>
     </div>
     
-    <button class="${classes.iconButton} ${classes.menuButton}">
-      <span class="material-icons">menu</span>
-    </button>
+    ${AppMenu.template()}
   `;
 }
 
@@ -46,6 +51,7 @@ export function template(data: HeaderData = {}): Template {
  * App Header Class Names
  */
 export const classes = {
+  headerContent: 'app-header-content',
   iconButton: 'app-header-icon-button',
   backButton: 'app-header-back-button',
   menuButton: 'app-header-menu-button',
@@ -56,3 +62,19 @@ export const classes = {
 
 // Export as styles for backward compatibility
 export const styles = classes;
+
+/**
+ * Hydrate header with app menu functionality
+ */
+export function hydrate(container: Element): void {
+  // App menu toggle
+  const menuButton = container.querySelector('[data-action="toggle-app-menu"]');
+  if (menuButton) {
+    menuButton.addEventListener('click', () => {
+      AppMenu.toggle(container);
+    });
+  }
+  
+  // Hydrate app menu
+  AppMenu.hydrate(container);
+}
