@@ -7,7 +7,7 @@
 
 import { addEventHandler, html, Template, STATE_UPDATE_EVENT } from "@/lib/html-template";
 import { isSaleItem } from "@/types";
-import { NavStackItem, router } from "@/pages/app-router";
+import { NavStackItem, getRouter } from "@/pages/app-router";
 import * as MenuContentUI from "@/components/menu-content";
 import * as AppHeader from "@/components/app-header";
 import * as AppBottomBar from "@/components/app-bottom-bar";
@@ -54,6 +54,7 @@ export function hydrate(container: Element, displayMenu: DisplayMenu) {
   const page = container.querySelector(`.${layoutStyles.pageContainer}`) as HTMLElement;
   if (!page) return;
 
+  const router = getRouter();
   const navItem = router.truncateStack(displayMenu.id);
   const context = toContext(navItem);
   MenuContentUI.init(page, context.menuItem?.subMenu, context.order);
