@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Included State</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="http://localhost:4175/assets/index-BSXaKesc.css">
+    <style>
+        body {
+            padding: 20px;
+            font-family: Roboto, sans-serif;
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #ccc;
+        }
+        h2 {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Menu Item Display States Test</h1>
+
+    <div class="test-section">
+        <h2>Checkbox States</h2>
+        
+        <h3>Default (not selected, not included)</h3>
+        <div class="menu-item" data-control-type="check" data-selected="false">
+            <div class="menu-item-content">
+                <span class="menu-item-control"></span>
+                <span class="menu-item-icon">🍕</span>
+                <div class="menu-item-text">
+                    <span class="menu-item-name">Pepperoni (Default)</span>
+                </div>
+            </div>
+        </div>
+
+        <h3>Selected</h3>
+        <div class="menu-item" data-control-type="check" data-selected="true">
+            <div class="menu-item-content">
+                <span class="menu-item-control"></span>
+                <span class="menu-item-icon">🍕</span>
+                <div class="menu-item-text">
+                    <span class="menu-item-name">Pepperoni (Selected)</span>
+                </div>
+            </div>
+        </div>
+
+        <h3>Included but not selected (should show red minus)</h3>
+        <div class="menu-item" data-control-type="check" data-included="true" data-selected="false">
+            <div class="menu-item-content">
+                <span class="menu-item-control"></span>
+                <span class="menu-item-icon">🍕</span>
+                <div class="menu-item-text">
+                    <span class="menu-item-name">Pepperoni (Included, not selected)</span>
+                </div>
+            </div>
+        </div>
+
+        <h3>Included and selected</h3>
+        <div class="menu-item" data-control-type="check" data-included="true" data-selected="true">
+            <div class="menu-item-content">
+                <span class="menu-item-control"></span>
+                <span class="menu-item-icon">🍕</span>
+                <div class="menu-item-text">
+                    <span class="menu-item-name">Pepperoni (Included and selected)</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>Radio States</h2>
+        
+        <h3>Default (not selected, not included)</h3>
+        <div class="menu-item" data-control-type="radio" data-selected="false">
+            <div class="menu-item-content">
+                <span class="menu-item-control"></span>
+                <span class="menu-item-icon">🧀</span>
+                <div class="menu-item-text">
+                    <span class="menu-item-name">Mozzarella (Default)</span>
+                </div>
+            </div>
+        </div>
+
+        <h3>Selected</h3>
+        <div class="menu-item" data-control-type="radio" data-selected="true">
+            <div class="menu-item-content">
+                <span class="menu-item-control"></span>
+                <span class="menu-item-icon">🧀</span>
+                <div class="menu-item-text">
+                    <span class="menu-item-name">Mozzarella (Selected)</span>
+                </div>
+            </div>
+        </div>
+
+        <h3>Included but not selected (should show red circle)</h3>
+        <div class="menu-item" data-control-type="radio" data-included="true" data-selected="false">
+            <div class="menu-item-content">
+                <span class="menu-item-control"></span>
+                <span class="menu-item-icon">🧀</span>
+                <div class="menu-item-text">
+                    <span class="menu-item-name">Mozzarella (Included, not selected)</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Test dynamic state changes
+        document.querySelectorAll('.menu-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const isSelected = item.getAttribute('data-selected') === 'true';
+                item.setAttribute('data-selected', !isSelected);
+                console.log('Toggled:', item.querySelector('.menu-item-name').textContent, 'to', !isSelected);
+            });
+        });
+    </script>
+</body>
+</html>

@@ -5,7 +5,7 @@
  * @see /component-guidelines.md for component patterns and conventions
  */
 
-import './app-bottom-bar.css';
+import "./app-bottom-bar.css";
 import { html, onClick, Template, render } from "@/lib/html-template";
 
 // Event types
@@ -115,10 +115,10 @@ export function update(container: HTMLElement, updates: Partial<BottomBarData>):
  * App Bottom Bar Class Names
  */
 export const classes = {
-  infoSection: 'app-bottom-bar-info-section',
-  infoValue: 'app-bottom-bar-info-value',
-  infoLabel: 'app-bottom-bar-info-label',
-  actionButton: 'app-bottom-bar-action-button'
+  infoSection: "app-bottom-bar-info-section",
+  infoValue: "app-bottom-bar-info-value",
+  infoLabel: "app-bottom-bar-info-label",
+  actionButton: "app-bottom-bar-action-button",
 } as const;
 
 // Export as styles for backward compatibility

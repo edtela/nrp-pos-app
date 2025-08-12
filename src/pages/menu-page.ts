@@ -15,7 +15,6 @@ import { styles as layoutStyles } from "@/components/app-layout";
 import { MenuPageData, MenuModel, toOrderMenuItem, DisplayMenu } from "@/model/menu-model";
 import { DataChange, Update, UpdateResult } from "@/lib/data-model-types";
 import { MENU_ITEM_CLICK, OPEN_MENU_EVENT } from "@/components/menu-item";
-import { typeChange } from "@/lib/data-model";
 import { saveOrderItem, OrderItem, getOrder } from "@/model/order-model";
 import { VARIANT_SELECT_EVENT } from "@/components/variant";
 import { ADD_TO_ORDER_EVENT, VIEW_ORDER_EVENT } from "@/components/app-bottom-bar";
@@ -81,14 +80,14 @@ export function hydrate(container: Element, displayMenu: DisplayMenu) {
   const model = new MenuModel();
   function runUpdate(stmt: Update<MenuPageData>) {
     const result = model.update(stmt);
-    update(result, model.data);
+    update(page, result, model.data);
   }
 
   let changes: UpdateResult<MenuPageData> | undefined = model.setMenu(displayMenu);
   if (context.order) {
     changes = model.update({ order: [context.order] }, changes);
   }
-  update(changes, model.data);
+  update(page, changes, model.data);
 
   // Attach event handlers to the pageContainer element (automatically cleaned up on re-render)
   page.addEventListener(`app:${STATE_UPDATE_EVENT}`, (e: Event) => {
@@ -158,28 +157,18 @@ export function hydrate(container: Element, displayMenu: DisplayMenu) {
   });
 }
 
-function update(event: DataChange<MenuPageData> | undefined, data: MenuPageData) {
+function update(page: Element, event: DataChange<MenuPageData> | undefined, data: MenuPageData) {
   if (!event) return;
 
-  const container = document.querySelector(`.${MenuContentUI.menuContainer}`) as HTMLElement;
-  if (container) {
-    MenuContentUI.update(container, event);
+  const content = page.querySelector(`.${MenuContentUI.menuContainer}`) as HTMLElement;
+  if (content) {
+    MenuContentUI.update(content, event, data);
   }
 
-  // Update bottom bar based on order state
-  if (typeChange("order", event)) {
-    const bottomBar = document.querySelector(`.${layoutStyles.bottomBar}`) as HTMLElement;
+  if (event.order && "total" in event.order) {
+    const bottomBar = page.querySelector(`.${layoutStyles.bottomBar}`) as HTMLElement;
     if (bottomBar) {
-      if (data.order) {
-        // Add mode when we have an order item
-        AppBottomBar.update(bottomBar, {
-          mode: "add",
-          quantity: data.order.quantity,
-          total: data.order.total,
-        });
-      } else {
-        // View mode when no order item
-      }
+      AppBottomBar.update(bottomBar, { total: event.order.total });
     }
   }
 }

@@ -1,7 +1,7 @@
 import { iterateItems, Menu, MenuItem, VariantGroup } from "@/types";
 import { anyChange, state, typeChange } from "@/lib/data-model";
 import { ALL, DataBinding, Update, UpdateResult, WHERE } from "@/lib/data-model-types";
-import { OrderItem } from "./order-model";
+import { OrderItem, OrderModifier } from "./order-model";
 
 export type DisplayMenuItem = {
   data: MenuItem;
@@ -15,9 +15,10 @@ export type OrderMenuItem = {
   order?: OrderItem;
   menuItem: MenuItem;
   quantity: number;
-  total: number;
-  childrenPrice: number;
+  modifiers: OrderModifier[];
+  modifiersPrice: number;
   unitPrice: number;
+  total: number;
 };
 
 export type DisplayMenu = Menu<DisplayMenuItem>;
@@ -25,7 +26,8 @@ export type DisplayMenu = Menu<DisplayMenuItem>;
 export function toOrderMenuItem(item: MenuItem): OrderMenuItem {
   return {
     menuItem: item,
-    childrenPrice: 0,
+    modifiers: [],
+    modifiersPrice: 0,
     unitPrice: item.price ?? 0,
     quantity: 1,
     total: item.price ?? 0,
@@ -154,23 +156,45 @@ const bindings: DataBinding<MenuPageData>[] = [
     },
   },
   {
-    onChange: [{ menu: { [ALL]: { total: anyChange } } }],
+    onChange: [{ menu: { [ALL]: { included: anyChange, quantity: anyChange } } }],
     update(data: MenuPageData) {
       if (data.order) {
-        let childrenPrice = Object.values(data.menu).reduce((sum, c) => (sum += c.total ?? 0), 0);
-        return { order: { childrenPrice } };
+        const modifiers: OrderModifier[] = Object.values(data.menu)
+          .filter((item) => {
+            if (item.included) {
+              return item.quantity !== 1 && !item.data.constraints?.choice?.single;
+            }
+            return item.quantity > 0;
+          })
+          .map((item) => ({
+            menuItemId: item.data.id,
+            name: item.data.name,
+            quantity: item.quantity,
+            price: item.data.price ?? 0,
+          }));
+        return { order: { modifiers: [modifiers] } };
       }
       return {};
     },
   },
   {
-    onChange: [{ order: { price: anyChange, childrenPrice: anyChange, quantity: anyChange } }],
+    onChange: [{ menu: { [ALL]: { total: anyChange } } }],
+    update(data: MenuPageData) {
+      if (data.order) {
+        let modifiersPrice = Object.values(data.menu).reduce((sum, c) => (sum += c.total ?? 0), 0);
+        return { order: { modifiersPrice: Math.max(0, modifiersPrice) } };
+      }
+      return {};
+    },
+  },
+  {
+    onChange: [{ order: { price: anyChange, modifiersPrice: anyChange, quantity: anyChange } }],
     update(data: MenuPageData) {
       const order = data.order;
       if (!order) return {};
 
       const price = order.menuItem.price ?? 0;
-      const unitPrice = price + Math.max(0, order.childrenPrice);
+      const unitPrice = price + order.modifiersPrice;
       const total = order.quantity * unitPrice;
       return { order: { unitPrice, total } };
     },
