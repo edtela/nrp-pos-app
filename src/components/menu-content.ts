@@ -14,25 +14,92 @@ import * as VariantGroupUI from "./variant";
 import { DisplayMenuItem, MenuPageData, OrderMenuItem, DisplayMenu } from "@/model/menu-model";
 import { DataChange } from "@/lib/data-model-types";
 
+
+/**
+ * Modification token types
+ */
+type ModificationTokenType = "removed" | "added-free" | "added-priced";
+
+interface ModificationToken {
+  name: string;
+  type: ModificationTokenType;
+  price?: number;
+}
+
+/**
+ * Generate modification tokens from modifiers
+ */
+function generateModificationTokens(modifiers: OrderMenuItem["modifiers"]): ModificationToken[] {
+  if (!modifiers) return [];
+
+  return modifiers.map((modifier) => {
+    if (modifier.quantity === 0) {
+      return { name: modifier.name, type: "removed", price: modifier.price };
+    }
+
+    if (modifier.price === 0) {
+      return {
+        name: modifier.name,
+        type: "added-free",
+      };
+    }
+
+    return {
+      name: modifier.name,
+      type: "added-priced",
+      price: modifier.price,
+    };
+  });
+}
+
+/**
+ * Modification token template
+ */
+function modificationTokenTemplate(token: ModificationToken): Template {
+  const className =
+    token.type === "removed"
+      ? classes.tokenRemoved
+      : token.type === "added-priced"
+        ? classes.tokenPriced
+        : classes.tokenFree;
+
+  const prefix = token.type === "removed" ? "-" : token.type === "added-priced" ? "+" : "";
+
+  return html`<span class="${classes.token} ${className}">${prefix}${token.name}</span>`;
+}
+
 /**
  * Order item template - displays the current order item
  */
 function orderItemTemplate(order: OrderMenuItem | undefined): Template {
   if (!order) return html`<div class="${classes.orderItem}" style="display: none"></div>`;
 
+  const hasModifiers = order.modifiers && order.modifiers.length > 0;
+  const tokens = hasModifiers ? generateModificationTokens(order.modifiers) : [];
+  const modifierPrice = order.modifiers?.reduce((sum, mod) => sum + mod.price * mod.quantity, 0) || 0;
+
   return html`
     <div class="${classes.orderItem}">
       <div class="${classes.orderContent}">
-        <div class="${classes.orderInfo}">
-          ${order.menuItem.icon ? html`<span class="${classes.orderIcon}">${order.menuItem.icon}</span>` : ""}
-          <div class="${classes.orderDetails}">
-            <h3 class="${classes.orderName}">${order.menuItem.name}</h3>
-            ${order.menuItem.description
+        <div class="${classes.orderHeader}">
+          <h3 class="${classes.orderName}">${order.menuItem.name}</h3>
+          <span class="${classes.price}">$${(order.menuItem.price ?? 0).toFixed(2)}</span>
+        </div>
+
+        <div class="${classes.orderSecondLine}">
+          ${tokens.length > 0
+            ? html`
+                <div class="${classes.tokensWrapper}">
+                  <div class="${classes.tokens}">${tokens.map((token) => modificationTokenTemplate(token))}</div>
+                  ${modifierPrice > 0
+                    ? html`<span class="${classes.modifierPrice}">+$${modifierPrice.toFixed(2)}</span>`
+                    : ""}
+                </div>
+              `
+            : order.menuItem.description
               ? html`<p class="${classes.orderDescription}">${order.menuItem.description}</p>`
               : ""}
-          </div>
         </div>
-        <span class="${classes.price}">$${order.total.toFixed(2)}</span>
       </div>
     </div>
   `;
@@ -134,12 +201,20 @@ export function init(container: HTMLElement, subMenu?: SubMenu, order?: OrderMen
 /**
  * Update menu content
  */
-export function update(container: HTMLElement, event: DataChange<MenuPageData>) {
+export function update(container: HTMLElement, event: DataChange<MenuPageData>, data: MenuPageData) {
   // Handle order updates
-  if (event.order?.menuItem && "price" in event.order.menuItem) {
-    const priceElement = container.querySelector(`.${classes.orderItem} .${classes.price}`);
-    if (priceElement && typeof event.order.menuItem.price === "number") {
-      priceElement.textContent = `$${event.order.menuItem.price.toFixed(2)}`;
+  if (event.order) {
+    // If modifiers changed, re-render the entire order item
+    if (event.order.modifiers) {
+      replaceElements(container, `.${classes.orderItem}`, orderItemTemplate(data.order));
+    } else {
+      // Update total price if changed
+      if (event.order.menuItem?.price !== undefined) {
+        const priceElement = container.querySelector(`.${classes.orderItem} .${classes.price}`);
+        if (priceElement) {
+          priceElement.textContent = `$${event.order.menuItem.price.toFixed(2)}`;
+        }
+      }
     }
   }
 
@@ -167,12 +242,21 @@ export const classes = {
   groupItems: "menu-content-group-items",
   orderItem: "menu-content-order-item",
   orderContent: "menu-content-order-content",
+  orderHeader: "menu-content-order-header",
   orderInfo: "menu-content-order-info",
   orderIcon: "menu-content-order-icon",
   orderDetails: "menu-content-order-details",
   orderName: "menu-content-order-name",
   orderDescription: "menu-content-order-description",
+  orderSecondLine: "menu-content-order-second-line",
   price: "menu-content-price",
+  tokensWrapper: "menu-content-tokens-wrapper",
+  tokens: "menu-content-tokens",
+  token: "menu-content-token",
+  tokenRemoved: "menu-content-token-removed",
+  tokenPriced: "menu-content-token-priced",
+  tokenFree: "menu-content-token-free",
+  modifierPrice: "menu-content-modifier-price",
 } as const;
 
 // Export for backward compatibility and selector usage in menu-page
