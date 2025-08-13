@@ -8,6 +8,7 @@
 import { addEventHandler, html, Template } from "@/lib/html-template";
 import { isSaleItem } from "@/types";
 import { NavStackItem, getRouter } from "@/pages/app-router";
+import { Context } from "@/lib/context";
 import * as MenuContentUI from "@/components/menu-content";
 import * as AppHeader from "@/components/app-header";
 import * as AppBottomBar from "@/components/app-bottom-bar";
@@ -20,12 +21,12 @@ import { VARIANT_SELECT_EVENT } from "@/components/variant";
 import { ADD_TO_ORDER_EVENT, VIEW_ORDER_EVENT } from "@/components/app-bottom-bar";
 
 // Template function - pure rendering with data
-export function template(displayMenu: DisplayMenu): Template {
+export function template(displayMenu: DisplayMenu, context?: Context): Template {
   return html`
     <div class="${layoutStyles.pageContainer}">
-      <header class="${layoutStyles.header}">${AppHeader.template()}</header>
-      <main class="${layoutStyles.content}">${MenuContentUI.template(displayMenu)}</main>
-      <div class="${layoutStyles.bottomBar}">${AppBottomBar.template(displayMenu.modifierMenu ? "add" : "view")}</div>
+      <header class="${layoutStyles.header}">${AppHeader.template({}, context)}</header>
+      <main class="${layoutStyles.content}">${MenuContentUI.template(displayMenu, context)}</main>
+      <div class="${layoutStyles.bottomBar}">${AppBottomBar.template(displayMenu.modifierMenu ? "add" : "view", context)}</div>
     </div>
   `;
 }
@@ -50,34 +51,34 @@ function toContext(navItem?: NavStackItem) {
 }
 
 // Hydrate function - attaches event handlers and loads session data
-export function hydrate(container: Element, displayMenu: DisplayMenu) {
+export function hydrate(container: Element, displayMenu: DisplayMenu, context?: Context) {
   const page = container.querySelector(`.${layoutStyles.pageContainer}`) as HTMLElement;
   if (!page) return;
 
   // Hydrate header for language switching
   const header = page.querySelector(`.${layoutStyles.header}`) as HTMLElement;
   if (header) {
-    AppHeader.hydrate(header);
+    AppHeader.hydrate(header, context);
   }
 
   const router = getRouter();
   const navItem = router.truncateStack(displayMenu.id);
-  const context = toContext(navItem);
-  MenuContentUI.init(page, context.menuItem?.subMenu, context.order);
+  const navContext = toContext(navItem);
+  MenuContentUI.init(page, navContext.menuItem?.subMenu, navContext.order, context);
 
   const bottomBar = page.querySelector(`.${layoutStyles.bottomBar}`) as HTMLElement;
   if (bottomBar) {
-    if (context.order) {
+    if (navContext.order) {
       AppBottomBar.update(bottomBar, {
-        quantity: context.order.quantity,
-        total: context.order.total,
-      });
+        quantity: navContext.order.quantity,
+        total: navContext.order.total,
+      }, context);
     } else {
       const mainOrder = getOrder();
       AppBottomBar.update(bottomBar, {
         itemCount: mainOrder.itemIds.length,
         total: mainOrder.total,
-      });
+      }, context);
     }
   }
 
@@ -85,14 +86,14 @@ export function hydrate(container: Element, displayMenu: DisplayMenu) {
   const model = new MenuModel();
   function runUpdate(stmt: Update<MenuPageData>) {
     const result = model.update(stmt);
-    update(page, result, model.data);
+    update(page, result, model.data, context);
   }
 
   let changes: UpdateResult<MenuPageData> | undefined = model.setMenu(displayMenu);
-  if (context.order) {
-    changes = model.update({ order: [context.order] }, changes);
+  if (navContext.order) {
+    changes = model.update({ order: [navContext.order] }, changes);
   }
-  update(page, changes, model.data);
+  update(page, changes, model.data, context);
 
   addEventHandler(page, VARIANT_SELECT_EVENT, (data) => {
     runUpdate({ variants: { [data.variantGroupId]: { selectedId: data.variantId } } });
@@ -150,18 +151,18 @@ export function hydrate(container: Element, displayMenu: DisplayMenu) {
   });
 }
 
-function update(page: Element, event: DataChange<MenuPageData> | undefined, data: MenuPageData) {
+function update(page: Element, event: DataChange<MenuPageData> | undefined, data: MenuPageData, context?: Context) {
   if (!event) return;
 
   const content = page.querySelector(`.${MenuContentUI.menuContainer}`) as HTMLElement;
   if (content) {
-    MenuContentUI.update(content, event, data);
+    MenuContentUI.update(content, event, data, context);
   }
 
   if (event.order && "total" in event.order) {
     const bottomBar = page.querySelector(`.${layoutStyles.bottomBar}`) as HTMLElement;
     if (bottomBar) {
-      AppBottomBar.update(bottomBar, { total: event.order.total });
+      AppBottomBar.update(bottomBar, { total: event.order.total }, context);
     }
   }
 }

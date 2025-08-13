@@ -5,6 +5,7 @@
 
 import './app-menu.css';
 import { html, Template } from '@/lib/html-template';
+import { Context, commonTranslations } from '@/lib/context';
 import { 
   getCurrentLanguage, 
   getAvailableLanguages, 
@@ -28,18 +29,24 @@ export interface AppMenuData {
 /**
  * App menu template
  */
-export function template(data: AppMenuData = {}): Template {
-  const { isOpen = false } = data;
+export function template(context?: Context): Template {
+  const isOpen = false; // Default state
   const currentLang = getCurrentLanguage();
   const currentTheme = getCurrentTheme();
   const languages = getAvailableLanguages();
   const themes: Theme[] = ['light', 'dark', 'system'];
   
+  // Translation functions
+  const settingsText = () => commonTranslations.settings(context);
+  const languageText = () => commonTranslations.language(context);
+  const themeText = () => commonTranslations.theme(context);
+  const aboutText = () => commonTranslations.about(context);
+  
   return html`
     <div class="${classes.overlay} ${isOpen ? classes.overlayOpen : ''}" data-action="close-menu"></div>
     <div class="${classes.drawer} ${isOpen ? classes.drawerOpen : ''}" data-state="${isOpen ? 'open' : 'closed'}">
       <div class="${classes.header}">
-        <h2 class="${classes.title}">Settings</h2>
+        <h2 class="${classes.title}">${settingsText()}</h2>
         <button class="${classes.closeButton}" data-action="close-menu">
           <span class="material-icons">close</span>
         </button>
@@ -50,7 +57,7 @@ export function template(data: AppMenuData = {}): Template {
         <div class="${classes.section}">
           <h3 class="${classes.sectionTitle}">
             <span class="material-icons ${classes.sectionIcon}">language</span>
-            Language
+            ${languageText()}
           </h3>
           <div class="${classes.optionGroup}">
             ${languages.map(lang => html`
@@ -73,7 +80,7 @@ export function template(data: AppMenuData = {}): Template {
         <div class="${classes.section}">
           <h3 class="${classes.sectionTitle}">
             <span class="material-icons ${classes.sectionIcon}">palette</span>
-            Theme
+            ${themeText()}
           </h3>
           <div class="${classes.optionGroup}">
             ${themes.map(theme => html`
@@ -83,7 +90,7 @@ export function template(data: AppMenuData = {}): Template {
                 data-theme="${theme}"
               >
                 <span class="material-icons ${classes.optionIcon}">${getThemeIcon(theme)}</span>
-                <span class="${classes.optionLabel}">${getThemeName(theme)}</span>
+                <span class="${classes.optionLabel}">${getThemeName(theme, context)}</span>
                 ${theme === currentTheme ? html`
                   <span class="material-icons ${classes.optionCheck}">check</span>
                 ` : ''}
@@ -96,7 +103,7 @@ export function template(data: AppMenuData = {}): Template {
         <div class="${classes.section}">
           <h3 class="${classes.sectionTitle}">
             <span class="material-icons ${classes.sectionIcon}">info</span>
-            About
+            ${aboutText()}
           </h3>
           <div class="${classes.about}">
             <p>NRP POS System</p>
@@ -178,7 +185,7 @@ export function toggle(container: Element): void {
 /**
  * Hydrate app menu with event handlers
  */
-export function hydrate(container: Element): void {
+export function hydrate(container: Element, _context?: Context): void {
   // Close menu handlers
   container.querySelectorAll('[data-action="close-menu"]').forEach(element => {
     element.addEventListener('click', () => close(container));

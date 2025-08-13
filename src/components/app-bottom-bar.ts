@@ -7,6 +7,7 @@
 
 import "./app-bottom-bar.css";
 import { html, onClick, Template, render } from "@/lib/html-template";
+import { Context, commonTranslations, formatPrice } from "@/lib/context";
 
 // Event types
 export const VIEW_ORDER_EVENT = "view-order-event";
@@ -39,29 +40,35 @@ type BottomBarConfig = {
 };
 
 // Configuration for each mode
-const CONFIGS: Record<BottomBarMode, BottomBarConfig> = {
-  view: {
-    left: { field: "itemCount", label: "Items" },
-    action: { label: "View Order", onClick: VIEW_ORDER_EVENT },
-    right: { field: "total", label: "Total" },
-  },
-  add: {
-    left: { field: "quantity", label: "Quantity" },
-    action: { label: "Add to Order", onClick: ADD_TO_ORDER_EVENT },
-    right: { field: "total", label: "Total" },
-  },
-  send: {
-    left: { field: "itemCount", label: "Items" },
-    action: { label: "Place Order", onClick: SEND_ORDER_EVENT },
-    right: { field: "total", label: "Total" },
-  },
-};
+function getConfigs(context?: Context): Record<BottomBarMode, BottomBarConfig> {
+  return {
+    view: {
+      left: { field: "itemCount", label: commonTranslations.items(context) },
+      action: { label: commonTranslations.viewOrder(context), onClick: VIEW_ORDER_EVENT },
+      right: { field: "total", label: commonTranslations.total(context) },
+    },
+    add: {
+      left: { field: "quantity", label: commonTranslations.quantity(context) },
+      action: { label: commonTranslations.addToOrder(context), onClick: ADD_TO_ORDER_EVENT },
+      right: { field: "total", label: commonTranslations.total(context) },
+    },
+    send: {
+      left: { field: "itemCount", label: commonTranslations.items(context) },
+      action: { label: commonTranslations.sendOrder(context), onClick: SEND_ORDER_EVENT },
+      right: { field: "total", label: commonTranslations.total(context) },
+    },
+  };
+}
 
 /**
  * Bottom bar template - Material Design 3 Bottom App Bar
  */
-export function template(mode: BottomBarMode = "view"): Template {
-  const config = CONFIGS[mode];
+export function template(mode: BottomBarMode = "view", context?: Context): Template {
+  const configs = getConfigs(context);
+  const config = configs[mode];
+  
+  // Default display value for price field
+  const defaultPrice = context ? formatPrice(0, context.currency) : "$0.00";
 
   return html`
     <div class="${classes.infoSection}" data-bottom-bar-field="${config.left.field}">
@@ -74,38 +81,42 @@ export function template(mode: BottomBarMode = "view"): Template {
     </button>
 
     <div class="${classes.infoSection}" data-bottom-bar-field="${config.right.field}">
-      <div class="${classes.infoValue}">$0.00</div>
+      <div class="${classes.infoValue}">${defaultPrice}</div>
       <div class="${classes.infoLabel}">${config.right.label}</div>
     </div>
   `;
 }
 
 // Field formatters for consistent value formatting
-const FIELD_FORMATTERS: Record<keyof Omit<BottomBarData, "mode">, (value: any) => string> = {
-  itemCount: (value) => String(value || 0),
-  quantity: (value) => String(value || 0),
-  total: (value) => `$${(value || 0).toFixed(2)}`,
-};
+function getFieldFormatters(context?: Context): Record<keyof Omit<BottomBarData, "mode">, (value: any) => string> {
+  return {
+    itemCount: (value) => String(value || 0),
+    quantity: (value) => String(value || 0),
+    total: (value) => context ? formatPrice(value || 0, context.currency) : `$${(value || 0).toFixed(2)}`,
+  };
+}
 
 /**
  * Update the bottom bar with partial data
  * @param container The bottom bar container element
  * @param updates Partial updates to apply
+ * @param context Runtime context with language and currency
  */
-export function update(container: HTMLElement, updates: Partial<BottomBarData>): void {
+export function update(container: HTMLElement, updates: Partial<BottomBarData>, context?: Context): void {
   const { mode, ...rest } = updates;
   // If mode changed, re-render with empty values
   if (mode !== undefined) {
-    render(template(mode), container);
+    render(template(mode, context), container);
   }
 
   // Update individual fields
+  const formatters = getFieldFormatters(context);
   for (const [field, value] of Object.entries(rest)) {
     const element = container.querySelector(`[data-bottom-bar-field="${field}"]`);
     if (element) {
       const valueElement = element.querySelector(`.${classes.infoValue}`);
-      if (valueElement && field in FIELD_FORMATTERS) {
-        valueElement.textContent = FIELD_FORMATTERS[field as keyof typeof FIELD_FORMATTERS](value);
+      if (valueElement && field in formatters) {
+        valueElement.textContent = formatters[field as keyof typeof formatters](value);
       }
     }
   }

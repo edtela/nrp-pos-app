@@ -5,7 +5,7 @@
  * Single-language design - separate files generated for each language.
  */
 
-import { Cells } from "./display";
+import { Cells } from "./display.js";
 
 /**
  * Menu group options

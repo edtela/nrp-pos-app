@@ -7,6 +7,7 @@
 
 import { html, addEventHandler, STATE_UPDATE_EVENT } from "@/lib/html-template";
 import { router } from "@/pages/app-router";
+import { Context } from "@/lib/context";
 import * as OrderContentUI from "@/components/order-content";
 import * as OrderItemUI from "@/components/order-item";
 import * as AppHeader from "@/components/app-header";
@@ -17,28 +18,28 @@ import { orderModel, OrderPageData } from "@/model/order-model";
 import { UpdateResult } from "@/lib/data-model-types";
 
 // Template function - accepts data for static generation
-export function template(data: OrderPageData) {
+export function template(data: OrderPageData, context?: Context) {
   return html`
     <div class="${layoutStyles.pageContainer}">
       <header class="${layoutStyles.header}">
-        ${AppHeader.template({ showBack: true, searchPlaceholder: "Search Order" })}
+        ${AppHeader.template({ showBack: true }, context)}
       </header>
       <main class="${layoutStyles.content}">
-        ${OrderContentUI.template(data)}
+        ${OrderContentUI.template(data, context)}
       </main>
       <div class="${layoutStyles.bottomBar}">
-        ${AppBottomBar.template("send")}
+        ${AppBottomBar.template("send", context)}
       </div>
     </div>
   `;
 }
 
 // Hydrate function - loads session data and attaches event handlers
-export function hydrate(container: Element) {
+export function hydrate(container: Element, _data: OrderPageData, context?: Context) {
   // Hydrate header for language switching
   const header = container.querySelector(`.${layoutStyles.header}`) as HTMLElement;
   if (header) {
-    AppHeader.hydrate(header);
+    AppHeader.hydrate(header, context);
   }
 
   // Load session data
@@ -49,7 +50,7 @@ export function hydrate(container: Element) {
   if (sessionData.order.itemIds.length > 0) {
     const contentContainer = container.querySelector(`.${layoutStyles.content}`) as HTMLElement;
     if (contentContainer) {
-      OrderContentUI.init(contentContainer, sessionData);
+      OrderContentUI.init(contentContainer, sessionData, context);
     }
 
     // Update bottom bar with actual counts
@@ -58,7 +59,7 @@ export function hydrate(container: Element) {
       AppBottomBar.update(bottomBar, {
         itemCount: sessionData.order.itemIds.length,
         total: sessionData.order.total
-      } as Partial<BottomBarData>);
+      } as Partial<BottomBarData>, context);
     }
   }
 
@@ -66,7 +67,7 @@ export function hydrate(container: Element) {
   container.addEventListener(`app:${STATE_UPDATE_EVENT}`, (e: Event) => {
     const customEvent = e as CustomEvent;
     const changes = model.update(customEvent.detail);
-    update(container, changes, model.getData());
+    update(container, changes, model.getData(), context);
   });
 
   // Handle increase quantity event
@@ -76,7 +77,7 @@ export function hydrate(container: Element) {
       const changes = model.update({
         items: { [itemId]: { item: { quantity: (q) => q + 1 } } },
       });
-      update(container, changes, model.getData());
+      update(container, changes, model.getData(), context);
     }
   });
 
@@ -87,7 +88,7 @@ export function hydrate(container: Element) {
       const changes = model.update({
         items: { [itemId]: { item: { quantity: (q) => Math.max(1, q - 1) } } },
       });
-      update(container, changes, model.getData());
+      update(container, changes, model.getData(), context);
     }
   });
 
@@ -107,17 +108,17 @@ export function hydrate(container: Element) {
   addEventHandler(container, OrderItemUI.TOGGLE_ITEM_EVENT, (data) => {
     const stmt = { expandedId: (current?: string) => (current === data.itemId ? undefined : data.itemId) };
     const changes = model.update(stmt);
-    update(container, changes, model.getData());
+    update(container, changes, model.getData(), context);
   });
 }
 
-function update(container: Element, changes: UpdateResult<OrderPageData> | undefined, data: OrderPageData) {
+function update(container: Element, changes: UpdateResult<OrderPageData> | undefined, data: OrderPageData, context?: Context) {
   if (!changes) return;
 
   requestAnimationFrame(() => {
     const contentContainer = container.querySelector(`.${layoutStyles.content}`) as HTMLElement;
     if (contentContainer) {
-      OrderContentUI.update(contentContainer, changes, data);
+      OrderContentUI.update(contentContainer, changes, data, context);
     }
 
     if (changes.order) {
@@ -127,7 +128,7 @@ function update(container: Element, changes: UpdateResult<OrderPageData> | undef
         if (Array.isArray(changes.order.itemIds)) {
           stmt.itemCount = changes.order.itemIds.length;
         }
-        AppBottomBar.update(bottomBar, stmt);
+        AppBottomBar.update(bottomBar, stmt, context);
       }
     }
   });

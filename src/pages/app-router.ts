@@ -15,6 +15,7 @@ import { createStore } from "@/lib/storage";
 import { PageStaticData } from "@/types/page-data";
 import { render } from "@/lib/html-template";
 import { getCurrentLanguage, parseLanguageFromUrl, buildLanguageUrl } from "@/lib/language";
+import { createContext, Context } from "@/lib/context";
 import * as MenuPage from "./menu-page";
 import * as OrderPage from "./order-page";
 
@@ -266,13 +267,23 @@ class AppRouter {
   }
 
   /**
+   * Get context for current environment
+   */
+  getContext(): Context {
+    const lang = getCurrentLanguage();
+    return createContext(lang);
+  }
+
+  /**
    * Render a page with static data
    */
   renderPage(container: Element, pageData: PageStaticData): void {
+    const context = this.getContext();
+    
     if (pageData.type === "order") {
-      render(OrderPage.template(pageData.data), container);
+      render(OrderPage.template(pageData.data, context), container);
     } else {
-      render(MenuPage.template(pageData.data), container);
+      render(MenuPage.template(pageData.data, context), container);
     }
   }
 
@@ -280,10 +291,12 @@ class AppRouter {
    * Hydrate a page with event handlers and session data
    */
   hydratePage(container: Element, pageData: PageStaticData): void {
+    const context = this.getContext();
+    
     if (pageData.type === "order") {
-      OrderPage.hydrate(container);
+      OrderPage.hydrate(container, pageData.data, context);
     } else {
-      MenuPage.hydrate(container, pageData.data);
+      MenuPage.hydrate(container, pageData.data, context);
     }
   }
 }

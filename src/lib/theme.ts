@@ -4,6 +4,7 @@
  */
 
 import { createStore } from "./storage";
+import { Context, commonTranslations } from "./context";
 
 export type Theme = "light" | "dark" | "system";
 
@@ -104,13 +105,17 @@ export function initTheme(): void {
 /**
  * Get theme display name
  */
-export function getThemeName(theme: Theme): string {
-  const names: Record<Theme, string> = {
-    light: "Light",
-    dark: "Dark",
-    system: "System"
-  };
-  return names[theme] || theme;
+export function getThemeName(theme: Theme, context?: Context): string {
+  switch (theme) {
+    case 'light':
+      return commonTranslations.lightTheme(context);
+    case 'dark':
+      return commonTranslations.darkTheme(context);
+    case 'system':
+      return commonTranslations.systemTheme(context);
+    default:
+      return theme;
+  }
 }
 
 /**

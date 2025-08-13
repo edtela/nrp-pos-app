@@ -7,6 +7,7 @@
 
 import "./menu-content.css";
 import { dataAttr, html, Template, replaceElements } from "@/lib/html-template";
+import { Context } from "@/lib/context";
 import { ItemGroup, Menu, MenuGroup, NestedGroup, DataCell, MenuItem, SubMenu } from "@/types";
 import { headerCells, DataCellRenderer } from "./menu-header";
 import * as MenuItemUI from "./menu-item";
@@ -70,7 +71,7 @@ function modificationTokenTemplate(token: ModificationToken): Template {
 /**
  * Order item template - displays the current order item
  */
-function orderItemTemplate(order: OrderMenuItem | undefined): Template {
+function orderItemTemplate(order: OrderMenuItem | undefined, _context?: Context): Template {
   if (!order) return html`<div class="${classes.orderItem}" style="display: none"></div>`;
 
   const hasModifiers = order.modifiers && order.modifiers.length > 0;
@@ -107,7 +108,7 @@ function orderItemTemplate(order: OrderMenuItem | undefined): Template {
  * DataCell renderer for menu content
  * Handles variant selection and other data-driven cells
  */
-function createDataCellRenderer(menu: Menu | DisplayMenu): DataCellRenderer {
+function createDataCellRenderer(menu: Menu | DisplayMenu, _context?: Context): DataCellRenderer {
   return (cell: DataCell): Template => {
     if (cell.type === "variant-selection" && typeof cell.data === "string") {
       // Find the variant group by ID
@@ -151,18 +152,18 @@ function menuGroupTemplate<T>(group: MenuGroup<T>, dataRenderer: DataCellRendere
 /**
  * Main template for menu content
  */
-export function template(data: (Menu | DisplayMenu) & { order?: OrderMenuItem }): Template {
-  const dataRenderer = createDataCellRenderer(data);
+export function template(data: (Menu | DisplayMenu) & { order?: OrderMenuItem }, context?: Context): Template {
+  const dataRenderer = createDataCellRenderer(data, context);
   return html`
     <div class="${classes.container}">
-      ${orderItemTemplate(data.order)} ${menuGroupTemplate(data.content as MenuGroup<any>, dataRenderer)}
+      ${orderItemTemplate(data.order, context)} ${menuGroupTemplate(data.content as MenuGroup<any>, dataRenderer)}
     </div>
   `;
 }
 
-export function init(container: HTMLElement, subMenu?: SubMenu, order?: OrderMenuItem) {
+export function init(container: HTMLElement, subMenu?: SubMenu, order?: OrderMenuItem, context?: Context) {
   if (order) {
-    replaceElements(container, `.${classes.orderItem}`, orderItemTemplate(order));
+    replaceElements(container, `.${classes.orderItem}`, orderItemTemplate(order, context));
   }
 
   if (!subMenu?.included) return;
@@ -199,12 +200,12 @@ export function init(container: HTMLElement, subMenu?: SubMenu, order?: OrderMen
 /**
  * Update menu content
  */
-export function update(container: HTMLElement, event: DataChange<MenuPageData>, data: MenuPageData) {
+export function update(container: HTMLElement, event: DataChange<MenuPageData>, data: MenuPageData, context?: Context) {
   // Handle order updates
   if (event.order) {
     // If modifiers changed, re-render the entire order item
     if (event.order.modifiers) {
-      replaceElements(container, `.${classes.orderItem}`, orderItemTemplate(data.order));
+      replaceElements(container, `.${classes.orderItem}`, orderItemTemplate(data.order, context));
     } else {
       // Update price if changed
       if (event.order.menuItem?.price !== undefined) {

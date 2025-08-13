@@ -6,6 +6,7 @@
  */
 
 import { html, Template, render } from "@/lib/html-template";
+import { Context, commonTranslations } from "@/lib/context";
 import { OrderPageData } from "@/model/order-model";
 import * as OrderItemUI from "./order-item";
 import { styles as itemListStyles } from "./item-list";
@@ -15,13 +16,18 @@ import { typeChange } from "@/lib/data-model";
 /**
  * Empty order state template
  */
-function emptyOrderTemplate(): Template {
+function emptyOrderTemplate(context?: Context): Template {
+  // Translation functions
+  const emptyTitle = () => commonTranslations.yourOrderIsEmpty(context);
+  const emptyMessage = () => commonTranslations.addItemsToGetStarted(context);
+  const browseButton = () => commonTranslations.browseMenu(context);
+  
   return html`
     <div class="${itemListStyles.emptyContainer}">
       <div class="${itemListStyles.emptyIcon}">🛒</div>
-      <h2 class="${itemListStyles.emptyTitle}">Your order is empty</h2>
-      <p class="${itemListStyles.emptyMessage}">Add some delicious items to get started!</p>
-      <button class="${itemListStyles.emptyAction}">Browse Menu</button>
+      <h2 class="${itemListStyles.emptyTitle}">${emptyTitle()}</h2>
+      <p class="${itemListStyles.emptyMessage}">${emptyMessage()}</p>
+      <button class="${itemListStyles.emptyAction}">${browseButton()}</button>
     </div>
   `;
 }
@@ -45,11 +51,11 @@ function orderItemsTemplate(data: OrderPageData): Template {
 /**
  * Main template for order content
  */
-export function template(data: OrderPageData): Template {
+export function template(data: OrderPageData, context?: Context): Template {
   const hasItems = data.order.itemIds.length > 0;
 
   return html`
-    <div class="${itemListStyles.container}">${hasItems ? orderItemsTemplate(data) : emptyOrderTemplate()}</div>
+    <div class="${itemListStyles.container}">${hasItems ? orderItemsTemplate(data) : emptyOrderTemplate(context)}</div>
   `;
 }
 
@@ -57,11 +63,11 @@ export function template(data: OrderPageData): Template {
  * Initialize order content with event handlers
  * Returns update function for re-rendering
  */
-export function init(container: HTMLElement, data: OrderPageData) {
-  render(template(data), container);
+export function init(container: HTMLElement, data: OrderPageData, context?: Context) {
+  render(template(data, context), container);
 }
 
-export function update(container: Element, changes: UpdateResult<OrderPageData>, data: OrderPageData) {
+export function update(container: Element, changes: UpdateResult<OrderPageData>, data: OrderPageData, context?: Context) {
   // Update list container if expandedId changed
   if ("expandedId" in changes) {
     const itemsElement = container.querySelector(`.${itemListStyles.items}`);
@@ -79,7 +85,7 @@ export function update(container: Element, changes: UpdateResult<OrderPageData>,
 
   if (hasNewItem) {
     // Re-render everything to maintain proper order
-    render(template(data), container);
+    render(template(data, context), container);
     return;
   }
 

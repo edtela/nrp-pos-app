@@ -7,6 +7,7 @@
 
 import './app-header.css';
 import { html, Template } from '@/lib/html-template';
+import { Context, commonTranslations } from '@/lib/context';
 import * as AppMenu from './app-menu';
 
 /**
@@ -20,8 +21,9 @@ export interface HeaderData {
 /**
  * Header template - Material Design 3 Top App Bar
  */
-export function template(data: HeaderData = {}): Template {
-  const { searchPlaceholder = "Search Menu" } = data;
+export function template(data: HeaderData = {}, context?: Context): Template {
+  // Translation functions
+  const searchPlaceholder = () => data.searchPlaceholder || commonTranslations.searchMenu(context);
   
   return html`
     <div class="${classes.headerContent}">
@@ -34,7 +36,7 @@ export function template(data: HeaderData = {}): Template {
         <input 
           type="text" 
           class="${classes.searchInput}"
-          placeholder="${searchPlaceholder}"
+          placeholder="${searchPlaceholder()}"
         />
       </div>
       
@@ -43,7 +45,7 @@ export function template(data: HeaderData = {}): Template {
       </button>
     </div>
     
-    ${AppMenu.template()}
+    ${AppMenu.template(context)}
   `;
 }
 
@@ -66,7 +68,7 @@ export const styles = classes;
 /**
  * Hydrate header with app menu functionality
  */
-export function hydrate(container: Element): void {
+export function hydrate(container: Element, context?: Context): void {
   // App menu toggle
   const menuButton = container.querySelector('[data-action="toggle-app-menu"]');
   if (menuButton) {
@@ -76,5 +78,5 @@ export function hydrate(container: Element): void {
   }
   
   // Hydrate app menu
-  AppMenu.hydrate(container);
+  AppMenu.hydrate(container, context);
 }
