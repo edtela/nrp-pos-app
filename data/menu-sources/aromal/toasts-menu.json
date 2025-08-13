@@ -1,0 +1,132 @@
+{
+  "id": "toasts-menu",
+  "name": {
+    "sq": "Menu Tost",
+    "en": "Toasts Menu",
+    "it": "Menu Toast"
+  },
+  "content": {
+    "groups": [
+      {
+        "header": {
+          "text": "Yoast",
+          "classes": ["menu-items-title"]
+        },
+        "items": [
+          {
+            "id": "walnut-yoast",
+            "name": {
+              "sq": "Arre",
+              "en": "Walnut",
+              "it": "Noci"
+            },
+            "description": {
+              "sq": "kos aromal, gjalpë arre, boronica, fara chia, mjaltë",
+              "en": "aromal yogurt, walnut butter, blueberries, chia seeds, honey",
+              "it": "yogurt aromal, burro di noci, mirtilli, semi di chia, miele"
+            },
+            "price": 300
+          },
+          {
+            "id": "peanut-yoast",
+            "name": {
+              "sq": "Kikiriku",
+              "en": "Peanut",
+              "it": "Arachidi"
+            },
+            "description": {
+              "sq": "kos aromal, gjalpë kikiriku, banane, fara liri, kanellë, mjaltë",
+              "en": "aromal yogurt, peanut butter, banana, flax seeds, cinnamon, honey",
+              "it": "yogurt aromal, burro di arachidi, banana, semi di lino, cannella, miele"
+            },
+            "price": 300
+          },
+          {
+            "id": "berries-yoast",
+            "name": {
+              "sq": "Fruta Pylli",
+              "en": "Berries",
+              "it": "Frutti di Bosco"
+            },
+            "description": {
+              "sq": "kos aromal, reçel frutash, granola",
+              "en": "aromal yogurt, berries jam, granola",
+              "it": "yogurt aromal, marmellata di frutti di bosco, granola"
+            },
+            "price": 300
+          },
+          {
+            "id": "prosciutto-yoast",
+            "name": {
+              "sq": "Proshutë",
+              "en": "Prosciutto",
+              "it": "Prosciutto"
+            },
+            "description": {
+              "sq": "kos aromal, djathë gouda, pomadorini, proshutë pule, zaatar, vaj ulliri",
+              "en": "aromal yogurt, gouda cheese, pomadorini, chicken ham, zaatar, evoo",
+              "it": "yogurt aromal, gouda, pomodorini, prosciutto di pollo, zaatar, olio evo"
+            },
+            "price": 300
+          }
+        ]
+      },
+      {
+        "header": {
+          "text": "Avotoast",
+          "classes": ["menu-items-title"]
+        },
+        "items": [
+          {
+            "id": "dried-pomodori",
+            "name": {
+              "sq": "Domate të Thata",
+              "en": "Dried Pomodori",
+              "it": "Pomodori Secchi"
+            },
+            "description": {
+              "sq": "avokado, djathë feta, domate të thata, fara lulediellit",
+              "en": "avocado, feta cheese, dried tomatoes, sunflower seeds",
+              "it": "avocado, feta, pomodori secchi, semi di girasole"
+            },
+            "price": 350
+          },
+          {
+            "id": "porcini-avotoast",
+            "name": "Porcini",
+            "description": {
+              "sq": "avokado, porcini të thata, pinjol",
+              "en": "avocado, dried porcini, pine nuts",
+              "it": "avocado, porcini secchi, pinoli"
+            },
+            "price": 350
+          },
+          {
+            "id": "avocado-avotoast",
+            "name": "Avocado",
+            "description": {
+              "sq": "avokado, pomadorini, misër, fara kungulli, majdanoz, limon, vaj ulliri",
+              "en": "avocado, pomadorini, corn, pumpkin seeds, parsley, lemon, evoo",
+              "it": "avocado, pomodorini, mais, semi di zucca, prezzemolo, limone, olio evo"
+            },
+            "price": 350
+          },
+          {
+            "id": "premium-egg",
+            "name": {
+              "sq": "Vezë Premium",
+              "en": "Premium Egg",
+              "it": "Uovo Premium"
+            },
+            "description": {
+              "sq": "avokado, proshutë pule, vezë e zier, fara chia, vaj ulliri",
+              "en": "avocado, chicken ham, boiled egg, chia seeds, evoo",
+              "it": "avocado, prosciutto di pollo, uovo sodo, semi di chia, olio evo"
+            },
+            "price": 400
+          }
+        ]
+      }
+    ]
+  }
+}

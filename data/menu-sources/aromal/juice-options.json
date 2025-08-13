@@ -1,0 +1,287 @@
+{
+  "id": "juice-options",
+  "name": {
+    "sq": "Opsione Lëngu",
+    "en": "Juice Options",
+    "it": "Opzioni Succo"
+  },
+  "modifierMenu": true,
+  "content": {
+    "groups": [
+      {
+        "header": {
+          "text": {
+            "sq": "Baza Lëngjesh",
+            "en": "Juice Bases",
+            "it": "Base Succhi"
+          },
+          "classes": ["menu-items-title"]
+        },
+        "items": [
+          {
+            "id": "apple",
+            "name": {
+              "sq": "Mollë",
+              "en": "Apple",
+              "it": "Mela"
+            },
+            "price": 0
+          },
+          {
+            "id": "orange",
+            "name": {
+              "sq": "Portokall",
+              "en": "Orange",
+              "it": "Arancia"
+            },
+            "price": 0
+          },
+          {
+            "id": "carrot",
+            "name": {
+              "sq": "Karrota",
+              "en": "Carrot",
+              "it": "Carota"
+            },
+            "price": 0
+          },
+          {
+            "id": "celery",
+            "name": {
+              "sq": "Selino",
+              "en": "Celery",
+              "it": "Sedano"
+            },
+            "price": 0
+          },
+          {
+            "id": "pineapple",
+            "name": {
+              "sq": "Ananas",
+              "en": "Pineapple",
+              "it": "Ananas"
+            },
+            "price": 0
+          }
+        ]
+      },
+      {
+        "header": {
+          "text": {
+            "sq": "Shto (+50 Lekë)",
+            "en": "Add-Ons (+50 Lekë)",
+            "it": "Aggiunte (+50 Lekë)"
+          },
+          "classes": ["menu-items-title"]
+        },
+        "items": [
+          {
+            "id": "add-pineapple",
+            "name": {
+              "sq": "Ananas",
+              "en": "Pineapple",
+              "it": "Ananas"
+            },
+            "price": 50
+          },
+          {
+            "id": "add-grapefruit-lime",
+            "name": {
+              "sq": "Grejpfrut/Lime (1/2)",
+              "en": "Grapefruit/Lime (1/2)",
+              "it": "Pompelmo/Lime (1/2)"
+            },
+            "price": 50
+          },
+          {
+            "id": "add-mango",
+            "name": "Mango",
+            "price": 50
+          },
+          {
+            "id": "add-peach",
+            "name": {
+              "sq": "Pjeshkë",
+              "en": "Peach",
+              "it": "Pesca"
+            },
+            "price": 50
+          },
+          {
+            "id": "add-celery",
+            "name": {
+              "sq": "Selino",
+              "en": "Celery",
+              "it": "Sedano"
+            },
+            "price": 50
+          },
+          {
+            "id": "add-pomegranate",
+            "name": {
+              "sq": "Shegë",
+              "en": "Pomegranate",
+              "it": "Melograno"
+            },
+            "price": 50
+          },
+          {
+            "id": "add-turmeric",
+            "name": {
+              "sq": "Kurkumë",
+              "en": "Turmeric",
+              "it": "Curcuma"
+            },
+            "price": 50
+          }
+        ]
+      },
+      {
+        "header": {
+          "text": {
+            "sq": "Shto (+40 Lekë)",
+            "en": "Add-Ons (+40 Lekë)",
+            "it": "Aggiunte (+40 Lekë)"
+          },
+          "classes": ["menu-items-title"]
+        },
+        "items": [
+          {
+            "id": "add-pear",
+            "name": {
+              "sq": "Dardhë",
+              "en": "Pear",
+              "it": "Pera"
+            },
+            "price": 40
+          },
+          {
+            "id": "add-cucumber",
+            "name": {
+              "sq": "Kastravec",
+              "en": "Cucumber",
+              "it": "Cetriolo"
+            },
+            "price": 40
+          },
+          {
+            "id": "add-kiwi",
+            "name": "Kiwi",
+            "price": 40
+          },
+          {
+            "id": "add-melon",
+            "name": {
+              "sq": "Pjepër",
+              "en": "Melon",
+              "it": "Melone"
+            },
+            "price": 40
+          },
+          {
+            "id": "add-grape",
+            "name": {
+              "sq": "Rrush",
+              "en": "Grape",
+              "it": "Uva"
+            },
+            "price": 40
+          },
+          {
+            "id": "add-spinach",
+            "name": {
+              "sq": "Spinaq",
+              "en": "Spinach",
+              "it": "Spinaci"
+            },
+            "price": 40
+          }
+        ]
+      },
+      {
+        "header": {
+          "text": {
+            "sq": "Shto (+30 Lekë)",
+            "en": "Add-Ons (+30 Lekë)",
+            "it": "Aggiunte (+30 Lekë)"
+          },
+          "classes": ["menu-items-title"]
+        },
+        "items": [
+          {
+            "id": "add-ginger",
+            "name": {
+              "sq": "Xhinxher",
+              "en": "Ginger",
+              "it": "Zenzero"
+            },
+            "price": 30
+          },
+          {
+            "id": "add-parsley",
+            "name": {
+              "sq": "Majdanoz",
+              "en": "Parsley",
+              "it": "Prezzemolo"
+            },
+            "price": 30
+          },
+          {
+            "id": "add-mint",
+            "name": {
+              "sq": "Mente",
+              "en": "Mint",
+              "it": "Menta"
+            },
+            "price": 30
+          },
+          {
+            "id": "add-carrot",
+            "name": {
+              "sq": "Karrota",
+              "en": "Carrot",
+              "it": "Carota"
+            },
+            "price": 30
+          },
+          {
+            "id": "add-lemon",
+            "name": {
+              "sq": "Limon",
+              "en": "Lemon",
+              "it": "Limone"
+            },
+            "price": 30
+          },
+          {
+            "id": "add-apple",
+            "name": {
+              "sq": "Mollë",
+              "en": "Apple",
+              "it": "Mela"
+            },
+            "price": 30
+          },
+          {
+            "id": "add-beet",
+            "name": {
+              "sq": "Panxhar",
+              "en": "Beet",
+              "it": "Barbabietola"
+            },
+            "price": 30
+          },
+          {
+            "id": "add-orange",
+            "name": {
+              "sq": "Portokall",
+              "en": "Orange",
+              "it": "Arancia"
+            },
+            "price": 30
+          }
+        ]
+      }
+    ]
+  }
+}

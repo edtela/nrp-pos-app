@@ -1,0 +1,235 @@
+{
+  "id": "juice-menu",
+  "name": {
+    "sq": "Menu Lëngjesh",
+    "en": "Juice Menu",
+    "it": "Menu Succhi"
+  },
+  "content": {
+    "groups": [
+      {
+        "header": {
+          "text": {
+            "sq": "Lëngje Klasike",
+            "en": "Classic Juices",
+            "it": "Succhi Classici"
+          },
+          "classes": ["menu-items-title"]
+        },
+        "items": [
+          {
+            "id": "apple-juice",
+            "name": {
+              "sq": "Lëng Molle",
+              "en": "Apple Juice",
+              "it": "Succo di Mela"
+            },
+            "price": 120,
+            "subMenu": {
+              "menuId": "juice-options",
+              "included": [
+                { "itemId": "apple", "display": "none" }
+              ]
+            }
+          },
+          {
+            "id": "orange-juice",
+            "name": {
+              "sq": "Lëng Portokalli",
+              "en": "Orange Juice",
+              "it": "Succo d'Arancia"
+            },
+            "price": 150,
+            "subMenu": {
+              "menuId": "juice-options",
+              "included": [
+                { "itemId": "orange", "display": "none" }
+              ]
+            }
+          },
+          {
+            "id": "carrot-juice",
+            "name": {
+              "sq": "Lëng Karrote",
+              "en": "Carrot Juice",
+              "it": "Succo di Carota"
+            },
+            "price": 200,
+            "subMenu": {
+              "menuId": "juice-options",
+              "included": [
+                { "itemId": "carrot", "display": "none" }
+              ]
+            }
+          },
+          {
+            "id": "celery-juice",
+            "name": {
+              "sq": "Lëng Selino",
+              "en": "Celery Juice",
+              "it": "Succo di Sedano"
+            },
+            "price": 250,
+            "subMenu": {
+              "menuId": "juice-options",
+              "included": [
+                { "itemId": "celery", "display": "none" }
+              ]
+            }
+          },
+          {
+            "id": "pineapple-juice",
+            "name": {
+              "sq": "Lëng Ananasi",
+              "en": "Pineapple Juice",
+              "it": "Succo d'Ananas"
+            },
+            "price": 350,
+            "subMenu": {
+              "menuId": "juice-options",
+              "included": [
+                { "itemId": "pineapple", "display": "none" }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "header": {
+          "text": {
+            "sq": "Përzierje Lëngjesh",
+            "en": "Juice Blends",
+            "it": "Miscele di Succhi"
+          },
+          "classes": ["menu-items-title"]
+        },
+        "items": [
+          {
+            "id": "beet-it",
+            "name": "Beet It",
+            "description": {
+              "sq": "portokall, panxhar, mollë, karrota",
+              "en": "orange, beet, apple, carrot",
+              "it": "arancia, barbabietola, mela, carota"
+            },
+            "price": 250
+          },
+          {
+            "id": "detox",
+            "name": "Detox",
+            "description": {
+              "sq": "mollë, karrota, kastravec, majdanoz, limon, xhinxher",
+              "en": "apple, carrot, cucumber, parsley, lemon, ginger",
+              "it": "mela, carota, cetriolo, prezzemolo, limone, zenzero"
+            },
+            "price": 250
+          },
+          {
+            "id": "greeny",
+            "name": "Greeny",
+            "description": {
+              "sq": "mollë, selino, spinaq, limon, xhinxher",
+              "en": "apple, celery, spinach, lemon, ginger",
+              "it": "mela, sedano, spinaci, limone, zenzero"
+            },
+            "price": 250
+          },
+          {
+            "id": "berry-me",
+            "name": "Berry Me",
+            "description": {
+              "sq": "portokall, boronica, manaferrë, dredhëza/mjedra",
+              "en": "orange, blueberries, blackberries, strawberries/raspberries",
+              "it": "arancia, mirtilli, more, fragole/lamponi"
+            },
+            "price": 250
+          },
+          {
+            "id": "immunity",
+            "name": "Immunity",
+            "description": {
+              "sq": "portokall, grejpfrut, karrota, limon, kurkumë",
+              "en": "orange, grapefruit, carrot, lemon, turmeric",
+              "it": "arancia, pompelmo, carota, limone, curcuma"
+            },
+            "price": 250
+          },
+          {
+            "id": "refresh",
+            "name": "Refresh",
+            "description": {
+              "sq": "portokall, ananas, mango, mollë, mente",
+              "en": "orange, pineapple, mango, apple, mint",
+              "it": "arancia, ananas, mango, mela, menta"
+            },
+            "price": 250
+          }
+        ]
+      },
+      {
+        "header": {
+          "text": {
+            "sq": "Shots / Ujë Detoksi",
+            "en": "Shots / Detox Water",
+            "it": "Shot / Acqua Detox"
+          },
+          "classes": ["menu-items-title"]
+        },
+        "items": [
+          {
+            "id": "detox-water",
+            "name": {
+              "sq": "Ujë Detoksi",
+              "en": "Detox Water",
+              "it": "Acqua Detox"
+            },
+            "description": {
+              "sq": "ujë, kastravec, limon, xhinxher, mente",
+              "en": "water, cucumber, lemon, ginger, mint",
+              "it": "acqua, cetriolo, limone, zenzero, menta"
+            },
+            "price": 100
+          },
+          {
+            "id": "cold-tonic",
+            "name": "Cold Tonic",
+            "description": {
+              "sq": "karrota, kurkumë, limon, xhinxher",
+              "en": "carrot, turmeric, lemon, ginger",
+              "it": "carota, curcuma, limone, zenzero"
+            },
+            "price": 100
+          },
+          {
+            "id": "ginger-turmeric",
+            "name": {
+              "sq": "Xhinxher/Kurkumë",
+              "en": "Ginger/Turmeric",
+              "it": "Zenzero/Curcuma"
+            },
+            "description": {
+              "sq": "xhinxher/kurkumë, limon",
+              "en": "ginger/turmeric, lemon",
+              "it": "zenzero/curcuma, limone"
+            },
+            "price": 100
+          },
+          {
+            "id": "protein-shot",
+            "name": {
+              "sq": "Shot Proteik",
+              "en": "Protein Shot",
+              "it": "Shot Proteico"
+            },
+            "description": {
+              "sq": "qumësht soje, proteina whey, mjaltë",
+              "en": "soya milk, whey protein, honey",
+              "it": "latte di soia, proteine whey, miele"
+            },
+            "price": 150
+          }
+        ]
+      }
+    ]
+  }
+}

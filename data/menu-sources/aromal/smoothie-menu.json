@@ -1,0 +1,213 @@
+{
+  "id": "smoothie-menu",
+  "name": {
+    "sq": "Menu Smoothie",
+    "en": "Smoothie Menu",
+    "it": "Menu Smoothie"
+  },
+  "content": {
+    "groups": [
+      {
+        "header": {
+          "text": {
+            "sq": "Ndërto Smoothien Tënd",
+            "en": "Build Your Own Smoothie",
+            "it": "Costruisci il Tuo Smoothie"
+          },
+          "classes": ["menu-items-title"]
+        },
+        "items": [
+          {
+            "id": "aromal-yogurt-base",
+            "name": {
+              "sq": "Kos Aromal",
+              "en": "Aromal Yogurt",
+              "it": "Yogurt Aromal"
+            },
+            "description": {
+              "sq": "Si bazë",
+              "en": "As base",
+              "it": "Come base"
+            },
+            "price": 150,
+            "subMenu": {
+              "menuId": "smoothie-options",
+              "included": []
+            }
+          },
+          {
+            "id": "milk-base",
+            "name": {
+              "sq": "Qumësht Bajame/Kokosi/Soje/Tërshëre",
+              "en": "Almond/Coconut/Soya/Oat Milk",
+              "it": "Latte di Mandorle/Cocco/Soia/Avena"
+            },
+            "description": {
+              "sq": "Si bazë",
+              "en": "As base",
+              "it": "Come base"
+            },
+            "price": 150,
+            "subMenu": {
+              "menuId": "smoothie-options",
+              "included": []
+            }
+          },
+          {
+            "id": "juice-base",
+            "name": {
+              "sq": "Lëngje/Lëngje të Tjera",
+              "en": "Juices/Other Liquids",
+              "it": "Succhi/Altri Liquidi"
+            },
+            "description": {
+              "sq": "Si bazë",
+              "en": "As base",
+              "it": "Come base"
+            },
+            "price": 150,
+            "subMenu": {
+              "menuId": "smoothie-options",
+              "included": []
+            }
+          }
+        ]
+      },
+      {
+        "header": {
+          "text": {
+            "sq": "Përzierjet e Smoothies",
+            "en": "Smoothie Blends",
+            "it": "Miscele di Smoothie"
+          },
+          "classes": ["menu-items-title"]
+        },
+        "items": [
+          {
+            "id": "goji-c",
+            "name": "Goji C",
+            "description": {
+              "sq": "lëng portokalli, banane, boronica, mango, goji berry",
+              "en": "orange juice, banana, blueberries, mango, goji berry",
+              "it": "succo d'arancia, banana, mirtilli, mango, bacche di goji"
+            },
+            "variants": {
+              "groupId": "smoothie-type",
+              "price": {
+                "smoothie": 300,
+                "bowl": 350
+              }
+            }
+          },
+          {
+            "id": "triple-berry",
+            "name": "Triple Berry",
+            "description": {
+              "sq": "kos aromal, banane, boronica, dredhëza/mjedra, manaferrë",
+              "en": "aromal yogurt, banana, blueberries, strawberries/raspberries, blackberries",
+              "it": "yogurt aromal, banana, mirtilli, fragole/lamponi, more"
+            },
+            "variants": {
+              "groupId": "smoothie-type",
+              "price": {
+                "smoothie": 300,
+                "bowl": 350
+              }
+            }
+          },
+          {
+            "id": "green-muscle",
+            "name": "Green Muscle",
+            "description": {
+              "sq": "qumësht soje, banane, avokado, spinaq, matcha",
+              "en": "soya milk, banana, avocado, spinach, matcha",
+              "it": "latte di soia, banana, avocado, spinaci, matcha"
+            },
+            "variants": {
+              "groupId": "smoothie-type",
+              "price": {
+                "smoothie": 300,
+                "bowl": 350
+              }
+            }
+          },
+          {
+            "id": "protein-punch",
+            "name": "Protein Punch",
+            "description": {
+              "sq": "qumësht tërshëre, banane, fara të përziera, granola, gjalpë kikiriku, proteina whey",
+              "en": "oat milk, banana, mix seeds, granola, peanut butter, whey protein",
+              "it": "latte d'avena, banana, mix di semi, granola, burro di arachidi, proteine whey"
+            },
+            "variants": {
+              "groupId": "smoothie-type",
+              "price": {
+                "smoothie": 300,
+                "bowl": 350
+              }
+            }
+          },
+          {
+            "id": "nutty-date",
+            "name": "Nutty Date",
+            "description": {
+              "sq": "qumësht bajame, banane, gjalpë arre, lajthi, hurma",
+              "en": "almond milk, banana, walnut butter, hazelnuts, dates",
+              "it": "latte di mandorle, banana, burro di noci, nocciole, datteri"
+            },
+            "variants": {
+              "groupId": "smoothie-type",
+              "price": {
+                "smoothie": 300,
+                "bowl": 350
+              }
+            }
+          },
+          {
+            "id": "coco-mango",
+            "name": "Coco Mango",
+            "description": {
+              "sq": "qumësht kokosi, banane, ananas, kivi, mango",
+              "en": "coconut milk, banana, pineapple, kiwi, mango",
+              "it": "latte di cocco, banana, ananas, kiwi, mango"
+            },
+            "variants": {
+              "groupId": "smoothie-type",
+              "price": {
+                "smoothie": 300,
+                "bowl": 350
+              }
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "variants": {
+    "smoothie-type": {
+      "id": "smoothie-type",
+      "name": {
+        "sq": "Lloji",
+        "en": "Type",
+        "it": "Tipo"
+      },
+      "variants": [
+        {
+          "id": "smoothie",
+          "name": "Smoothie",
+          "icon": "🥤"
+        },
+        {
+          "id": "bowl",
+          "name": {
+            "sq": "Smoothie Bowl",
+            "en": "Smoothie Bowl",
+            "it": "Smoothie Bowl"
+          },
+          "icon": "🥣"
+        }
+      ],
+      "selectedId": "smoothie"
+    }
+  }
+}

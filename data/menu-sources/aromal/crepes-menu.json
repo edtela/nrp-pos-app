@@ -1,0 +1,136 @@
+{
+  "id": "crepes-menu",
+  "name": {
+    "sq": "Menu Krepe",
+    "en": "Crepes Menu",
+    "it": "Menu Crepes"
+  },
+  "content": {
+    "groups": [
+      {
+        "header": {
+          "text": {
+            "sq": "Krepe të Ëmbla",
+            "en": "Sweet Crepes",
+            "it": "Crepes Dolci"
+          },
+          "classes": ["menu-items-title"]
+        },
+        "items": [
+          {
+            "id": "berryland",
+            "name": "Berryland",
+            "description": {
+              "sq": "kos aromal, reçel frutash, boronica, dredhëza/mjedra",
+              "en": "aromal yogurt, berries jam, blueberries, strawberries/raspberries",
+              "it": "yogurt aromal, marmellata di frutti di bosco, mirtilli, fragole/lamponi"
+            },
+            "price": 300
+          },
+          {
+            "id": "honey-bee",
+            "name": "Honey Bee",
+            "description": {
+              "sq": "mjaltë, banane, manaferrë, gjalpë arre, kanellë",
+              "en": "honey, banana, blackberries, walnut butter, cinnamon",
+              "it": "miele, banana, more, burro di noci, cannella"
+            },
+            "price": 300
+          },
+          {
+            "id": "crispy-bite",
+            "name": "Crispy Bite",
+            "description": {
+              "sq": "nutella, banane, dredhëza/mjedra, granola, gjalpë kikiriku",
+              "en": "nutella, banana, strawberries/raspberries, granola, peanut butter",
+              "it": "nutella, banana, fragole/lamponi, granola, burro di arachidi"
+            },
+            "price": 350
+          },
+          {
+            "id": "nut-berry",
+            "name": "Nut&Berry",
+            "description": {
+              "sq": "nutella, boronica, manaferrë, lajthi, bajame",
+              "en": "nutella, blueberries, blackberries, hazelnuts, almonds",
+              "it": "nutella, mirtilli, more, nocciole, mandorle"
+            },
+            "price": 350
+          },
+          {
+            "id": "tropic-snow",
+            "name": "Tropic Snow",
+            "description": {
+              "sq": "çokollatë e bardhë, kivi, ananas, mango, kokos",
+              "en": "white chocolate, kiwi, pineapple, mango, coconut",
+              "it": "cioccolato bianco, kiwi, ananas, mango, cocco"
+            },
+            "price": 350
+          }
+        ]
+      },
+      {
+        "header": {
+          "text": {
+            "sq": "Krepe të Kripura",
+            "en": "Savory Crepes",
+            "it": "Crepes Salate"
+          },
+          "classes": ["menu-items-title"]
+        },
+        "items": [
+          {
+            "id": "chicky-meal",
+            "name": "Chicky Meal",
+            "description": {
+              "sq": "kos aromal, djathë gouda, pomadorini, proshutë pule, zaatar, vaj ulliri",
+              "en": "aromal yogurt, gouda cheese, pomadorini, chicken ham, zaatar, evoo",
+              "it": "yogurt aromal, gouda, pomodorini, prosciutto di pollo, zaatar, olio evo"
+            },
+            "price": 300
+          },
+          {
+            "id": "farmville",
+            "name": "Farmville",
+            "description": {
+              "sq": "kos aromal, djathë feta, domate të thata, kastravec, ullinj, ajvar, rigon, vaj ulliri",
+              "en": "aromal yogurt, feta cheese, dried tomatoes, cucumber, olives, ajvar, oregano, evoo",
+              "it": "yogurt aromal, feta, pomodori secchi, cetriolo, olive, ajvar, origano, olio evo"
+            },
+            "price": 300
+          },
+          {
+            "id": "porcini-boost",
+            "name": "Porcini Boost",
+            "description": {
+              "sq": "pesto, djathë gouda, porcini të thata, pomadorini, zaatar, vaj ulliri",
+              "en": "pesto, gouda cheese, dried porcini, pomadorini, zaatar, evoo",
+              "it": "pesto, gouda, porcini secchi, pomodorini, zaatar, olio evo"
+            },
+            "price": 350
+          },
+          {
+            "id": "mexican-street",
+            "name": "Mexican Street",
+            "description": {
+              "sq": "kos aromal, djathë gouda, avokado, pomadorini, misër, majdanoz, limon, vaj ulliri",
+              "en": "aromal yogurt, gouda cheese, avocado, pomadorini, corn, parsley, lemon, evoo",
+              "it": "yogurt aromal, gouda, avocado, pomodorini, mais, prezzemolo, limone, olio evo"
+            },
+            "price": 350
+          },
+          {
+            "id": "greenchick",
+            "name": "GreenChick",
+            "description": {
+              "sq": "kos aromal, djathë feta, avokado, proshutë pule, domate të thata, vaj ulliri",
+              "en": "aromal yogurt, feta cheese, avocado, chicken ham, dried tomatoes, evoo",
+              "it": "yogurt aromal, feta, avocado, prosciutto di pollo, pomodori secchi, olio evo"
+            },
+            "price": 350
+          }
+        ]
+      }
+    ]
+  }
+}

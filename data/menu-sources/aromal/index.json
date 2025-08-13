@@ -1,0 +1,130 @@
+{
+  "id": "main-menu",
+  "name": "Aromal",
+  "content": {
+    "items": [
+      {
+        "id": "coffee",
+        "name": {
+          "sq": "Kafe",
+          "en": "Coffee",
+          "it": "Caffè"
+        },
+        "description": {
+          "sq": "Espresso, kafe speciale dhe pije të nxehta",
+          "en": "Espresso, specialty coffee and hot drinks",
+          "it": "Espresso, caffè speciali e bevande calde"
+        },
+        "icon": "☕",
+        "subMenu": {
+          "menuId": "espresso-menu",
+          "included": []
+        }
+      },
+      {
+        "id": "tea",
+        "name": {
+          "sq": "Çaj",
+          "en": "Tea",
+          "it": "Tè"
+        },
+        "description": {
+          "sq": "Çaje bimore, frutore dhe speciale",
+          "en": "Herbal, fruity and special teas",
+          "it": "Tisane, tè fruttati e speciali"
+        },
+        "icon": "🍵",
+        "subMenu": {
+          "menuId": "tea-menu",
+          "included": []
+        }
+      },
+      {
+        "id": "juice",
+        "name": {
+          "sq": "Lëngje",
+          "en": "Juices",
+          "it": "Succhi"
+        },
+        "description": {
+          "sq": "Lëngje të freskëta dhe përzierje",
+          "en": "Fresh juices and blends",
+          "it": "Succhi freschi e miscele"
+        },
+        "icon": "🥤",
+        "subMenu": {
+          "menuId": "juice-menu",
+          "included": []
+        }
+      },
+      {
+        "id": "smoothie",
+        "name": "Smoothie",
+        "description": {
+          "sq": "Smoothie dhe smoothie bowls",
+          "en": "Smoothies and smoothie bowls",
+          "it": "Smoothie e smoothie bowls"
+        },
+        "icon": "🥤",
+        "subMenu": {
+          "menuId": "smoothie-menu",
+          "included": []
+        }
+      },
+      {
+        "id": "yogurt",
+        "name": {
+          "sq": "Kos",
+          "en": "Yogurt",
+          "it": "Yogurt"
+        },
+        "description": {
+          "sq": "Kos me aromë dhe kombinime",
+          "en": "Flavored yogurt and combos",
+          "it": "Yogurt aromatizzato e combinazioni"
+        },
+        "icon": "🥛",
+        "subMenu": {
+          "menuId": "yogurt-menu",
+          "included": []
+        }
+      },
+      {
+        "id": "crepes",
+        "name": {
+          "sq": "Krepe",
+          "en": "Crepes",
+          "it": "Crepes"
+        },
+        "description": {
+          "sq": "Krepe të ëmbla dhe të kripura",
+          "en": "Sweet and savory crepes",
+          "it": "Crepes dolci e salate"
+        },
+        "icon": "🥞",
+        "subMenu": {
+          "menuId": "crepes-menu",
+          "included": []
+        }
+      },
+      {
+        "id": "toasts",
+        "name": {
+          "sq": "Tost",
+          "en": "Toasts",
+          "it": "Toast"
+        },
+        "description": {
+          "sq": "Yoast dhe Avotoast",
+          "en": "Yoast and Avotoast",
+          "it": "Yoast e Avotoast"
+        },
+        "icon": "🍞",
+        "subMenu": {
+          "menuId": "toasts-menu",
+          "included": []
+        }
+      }
+    ]
+  }
+}

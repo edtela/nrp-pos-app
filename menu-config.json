@@ -1,5 +1,5 @@
 {
-  "defaultSite": "tonys-pizza",
-  "languages": ["en", "it"],
-  "defaultLanguage": "en"
+  "defaultSite": "aromal",
+  "languages": ["sq", "en", "it"],
+  "defaultLanguage": "sq"
 }

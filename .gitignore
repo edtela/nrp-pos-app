@@ -46,3 +46,6 @@ tests/screenshots/
 .npm
 .eslintcache
 .cache/
+
+# PDF files
+*.pdf

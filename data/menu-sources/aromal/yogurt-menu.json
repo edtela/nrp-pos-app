@@ -1,0 +1,335 @@
+{
+  "id": "yogurt-menu",
+  "name": {
+    "sq": "Menu Kosi",
+    "en": "Yogurt Menu",
+    "it": "Menu Yogurt"
+  },
+  "content": {
+    "groups": [
+      {
+        "header": {
+          "text": {
+            "sq": "Ndërto Kosin Tënd",
+            "en": "Build Your Own Yogurt",
+            "it": "Costruisci il Tuo Yogurt"
+          },
+          "classes": ["menu-items-title"]
+        },
+        "items": [
+          {
+            "id": "plain-yogurt",
+            "name": {
+              "sq": "Kos i Thjeshtë",
+              "en": "Plain Yogurt",
+              "it": "Yogurt Naturale"
+            },
+            "variants": {
+              "groupId": "yogurt-size",
+              "price": {
+                "mini": 100,
+                "standard": 150
+              }
+            },
+            "subMenu": {
+              "menuId": "yogurt-options",
+              "included": []
+            }
+          }
+        ]
+      },
+      {
+        "header": {
+          "text": {
+            "sq": "Kos me Aromë",
+            "en": "Flavored Yogurt",
+            "it": "Yogurt Aromatizzato"
+          },
+          "classes": ["menu-items-title"]
+        },
+        "items": [
+          {
+            "id": "wild-blueberry-yogurt",
+            "name": {
+              "sq": "Boronica e Egër",
+              "en": "Wild Blueberry",
+              "it": "Mirtillo Selvatico"
+            },
+            "variants": {
+              "groupId": "yogurt-size",
+              "price": {
+                "mini": 150,
+                "standard": 250
+              }
+            }
+          },
+          {
+            "id": "coffee-yogurt",
+            "name": {
+              "sq": "Kafe",
+              "en": "Coffee",
+              "it": "Caffè"
+            },
+            "variants": {
+              "groupId": "yogurt-size",
+              "price": {
+                "mini": 150,
+                "standard": 250
+              }
+            }
+          },
+          {
+            "id": "date-yogurt",
+            "name": {
+              "sq": "Hurmë",
+              "en": "Date",
+              "it": "Dattero"
+            },
+            "variants": {
+              "groupId": "yogurt-size",
+              "price": {
+                "mini": 150,
+                "standard": 250
+              }
+            }
+          },
+          {
+            "id": "lime-yogurt",
+            "name": "Lime",
+            "variants": {
+              "groupId": "yogurt-size",
+              "price": {
+                "mini": 150,
+                "standard": 250
+              }
+            }
+          },
+          {
+            "id": "peanut-butter-yogurt",
+            "name": {
+              "sq": "Gjalpë Kikiriku",
+              "en": "Peanut Butter",
+              "it": "Burro di Arachidi"
+            },
+            "variants": {
+              "groupId": "yogurt-size",
+              "price": {
+                "mini": 150,
+                "standard": 250
+              }
+            }
+          },
+          {
+            "id": "pistachio-yogurt",
+            "name": {
+              "sq": "Fistik",
+              "en": "Pistachio",
+              "it": "Pistacchio"
+            },
+            "variants": {
+              "groupId": "yogurt-size",
+              "price": {
+                "mini": 150,
+                "standard": 250
+              }
+            }
+          }
+        ]
+      },
+      {
+        "header": {
+          "text": {
+            "sq": "Kos Premium",
+            "en": "Premium Yogurt",
+            "it": "Yogurt Premium"
+          },
+          "classes": ["menu-items-title"]
+        },
+        "items": [
+          {
+            "id": "protein-yogurt",
+            "name": {
+              "sq": "Proteina",
+              "en": "Protein",
+              "it": "Proteina"
+            },
+            "variants": {
+              "groupId": "yogurt-size",
+              "price": {
+                "mini": 200,
+                "standard": 300
+              }
+            }
+          },
+          {
+            "id": "saffron-yogurt",
+            "name": {
+              "sq": "Shafran",
+              "en": "Saffron",
+              "it": "Zafferano"
+            },
+            "variants": {
+              "groupId": "yogurt-size",
+              "price": {
+                "mini": 200,
+                "standard": 300
+              }
+            }
+          },
+          {
+            "id": "wild-strawberry-yogurt",
+            "name": {
+              "sq": "Dredhëz e Egër",
+              "en": "Wild Strawberry",
+              "it": "Fragola Selvatica"
+            },
+            "variants": {
+              "groupId": "yogurt-size",
+              "price": {
+                "mini": 200,
+                "standard": 300
+              }
+            }
+          }
+        ]
+      },
+      {
+        "header": {
+          "text": {
+            "sq": "Kombinimet Klasike - Të Ëmbla",
+            "en": "Classic Combos - Sweet",
+            "it": "Combinazioni Classiche - Dolci"
+          },
+          "classes": ["menu-items-title"]
+        },
+        "items": [
+          {
+            "id": "ara-combo",
+            "name": "Ara",
+            "description": {
+              "sq": "granola, arra të përziera, hurma, fara liri, gjalpë arre, kanellë, mjaltë",
+              "en": "granola, mix nuts, dates, flax seeds, walnut butter, cinnamon, honey",
+              "it": "granola, mix di noci, datteri, semi di lino, burro di noci, cannella, miele"
+            },
+            "price": 350
+          },
+          {
+            "id": "bjeshka-combo",
+            "name": "Bjeshka",
+            "description": {
+              "sq": "boronica, manaferrë, goji berry, boronicë kuqe, dredhëza/mjedra, fara chia, mjaltë",
+              "en": "blueberries, blackberries, goji berry, cranberries, strawberries/raspberries, chia seeds, honey",
+              "it": "mirtilli, more, bacche di goji, mirtilli rossi, fragole/lamponi, semi di chia, miele"
+            },
+            "price": 350
+          },
+          {
+            "id": "energjia-combo",
+            "name": "Energjia",
+            "description": {
+              "sq": "reçel frutash, banane, dredhëza/mjedra, bajame, granola, çokollatë e zezë",
+              "en": "berries jam, banana, strawberries/raspberries, almonds, granola, dark chocolate",
+              "it": "marmellata di frutti di bosco, banana, fragole/lamponi, mandorle, granola, cioccolato fondente"
+            },
+            "price": 350
+          },
+          {
+            "id": "gjelber-combo",
+            "name": "Gjelbër",
+            "description": {
+              "sq": "avokado, fistiqe, fara kënëpe, matcha, mjaltë",
+              "en": "avocado, pistachios, hemp seeds, matcha, honey",
+              "it": "avocado, pistacchi, semi di canapa, matcha, miele"
+            },
+            "price": 350
+          },
+          {
+            "id": "lambada-combo",
+            "name": "Lambada",
+            "description": {
+              "sq": "mango, ananas, kivi, banane, kokos, lëkurë limoni, mjaltë",
+              "en": "mango, pineapple, kiwi, banana, coconut, lemon peel, honey",
+              "it": "mango, ananas, kiwi, banana, cocco, scorza di limone, miele"
+            },
+            "price": 350
+          },
+          {
+            "id": "proteini-combo",
+            "name": "Proteini",
+            "description": {
+              "sq": "manaferrë, boronica, tërshërë, fara të përziera, proteina whey, gjalpë kikiriku, mjaltë",
+              "en": "blackberries, blueberries, oat, mix seeds, whey protein, peanut butter, honey",
+              "it": "more, mirtilli, avena, mix di semi, proteine whey, burro di arachidi, miele"
+            },
+            "price": 350
+          }
+        ]
+      },
+      {
+        "header": {
+          "text": {
+            "sq": "Kombinimet Klasike - Të Kripura",
+            "en": "Classic Combos - Savoury",
+            "it": "Combinazioni Classiche - Salate"
+          },
+          "classes": ["menu-items-title"]
+        },
+        "items": [
+          {
+            "id": "aromal-savory-combo",
+            "name": "Aromal",
+            "description": {
+              "sq": "kastravec, domate të thata, ullinj, djathë feta, rigon, ajvar, vaj ulliri",
+              "en": "cucumber, dried tomatoes, olives, feta cheese, oregano, ajvar, evoo",
+              "it": "cetriolo, pomodori secchi, olive, feta, origano, ajvar, olio evo"
+            },
+            "price": 350
+          },
+          {
+            "id": "omega-combo",
+            "name": "Omega",
+            "description": {
+              "sq": "mango, avokado, fistiqe, fara kënëpe, limon, vaj ulliri",
+              "en": "mango, avocado, pistachios, hemp seeds, lemon, evoo",
+              "it": "mango, avocado, pistacchi, semi di canapa, limone, olio evo"
+            },
+            "price": 350
+          },
+          {
+            "id": "pinata-combo",
+            "name": "Pinata",
+            "description": {
+              "sq": "avokado, pomadorini, misër, fara kungulli, majdanoz, limon, vaj ulliri",
+              "en": "avocado, pomadorini, corn, pumpkin seeds, parsley, lemon, evoo",
+              "it": "avocado, pomodorini, mais, semi di zucca, prezzemolo, limone, olio evo"
+            },
+            "price": 350
+          }
+        ]
+      }
+    ]
+  },
+  "variants": {
+    "yogurt-size": {
+      "id": "yogurt-size",
+      "name": {
+        "sq": "Madhësia",
+        "en": "Size",
+        "it": "Dimensione"
+      },
+      "variants": [
+        {
+          "id": "mini",
+          "name": "Mini",
+          "icon": "🥛"
+        },
+        {
+          "id": "standard",
+          "name": "Standard",
+          "icon": "🥛"
+        }
+      ],
+      "selectedId": "standard"
+    }
+  }
+}

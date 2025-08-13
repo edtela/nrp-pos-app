@@ -1,0 +1,354 @@
+{
+  "id": "espresso-menu",
+  "name": {
+    "sq": "Menu Kafe",
+    "en": "Coffee Menu",
+    "it": "Menu Caffè"
+  },
+  "content": {
+    "groups": [
+      {
+        "header": {
+          "text": {
+            "sq": "Espresso Klasik - Të Nxehta",
+            "en": "Classic Espresso - Hot",
+            "it": "Espresso Classico - Caldo"
+          },
+          "classes": ["menu-items-title"]
+        },
+        "items": [
+          {
+            "id": "espresso",
+            "name": "Espresso",
+            "price": 80
+          },
+          {
+            "id": "espresso-macchiato",
+            "name": "Espresso Macchiato",
+            "price": 90
+          },
+          {
+            "id": "caffe-latte",
+            "name": {
+              "sq": "Kafe Latte",
+              "en": "Caffè Latte",
+              "it": "Caffè Latte"
+            },
+            "price": 170
+          },
+          {
+            "id": "caffe-americano",
+            "name": {
+              "sq": "Kafe Amerikano",
+              "en": "Caffè Americano",
+              "it": "Caffè Americano"
+            },
+            "price": 120
+          },
+          {
+            "id": "cappuccino",
+            "name": "Cappuccino",
+            "price": 150
+          },
+          {
+            "id": "espresso-decaffeinato",
+            "name": "Espresso Decaffeinato",
+            "price": 100
+          },
+          {
+            "id": "espresso-macchiato-decaffeinato",
+            "name": "Espresso Macchiato Decaffeinato",
+            "price": 120
+          },
+          {
+            "id": "turkish-coffee",
+            "name": {
+              "sq": "Kafe Turke",
+              "en": "Turkish Coffee",
+              "it": "Caffè Turco"
+            },
+            "price": 70
+          },
+          {
+            "id": "hot-chocolate",
+            "name": {
+              "sq": "Çokollatë e Nxehtë",
+              "en": "Hot Chocolate",
+              "it": "Cioccolata Calda"
+            },
+            "price": 170
+          },
+          {
+            "id": "hot-cocoa",
+            "name": {
+              "sq": "Kakao e Nxehtë",
+              "en": "Hot Cocoa",
+              "it": "Cacao Caldo"
+            },
+            "price": 170
+          }
+        ]
+      },
+      {
+        "header": {
+          "text": {
+            "sq": "Kafe të Ftohta",
+            "en": "Cold Coffee",
+            "it": "Caffè Freddo"
+          },
+          "classes": ["menu-items-title"]
+        },
+        "items": [
+          {
+            "id": "caffe-freddo",
+            "name": {
+              "sq": "Kafe Freddo",
+              "en": "Caffè Freddo",
+              "it": "Caffè Freddo"
+            },
+            "price": 150
+          },
+          {
+            "id": "cappuccino-freddo",
+            "name": "Cappuccino Freddo",
+            "price": 170
+          },
+          {
+            "id": "classic-frappe",
+            "name": {
+              "sq": "Frappe Klasik",
+              "en": "Classic Frappe",
+              "it": "Frappe Classico"
+            },
+            "price": 170
+          },
+          {
+            "id": "milk-frappe",
+            "name": {
+              "sq": "Frappe me Qumësht",
+              "en": "Milk Frappe",
+              "it": "Frappe al Latte"
+            },
+            "price": 170
+          }
+        ]
+      },
+      {
+        "header": {
+          "text": {
+            "sq": "Pije Speciale të Nxehta",
+            "en": "Special Hot Drinks",
+            "it": "Bevande Calde Speciali"
+          },
+          "classes": ["menu-items-title"]
+        },
+        "items": [
+          {
+            "id": "aromal-salep",
+            "name": "Aromal Salep",
+            "description": {
+              "sq": "qumësht, salep, arra, fistiqe, kanellë",
+              "en": "milk, salep, walnuts, pistachios, cinnamon",
+              "it": "latte, salep, noci, pistacchi, cannella"
+            },
+            "price": 200,
+            "subMenu": {
+              "menuId": "coffee-options",
+              "included": [
+                { "itemId": "milk", "display": "included" },
+                { "itemId": "salep", "display": "included" },
+                { "itemId": "walnuts", "display": "included" },
+                { "itemId": "pistachios", "display": "included" },
+                { "itemId": "cinnamon", "display": "included" }
+              ]
+            }
+          },
+          {
+            "id": "golden-milk",
+            "name": {
+              "sq": "Qumësht i Artë",
+              "en": "Golden Milk",
+              "it": "Latte d'Oro"
+            },
+            "description": {
+              "sq": "qumësht, kurkumë, xhinxher, piper, kanellë, mjaltë",
+              "en": "milk, turmeric, ginger, pepper, cinnamon, honey",
+              "it": "latte, curcuma, zenzero, pepe, cannella, miele"
+            },
+            "price": 200,
+            "subMenu": {
+              "menuId": "coffee-options",
+              "included": [
+                { "itemId": "milk", "display": "included" },
+                { "itemId": "turmeric", "display": "included" },
+                { "itemId": "ginger", "display": "included" },
+                { "itemId": "pepper", "display": "included" },
+                { "itemId": "cinnamon", "display": "included" },
+                { "itemId": "honey", "display": "included" }
+              ]
+            }
+          },
+          {
+            "id": "chai-latte",
+            "name": "Chai Latte",
+            "description": {
+              "sq": "çaj chai, qumësht, kanellë, mjaltë",
+              "en": "chai tea, milk, cinnamon, honey",
+              "it": "tè chai, latte, cannella, miele"
+            },
+            "price": 200,
+            "subMenu": {
+              "menuId": "coffee-options",
+              "included": [
+                { "itemId": "chai-tea", "display": "included" },
+                { "itemId": "milk", "display": "included" },
+                { "itemId": "cinnamon", "display": "included" },
+                { "itemId": "honey", "display": "included" }
+              ]
+            }
+          },
+          {
+            "id": "vegan-latte",
+            "name": "Vegan Latte",
+            "description": {
+              "sq": "qumësht vegan, kafe",
+              "en": "vegan milk, coffee",
+              "it": "latte vegano, caffè"
+            },
+            "price": 200,
+            "subMenu": {
+              "menuId": "coffee-options",
+              "included": [
+                { "itemId": "vegan-milk", "display": "included" },
+                { "itemId": "coffee", "display": "included" }
+              ]
+            }
+          },
+          {
+            "id": "matcha-latte",
+            "name": "Matcha Latte",
+            "description": {
+              "sq": "qumësht vegan, matcha",
+              "en": "vegan milk, matcha",
+              "it": "latte vegano, matcha"
+            },
+            "price": 250,
+            "subMenu": {
+              "menuId": "coffee-options",
+              "included": [
+                { "itemId": "vegan-milk", "display": "included" },
+                { "itemId": "matcha", "display": "included" }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "header": {
+          "text": {
+            "sq": "Pije Speciale të Ftohta",
+            "en": "Special Cold Drinks",
+            "it": "Bevande Fredde Speciali"
+          },
+          "classes": ["menu-items-title"]
+        },
+        "items": [
+          {
+            "id": "yoguccino",
+            "name": "Yoguccino",
+            "description": {
+              "sq": "kos aromal, kafe, mjaltë",
+              "en": "aromal yogurt, coffee, honey",
+              "it": "yogurt aromal, caffè, miele"
+            },
+            "price": 250,
+            "subMenu": {
+              "menuId": "coffee-options",
+              "included": [
+                { "itemId": "aromal-yogurt", "display": "included" },
+                { "itemId": "coffee", "display": "included" },
+                { "itemId": "honey", "display": "included" }
+              ]
+            }
+          },
+          {
+            "id": "choco-shake",
+            "name": "Choco Shake",
+            "description": {
+              "sq": "qumësht tërshëre, banane, kokrra kafeje, çokollatë e zezë",
+              "en": "oat milk, banana, coffee beans, dark chocolate",
+              "it": "latte d'avena, banana, chicchi di caffè, cioccolato fondente"
+            },
+            "price": 250,
+            "subMenu": {
+              "menuId": "coffee-options",
+              "included": [
+                { "itemId": "oat-milk", "display": "included" },
+                { "itemId": "banana", "display": "included" },
+                { "itemId": "coffee-beans", "display": "included" },
+                { "itemId": "dark-chocolate", "display": "included" }
+              ]
+            }
+          },
+          {
+            "id": "date-shake",
+            "name": "Date Shake",
+            "description": {
+              "sq": "qumësht soje, banane, kokrra kafeje, hurma",
+              "en": "soya milk, banana, coffee beans, dates",
+              "it": "latte di soia, banana, chicchi di caffè, datteri"
+            },
+            "price": 250,
+            "subMenu": {
+              "menuId": "coffee-options",
+              "included": [
+                { "itemId": "soya-milk", "display": "included" },
+                { "itemId": "banana", "display": "included" },
+                { "itemId": "coffee-beans", "display": "included" },
+                { "itemId": "dates", "display": "included" }
+              ]
+            }
+          },
+          {
+            "id": "peanut-shake",
+            "name": "Peanut Shake",
+            "description": {
+              "sq": "qumësht bajame, banane, kokrra kafeje, gjalpë kikiriku",
+              "en": "almond milk, banana, coffee beans, peanut butter",
+              "it": "latte di mandorle, banana, chicchi di caffè, burro di arachidi"
+            },
+            "price": 250,
+            "subMenu": {
+              "menuId": "coffee-options",
+              "included": [
+                { "itemId": "almond-milk", "display": "included" },
+                { "itemId": "banana", "display": "included" },
+                { "itemId": "coffee-beans", "display": "included" },
+                { "itemId": "peanut-butter", "display": "included" }
+              ]
+            }
+          },
+          {
+            "id": "matcha-shake",
+            "name": "Matcha Shake",
+            "description": {
+              "sq": "qumësht kokosi, banane, matcha, spinaq",
+              "en": "coconut milk, banana, matcha, spinach",
+              "it": "latte di cocco, banana, matcha, spinaci"
+            },
+            "price": 300,
+            "subMenu": {
+              "menuId": "coffee-options",
+              "included": [
+                { "itemId": "coconut-milk", "display": "included" },
+                { "itemId": "banana", "display": "included" },
+                { "itemId": "matcha", "display": "included" },
+                { "itemId": "spinach", "display": "included" }
+              ]
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

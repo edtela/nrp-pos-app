@@ -5,7 +5,7 @@
 
 import { createStore } from "./storage";
 
-export type Language = "en" | "it";
+export type Language = "sq" | "en" | "it";
 
 export interface LanguageConfig {
   available: Language[];
@@ -14,11 +14,13 @@ export interface LanguageConfig {
 }
 
 const LANGUAGE_NAMES: Record<Language, string> = {
+  sq: "Shqip",
   en: "English",
   it: "Italiano"
 };
 
 const LANGUAGE_FLAGS: Record<Language, string> = {
+  sq: "🇦🇱",
   en: "🇬🇧",
   it: "🇮🇹"
 };
@@ -35,14 +37,14 @@ const languageStore = typeof window !== 'undefined'
  */
 export function getAvailableLanguages(): Language[] {
   // In production, this would come from menu-config.json
-  return ["en", "it"];
+  return ["sq", "en", "it"];
 }
 
 /**
  * Get the default language
  */
 export function getDefaultLanguage(): Language {
-  return "en";
+  return "sq";
 }
 
 /**
@@ -87,7 +89,7 @@ export function getCurrentLanguage(): Language {
   
   // Check URL path for language
   const path = window.location.pathname;
-  const match = path.match(/^\/(en|it)\//);
+  const match = path.match(/^\/(sq|en|it)\//);
   if (match) {
     return match[1] as Language;
   }
@@ -123,7 +125,7 @@ export function getLanguageFlag(lang: Language): string {
  */
 export function buildLanguageUrl(path: string, lang: Language): string {
   // Remove any existing language prefix
-  const cleanPath = path.replace(/^\/(en|it)/, '');
+  const cleanPath = path.replace(/^\/(sq|en|it)/, '');
   
   // For default language, don't add prefix
   if (lang === getDefaultLanguage()) {
@@ -138,7 +140,7 @@ export function buildLanguageUrl(path: string, lang: Language): string {
  * Parse language from URL
  */
 export function parseLanguageFromUrl(url: string): { language: Language; path: string } {
-  const match = url.match(/^\/(en|it)(\/.*)?$/);
+  const match = url.match(/^\/(sq|en|it)(\/.*)?$/);
   if (match) {
     return {
       language: match[1] as Language,
