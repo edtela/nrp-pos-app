@@ -1,6 +1,7 @@
 {
   "id": "main-menu",
   "name": "Aromal",
+  "currency": "ALL",
   "content": {
     "items": [
       {

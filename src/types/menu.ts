@@ -27,6 +27,7 @@ export type NestedGroup<T = MenuItem> = { header?: Cells; groups: MenuGroup<T>[]
 export interface Menu<T = MenuItem> {
   id: string;
   name: string;
+  currency: string; // Currency code for prices in this menu (e.g., 'USD', 'ALL')
   content: MenuGroup<T>;
   choices?: Record<string, Choice>; // Choice definitions referenced by items via choiceId
   variants?: Record<string, VariantGroup>; // Variant definitions referenced by items

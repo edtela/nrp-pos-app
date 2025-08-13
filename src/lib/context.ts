@@ -72,6 +72,15 @@ export const CURRENCY_FORMATS: Record<string, CurrencyFormat> = {
 };
 
 /**
+ * Get currency format from currency code
+ * @param code Currency code (e.g., 'USD', 'EUR', 'ALL')
+ * @returns Currency format configuration
+ */
+export function getCurrencyFormat(code: string): CurrencyFormat {
+  return CURRENCY_FORMATS[code] || CURRENCY_FORMATS.USD;
+}
+
+/**
  * Get currency format for a language
  * Maps languages to their common currency formats
  */

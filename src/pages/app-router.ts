@@ -15,7 +15,7 @@ import { createStore } from "@/lib/storage";
 import { PageStaticData } from "@/types/page-data";
 import { render } from "@/lib/html-template";
 import { getCurrentLanguage, parseLanguageFromUrl, buildLanguageUrl } from "@/lib/language";
-import { createContext, Context } from "@/lib/context";
+import { createContext, Context, getCurrencyFormat } from "@/lib/context";
 import * as MenuPage from "./menu-page";
 import * as OrderPage from "./order-page";
 
@@ -268,9 +268,17 @@ class AppRouter {
 
   /**
    * Get context for current environment
+   * @param menu Optional menu data to extract currency from
    */
-  getContext(): Context {
+  getContext(menu?: Menu | DisplayMenu): Context {
     const lang = getCurrentLanguage();
+    
+    // If menu has currency, use it; otherwise use language default
+    if (menu?.currency) {
+      const currencyFormat = getCurrencyFormat(menu.currency);
+      return createContext(lang, currencyFormat);
+    }
+    
     return createContext(lang);
   }
 
@@ -278,7 +286,10 @@ class AppRouter {
    * Render a page with static data
    */
   renderPage(container: Element, pageData: PageStaticData): void {
-    const context = this.getContext();
+    // Get context with menu currency if it's a menu page
+    const context = pageData.type === "menu" 
+      ? this.getContext(pageData.data)
+      : this.getContext();
     
     if (pageData.type === "order") {
       render(OrderPage.template(pageData.data, context), container);
@@ -291,7 +302,10 @@ class AppRouter {
    * Hydrate a page with event handlers and session data
    */
   hydratePage(container: Element, pageData: PageStaticData): void {
-    const context = this.getContext();
+    // Get context with menu currency if it's a menu page
+    const context = pageData.type === "menu" 
+      ? this.getContext(pageData.data)
+      : this.getContext();
     
     if (pageData.type === "order") {
       OrderPage.hydrate(container, pageData.data, context);
