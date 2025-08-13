@@ -8,7 +8,7 @@
 import { addEventHandler, html, Template } from "@/lib/html-template";
 import { isSaleItem } from "@/types";
 import { NavStackItem, getRouter } from "@/pages/app-router";
-import { Context } from "@/lib/context";
+import { Context, DEFAULT_CONTEXT } from "@/lib/context";
 import * as MenuContentUI from "@/components/menu-content";
 import * as AppHeader from "@/components/app-header";
 import * as AppBottomBar from "@/components/app-bottom-bar";
@@ -72,13 +72,13 @@ export function hydrate(container: Element, displayMenu: DisplayMenu, context?: 
       AppBottomBar.update(bottomBar, {
         quantity: navContext.order.quantity,
         total: navContext.order.total,
-      }, context);
+      }, context || DEFAULT_CONTEXT);
     } else {
       const mainOrder = getOrder();
       AppBottomBar.update(bottomBar, {
         itemCount: mainOrder.itemIds.length,
         total: mainOrder.total,
-      }, context);
+      }, context || DEFAULT_CONTEXT);
     }
   }
 
@@ -156,13 +156,13 @@ function update(page: Element, event: DataChange<MenuPageData> | undefined, data
 
   const content = page.querySelector(`.${MenuContentUI.menuContainer}`) as HTMLElement;
   if (content) {
-    MenuContentUI.update(content, event, data, context);
+    MenuContentUI.update(content, event, context || DEFAULT_CONTEXT, data);
   }
 
   if (event.order && "total" in event.order) {
     const bottomBar = page.querySelector(`.${layoutStyles.bottomBar}`) as HTMLElement;
     if (bottomBar) {
-      AppBottomBar.update(bottomBar, { total: event.order.total }, context);
+      AppBottomBar.update(bottomBar, { total: event.order.total }, context || DEFAULT_CONTEXT);
     }
   }
 }

@@ -7,6 +7,7 @@
 
 import "./menu-item.css";
 import { html, Template, replaceElements, onClick, dataAttr, setDataAttribute } from "@/lib/html-template";
+import { Context, formatPrice } from "@/lib/context";
 import { DataChange } from "@/lib/data-model-types";
 import { DisplayMenuItem } from "@/model/menu-model";
 
@@ -17,9 +18,9 @@ export const MENU_ITEM_CLICK = "menu-item-click";
 /**
  * Price template - renders the price or navigation chevron
  */
-function priceTemplate(price?: number): Template {
+function priceTemplate(price?: number, context?: Context): Template {
   if (typeof price === "number") {
-    return price === 0 ? html`` : html`<span class="${classes.price}">$${price.toFixed(2)}</span>`;
+    return price === 0 ? html`` : html`<span class="${classes.price}">${context ? formatPrice(price, context.currency) : `$${price.toFixed(2)}`}</span>`;
   }
   return html`<span class="${classes.price} material-icons">chevron_right</span>`;
 }
@@ -27,7 +28,7 @@ function priceTemplate(price?: number): Template {
 /**
  * Menu item template - pure function
  */
-export function template(item: DisplayMenuItem): Template {
+export function template(item: DisplayMenuItem, context?: Context): Template {
   const controlType = item.data.constraints?.choice?.single ? "radio" : item.data.subMenu ? "nav" : "check";
 
   return html`
@@ -48,7 +49,7 @@ export function template(item: DisplayMenuItem): Template {
           <span class="${classes.name}">${item.data.name}</span>
           ${item.data.description ? html`<p class="${classes.description}">${item.data.description}</p>` : ""}
         </div>
-        ${priceTemplate(item.data.price)}
+        ${priceTemplate(item.data.price, context)}
       </div>
     </div>
   `;
@@ -57,18 +58,23 @@ export function template(item: DisplayMenuItem): Template {
 /**
  * Update menu item
  */
-export function update(element: HTMLElement, event: DataChange<DisplayMenuItem>) {
-  // Check if price or selectedVariantId has changed
-  if (event.data && "price" in event.data) {
-    replaceElements(element, `.${classes.price}`, priceTemplate(event.data.price));
+export function update(
+  container: Element,
+  changes: DataChange<DisplayMenuItem>,
+  context: Context
+): void {
+  // Note: This component treats container AS the menu item element itself
+  // Check if price has changed
+  if (changes.data && "price" in changes.data) {
+    replaceElements(container, `.${classes.price}`, priceTemplate(changes.data.price, context));
   }
 
-  if ("selected" in event) {
-    setDataAttribute(element, "selected", event.selected);
+  if ("selected" in changes) {
+    setDataAttribute(container as HTMLElement, "selected", changes.selected);
   }
 
-  if ("included" in event) {
-    setDataAttribute(element, "included", event.included);
+  if ("included" in changes) {
+    setDataAttribute(container as HTMLElement, "included", changes.included);
   }
 }
 

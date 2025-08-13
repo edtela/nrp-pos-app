@@ -7,9 +7,10 @@
 
 import "./order-item.css";
 import { html, Template, dataAttr, CLICK_EVENT, onClick, replaceElement } from "@/lib/html-template";
+import { Context } from "@/lib/context";
 import { OrderModifier, DisplayItem } from "@/model/order-model";
 import { styles as itemListStyles } from "./item-list";
-import { UpdateResult } from "@/lib/data-model-types";
+import { DataChange } from "@/lib/data-model-types";
 
 // Event constants
 export const INCREASE_QUANTITY_EVENT = "increase-quantity-event";
@@ -210,35 +211,40 @@ export function template(displayItem: DisplayItem): Template {
   `;
 }
 
-export function update(container: Element, changes: UpdateResult<DisplayItem>, displayItem: DisplayItem) {
+export function update(
+  container: Element,
+  changes: DataChange<DisplayItem>,
+  _context: Context,
+  data: DisplayItem
+): void {
   // Handle expanded state changes - requires re-render
   if ("expanded" in changes) {
-    replaceElement(container, template(displayItem));
+    replaceElement(container, template(data));
     return;
   }
 
   // Handle flatMode changes - just update attribute
   if ("flatMode" in changes) {
-    container.setAttribute("data-flat-mode", String(displayItem.flatMode === true));
+    container.setAttribute("data-flat-mode", String(data.flatMode === true));
   }
 
   // Handle item property changes
   const itemChanges = changes.item;
   if (!itemChanges) return;
 
-  const data = displayItem.item;
+  const itemData = data.item;
 
   // Update quantity display
   if (itemChanges.quantity !== undefined) {
     const quantityDisplay = container.querySelector(`.${classes.quantityDisplay}`);
     if (quantityDisplay) {
-      quantityDisplay.textContent = String(data.quantity);
+      quantityDisplay.textContent = String(itemData.quantity);
     }
 
     const quantityHeader = container.querySelector(`.${classes.quantity}`) as HTMLElement;
     if (quantityHeader) {
-      quantityHeader.textContent = `${data.quantity} × $${data.unitPrice.toFixed(2)}`;
-      if (data.quantity > 1) {
+      quantityHeader.textContent = `${itemData.quantity} × $${itemData.unitPrice.toFixed(2)}`;
+      if (itemData.quantity > 1) {
         quantityHeader.classList.remove(classes.quantityHidden);
       } else {
         quantityHeader.classList.add(classes.quantityHidden);
@@ -250,7 +256,7 @@ export function update(container: Element, changes: UpdateResult<DisplayItem>, d
     if (quantityControls) {
       const decreaseBtn = quantityControls.querySelector("button:first-child") as HTMLButtonElement;
       if (decreaseBtn) {
-        decreaseBtn.disabled = data.quantity <= 1;
+        decreaseBtn.disabled = itemData.quantity <= 1;
       }
     }
   }
@@ -259,7 +265,7 @@ export function update(container: Element, changes: UpdateResult<DisplayItem>, d
   if (itemChanges.total !== undefined) {
     const priceElement = container.querySelector(`.${classes.price}`);
     if (priceElement) {
-      priceElement.textContent = `$${data.total.toFixed(2)}`;
+      priceElement.textContent = `$${itemData.total.toFixed(2)}`;
     }
   }
 }

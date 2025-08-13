@@ -8,6 +8,7 @@
 import "./app-bottom-bar.css";
 import { html, onClick, Template, render } from "@/lib/html-template";
 import { Context, commonTranslations, formatPrice } from "@/lib/context";
+import { DataChange } from "@/lib/data-model-types";
 
 // Event types
 export const VIEW_ORDER_EVENT = "view-order-event";
@@ -97,26 +98,33 @@ function getFieldFormatters(context?: Context): Record<keyof Omit<BottomBarData,
 }
 
 /**
- * Update the bottom bar with partial data
- * @param container The bottom bar container element
- * @param updates Partial updates to apply
+ * Update the bottom bar with changes
+ * @param container The bottom bar container element  
+ * @param changes Changes to apply
  * @param context Runtime context with language and currency
  */
-export function update(container: HTMLElement, updates: Partial<BottomBarData>, context?: Context): void {
-  const { mode, ...rest } = updates;
+export function update(
+  container: Element,
+  changes: DataChange<BottomBarData>,
+  context: Context
+): void {
   // If mode changed, re-render with empty values
-  if (mode !== undefined) {
-    render(template(mode, context), container);
+  if ('mode' in changes && changes.mode !== undefined) {
+    render(template(changes.mode, context), container);
   }
 
   // Update individual fields
   const formatters = getFieldFormatters(context);
-  for (const [field, value] of Object.entries(rest)) {
-    const element = container.querySelector(`[data-bottom-bar-field="${field}"]`);
-    if (element) {
-      const valueElement = element.querySelector(`.${classes.infoValue}`);
-      if (valueElement && field in formatters) {
-        valueElement.textContent = formatters[field as keyof typeof formatters](value);
+  const fieldsToUpdate = ['itemCount', 'quantity', 'total'] as const;
+  
+  for (const field of fieldsToUpdate) {
+    if (field in changes) {
+      const element = container.querySelector(`[data-bottom-bar-field="${field}"]`);
+      if (element) {
+        const valueElement = element.querySelector(`.${classes.infoValue}`);
+        if (valueElement && field in formatters) {
+          valueElement.textContent = formatters[field]((changes as any)[field]);
+        }
       }
     }
   }

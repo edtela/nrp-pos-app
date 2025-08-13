@@ -55,11 +55,32 @@ export const classes = {
 
 /**
  * Update function for efficient DOM updates
+ * 
+ * Standard signature - components that only need changes:
  */
-export function update(element: Element, changes: DataChange<ComponentData>, data: ComponentData, context?: Context) {
+export function update(
+  container: Element,
+  changes: DataChange<ComponentData>,
+  context: Context
+): void {
   // Update only changed parts of the DOM
   if ('someProperty' in changes) {
-    replaceElements(element, `.${classes.someElement}`, template(data, context));
+    replaceElement(container.querySelector('.element'), newTemplate);
+  }
+}
+
+/**
+ * Alternative signature - components that need full data:
+ */
+export function update(
+  container: Element,
+  changes: DataChange<ComponentData>,
+  context: Context,
+  data: ComponentData  // Include only if needed for re-renders
+): void {
+  // Can do surgical updates OR full re-renders
+  if (needsFullRerender) {
+    render(template(data, context), container);
   }
 }
 ```
@@ -105,9 +126,91 @@ export function hydrate(container: Element, data: PageData, context?: Context): 
 /**
  * Page update function
  */
-export function update(container: Element, changes: DataChange<PageData>, data: PageData, context?: Context): void {
+export function update(
+  container: Element,
+  changes: DataChange<PageData>,
+  context: Context,
+  data: PageData
+): void {
   // Update page sections as needed
+  ChildComponent.update(childContainer, changes.child, context, data.child);
 }
+```
+
+## Update Function Contract
+
+### Ownership Model
+The update function has a clear ownership model:
+- **OWNS**: The content (children) of the container
+- **DOES NOT OWN**: The container's attributes, styles, dataset, classes, etc.
+
+### Standard Signature
+```typescript
+export function update(
+  container: Element,       // Element type enforces ownership boundary
+  changes: DataChange<T>,   // What changed
+  context: Context,         // Runtime context (language, currency, etc.)
+  data?: T                  // Full data - only if component needs it
+): void
+```
+
+### Key Principles
+1. **Container Type**: Use `Element` not `HTMLElement` to prevent modifying container properties
+2. **Content Ownership**: The function may replace all container content
+3. **Container Preservation**: Never modify container's attributes/styles/classes
+4. **Data Parameter**: Only include if the component needs full data for re-renders
+5. **Context Required**: Context is always available and should be required
+
+### Examples
+
+#### Simple Update (changes only)
+```typescript
+// menu-item.ts - only needs changes
+export function update(
+  container: Element,
+  changes: DataChange<MenuItem>,
+  context: Context
+): void {
+  if ('price' in changes) {
+    const priceEl = container.querySelector('.price');
+    if (priceEl) {
+      priceEl.textContent = formatPrice(changes.price, context.currency);
+    }
+  }
+}
+```
+
+#### Complex Update (needs full data)
+```typescript
+// menu-content.ts - may need to re-render
+export function update(
+  container: Element,
+  changes: DataChange<MenuData>,
+  context: Context,
+  data: MenuData  // Included because re-renders are possible
+): void {
+  if (needsFullRerender(changes)) {
+    render(template(data, context), container);
+  } else {
+    // Surgical updates
+    updateSpecificItems(container, changes, context);
+  }
+}
+```
+
+### Wrapper Pattern
+If you need to preserve elements around a component:
+```typescript
+// Instead of passing the parent directly:
+// ❌ ComponentUpdate(parentDiv, changes, context);
+
+// Wrap the component in its own container:
+// ✓ <div class="parent">
+//     <div class="component-wrapper">
+//       <!-- Component owns this content -->
+//     </div>
+//   </div>
+// ComponentUpdate(wrapperDiv, changes, context);
 ```
 
 ## Translation Pattern

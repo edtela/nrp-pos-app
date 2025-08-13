@@ -7,7 +7,7 @@
 
 import { html, addEventHandler, STATE_UPDATE_EVENT } from "@/lib/html-template";
 import { router } from "@/pages/app-router";
-import { Context } from "@/lib/context";
+import { Context, DEFAULT_CONTEXT } from "@/lib/context";
 import * as OrderContentUI from "@/components/order-content";
 import * as OrderItemUI from "@/components/order-item";
 import * as AppHeader from "@/components/app-header";
@@ -15,7 +15,7 @@ import * as AppBottomBar from "@/components/app-bottom-bar";
 import { BottomBarData } from "@/components/app-bottom-bar";
 import { styles as layoutStyles } from "@/components/app-layout";
 import { orderModel, OrderPageData } from "@/model/order-model";
-import { UpdateResult } from "@/lib/data-model-types";
+import { DataChange } from "@/lib/data-model-types";
 
 // Template function - accepts data for static generation
 export function template(data: OrderPageData, context?: Context) {
@@ -59,7 +59,7 @@ export function hydrate(container: Element, _data: OrderPageData, context?: Cont
       AppBottomBar.update(bottomBar, {
         itemCount: sessionData.order.itemIds.length,
         total: sessionData.order.total
-      } as Partial<BottomBarData>, context);
+      } as Partial<BottomBarData>, context || DEFAULT_CONTEXT);
     }
   }
 
@@ -112,13 +112,13 @@ export function hydrate(container: Element, _data: OrderPageData, context?: Cont
   });
 }
 
-function update(container: Element, changes: UpdateResult<OrderPageData> | undefined, data: OrderPageData, context?: Context) {
+function update(container: Element, changes: DataChange<OrderPageData> | undefined, data: OrderPageData, context?: Context) {
   if (!changes) return;
 
   requestAnimationFrame(() => {
     const contentContainer = container.querySelector(`.${layoutStyles.content}`) as HTMLElement;
     if (contentContainer) {
-      OrderContentUI.update(contentContainer, changes, data, context);
+      OrderContentUI.update(contentContainer, changes, context || DEFAULT_CONTEXT, data);
     }
 
     if (changes.order) {
@@ -128,7 +128,7 @@ function update(container: Element, changes: UpdateResult<OrderPageData> | undef
         if (Array.isArray(changes.order.itemIds)) {
           stmt.itemCount = changes.order.itemIds.length;
         }
-        AppBottomBar.update(bottomBar, stmt, context);
+        AppBottomBar.update(bottomBar, stmt, context || DEFAULT_CONTEXT);
       }
     }
   });

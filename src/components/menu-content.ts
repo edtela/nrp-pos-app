@@ -7,7 +7,7 @@
 
 import "./menu-content.css";
 import { dataAttr, html, Template, replaceElements } from "@/lib/html-template";
-import { Context } from "@/lib/context";
+import { Context, formatPrice } from "@/lib/context";
 import { ItemGroup, Menu, MenuGroup, NestedGroup, DataCell, MenuItem, SubMenu } from "@/types";
 import { headerCells, DataCellRenderer } from "./menu-header";
 import * as MenuItemUI from "./menu-item";
@@ -71,18 +71,26 @@ function modificationTokenTemplate(token: ModificationToken): Template {
 /**
  * Order item template - displays the current order item
  */
-function orderItemTemplate(order: OrderMenuItem | undefined, _context?: Context): Template {
+function orderItemTemplate(order: OrderMenuItem | undefined, context?: Context): Template {
   if (!order) return html`<div class="${classes.orderItem}" style="display: none"></div>`;
 
   const hasModifiers = order.modifiers && order.modifiers.length > 0;
   const tokens = hasModifiers ? generateModificationTokens(order.modifiers) : [];
+  
+  const priceStr = context 
+    ? formatPrice(order.menuItem.price ?? 0, context.currency)
+    : `$${(order.menuItem.price ?? 0).toFixed(2)}`;
+  
+  const modifierPriceStr = context && order.modifiersPrice > 0
+    ? `+${formatPrice(order.modifiersPrice, context.currency)}`
+    : order.modifiersPrice > 0 ? `+$${order.modifiersPrice.toFixed(2)}` : "";
 
   return html`
     <div class="${classes.orderItem}">
       <div class="${classes.orderContent}">
         <div class="${classes.orderHeader}">
           <h3 class="${classes.orderName}">${order.menuItem.name}</h3>
-          <span class="${classes.price}">$${(order.menuItem.price ?? 0).toFixed(2)}</span>
+          <span class="${classes.price}">${priceStr}</span>
         </div>
 
         <div class="${classes.orderSecondLine}">
@@ -90,9 +98,7 @@ function orderItemTemplate(order: OrderMenuItem | undefined, _context?: Context)
             ? html`
                 <div class="${classes.tokensWrapper}">
                   <div class="${classes.tokens}">${tokens.map((token) => modificationTokenTemplate(token))}</div>
-                  ${order.modifiersPrice > 0
-                    ? html`<span class="${classes.modifierPrice}">+$${order.modifiersPrice.toFixed(2)}</span>`
-                    : ""}
+                  ${modifierPriceStr ? html`<span class="${classes.modifierPrice}">${modifierPriceStr}</span>` : ""}
                 </div>
               `
             : order.menuItem.description
@@ -125,7 +131,7 @@ function createDataCellRenderer(menu: Menu | DisplayMenu, _context?: Context): D
 /**
  * Template for menu group
  */
-function menuGroupTemplate<T>(group: MenuGroup<T>, dataRenderer: DataCellRenderer): Template {
+function menuGroupTemplate<T>(group: MenuGroup<T>, dataRenderer: DataCellRenderer, context?: Context): Template {
   return html`
     <div class="${classes.group}" ${dataAttr("included", group.options?.extractIncluded)}>
       ${group.header ? headerCells(group.header, dataRenderer) : ""}
@@ -135,15 +141,15 @@ function menuGroupTemplate<T>(group: MenuGroup<T>, dataRenderer: DataCellRendere
               ${(group as ItemGroup<T>).items.map((itemData) => {
                 // Type check: if it's a DisplayMenuItem, use it directly
                 if ("quantity" in (itemData as any) && "data" in (itemData as any)) {
-                  return MenuItemUI.template(itemData as DisplayMenuItem);
+                  return MenuItemUI.template(itemData as DisplayMenuItem, context);
                 }
                 // Otherwise it's a MenuItem, wrap it
-                return MenuItemUI.template({ data: itemData as MenuItem, quantity: 0, total: 0 });
+                return MenuItemUI.template({ data: itemData as MenuItem, quantity: 0, total: 0 }, context);
               })}
             </div>
           `
         : html`
-            ${(group as NestedGroup<T>).groups.map((nestedGroup) => menuGroupTemplate(nestedGroup, dataRenderer))}
+            ${(group as NestedGroup<T>).groups.map((nestedGroup) => menuGroupTemplate(nestedGroup, dataRenderer, context))}
           `}
     </div>
   `;
@@ -156,7 +162,7 @@ export function template(data: (Menu | DisplayMenu) & { order?: OrderMenuItem },
   const dataRenderer = createDataCellRenderer(data, context);
   return html`
     <div class="${classes.container}">
-      ${orderItemTemplate(data.order, context)} ${menuGroupTemplate(data.content as MenuGroup<any>, dataRenderer)}
+      ${orderItemTemplate(data.order, context)} ${menuGroupTemplate(data.content as MenuGroup<any>, dataRenderer, context)}
     </div>
   `;
 }
@@ -200,43 +206,48 @@ export function init(container: HTMLElement, subMenu?: SubMenu, order?: OrderMen
 /**
  * Update menu content
  */
-export function update(container: HTMLElement, event: DataChange<MenuPageData>, data: MenuPageData, context?: Context) {
+export function update(
+  container: Element,
+  changes: DataChange<MenuPageData>,
+  context: Context,
+  data: MenuPageData
+): void {
   // Handle order updates
-  if (event.order) {
+  if (changes.order) {
     // If modifiers changed, re-render the entire order item
-    if (event.order.modifiers) {
+    if (changes.order.modifiers) {
       replaceElements(container, `.${classes.orderItem}`, orderItemTemplate(data.order, context));
     } else {
       // Update price if changed
-      if (event.order.menuItem?.price !== undefined) {
+      if (changes.order.menuItem?.price !== undefined) {
         const elt = container.querySelector(`.${classes.orderItem} .${classes.price}`);
         if (elt) {
-          elt.textContent = `$${event.order.menuItem.price.toFixed(2)}`;
+          elt.textContent = formatPrice(changes.order.menuItem.price, context.currency);
         }
       }
 
       // Update modifierPrice if changed
-      if ("modifiersPrice" in event.order) {
+      if ("modifiersPrice" in changes.order) {
         const elt = container.querySelector(`.${classes.orderItem} .${classes.modifierPrice}`);
         if (elt) {
-          const value = event.order.modifiersPrice;
-          elt.textContent = value ? `+$${value.toFixed(2)}` : "";
+          const value = changes.order.modifiersPrice;
+          elt.textContent = value ? `+${formatPrice(value, context.currency)}` : "";
         }
       }
     }
   }
 
-  for (const [itemId, itemEvent] of Object.entries(event.menu ?? {})) {
-    const menuItemElement = container.querySelector(`#menu-item-${itemId}`) as HTMLElement;
-    if (menuItemElement && itemEvent) {
-      MenuItemUI.update(menuItemElement, itemEvent);
+  for (const [itemId, itemChanges] of Object.entries(changes.menu ?? {})) {
+    const menuItemElement = container.querySelector(`#menu-item-${itemId}`);
+    if (menuItemElement && itemChanges) {
+      MenuItemUI.update(menuItemElement, itemChanges, context);
     }
   }
 
-  for (const [variantGroupId, variantEvent] of Object.entries(event.variants ?? {})) {
-    const variantGroupElement = container.querySelector(`#variant-group-${variantGroupId}`) as HTMLElement;
-    if (variantGroupElement && variantEvent) {
-      VariantGroupUI.update(variantGroupElement, variantEvent);
+  for (const [variantGroupId, variantChanges] of Object.entries(changes.variants ?? {})) {
+    const variantGroupElement = container.querySelector(`#variant-group-${variantGroupId}`);
+    if (variantGroupElement && variantChanges) {
+      VariantGroupUI.update(variantGroupElement, variantChanges, context);
     }
   }
 }

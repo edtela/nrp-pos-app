@@ -7,6 +7,7 @@
 
 import "./variant.css";
 import { html, Template, onClick } from "@/lib/html-template";
+import { Context } from "@/lib/context";
 import { VariantGroup } from "@/types";
 import { DataChange } from "@/lib/data-model-types";
 
@@ -42,15 +43,19 @@ export function template(data: VariantGroup): Template {
   `;
 }
 
-export function update(variantGroupElement: HTMLElement, variantEvent: DataChange<VariantGroup>) {
-  if (variantEvent.selectedId) {
+export function update(
+  container: Element,
+  changes: DataChange<VariantGroup>,
+  _context: Context
+): void {
+  if (changes.selectedId) {
     // Find all variant buttons in this group
-    const buttons = variantGroupElement.querySelectorAll('[data-type="variant"]');
+    const buttons = container.querySelectorAll('[data-type="variant"]');
 
     // Update the selected state for each button
     buttons.forEach((button) => {
       const variantId = button.getAttribute("data-variant-id");
-      button.setAttribute("data-selected", variantId === variantEvent.selectedId ? "true" : "false");
+      button.setAttribute("data-selected", variantId === changes.selectedId ? "true" : "false");
     });
   }
 }

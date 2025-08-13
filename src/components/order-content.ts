@@ -10,7 +10,7 @@ import { Context, commonTranslations } from "@/lib/context";
 import { OrderPageData } from "@/model/order-model";
 import * as OrderItemUI from "./order-item";
 import { styles as itemListStyles } from "./item-list";
-import { UpdateResult } from "@/lib/data-model-types";
+import { DataChange } from "@/lib/data-model-types";
 import { typeChange } from "@/lib/data-model";
 
 /**
@@ -67,7 +67,12 @@ export function init(container: HTMLElement, data: OrderPageData, context?: Cont
   render(template(data, context), container);
 }
 
-export function update(container: Element, changes: UpdateResult<OrderPageData>, data: OrderPageData, context?: Context) {
+export function update(
+  container: Element,
+  changes: DataChange<OrderPageData>,
+  context: Context,
+  data: OrderPageData
+): void {
   // Update list container if expandedId changed
   if ("expandedId" in changes) {
     const itemsElement = container.querySelector(`.${itemListStyles.items}`);
@@ -101,7 +106,7 @@ export function update(container: Element, changes: UpdateResult<OrderPageData>,
       // Update existing item - let order-item handle all its updates
       const displayItem = data.items[itemId];
       if (displayItem) {
-        OrderItemUI.update(itemElement, change, displayItem);
+        OrderItemUI.update(itemElement, change, context, displayItem);
       }
     }
   }

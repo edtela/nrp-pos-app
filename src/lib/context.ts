@@ -27,6 +27,21 @@ export interface Context {
 }
 
 /**
+ * Default context for when context is not provided
+ */
+export const DEFAULT_CONTEXT: Context = {
+  lang: 'en',
+  currency: {
+    code: 'USD',
+    symbol: '$',
+    position: 'before',
+    decimals: 2,
+    separator: '.',
+    thousands: ','
+  }
+};
+
+/**
  * Default currency formats for different regions
  */
 export const CURRENCY_FORMATS: Record<string, CurrencyFormat> = {
