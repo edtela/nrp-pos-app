@@ -19,10 +19,17 @@ import { DataChange } from "@/lib/data-model-types";
 
 // Template function - accepts data for static generation
 export function template(data: OrderPageData, context: Context) {
+  const headerData: AppHeader.HeaderData = {
+    leftButton: {
+      type: 'add',
+      onClick: () => router.goto.home()
+    }
+  };
+  
   return html`
     <div class="${layoutStyles.pageContainer}">
       <header class="${layoutStyles.header}">
-        ${AppHeader.template({ showBack: true }, context)}
+        ${AppHeader.template(headerData, context)}
       </header>
       <main class="${layoutStyles.content}">
         ${OrderContentUI.template(data, context)}
@@ -36,10 +43,16 @@ export function template(data: OrderPageData, context: Context) {
 
 // Hydrate function - loads session data and attaches event handlers
 export function hydrate(container: Element, _data: OrderPageData, context: Context) {
-  // Hydrate header for language switching
+  // Hydrate header with navigation
   const header = container.querySelector(`.${layoutStyles.header}`) as HTMLElement;
   if (header) {
-    AppHeader.hydrate(header, context);
+    const headerData: AppHeader.HeaderData = {
+      leftButton: {
+        type: 'add',
+        onClick: () => router.goto.home()
+      }
+    };
+    AppHeader.hydrate(header, context, headerData);
   }
 
   // Load session data

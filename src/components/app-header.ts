@@ -11,11 +11,33 @@ import { Context, commonTranslations } from '@/lib/context';
 import * as AppMenu from './app-menu';
 
 /**
+ * Left button configuration
+ */
+export type LeftButtonType = 'back' | 'home' | 'add' | 'none';
+
+export interface LeftButtonConfig {
+  type: LeftButtonType;
+  onClick?: () => void;
+}
+
+/**
  * Header data interface
  */
 export interface HeaderData {
-  showBack?: boolean;
+  leftButton?: LeftButtonConfig;
   searchPlaceholder?: string;
+}
+
+/**
+ * Get icon for left button type
+ */
+function getLeftButtonIcon(type: LeftButtonType): string {
+  switch (type) {
+    case 'back': return 'arrow_back';
+    case 'home': return 'home';
+    case 'add': return 'add_circle_outline';
+    default: return '';
+  }
 }
 
 /**
@@ -24,12 +46,19 @@ export interface HeaderData {
 export function template(data: HeaderData = {}, context: Context): Template {
   // Translation functions
   const searchPlaceholder = () => data.searchPlaceholder || commonTranslations.searchMenu(context);
+  const leftButton = data.leftButton || { type: 'none' };
+  const showLeftButton = leftButton.type !== 'none';
+  const leftIcon = getLeftButtonIcon(leftButton.type);
   
   return html`
     <div class="${classes.headerContent}">
-      <button class="${classes.iconButton} ${classes.backButton}">
-        <span class="material-icons">arrow_back</span>
-      </button>
+      ${showLeftButton ? html`
+        <button class="${classes.iconButton} ${classes.leftButton}" data-action="left-button-click">
+          <span class="material-icons">${leftIcon}</span>
+        </button>
+      ` : html`
+        <div class="${classes.iconButton} ${classes.leftButton}"></div>
+      `}
       
       <div class="${classes.searchContainer}">
         <span class="material-icons ${classes.searchIcon}">search</span>
@@ -55,7 +84,7 @@ export function template(data: HeaderData = {}, context: Context): Template {
 export const classes = {
   headerContent: 'app-header-content',
   iconButton: 'app-header-icon-button',
-  backButton: 'app-header-back-button',
+  leftButton: 'app-header-left-button',
   menuButton: 'app-header-menu-button',
   searchContainer: 'app-header-search-container',
   searchIcon: 'app-header-search-icon',
@@ -68,7 +97,13 @@ export const styles = classes;
 /**
  * Hydrate header with app menu functionality
  */
-export function hydrate(container: Element, context: Context): void {
+export function hydrate(container: Element, context: Context, data: HeaderData = {}): void {
+  // Left button handler
+  const leftButton = container.querySelector('[data-action="left-button-click"]');
+  if (leftButton && data.leftButton?.onClick) {
+    leftButton.addEventListener('click', data.leftButton.onClick);
+  }
+  
   // App menu toggle
   const menuButton = container.querySelector('[data-action="toggle-app-menu"]');
   if (menuButton) {

@@ -22,9 +22,22 @@ import { ADD_TO_ORDER_EVENT, VIEW_ORDER_EVENT } from "@/components/app-bottom-ba
 
 // Template function - pure rendering with data
 export function template(displayMenu: DisplayMenu, context: Context): Template {
+  // Determine left button type based on menu ID
+  const leftButtonType: AppHeader.LeftButtonType = 
+    displayMenu.id === 'main-menu' ? 'home' : 'back';
+  
+  const headerData: AppHeader.HeaderData = {
+    leftButton: {
+      type: leftButtonType,
+      onClick: leftButtonType === 'home' 
+        ? () => window.location.href = '/' 
+        : () => window.history.back()
+    }
+  };
+  
   return html`
     <div class="${layoutStyles.pageContainer}">
-      <header class="${layoutStyles.header}">${AppHeader.template({}, context)}</header>
+      <header class="${layoutStyles.header}">${AppHeader.template(headerData, context)}</header>
       <main class="${layoutStyles.content}">${MenuContentUI.template({ menu: displayMenu }, context)}</main>
       <div class="${layoutStyles.bottomBar}">${AppBottomBar.template(displayMenu.modifierMenu ? "add" : "view", context)}</div>
     </div>
@@ -55,10 +68,21 @@ export function hydrate(container: Element, displayMenu: DisplayMenu, context: C
   const page = container.querySelector(`.${layoutStyles.pageContainer}`) as HTMLElement;
   if (!page) return;
 
-  // Hydrate header for language switching
+  // Hydrate header with navigation
   const header = page.querySelector(`.${layoutStyles.header}`) as HTMLElement;
   if (header) {
-    AppHeader.hydrate(header, context);
+    const leftButtonType: AppHeader.LeftButtonType = 
+      displayMenu.id === 'main-menu' ? 'home' : 'back';
+    
+    const headerData: AppHeader.HeaderData = {
+      leftButton: {
+        type: leftButtonType,
+        onClick: leftButtonType === 'home' 
+          ? () => window.location.href = '/' 
+          : () => window.history.back()
+      }
+    };
+    AppHeader.hydrate(header, context, headerData);
   }
 
   const router = getRouter();
