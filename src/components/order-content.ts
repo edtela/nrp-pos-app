@@ -16,7 +16,7 @@ import { typeChange } from "@/lib/data-model";
 /**
  * Empty order state template
  */
-function emptyOrderTemplate(context?: Context): Template {
+function emptyOrderTemplate(context: Context): Template {
   // Translation functions
   const emptyTitle = () => commonTranslations.yourOrderIsEmpty(context);
   const emptyMessage = () => commonTranslations.addItemsToGetStarted(context);
@@ -51,7 +51,7 @@ function orderItemsTemplate(data: OrderPageData): Template {
 /**
  * Main template for order content
  */
-export function template(data: OrderPageData, context?: Context): Template {
+export function template(data: OrderPageData, context: Context): Template {
   const hasItems = data.order.itemIds.length > 0;
 
   return html`
@@ -63,7 +63,7 @@ export function template(data: OrderPageData, context?: Context): Template {
  * Initialize order content with event handlers
  * Returns update function for re-rendering
  */
-export function init(container: HTMLElement, data: OrderPageData, context?: Context) {
+export function init(container: HTMLElement, data: OrderPageData, context: Context) {
   render(template(data, context), container);
 }
 

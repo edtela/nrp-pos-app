@@ -8,7 +8,7 @@
 import { addEventHandler, html, Template } from "@/lib/html-template";
 import { isSaleItem } from "@/types";
 import { NavStackItem, getRouter } from "@/pages/app-router";
-import { Context, DEFAULT_CONTEXT } from "@/lib/context";
+import { Context } from "@/lib/context";
 import * as MenuContentUI from "@/components/menu-content";
 import * as AppHeader from "@/components/app-header";
 import * as AppBottomBar from "@/components/app-bottom-bar";
@@ -21,11 +21,11 @@ import { VARIANT_SELECT_EVENT } from "@/components/variant";
 import { ADD_TO_ORDER_EVENT, VIEW_ORDER_EVENT } from "@/components/app-bottom-bar";
 
 // Template function - pure rendering with data
-export function template(displayMenu: DisplayMenu, context?: Context): Template {
+export function template(displayMenu: DisplayMenu, context: Context): Template {
   return html`
     <div class="${layoutStyles.pageContainer}">
       <header class="${layoutStyles.header}">${AppHeader.template({}, context)}</header>
-      <main class="${layoutStyles.content}">${MenuContentUI.template(displayMenu, context)}</main>
+      <main class="${layoutStyles.content}">${MenuContentUI.template({ menu: displayMenu }, context)}</main>
       <div class="${layoutStyles.bottomBar}">${AppBottomBar.template(displayMenu.modifierMenu ? "add" : "view", context)}</div>
     </div>
   `;
@@ -51,7 +51,7 @@ function toContext(navItem?: NavStackItem) {
 }
 
 // Hydrate function - attaches event handlers and loads session data
-export function hydrate(container: Element, displayMenu: DisplayMenu, context?: Context) {
+export function hydrate(container: Element, displayMenu: DisplayMenu, context: Context) {
   const page = container.querySelector(`.${layoutStyles.pageContainer}`) as HTMLElement;
   if (!page) return;
 
@@ -72,13 +72,13 @@ export function hydrate(container: Element, displayMenu: DisplayMenu, context?: 
       AppBottomBar.update(bottomBar, {
         quantity: navContext.order.quantity,
         total: navContext.order.total,
-      }, context || DEFAULT_CONTEXT);
+      }, context);
     } else {
       const mainOrder = getOrder();
       AppBottomBar.update(bottomBar, {
         itemCount: mainOrder.itemIds.length,
         total: mainOrder.total,
-      }, context || DEFAULT_CONTEXT);
+      }, context);
     }
   }
 
@@ -151,18 +151,18 @@ export function hydrate(container: Element, displayMenu: DisplayMenu, context?: 
   });
 }
 
-function update(page: Element, event: DataChange<MenuPageData> | undefined, data: MenuPageData, context?: Context) {
+function update(page: Element, event: DataChange<MenuPageData> | undefined, data: MenuPageData, context: Context) {
   if (!event) return;
 
   const content = page.querySelector(`.${MenuContentUI.menuContainer}`) as HTMLElement;
   if (content) {
-    MenuContentUI.update(content, event, context || DEFAULT_CONTEXT, data);
+    MenuContentUI.update(content, event, context, data);
   }
 
   if (event.order && "total" in event.order) {
     const bottomBar = page.querySelector(`.${layoutStyles.bottomBar}`) as HTMLElement;
     if (bottomBar) {
-      AppBottomBar.update(bottomBar, { total: event.order.total }, context || DEFAULT_CONTEXT);
+      AppBottomBar.update(bottomBar, { total: event.order.total }, context);
     }
   }
 }

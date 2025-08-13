@@ -69,21 +69,27 @@ function modificationTokenTemplate(token: ModificationToken): Template {
 }
 
 /**
+ * Data structure for menu content
+ */
+export interface MenuContentData {
+  menu: Menu | DisplayMenu;
+  order?: OrderMenuItem;
+}
+
+/**
  * Order item template - displays the current order item
  */
-function orderItemTemplate(order: OrderMenuItem | undefined, context?: Context): Template {
+function orderItemTemplate(order: OrderMenuItem | undefined, context: Context): Template {
   if (!order) return html`<div class="${classes.orderItem}" style="display: none"></div>`;
 
   const hasModifiers = order.modifiers && order.modifiers.length > 0;
   const tokens = hasModifiers ? generateModificationTokens(order.modifiers) : [];
   
-  const priceStr = context 
-    ? formatPrice(order.menuItem.price ?? 0, context.currency)
-    : `$${(order.menuItem.price ?? 0).toFixed(2)}`;
+  const priceStr = formatPrice(order.menuItem.price ?? 0, context.currency);
   
-  const modifierPriceStr = context && order.modifiersPrice > 0
+  const modifierPriceStr = order.modifiersPrice > 0
     ? `+${formatPrice(order.modifiersPrice, context.currency)}`
-    : order.modifiersPrice > 0 ? `+$${order.modifiersPrice.toFixed(2)}` : "";
+    : "";
 
   return html`
     <div class="${classes.orderItem}">
@@ -114,7 +120,7 @@ function orderItemTemplate(order: OrderMenuItem | undefined, context?: Context):
  * DataCell renderer for menu content
  * Handles variant selection and other data-driven cells
  */
-function createDataCellRenderer(menu: Menu | DisplayMenu, _context?: Context): DataCellRenderer {
+function createDataCellRenderer(menu: Menu | DisplayMenu, _context: Context): DataCellRenderer {
   return (cell: DataCell): Template => {
     if (cell.type === "variant-selection" && typeof cell.data === "string") {
       // Find the variant group by ID
@@ -131,7 +137,7 @@ function createDataCellRenderer(menu: Menu | DisplayMenu, _context?: Context): D
 /**
  * Template for menu group
  */
-function menuGroupTemplate<T>(group: MenuGroup<T>, dataRenderer: DataCellRenderer, context?: Context): Template {
+function menuGroupTemplate<T>(group: MenuGroup<T>, dataRenderer: DataCellRenderer, context: Context): Template {
   return html`
     <div class="${classes.group}" ${dataAttr("included", group.options?.extractIncluded)}>
       ${group.header ? headerCells(group.header, dataRenderer) : ""}
@@ -158,16 +164,16 @@ function menuGroupTemplate<T>(group: MenuGroup<T>, dataRenderer: DataCellRendere
 /**
  * Main template for menu content
  */
-export function template(data: (Menu | DisplayMenu) & { order?: OrderMenuItem }, context?: Context): Template {
-  const dataRenderer = createDataCellRenderer(data, context);
+export function template(data: MenuContentData, context: Context): Template {
+  const dataRenderer = createDataCellRenderer(data.menu, context);
   return html`
     <div class="${classes.container}">
-      ${orderItemTemplate(data.order, context)} ${menuGroupTemplate(data.content as MenuGroup<any>, dataRenderer, context)}
+      ${orderItemTemplate(data.order, context)} ${menuGroupTemplate(data.menu.content as MenuGroup<any>, dataRenderer, context)}
     </div>
   `;
 }
 
-export function init(container: HTMLElement, subMenu?: SubMenu, order?: OrderMenuItem, context?: Context) {
+export function init(container: HTMLElement, subMenu: SubMenu | undefined, order: OrderMenuItem | undefined, context: Context) {
   if (order) {
     replaceElements(container, `.${classes.orderItem}`, orderItemTemplate(order, context));
   }

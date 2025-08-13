@@ -21,7 +21,7 @@ export interface HeaderData {
 /**
  * Header template - Material Design 3 Top App Bar
  */
-export function template(data: HeaderData = {}, context?: Context): Template {
+export function template(data: HeaderData = {}, context: Context): Template {
   // Translation functions
   const searchPlaceholder = () => data.searchPlaceholder || commonTranslations.searchMenu(context);
   
@@ -68,7 +68,7 @@ export const styles = classes;
 /**
  * Hydrate header with app menu functionality
  */
-export function hydrate(container: Element, context?: Context): void {
+export function hydrate(container: Element, context: Context): void {
   // App menu toggle
   const menuButton = container.querySelector('[data-action="toggle-app-menu"]');
   if (menuButton) {

@@ -41,7 +41,7 @@ type BottomBarConfig = {
 };
 
 // Configuration for each mode
-function getConfigs(context?: Context): Record<BottomBarMode, BottomBarConfig> {
+function getConfigs(context: Context): Record<BottomBarMode, BottomBarConfig> {
   return {
     view: {
       left: { field: "itemCount", label: commonTranslations.items(context) },
@@ -64,7 +64,7 @@ function getConfigs(context?: Context): Record<BottomBarMode, BottomBarConfig> {
 /**
  * Bottom bar template - Material Design 3 Bottom App Bar
  */
-export function template(mode: BottomBarMode = "view", context?: Context): Template {
+export function template(mode: BottomBarMode = "view", context: Context): Template {
   const configs = getConfigs(context);
   const config = configs[mode];
   
@@ -89,11 +89,11 @@ export function template(mode: BottomBarMode = "view", context?: Context): Templ
 }
 
 // Field formatters for consistent value formatting
-function getFieldFormatters(context?: Context): Record<keyof Omit<BottomBarData, "mode">, (value: any) => string> {
+function getFieldFormatters(context: Context): Record<keyof Omit<BottomBarData, "mode">, (value: any) => string> {
   return {
     itemCount: (value) => String(value || 0),
     quantity: (value) => String(value || 0),
-    total: (value) => context ? formatPrice(value || 0, context.currency) : `$${(value || 0).toFixed(2)}`,
+    total: (value) => formatPrice(value || 0, context.currency),
   };
 }
 

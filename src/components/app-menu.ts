@@ -29,7 +29,7 @@ export interface AppMenuData {
 /**
  * App menu template
  */
-export function template(context?: Context): Template {
+export function template(context: Context): Template {
   const isOpen = false; // Default state
   const currentLang = getCurrentLanguage();
   const currentTheme = getCurrentTheme();
@@ -185,7 +185,7 @@ export function toggle(container: Element): void {
 /**
  * Hydrate app menu with event handlers
  */
-export function hydrate(container: Element, _context?: Context): void {
+export function hydrate(container: Element, _context: Context): void {
   // Close menu handlers
   container.querySelectorAll('[data-action="close-menu"]').forEach(element => {
     element.addEventListener('click', () => close(container));
