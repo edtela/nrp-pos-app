@@ -6,7 +6,7 @@
  */
 
 import "./menu-content.css";
-import { dataAttr, html, Template, replaceElements } from "@/lib/html-template";
+import { dataAttr, html, Template, replaceElements, buildHTML } from "@/lib/html-template";
 import { Context, formatPrice } from "@/lib/context";
 import { ItemGroup, Menu, MenuGroup, NestedGroup, DataCell, MenuItem, SubMenu } from "@/types";
 import { headerCells, DataCellRenderer } from "./menu-header";
@@ -186,17 +186,51 @@ export function init(container: HTMLElement, subMenu: SubMenu | undefined, order
 
   // Process each included item
   for (const includedItem of subMenu.included) {
-    const itemElement = container.querySelector(`#menu-item-${includedItem.itemId}`);
-    if (!itemElement) continue;
+    // Check if we have a custom item definition
+    if (includedItem.item != null) {
+      // Create a new element from the provided item
+      const displayItem: DisplayMenuItem = { data: includedItem.item, quantity: 0, total: 0 };
+      const newElementTemplate = MenuItemUI.template(displayItem, context);
+      
+      // Convert template to DOM element
+      const tempDiv = document.createElement('div');
+      tempDiv.innerHTML = buildHTML(newElementTemplate);
+      const newElement = tempDiv.firstElementChild as HTMLElement;
+      
+      if (!newElement) continue;
+      
+      // Handle display property
+      if (includedItem.display === "none") {
+        // Add but hide the new item
+        newElement.style.display = "none";
+        includedGroupItems?.appendChild(newElement);
+      } else if (includedItem.display === "included" && includedGroupItems) {
+        // Add to included section (most common case for one-off ingredients)
+        includedGroupItems.appendChild(newElement);
+      } else if (includedItem.display === undefined) {
+        // Replace existing item if it exists
+        const existingElement = container.querySelector(`#menu-item-${includedItem.itemId}`);
+        if (existingElement) {
+          existingElement.parentNode?.replaceChild(newElement, existingElement);
+        } else if (includedGroupItems) {
+          // If no existing element, add to included section
+          includedGroupItems.appendChild(newElement);
+        }
+      }
+    } else {
+      // Original logic for when item is not provided
+      const itemElement = container.querySelector(`#menu-item-${includedItem.itemId}`);
+      if (!itemElement) continue;
 
-    if (includedItem.display === "none") {
-      // Hide items with display: none
-      (itemElement as HTMLElement).style.display = "none";
-    } else if (includedItem.display === "included" && includedGroupItems) {
-      // Move items with display: included to the included section
-      includedGroupItems.appendChild(itemElement);
+      if (includedItem.display === "none") {
+        // Hide items with display: none
+        (itemElement as HTMLElement).style.display = "none";
+      } else if (includedItem.display === "included" && includedGroupItems) {
+        // Move items with display: included to the included section
+        includedGroupItems.appendChild(itemElement);
+      }
+      // If no display property, do nothing (leave item in place)
     }
-    // If no display property, do nothing (leave item in place)
   }
 
   // Hide all sections that have empty .groupItems

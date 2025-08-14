@@ -44,6 +44,7 @@ export interface SubMenu {
 
 export interface IncludedItem {
   itemId: string;
+  item?: MenuItem;
   display?: "none" | "included";
 }
 
@@ -169,19 +170,16 @@ export function* iterateItems<T>(group: MenuGroup<T>): Generator<T> {
 /**
  * Map items in a menu group to a new type
  */
-export function mapItems<I, O>(
-  group: MenuGroup<I>,
-  mapper: (item: I) => O
-): MenuGroup<O> {
+export function mapItems<I, O>(group: MenuGroup<I>, mapper: (item: I) => O): MenuGroup<O> {
   if (isItemGroup(group)) {
     return {
       ...group,
-      items: group.items.map(mapper)
+      items: group.items.map(mapper),
     } as ItemGroup<O>;
   } else {
     return {
       ...group,
-      groups: group.groups.map(g => mapItems(g, mapper))
+      groups: group.groups.map((g) => mapItems(g, mapper)),
     } as NestedGroup<O>;
   }
 }
