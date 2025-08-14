@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { update, applyBinding, undoUpdate, anyChange, typeChange } from './data-model';
-import { ALL, CapturePath, DataBinding, UpdateResult, Update, WHERE, META, DEFAULT } from './data-model-types';
+import { ALL, CapturePath, DataBinding, UpdateResult, Update, WHERE, META, DEFAULT, CONTEXT } from './data-model-types';
 
 
 
@@ -765,6 +765,301 @@ describe('data-model', () => {
                     }
                 });
                 expect(data.stats.counts).toEqual({ total: 100, active: 50 });
+            });
+        });
+
+        describe('CONTEXT symbol updates', () => {
+            it('should pass context variables to update functions', () => {
+                const data = {
+                    products: {
+                        p1: { price: 100, discountedPrice: 0 },
+                        p2: { price: 200, discountedPrice: 0 }
+                    }
+                };
+
+                const changes = update(data, {
+                    [CONTEXT]: { discount: 0.2 },
+                    products: {
+                        [ALL]: {
+                            discountedPrice: (current, item, key, ctx) => item.price * (1 - ctx.discount)
+                        }
+                    }
+                });
+
+                expect(changes).toEqual({
+                    products: {
+                        p1: { discountedPrice: 80, [META]: { discountedPrice: { original: 0 } } },
+                        p2: { discountedPrice: 160, [META]: { discountedPrice: { original: 0 } } }
+                    }
+                });
+            });
+
+            it('should propagate context through nested updates', () => {
+                const data = {
+                    store: {
+                        categories: {
+                            electronics: {
+                                items: [
+                                    { name: 'TV', price: 1000 },
+                                    { name: 'Radio', price: 100 }
+                                ]
+                            }
+                        }
+                    }
+                };
+
+                const changes = update(data, {
+                    [CONTEXT]: { multiplier: 1.5 },
+                    store: {
+                        categories: {
+                            electronics: {
+                                items: {
+                                    [ALL]: {
+                                        price: (current, item, index, ctx) => current * ctx.multiplier
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+
+                expect(changes).toEqual({
+                    store: {
+                        categories: {
+                            electronics: {
+                                items: {
+                                    0: { price: 1500, [META]: { price: { original: 1000 } } },
+                                    1: { price: 150, [META]: { price: { original: 100 } } }
+                                }
+                            }
+                        }
+                    }
+                });
+            });
+
+            it('should allow child context to override parent context', () => {
+                const data = {
+                    regions: {
+                        us: { baseTax: 0, finalTax: 0 },
+                        eu: { baseTax: 0, finalTax: 0 }
+                    }
+                };
+
+                const changes = update(data, {
+                    [CONTEXT]: { taxRate: 0.1 },
+                    regions: {
+                        us: {
+                            baseTax: (current, item, key, ctx) => ctx.taxRate
+                        },
+                        eu: {
+                            [CONTEXT]: { taxRate: 0.2 }, // Override for EU
+                            baseTax: (current, item, key, ctx) => ctx.taxRate
+                        }
+                    }
+                });
+
+                expect(changes).toEqual({
+                    regions: {
+                        us: { baseTax: 0.1, [META]: { baseTax: { original: 0 } } },
+                        eu: { baseTax: 0.2, [META]: { baseTax: { original: 0 } } }
+                    }
+                });
+            });
+
+            it('should use context in WHERE clauses', () => {
+                const data = {
+                    items: {
+                        item1: { price: 50, category: 'regular' },
+                        item2: { price: 150, category: 'regular' },
+                        item3: { price: 250, category: 'regular' }
+                    }
+                };
+
+                const changes = update(data, {
+                    [CONTEXT]: { threshold: 100 },
+                    items: {
+                        [ALL]: {
+                            [WHERE]: (item, ctx) => item.price > ctx.threshold,
+                            category: 'premium'
+                        }
+                    }
+                });
+
+                expect(changes).toEqual({
+                    items: {
+                        item2: { category: 'premium', [META]: { category: { original: 'regular' } } },
+                        item3: { category: 'premium', [META]: { category: { original: 'regular' } } }
+                    }
+                });
+                expect(data.items.item1.category).toBe('regular');
+            });
+
+            it('should handle multiple context levels', () => {
+                const data = {
+                    company: {
+                        departments: {
+                            eng: {
+                                teams: {
+                                    frontend: { budget: 1000 },
+                                    backend: { budget: 1500 }
+                                }
+                            }
+                        }
+                    }
+                };
+
+                const changes = update(data, {
+                    [CONTEXT]: { globalMultiplier: 1.1 },
+                    company: {
+                        departments: {
+                            eng: {
+                                [CONTEXT]: { deptBonus: 100 },
+                                teams: {
+                                    frontend: {
+                                        [CONTEXT]: { teamBonus: 50 },
+                                        budget: (current, item, key, ctx) => 
+                                            current * ctx.globalMultiplier + ctx.deptBonus + ctx.teamBonus
+                                    },
+                                    backend: {
+                                        budget: (current, item, key, ctx) => 
+                                            current * ctx.globalMultiplier + ctx.deptBonus
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+
+                expect(changes).toEqual({
+                    company: {
+                        departments: {
+                            eng: {
+                                teams: {
+                                    frontend: { 
+                                        budget: 1250, // 1000 * 1.1 + 100 + 50
+                                        [META]: { budget: { original: 1000 } } 
+                                    },
+                                    backend: { 
+                                        budget: expect.closeTo(1750, 5), // 1500 * 1.1 + 100
+                                        [META]: { budget: { original: 1500 } } 
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            });
+
+            it('should work with arrays and CONTEXT', () => {
+                const data = {
+                    orders: [
+                        { id: 1, subtotal: 100, total: 0 },
+                        { id: 2, subtotal: 200, total: 0 },
+                        { id: 3, subtotal: 300, total: 0 }
+                    ]
+                };
+
+                const changes = update(data, {
+                    [CONTEXT]: { tax: 0.08, shipping: 10 },
+                    orders: {
+                        [ALL]: {
+                            total: (current, order, index, ctx) => 
+                                order.subtotal * (1 + ctx.tax) + ctx.shipping
+                        }
+                    }
+                });
+
+                expect(changes).toEqual({
+                    orders: {
+                        0: { total: 118, [META]: { total: { original: 0 } } },  // 100 * 1.08 + 10
+                        1: { total: 226, [META]: { total: { original: 0 } } },  // 200 * 1.08 + 10
+                        2: { total: 334, [META]: { total: { original: 0 } } }   // 300 * 1.08 + 10
+                    }
+                });
+            });
+
+            it('should handle practical pricing scenario with CONTEXT', () => {
+                const data = {
+                    menu: {
+                        pizza: { basePrice: 10, size: 'medium', finalPrice: 0 },
+                        pasta: { basePrice: 8, size: 'large', finalPrice: 0 },
+                        salad: { basePrice: 6, size: 'small', finalPrice: 0 }
+                    }
+                };
+
+                const sizeMultipliers = {
+                    small: 0.8,
+                    medium: 1.0,
+                    large: 1.3
+                };
+
+                const changes = update(data, {
+                    [CONTEXT]: { 
+                        discount: 0.15,
+                        tax: 0.1,
+                        sizeMultipliers
+                    },
+                    menu: {
+                        [ALL]: {
+                            finalPrice: (current, item, key, ctx) => {
+                                const sizeMultiplier = ctx.sizeMultipliers[item.size] || 1;
+                                const discounted = item.basePrice * sizeMultiplier * (1 - ctx.discount);
+                                return discounted * (1 + ctx.tax);
+                            }
+                        }
+                    }
+                });
+
+                expect(changes).toEqual({
+                    menu: {
+                        pizza: { 
+                            finalPrice: expect.closeTo(9.35, 2), // 10 * 1.0 * 0.85 * 1.1
+                            [META]: { finalPrice: { original: 0 } } 
+                        },
+                        pasta: { 
+                            finalPrice: expect.closeTo(9.724, 2), // 8 * 1.3 * 0.85 * 1.1
+                            [META]: { finalPrice: { original: 0 } } 
+                        },
+                        salad: { 
+                            finalPrice: expect.closeTo(4.488, 2), // 6 * 0.8 * 0.85 * 1.1
+                            [META]: { finalPrice: { original: 0 } } 
+                        }
+                    }
+                });
+            });
+
+            it('should combine CONTEXT with DEFAULT operator', () => {
+                const data: { 
+                    user: { 
+                        preferences: { theme: string, fontSize: number } | null 
+                    } 
+                } = {
+                    user: { preferences: null }
+                };
+
+                const changes = update(data, {
+                    [CONTEXT]: { defaultTheme: 'dark', defaultSize: 14 },
+                    user: {
+                        preferences: {
+                            [DEFAULT]: { theme: '', fontSize: 0 },
+                            theme: (current, prefs, key, ctx) => ctx.defaultTheme,
+                            fontSize: (current, prefs, key, ctx) => ctx.defaultSize
+                        }
+                    }
+                });
+
+                expect(changes).toEqual({
+                    user: {
+                        preferences: {
+                            theme: 'dark',
+                            fontSize: 14
+                        },
+                        [META]: {
+                            preferences: { original: null }
+                        }
+                    }
+                });
+                expect(data.user.preferences).toEqual({ theme: 'dark', fontSize: 14 });
             });
         });
 

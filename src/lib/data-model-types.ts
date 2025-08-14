@@ -2,6 +2,7 @@
 export const ALL = Symbol("*"); // Apply update to all properties
 export const WHERE = Symbol("?"); // Conditional filter for updates
 export const DEFAULT = Symbol("{}");
+export const CONTEXT = Symbol("$");
 export const META = Symbol("#"); // Track structural changes (delete/replace) in DataChange
 
 // Helper type to extract only string keys from T
@@ -37,7 +38,7 @@ type UpdateTerminal<T> = [T] extends [Function]
 // - Each update can be a value or function
 type UpdateArray<T extends readonly any[]> = {
   [index: string]: T extends readonly (infer E)[]
-    ? Update<E> | ((value: E, data: T, index: string) => Update<E>)
+    ? Update<E> | ((value: E, data: T, index: string, ctx?: Record<string, any>) => Update<E>)
     : never;
 } & {
   [ALL]?: T extends readonly (infer E)[] ? Update<E> | ((value: E, data: T, index: number) => Update<E>) : never;
@@ -51,7 +52,7 @@ type UpdateNonArrayObject<T extends object> = {
   [K in StringKeys<T>]?:
     | Update<T[K]>
     | (IsOptional<T, K> extends true ? [] : never)
-    | ((value: T[K], data: T, key: K) => Update<T[K]>);
+    | ((value: T[K], data: T, key: K, ctx?: Record<string, any>) => Update<T[K]>);
 } & {
   [ALL]?: Update<AllValueType<T>> | ((value: AllValueType<T>, data: T, key: keyof T) => Update<AllValueType<T>>);
 };
@@ -60,8 +61,9 @@ type UpdateNonArrayObject<T extends object> = {
 // - Delegates to appropriate sub-type
 // - WHERE predicate applies to the entire object
 type UpdateObject<T extends object> = (T extends readonly any[] ? UpdateArray<T> : UpdateNonArrayObject<T>) & {
-  [WHERE]?: (value: T) => boolean;
+  [WHERE]?: (value: T, context?: Record<string, any>) => boolean;
   [DEFAULT]?: T;
+  [CONTEXT]?: Record<string, any>;
 };
 
 // Main Update type

@@ -9,19 +9,24 @@ import {
   ChangeDetector,
   ChangeDetectorFn,
   DEFAULT,
+  CONTEXT,
 } from "./data-model-types";
 
 export function update<T extends object>(d: T, u?: Update<T>, c?: UpdateResult<T>): UpdateResult<T> | undefined {
   return updateImpl(d, u, c);
 }
 
-export function updateImpl(data: any, statement?: any, changes?: any): any {
+export function updateImpl(data: any, statement?: any, changes?: any, context?: any): any {
   if (!statement) return undefined;
 
-  const { [WHERE]: where, [ALL]: all, [DEFAULT]: defaulT, ...rest } = statement;
+  const { [WHERE]: where, [ALL]: all, [DEFAULT]: defaulT, [CONTEXT]: vars, ...rest } = statement;
   const staticUpdate = rest;
 
-  if (where && !where(data)) {
+  if (vars) {
+    context = context ? { ...context, ...vars } : vars;
+  }
+
+  if (where && !where(data, context)) {
     return changes;
   }
 
@@ -69,14 +74,14 @@ export function updateImpl(data: any, statement?: any, changes?: any): any {
       if (oldValue == null || typeof oldValue !== "object") {
         //check the where statement before throwing error
         const where = newValue[WHERE];
-        if (where && !where(oldValue)) {
+        if (where && !where(oldValue, context)) {
           return;
         }
 
         const defaultValue = newValue[DEFAULT];
         if (defaultValue) {
           data[key] = structuredClone(defaultValue);
-          updateImpl(data[key], newValue);
+          updateImpl(data[key], newValue, undefined, context);
           addValueChange(key, oldValue);
           return;
         }
@@ -85,7 +90,7 @@ export function updateImpl(data: any, statement?: any, changes?: any): any {
         return;
       }
 
-      const change = updateImpl(oldValue, newValue, changes ? changes[key] : undefined);
+      const change = updateImpl(oldValue, newValue, changes ? changes[key] : undefined, context);
       if (change) {
         if (changes) {
           changes[key] = change;
@@ -106,7 +111,7 @@ export function updateImpl(data: any, statement?: any, changes?: any): any {
     let oldValue = data[key];
 
     const operand = staticUpdate[key];
-    const staticOperand = typeof operand === "function" ? operand(oldValue, data, key) : operand;
+    const staticOperand = typeof operand === "function" ? operand(oldValue, data, key, context) : operand;
 
     if (Array.isArray(staticOperand)) {
       if (staticOperand.length === 0) {
