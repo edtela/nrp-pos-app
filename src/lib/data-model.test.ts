@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { update, applyBinding, undoUpdate, anyChange, typeChange } from './data-model';
-import { ALL, CapturePath, DataBinding, UpdateResult, Update, WHERE, META } from './data-model-types';
+import { ALL, CapturePath, DataBinding, UpdateResult, Update, WHERE, META, DEFAULT } from './data-model-types';
 
 
 
@@ -490,6 +490,281 @@ describe('data-model', () => {
                     quantity: 1,
                     price: 10
                 });
+            });
+        });
+
+        describe('DEFAULT symbol updates', () => {
+            it('should create object from DEFAULT when field is null', () => {
+                const data: { user: { profile: { name: string, age: number } | null } } = {
+                    user: { profile: null }
+                };
+
+                const changes = update(data, {
+                    user: {
+                        profile: {
+                            [DEFAULT]: { name: '', age: 0 },
+                            name: 'Alice',
+                            age: 30
+                        }
+                    }
+                });
+
+                expect(changes).toEqual({
+                    user: {
+                        profile: {
+                            name: 'Alice',
+                            age: 30
+                        },
+                        [META]: {
+                            profile: { original: null }
+                        }
+                    }
+                });
+                expect(data.user.profile).toEqual({ name: 'Alice', age: 30 });
+            });
+
+            it('should apply partial updates to DEFAULT-created object', () => {
+                const data: { settings: { ui: { theme: string, fontSize: number } | null } } = {
+                    settings: { ui: null }
+                };
+
+                const changes = update(data, {
+                    settings: {
+                        ui: {
+                            [DEFAULT]: { theme: 'light', fontSize: 14 },
+                            theme: 'dark'
+                            // fontSize not specified, should use default
+                        }
+                    }
+                });
+
+                expect(changes).toEqual({
+                    settings: {
+                        ui: {
+                            theme: 'dark',
+                            fontSize: 14
+                        },
+                        [META]: {
+                            ui: { original: null }
+                        }
+                    }
+                });
+                expect(data.settings.ui).toEqual({ theme: 'dark', fontSize: 14 });
+            });
+
+            it('should work with WHERE clause and DEFAULT', () => {
+                const data: { items: Record<string, { details: { price: number } | null }> } = {
+                    items: {
+                        item1: { details: null },
+                        item2: { details: { price: 100 } },
+                        item3: { details: null }
+                    }
+                };
+
+                const changes = update(data, {
+                    items: {
+                        [ALL]: {
+                            details: {
+                                [WHERE]: (details) => details === null || details.price < 50,
+                                [DEFAULT]: { price: 0 },
+                                price: 25
+                            }
+                        }
+                    }
+                });
+
+                expect(changes).toEqual({
+                    items: {
+                        item1: {
+                            details: {
+                                price: 25
+                            },
+                            [META]: { details: { original: null } }
+                        },
+                        item3: {
+                            details: {
+                                price: 25
+                            },
+                            [META]: { details: { original: null } }
+                        }
+                    }
+                });
+                expect(data.items.item1.details).toEqual({ price: 25 });
+                expect(data.items.item2.details).toEqual({ price: 100 }); // Unchanged (WHERE condition false)
+                expect(data.items.item3.details).toEqual({ price: 25 });
+            });
+
+            it('should handle complex nested structures with DEFAULT', () => {
+                const data: { 
+                    order: { 
+                        customer: { 
+                            address: { 
+                                street: string, 
+                                city: string, 
+                                country: string 
+                            } | null 
+                        } | null 
+                    } 
+                } = {
+                    order: { customer: null }
+                };
+
+                const changes = update(data, {
+                    order: {
+                        customer: {
+                            [DEFAULT]: { address: null },
+                            address: {
+                                [DEFAULT]: { street: '', city: '', country: 'USA' },
+                                street: '123 Main St',
+                                city: 'New York'
+                            }
+                        }
+                    }
+                });
+
+                expect(changes).toEqual({
+                    order: {
+                        customer: {
+                            address: {
+                                street: '123 Main St',
+                                city: 'New York',
+                                country: 'USA'
+                            }
+                        },
+                        [META]: {
+                            customer: { original: null }
+                        }
+                    }
+                });
+                expect(data.order.customer?.address).toEqual({
+                    street: '123 Main St',
+                    city: 'New York',
+                    country: 'USA'
+                });
+            });
+
+            it('should handle DEFAULT with arrays', () => {
+                const data: { cart: { items: Array<{ id: string, quantity: number }> | null } } = {
+                    cart: { items: null }
+                };
+
+                const changes = update(data, {
+                    cart: {
+                        items: {
+                            [DEFAULT]: [],
+                            [0]: [{ id: 'item1', quantity: 2 }]
+                        }
+                    }
+                });
+
+                expect(changes).toEqual({
+                    cart: {
+                        items: [{ id: 'item1', quantity: 2 }],
+                        [META]: {
+                            items: { original: null }
+                        }
+                    }
+                });
+                expect(data.cart.items).toEqual([{ id: 'item1', quantity: 2 }]);
+            });
+
+            it('should use structuredClone for DEFAULT to avoid reference issues', () => {
+                const defaultProfile = { name: 'Default', settings: { notifications: true } };
+                const data: { 
+                    users: { 
+                        user1: { profile: typeof defaultProfile | null },
+                        user2: { profile: typeof defaultProfile | null }
+                    } 
+                } = {
+                    users: {
+                        user1: { profile: null },
+                        user2: { profile: null }
+                    }
+                };
+
+                update(data, {
+                    users: {
+                        user1: {
+                            profile: {
+                                [DEFAULT]: defaultProfile,
+                                name: 'Alice'
+                            }
+                        },
+                        user2: {
+                            profile: {
+                                [DEFAULT]: defaultProfile,
+                                name: 'Bob'
+                            }
+                        }
+                    }
+                });
+
+                // Each user should have their own copy, not share the same reference
+                expect(data.users.user1.profile).not.toBe(data.users.user2.profile);
+                expect(data.users.user1.profile?.name).toBe('Alice');
+                expect(data.users.user2.profile?.name).toBe('Bob');
+                // Original default should be unchanged
+                expect(defaultProfile.name).toBe('Default');
+            });
+
+            it('should not apply DEFAULT when field is not null', () => {
+                const data: { user: { profile: { name: string, age: number } | null } } = {
+                    user: { profile: { name: 'Bob', age: 25 } }
+                };
+
+                const changes = update(data, {
+                    user: {
+                        profile: {
+                            [DEFAULT]: { name: '', age: 0 },
+                            name: 'Alice'
+                        }
+                    }
+                });
+
+                expect(changes).toEqual({
+                    user: {
+                        profile: {
+                            name: 'Alice',
+                            [META]: {
+                                name: { original: 'Bob' }
+                            }
+                        }
+                    }
+                });
+                expect(data.user.profile).toEqual({ name: 'Alice', age: 25 });
+            });
+
+            it('should handle DEFAULT with function updates', () => {
+                const data: { 
+                    stats: { 
+                        counts: { total: number, active: number } | null 
+                    } 
+                } = {
+                    stats: { counts: null }
+                };
+
+                const changes = update(data, {
+                    stats: {
+                        counts: {
+                            [DEFAULT]: { total: 0, active: 0 },
+                            total: 100,
+                            active: (current: number) => current + 50
+                        }
+                    }
+                });
+
+                expect(changes).toEqual({
+                    stats: {
+                        counts: {
+                            total: 100,
+                            active: 50
+                        },
+                        [META]: {
+                            counts: { original: null }
+                        }
+                    }
+                });
+                expect(data.stats.counts).toEqual({ total: 100, active: 50 });
             });
         });
 

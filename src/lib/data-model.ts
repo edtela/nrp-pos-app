@@ -8,6 +8,7 @@ import {
   META,
   ChangeDetector,
   ChangeDetectorFn,
+  DEFAULT,
 } from "./data-model-types";
 
 export function update<T extends object>(d: T, u?: Update<T>, c?: UpdateResult<T>): UpdateResult<T> | undefined {
@@ -17,7 +18,7 @@ export function update<T extends object>(d: T, u?: Update<T>, c?: UpdateResult<T
 export function updateImpl(data: any, statement?: any, changes?: any): any {
   if (!statement) return undefined;
 
-  const { [WHERE]: where, [ALL]: all, ...rest } = statement;
+  const { [WHERE]: where, [ALL]: all, [DEFAULT]: defaulT, ...rest } = statement;
   const staticUpdate = rest;
 
   if (where && !where(data)) {
@@ -71,6 +72,15 @@ export function updateImpl(data: any, statement?: any, changes?: any): any {
         if (where && !where(oldValue)) {
           return;
         }
+
+        const defaultValue = newValue[DEFAULT];
+        if (defaultValue) {
+          data[key] = structuredClone(defaultValue);
+          updateImpl(data[key], newValue);
+          addValueChange(key, oldValue);
+          return;
+        }
+
         console.error(`Can't partially update a non-object: ${key}`);
         return;
       }
@@ -106,7 +116,9 @@ export function updateImpl(data: any, statement?: any, changes?: any): any {
       }
 
       if (staticOperand.length === 1) {
-        updateKey(key, oldValue, staticOperand[0], true);
+        //structured clone can still fail for functions within operand
+        const newValue = typeof staticOperand[0] === "function" ? staticOperand[0] : structuredClone(staticOperand[0]);
+        updateKey(key, oldValue, newValue, true);
       } else {
         throw new Error("Multiple element arrays not allowed"); //TODO collect warning
       }

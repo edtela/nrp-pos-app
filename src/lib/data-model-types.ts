@@ -1,9 +1,8 @@
 // Define symbols for operations
 export const ALL = Symbol("*"); // Apply update to all properties
 export const WHERE = Symbol("?"); // Conditional filter for updates
-export const DELETIONS = Symbol("-"); // Track deleted properties in DataChange
+export const DEFAULT = Symbol("{}");
 export const META = Symbol("#"); // Track structural changes (delete/replace) in DataChange
-export const STRUCTURE = META; // Track structural changes (delete/replace) in DataChange
 
 // Helper type to extract only string keys from T
 type StringKeys<T> = Extract<keyof T, string>;
@@ -62,6 +61,7 @@ type UpdateNonArrayObject<T extends object> = {
 // - WHERE predicate applies to the entire object
 type UpdateObject<T extends object> = (T extends readonly any[] ? UpdateArray<T> : UpdateNonArrayObject<T>) & {
   [WHERE]?: (value: T) => boolean;
+  [DEFAULT]?: T;
 };
 
 // Main Update type
