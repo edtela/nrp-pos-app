@@ -266,11 +266,42 @@ export function handleDataChange(
  * Update function for menu-page
  */
 export function update(
-  _container: HTMLElement,
-  _event: DataChange<MenuPageData>,
-  _context: Context,
-  _data: MenuPageData
+  container: HTMLElement,
+  changes: DataChange<MenuPageData>,
+  context: Context,
+  data: MenuPageData
 ): void {
-  // For now, trigger a full re-render
-  // TODO: Implement optimized partial updates
+  // Handle order updates
+  if (changes.order) {
+    // If modifiers changed, re-render the entire order item
+    if (changes.order.modifiers) {
+      replaceElements(container, `.${classes.orderItem}`, orderItemTemplate(data.order, context));
+    } else {
+      // Update price if changed
+      if (changes.order.menuItem?.price !== undefined) {
+        const elt = container.querySelector(`.${classes.orderItem} .${classes.orderPrice}`);
+        if (elt) {
+          elt.textContent = formatPrice(changes.order.menuItem.price, context.currency);
+        }
+      }
+
+      // Update modifierPrice if changed
+      if ("modifiersPrice" in changes.order) {
+        const elt = container.querySelector(`.${classes.orderItem} .${classes.orderPrice}`);
+        if (elt && data.order) {
+          elt.textContent = formatPrice(data.order.unitPrice, context.currency);
+        }
+      }
+    }
+  }
+
+  // Handle menu item updates
+  if (changes.menu) {
+    for (const [itemId, itemChanges] of Object.entries(changes.menu)) {
+      const menuItemElement = container.querySelector(`#menu-item-${itemId}`);
+      if (menuItemElement && itemChanges) {
+        MenuItemUI.update(menuItemElement, itemChanges, context);
+      }
+    }
+  }
 }

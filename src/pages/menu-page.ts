@@ -23,23 +23,22 @@ import { ADD_TO_ORDER_EVENT, VIEW_ORDER_EVENT } from "@/components/app-bottom-ba
 // Template function - pure rendering with data
 export function template(displayMenu: DisplayMenu, context: Context): Template {
   // Determine left button type based on menu ID
-  const leftButtonType: AppHeader.LeftButtonType = 
-    displayMenu.id === 'main-menu' ? 'home' : 'back';
-  
+  const leftButtonType: AppHeader.LeftButtonType = displayMenu.id === "main-menu" ? "home" : "back";
+
   const headerData: AppHeader.HeaderData = {
     leftButton: {
       type: leftButtonType,
-      onClick: leftButtonType === 'home' 
-        ? () => window.location.href = '/' 
-        : () => window.history.back()
-    }
+      onClick: leftButtonType === "home" ? () => (window.location.href = "/") : () => window.history.back(),
+    },
   };
-  
+
   return html`
     <div class="${layoutStyles.pageContainer}">
       <header class="${layoutStyles.header}">${AppHeader.template(headerData, context)}</header>
       <main class="${layoutStyles.content}">${MenuContentUI.template({ menu: displayMenu }, context)}</main>
-      <div class="${layoutStyles.bottomBar}">${AppBottomBar.template(displayMenu.modifierMenu ? "add" : "view", context)}</div>
+      <div class="${layoutStyles.bottomBar}">
+        ${AppBottomBar.template(displayMenu.modifierMenu ? "add" : "view", context)}
+      </div>
     </div>
   `;
 }
@@ -69,16 +68,17 @@ function toContext(navItem?: NavStackItem) {
 function modifierMenuErrorTemplate(context: Context): Template {
   const headerData: AppHeader.HeaderData = {
     leftButton: {
-      type: 'home',
-      onClick: () => window.location.href = '/'
-    }
+      type: "home",
+      onClick: () => (window.location.href = "/"),
+    },
   };
-  
+
   return html`
     <div class="${layoutStyles.pageContainer}">
       <header class="${layoutStyles.header}">${AppHeader.template(headerData, context)}</header>
       <main class="${layoutStyles.content}">
-        <div style="
+        <div
+          style="
           display: flex;
           flex-direction: column;
           align-items: center;
@@ -87,36 +87,51 @@ function modifierMenuErrorTemplate(context: Context): Template {
           padding: var(--md-sys-spacing-xl);
           text-align: center;
           gap: var(--md-sys-spacing-lg);
-        ">
-          <span class="material-icons" style="
+        "
+        >
+          <span
+            class="material-icons"
+            style="
             font-size: 64px;
             color: var(--md-sys-color-outline);
-          ">error_outline</span>
-          
-          <h2 style="
+          "
+            >error_outline</span
+          >
+
+          <h2
+            style="
             font-size: var(--md-sys-typescale-headline-medium-size);
             line-height: var(--md-sys-typescale-headline-medium-line-height);
             color: var(--md-sys-color-on-surface);
             margin: 0;
-          ">
-            ${context.lang === 'sq' ? 'Nuk mund të aksesoni këtë menu' :
-              context.lang === 'it' ? 'Impossibile accedere a questo menu' :
-              'Cannot access this menu'}
+          "
+          >
+            ${context.lang === "sq"
+              ? "Nuk mund të aksesoni këtë menu"
+              : context.lang === "it"
+                ? "Impossibile accedere a questo menu"
+                : "Cannot access this menu"}
           </h2>
-          
-          <p style="
+
+          <p
+            style="
             font-size: var(--md-sys-typescale-body-large-size);
             line-height: var(--md-sys-typescale-body-large-line-height);
             color: var(--md-sys-color-on-surface-variant);
             margin: 0;
             max-width: 400px;
-          ">
-            ${context.lang === 'sq' ? 'Ky menu kërkon një artikull të zgjedhur. Ju lutemi filloni nga menuja kryesore.' :
-              context.lang === 'it' ? 'Questo menu richiede un articolo selezionato. Si prega di iniziare dal menu principale.' :
-              'This menu requires a selected item. Please start from the main menu.'}
+          "
+          >
+            ${context.lang === "sq"
+              ? "Ky menu kërkon një artikull të zgjedhur. Ju lutemi filloni nga menuja kryesore."
+              : context.lang === "it"
+                ? "Questo menu richiede un articolo selezionato. Si prega di iniziare dal menu principale."
+                : "This menu requires a selected item. Please start from the main menu."}
           </p>
-          
-          <button onclick="window.location.href='/'" style="
+
+          <button
+            onclick="window.location.href='/'"
+            style="
             background-color: var(--md-sys-color-primary);
             color: var(--md-sys-color-on-primary);
             border: none;
@@ -126,7 +141,8 @@ function modifierMenuErrorTemplate(context: Context): Template {
             font-weight: var(--md-sys-typescale-label-large-weight);
             cursor: pointer;
             margin-top: var(--md-sys-spacing-md);
-          ">
+          "
+          >
             ${commonTranslations.menu(context)}
           </button>
         </div>
@@ -144,16 +160,13 @@ export function hydrate(container: Element, displayMenu: DisplayMenu, context: C
   // Hydrate header with navigation
   const header = page.querySelector(`.${layoutStyles.header}`) as HTMLElement;
   if (header) {
-    const leftButtonType: AppHeader.LeftButtonType = 
-      displayMenu.id === 'main-menu' ? 'home' : 'back';
-    
+    const leftButtonType: AppHeader.LeftButtonType = displayMenu.id === "main-menu" ? "home" : "back";
+
     const headerData: AppHeader.HeaderData = {
       leftButton: {
         type: leftButtonType,
-        onClick: leftButtonType === 'home' 
-          ? () => window.location.href = '/' 
-          : () => window.history.back()
-      }
+        onClick: leftButtonType === "home" ? () => (window.location.href = "/") : () => window.history.back(),
+      },
     };
     AppHeader.hydrate(header, context, headerData);
   }
@@ -161,41 +174,49 @@ export function hydrate(container: Element, displayMenu: DisplayMenu, context: C
   const router = getRouter();
   const navItem = router.truncateStack(displayMenu.id);
   const navContext = toContext(navItem);
-  
+
   // Check if this is a modifier menu without an order context
   if (displayMenu.modifierMenu && !navContext.order) {
     // Replace the entire page content with error template
     render(modifierMenuErrorTemplate(context), container);
-    
+
     // Re-hydrate the header for the error page
     const errorHeader = container.querySelector(`.${layoutStyles.header}`) as HTMLElement;
     if (errorHeader) {
       const headerData: AppHeader.HeaderData = {
         leftButton: {
-          type: 'home',
-          onClick: () => window.location.href = '/'
-        }
+          type: "home",
+          onClick: () => (window.location.href = "/"),
+        },
       };
       AppHeader.hydrate(errorHeader, context, headerData);
     }
     return; // Exit early, no need to set up other handlers
   }
-  
+
   MenuContentUI.init(page, navContext.menuItem?.subMenu, navContext.order, context);
 
   const bottomBar = page.querySelector(`.${layoutStyles.bottomBar}`) as HTMLElement;
   if (bottomBar) {
     if (navContext.order) {
-      AppBottomBar.update(bottomBar, {
-        quantity: navContext.order.quantity,
-        total: navContext.order.total,
-      }, context);
+      AppBottomBar.update(
+        bottomBar,
+        {
+          quantity: navContext.order.quantity,
+          total: navContext.order.total,
+        },
+        context,
+      );
     } else {
       const mainOrder = getOrder();
-      AppBottomBar.update(bottomBar, {
-        itemCount: mainOrder.itemIds.length,
-        total: mainOrder.total,
-      }, context);
+      AppBottomBar.update(
+        bottomBar,
+        {
+          itemCount: mainOrder.itemIds.length,
+          total: mainOrder.total,
+        },
+        context,
+      );
     }
   }
 
