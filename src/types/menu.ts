@@ -18,13 +18,6 @@ export interface ItemGroup {
   icon?: string;
 }
 
-/**
- * Legacy menu group types (for backward compatibility)
- * @deprecated Use three-layer architecture instead
- */
-export type MenuGroup<T = MenuItem> = LegacyItemGroup<T> | LegacyNestedGroup<T>;
-export type LegacyItemGroup<T = MenuItem> = { header?: Cells; items: T[]; options?: any };
-export type LegacyNestedGroup<T = MenuItem> = { header?: Cells; groups: MenuGroup<T>[]; options?: any };
 
 /**
  * Menu container with three-layer architecture

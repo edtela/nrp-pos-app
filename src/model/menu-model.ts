@@ -1,5 +1,4 @@
 import { Menu, MenuItem, VariantGroup } from "@/types";
-import { getAllMenuItems } from "@/lib/menu-compat";
 import { anyChange, state, typeChange } from "@/lib/data-model";
 import { ALL, DataBinding, Update, UpdateResult, WHERE } from "@/lib/data-model-types";
 import { OrderItem, OrderModifier } from "./order-model";
@@ -215,21 +214,9 @@ export class MenuModel {
       this.data.variants[vg.id] = { ...vg };
     }
 
-    // Build menu map from DisplayMenu items
-    // Handle both three-layer and legacy structures
-    if ('items' in displayMenu && 'itemGroups' in displayMenu) {
-      // Three-layer structure - items are already DisplayMenuItems
-      for (const [id, item] of Object.entries(displayMenu.items)) {
-        this.data.menu[id] = item as any as DisplayMenuItem;
-      }
-    } else if ('content' in (displayMenu as any)) {
-      // Legacy structure
-      const allItems = getAllMenuItems(displayMenu);
-      for (const item of allItems) {
-        if ('data' in (item as any)) {
-          this.data.menu[(item as unknown as DisplayMenuItem).data.id] = item as unknown as DisplayMenuItem;
-        }
-      }
+    // Build menu map from DisplayMenu items (three-layer structure)
+    for (const [id, item] of Object.entries(displayMenu.items)) {
+      this.data.menu[id] = item as DisplayMenuItem;
     }
 
     return this.model.setData(this.data);
