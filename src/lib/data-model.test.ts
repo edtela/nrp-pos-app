@@ -781,7 +781,7 @@ describe('data-model', () => {
                     [CONTEXT]: { discount: 0.2 },
                     products: {
                         [ALL]: {
-                            discountedPrice: (current, item, key, ctx) => item.price * (1 - ctx.discount)
+                            discountedPrice: (_current, item, _key, ctx) => item.price * (1 - ctx!.discount)
                         }
                     }
                 });
@@ -815,7 +815,7 @@ describe('data-model', () => {
                             electronics: {
                                 items: {
                                     [ALL]: {
-                                        price: (current, item, index, ctx) => current * ctx.multiplier
+                                        price: (current, _item, _index, ctx) => current * ctx!.multiplier
                                     }
                                 }
                             }
@@ -849,11 +849,11 @@ describe('data-model', () => {
                     [CONTEXT]: { taxRate: 0.1 },
                     regions: {
                         us: {
-                            baseTax: (current, item, key, ctx) => ctx.taxRate
+                            baseTax: (_current, _item, _key, ctx) => ctx!.taxRate
                         },
                         eu: {
                             [CONTEXT]: { taxRate: 0.2 }, // Override for EU
-                            baseTax: (current, item, key, ctx) => ctx.taxRate
+                            baseTax: (_current, _item, _key, ctx) => ctx!.taxRate
                         }
                     }
                 });
@@ -879,7 +879,7 @@ describe('data-model', () => {
                     [CONTEXT]: { threshold: 100 },
                     items: {
                         [ALL]: {
-                            [WHERE]: (item, ctx) => item.price > ctx.threshold,
+                            [WHERE]: (item, ctx) => item.price > ctx!.threshold,
                             category: 'premium'
                         }
                     }
@@ -917,12 +917,12 @@ describe('data-model', () => {
                                 teams: {
                                     frontend: {
                                         [CONTEXT]: { teamBonus: 50 },
-                                        budget: (current, item, key, ctx) => 
-                                            current * ctx.globalMultiplier + ctx.deptBonus + ctx.teamBonus
+                                        budget: (current, _item, _key, ctx) => 
+                                            current * ctx!.globalMultiplier + ctx!.deptBonus + ctx!.teamBonus
                                     },
                                     backend: {
-                                        budget: (current, item, key, ctx) => 
-                                            current * ctx.globalMultiplier + ctx.deptBonus
+                                        budget: (current, _item, _key, ctx) => 
+                                            current * ctx!.globalMultiplier + ctx!.deptBonus
                                     }
                                 }
                             }
@@ -963,8 +963,8 @@ describe('data-model', () => {
                     [CONTEXT]: { tax: 0.08, shipping: 10 },
                     orders: {
                         [ALL]: {
-                            total: (current, order, index, ctx) => 
-                                order.subtotal * (1 + ctx.tax) + ctx.shipping
+                            total: (_current, order, _index, ctx) => 
+                                order.subtotal * (1 + ctx!.tax) + ctx!.shipping
                         }
                     }
                 });
@@ -1001,10 +1001,10 @@ describe('data-model', () => {
                     },
                     menu: {
                         [ALL]: {
-                            finalPrice: (current, item, key, ctx) => {
-                                const sizeMultiplier = ctx.sizeMultipliers[item.size] || 1;
-                                const discounted = item.basePrice * sizeMultiplier * (1 - ctx.discount);
-                                return discounted * (1 + ctx.tax);
+                            finalPrice: (_current, item, _key, ctx) => {
+                                const sizeMultiplier = ctx!.sizeMultipliers[item.size] || 1;
+                                const discounted = item.basePrice * sizeMultiplier * (1 - ctx!.discount);
+                                return discounted * (1 + ctx!.tax);
                             }
                         }
                     }
@@ -1042,8 +1042,8 @@ describe('data-model', () => {
                     user: {
                         preferences: {
                             [DEFAULT]: { theme: '', fontSize: 0 },
-                            theme: (current, prefs, key, ctx) => ctx.defaultTheme,
-                            fontSize: (current, prefs, key, ctx) => ctx.defaultSize
+                            theme: (_current, _prefs, _key, ctx) => ctx!.defaultTheme,
+                            fontSize: (_current, _prefs, _key, ctx) => ctx!.defaultSize
                         }
                     }
                 });
