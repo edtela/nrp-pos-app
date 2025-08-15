@@ -1,34 +1,49 @@
 /**
  * Menu System Type Definitions
  *
- * A flexible, recursive menu system supporting infinite customization chains.
+ * Three-layer architecture: Data (items), Semantic (item groups), Presentation (layout).
  * Single-language design - separate files generated for each language.
  */
 
 import { Cells } from "./display.js";
 
 /**
- * Menu group options
+ * Item group - semantic collection of related menu items
  */
-export interface MenuOptions {
-  extractIncluded?: boolean; // If true, this group is a placeholder for included items
+export interface ItemGroup {
+  id: string;
+  name: string;
+  itemIds: string[];
+  description?: string;
+  icon?: string;
 }
 
 /**
- * Menu groups allow organizing items into sections with optional headers
+ * Legacy menu group types (for backward compatibility)
+ * @deprecated Use three-layer architecture instead
  */
-export type MenuGroup<T = MenuItem> = ItemGroup<T> | NestedGroup<T>;
-export type ItemGroup<T = MenuItem> = { header?: Cells; items: T[]; options?: MenuOptions };
-export type NestedGroup<T = MenuItem> = { header?: Cells; groups: MenuGroup<T>[]; options?: MenuOptions };
+export type MenuGroup<T = MenuItem> = LegacyItemGroup<T> | LegacyNestedGroup<T>;
+export type LegacyItemGroup<T = MenuItem> = { header?: Cells; items: T[]; options?: any };
+export type LegacyNestedGroup<T = MenuItem> = { header?: Cells; groups: MenuGroup<T>[]; options?: any };
 
 /**
- * Menu container that holds menu groups
+ * Menu container with three-layer architecture
  */
 export interface Menu<T = MenuItem> {
   id: string;
   name: string;
   currency: string; // Currency code for prices in this menu (e.g., 'USD', 'ALL')
-  content: MenuGroup<T>;
+  
+  // Layer 1: Data - all items indexed by ID
+  items: Record<string, T>;
+  
+  // Layer 2: Semantic - meaningful groupings of items
+  itemGroups: Record<string, ItemGroup>;
+  
+  // Layer 3: Presentation - layout using Cells (can include DataCell with type="item-group")
+  layout: Cells;
+  
+  // Supporting definitions
   choices?: Record<string, Choice>; // Choice definitions referenced by items via choiceId
   variants?: Record<string, VariantGroup>; // Variant definitions referenced by items
   modifierMenu?: boolean; // If true, requires an OrderItem in the stack to display
@@ -121,12 +136,12 @@ export type VariantPrice = {
 /**
  * Type guards
  */
-export function isItemGroup<T>(group: MenuGroup<T>): group is ItemGroup<T> {
-  return "items" in group;
+export function hasItemGroups(menu: Menu): boolean {
+  return menu.itemGroups !== undefined && Object.keys(menu.itemGroups).length > 0;
 }
 
-export function isNestedGroup<T>(group: MenuGroup<T>): group is NestedGroup<T> {
-  return "groups" in group;
+export function hasItems(menu: Menu): boolean {
+  return menu.items !== undefined && Object.keys(menu.items).length > 0;
 }
 
 export function isCategory(item: MenuItem | undefined): boolean {
@@ -149,37 +164,68 @@ export function hasFixedPricing(item: MenuItem): item is MenuItem & { price: num
   return typeof item.price === "number";
 }
 
-export function* iterateGroups<T>(group: MenuGroup<T>): Generator<ItemGroup<T>> {
-  if (isItemGroup(group)) {
-    yield group;
-  } else {
-    for (const subGroup of group.groups) {
-      yield* iterateGroups(subGroup);
-    }
-  }
+/**
+ * Get all items in an item group
+ */
+export function getItemsInGroup<T = MenuItem>(menu: Menu<T>, groupId: string): T[] {
+  const group = menu.itemGroups[groupId];
+  if (!group) return [];
+  
+  return group.itemIds
+    .map(id => menu.items[id])
+    .filter(item => item !== undefined);
 }
 
-export function* iterateItems<T>(group: MenuGroup<T>): Generator<T> {
-  for (const itemGroup of iterateGroups(group)) {
-    for (const item of itemGroup.items) {
-      yield item;
-    }
+/**
+ * Iterate all items in the menu
+ */
+export function* iterateItems<T = MenuItem>(menu: Menu<T>): Generator<T> {
+  for (const item of Object.values(menu.items)) {
+    yield item;
   }
 }
 
 /**
- * Map items in a menu group to a new type
+ * Iterate all item groups in the menu
  */
-export function mapItems<I, O>(group: MenuGroup<I>, mapper: (item: I) => O): MenuGroup<O> {
-  if (isItemGroup(group)) {
-    return {
-      ...group,
-      items: group.items.map(mapper),
-    } as ItemGroup<O>;
-  } else {
-    return {
-      ...group,
-      groups: group.groups.map((g) => mapItems(g, mapper)),
-    } as NestedGroup<O>;
+export function* iterateItemGroups(menu: Menu): Generator<ItemGroup> {
+  for (const group of Object.values(menu.itemGroups)) {
+    yield group;
+  }
+}
+
+/**
+ * Map all items in a menu to a new type
+ */
+export function mapMenuItems<I, O>(menu: Menu<I>, mapper: (item: I) => O): Menu<O> {
+  const mappedItems: Record<string, O> = {};
+  
+  for (const [id, item] of Object.entries(menu.items)) {
+    mappedItems[id] = mapper(item);
+  }
+  
+  return {
+    ...menu,
+    items: mappedItems
+  };
+}
+
+/**
+ * Add an item to a group
+ */
+export function addItemToGroup(menu: Menu, groupId: string, itemId: string): void {
+  const group = menu.itemGroups[groupId];
+  if (group && !group.itemIds.includes(itemId)) {
+    group.itemIds.push(itemId);
+  }
+}
+
+/**
+ * Remove an item from a group
+ */
+export function removeItemFromGroup(menu: Menu, groupId: string, itemId: string): void {
+  const group = menu.itemGroups[groupId];
+  if (group) {
+    group.itemIds = group.itemIds.filter(id => id !== itemId);
   }
 }

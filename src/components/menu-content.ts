@@ -8,7 +8,8 @@
 import "./menu-content.css";
 import { dataAttr, html, Template, replaceElements, buildHTML } from "@/lib/html-template";
 import { Context, formatPrice } from "@/lib/context";
-import { ItemGroup, Menu, MenuGroup, NestedGroup, DataCell, MenuItem, SubMenu } from "@/types";
+import { Menu, MenuGroup, DataCell, MenuItem, SubMenu, LegacyItemGroup, LegacyNestedGroup } from "@/types";
+import { convertToLegacyContent } from "@/lib/menu-compat";
 import { headerCells, DataCellRenderer } from "./menu-header";
 import * as MenuItemUI from "./menu-item";
 import * as VariantGroupUI from "./variant";
@@ -139,12 +140,12 @@ function createDataCellRenderer(menu: Menu | DisplayMenu, _context: Context): Da
  */
 function menuGroupTemplate<T>(group: MenuGroup<T>, dataRenderer: DataCellRenderer, context: Context): Template {
   return html`
-    <div class="${classes.group}" ${dataAttr("included", group.options?.extractIncluded)}>
+    <div class="${classes.group}" ${dataAttr("included", (group as any).options?.extractIncluded)}>
       ${group.header ? headerCells(group.header, dataRenderer) : ""}
       ${"items" in group
         ? html`
             <div class="${classes.groupItems}">
-              ${(group as ItemGroup<T>).items.map((itemData) => {
+              ${(group as LegacyItemGroup<T>).items.map((itemData) => {
                 // Type check: if it's a DisplayMenuItem, use it directly
                 if ("quantity" in (itemData as any) && "data" in (itemData as any)) {
                   return MenuItemUI.template(itemData as DisplayMenuItem, context);
@@ -155,7 +156,7 @@ function menuGroupTemplate<T>(group: MenuGroup<T>, dataRenderer: DataCellRendere
             </div>
           `
         : html`
-            ${(group as NestedGroup<T>).groups.map((nestedGroup) => menuGroupTemplate(nestedGroup, dataRenderer, context))}
+            ${(group as LegacyNestedGroup<T>).groups.map((nestedGroup) => menuGroupTemplate(nestedGroup, dataRenderer, context))}
           `}
     </div>
   `;
@@ -166,9 +167,11 @@ function menuGroupTemplate<T>(group: MenuGroup<T>, dataRenderer: DataCellRendere
  */
 export function template(data: MenuContentData, context: Context): Template {
   const dataRenderer = createDataCellRenderer(data.menu, context);
+  // Convert three-layer menu to legacy content structure if needed
+  const content = convertToLegacyContent(data.menu);
   return html`
     <div class="${classes.container}">
-      ${orderItemTemplate(data.order, context)} ${menuGroupTemplate(data.menu.content as MenuGroup<any>, dataRenderer, context)}
+      ${orderItemTemplate(data.order, context)} ${menuGroupTemplate(content, dataRenderer, context)}
     </div>
   `;
 }

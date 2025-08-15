@@ -8,7 +8,9 @@
  * - Automatic state restoration on page load
  */
 
-import { MenuItem, Menu, mapItems } from "@/types";
+import { MenuItem, Menu } from "@/types";
+import { mapMenuItems, isThreeLayerMenu } from "@/lib/menu-compat";
+import { DisplayMenuItem } from "@/model/menu-model";
 import { OrderItem } from "@/model/order-model";
 import { DisplayMenu } from "@/model/menu-model";
 import { createStore } from "@/lib/storage";
@@ -251,14 +253,36 @@ class AppRouter {
    * Transform raw menu to display menu
    */
   private transformToDisplayMenu(rawMenu: Menu): PageStaticData {
-    const displayMenu: DisplayMenu = {
-      ...rawMenu,
-      content: mapItems(rawMenu.content, (item) => ({
+    let displayMenu: DisplayMenu;
+    
+    if (isThreeLayerMenu(rawMenu)) {
+      // Three-layer structure: map items directly
+      const mappedItems: Record<string, DisplayMenuItem> = {};
+      for (const [id, item] of Object.entries(rawMenu.items)) {
+        mappedItems[id] = {
+          data: item,
+          quantity: 0,
+          total: 0
+        };
+      }
+      
+      displayMenu = {
+        ...rawMenu,
+        items: mappedItems
+      } as DisplayMenu;
+    } else {
+      // Legacy structure: map content
+      const mappedContent = mapMenuItems(rawMenu, (item: MenuItem) => ({
         data: item,
         quantity: 0,
         total: 0
-      }))
-    };
+      }));
+      
+      displayMenu = {
+        ...rawMenu,
+        content: mappedContent
+      } as any;
+    }
     
     return {
       type: "menu",
