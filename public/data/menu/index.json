@@ -2,78 +2,97 @@
   "id": "main-menu",
   "name": "Aromal",
   "currency": "ALL",
-  "content": {
-    "items": [
-      {
-        "id": "coffee",
-        "name": "Kafe",
-        "description": "Espresso, kafe speciale dhe pije të nxehta",
-        "icon": "☕",
-        "subMenu": {
-          "menuId": "espresso-menu",
-          "included": []
-        }
-      },
-      {
-        "id": "tea",
-        "name": "Çaj",
-        "description": "Çaje bimore, frutore dhe speciale",
-        "icon": "🍵",
-        "subMenu": {
-          "menuId": "tea-menu",
-          "included": []
-        }
-      },
-      {
-        "id": "juice",
-        "name": "Lëngje",
-        "description": "Lëngje të freskëta dhe përzierje",
-        "icon": "🥤",
-        "subMenu": {
-          "menuId": "juice-menu",
-          "included": []
-        }
-      },
-      {
-        "id": "smoothie",
-        "name": "Smoothie",
-        "description": "Smoothie dhe smoothie bowls",
-        "icon": "🥤",
-        "subMenu": {
-          "menuId": "smoothie-menu",
-          "included": []
-        }
-      },
-      {
-        "id": "yogurt",
-        "name": "Kos",
-        "description": "Kos me aromë dhe kombinime",
-        "icon": "🥛",
-        "subMenu": {
-          "menuId": "yogurt-menu",
-          "included": []
-        }
-      },
-      {
-        "id": "crepes",
-        "name": "Krepe",
-        "description": "Krepe të ëmbla dhe të kripura",
-        "icon": "🥞",
-        "subMenu": {
-          "menuId": "crepes-menu",
-          "included": []
-        }
-      },
-      {
-        "id": "toasts",
-        "name": "Tost",
-        "description": "Yoast dhe Avotoast",
-        "icon": "🍞",
-        "subMenu": {
-          "menuId": "toasts-menu",
-          "included": []
-        }
+  "items": {
+    "coffee": {
+      "id": "coffee",
+      "name": "Kafe",
+      "description": "Espresso, kafe speciale dhe pije të nxehta",
+      "icon": "☕",
+      "subMenu": {
+        "menuId": "espresso-menu",
+        "included": []
       }
-    ]
-  }
+    },
+    "tea": {
+      "id": "tea",
+      "name": "Çaj",
+      "description": "Çaje bimore, frutore dhe speciale",
+      "icon": "🍵",
+      "subMenu": {
+        "menuId": "tea-menu",
+        "included": []
+      }
+    },
+    "juice": {
+      "id": "juice",
+      "name": "Lëngje",
+      "description": "Lëngje të freskëta dhe përzierje",
+      "icon": "🥤",
+      "subMenu": {
+        "menuId": "juice-menu",
+        "included": []
+      }
+    },
+    "smoothie": {
+      "id": "smoothie",
+      "name": "Smoothie",
+      "description": "Smoothie dhe smoothie bowls",
+      "icon": "🥤",
+      "subMenu": {
+        "menuId": "smoothie-menu",
+        "included": []
+      }
+    },
+    "yogurt": {
+      "id": "yogurt",
+      "name": "Kos",
+      "description": "Kos me aromë dhe kombinime",
+      "icon": "🥛",
+      "subMenu": {
+        "menuId": "yogurt-menu",
+        "included": []
+      }
+    },
+    "crepes": {
+      "id": "crepes",
+      "name": "Krepe",
+      "description": "Krepe të ëmbla dhe të kripura",
+      "icon": "🥞",
+      "subMenu": {
+        "menuId": "crepes-menu",
+        "included": []
+      }
+    },
+    "toasts": {
+      "id": "toasts",
+      "name": "Tost",
+      "description": "Yoast dhe Avotoast",
+      "icon": "🍞",
+      "subMenu": {
+        "menuId": "toasts-menu",
+        "included": []
+      }
+    }
+  },
+  "itemGroups": {
+    "group-1": {
+      "id": "group-1",
+      "name": "Group 1",
+      "itemIds": [
+        "coffee",
+        "tea",
+        "juice",
+        "smoothie",
+        "yogurt",
+        "crepes",
+        "toasts"
+      ]
+    }
+  },
+  "layout": [
+    {
+      "type": "item-group",
+      "data": "group-1"
+    }
+  ]
 }

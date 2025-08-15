@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Menu Test</title>
+</head>
+<body>
+    <h1>Menu Test</h1>
+    <div id="result"></div>
+    
+    <script>
+        fetch('/data/menu/espresso-menu.json')
+            .then(res => res.json())
+            .then(menu => {
+                console.log('Menu loaded:', menu);
+                
+                const result = document.getElementById('result');
+                result.innerHTML = `
+                    <h2>Menu: ${menu.name}</h2>
+                    <p>Items: ${Object.keys(menu.items || {}).length}</p>
+                    <p>Item Groups: ${Object.keys(menu.itemGroups || {}).length}</p>
+                    <p>Layout elements: ${Array.isArray(menu.layout) ? menu.layout.length : 0}</p>
+                    
+                    <h3>Item Groups:</h3>
+                    <ul>
+                        ${Object.entries(menu.itemGroups || {}).map(([id, group]) => 
+                            `<li>${id}: ${group.name} (${group.itemIds.length} items)</li>`
+                        ).join('')}
+                    </ul>
+                    
+                    <h3>Layout:</h3>
+                    <pre>${JSON.stringify(menu.layout, null, 2)}</pre>
+                `;
+            })
+            .catch(err => {
+                console.error('Error loading menu:', err);
+                document.getElementById('result').innerHTML = 'Error: ' + err.message;
+            });
+    </script>
+</body>
+</html>
