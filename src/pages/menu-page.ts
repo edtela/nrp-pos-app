@@ -238,12 +238,12 @@ export function hydrate(container: Element, displayMenu: DisplayMenu, context: C
   });
 
   addEventHandler(page, MENU_ITEM_CLICK, (data) => {
-    const item = model.data.menu[data.id];
+    const item = model.data.items[data.id];
 
     if (item?.data.subMenu) {
       router.goto.menuItem(item.data);
     } else {
-      runUpdate({ menu: { [item.data.id]: { selected: (v) => !v } } });
+      runUpdate({ items: { [item.data.id]: { selected: (v) => !v } } });
     }
   });
 
@@ -254,7 +254,7 @@ export function hydrate(container: Element, displayMenu: DisplayMenu, context: C
   addEventHandler(page, ADD_TO_ORDER_EVENT, () => {
     const order = model.data.order;
     if (order) {
-      const modifiers = Object.values(model.data.menu)
+      const modifiers = Object.values(model.data.items)
         .filter((item) => {
           if (item.included) {
             return item.quantity !== 1 && !item.data.constraints?.choice?.single;

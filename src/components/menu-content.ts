@@ -301,8 +301,8 @@ export function update(
   }
 
   // Handle menu item updates
-  if (changes.menu) {
-    for (const [itemId, itemChanges] of Object.entries(changes.menu)) {
+  if (changes.items) {
+    for (const [itemId, itemChanges] of Object.entries(changes.items)) {
       const menuItemElement = container.querySelector(`#menu-item-${itemId}`);
       if (menuItemElement && itemChanges) {
         MenuItemUI.update(menuItemElement, itemChanges, context);

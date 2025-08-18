@@ -10,12 +10,9 @@ import {
   CONTEXT,
   META,
   type Update,
-  type UpdateResult
+  type UpdateResult,
 } from "tsqn";
-import {
-  type DataChange,
-  type DataBinding
-} from "./data-model-types";
+import { type DataChange, type DataBinding } from "./data-model-types";
 
 // Re-export from tsqn
 export const update = tsqnUpdate;
