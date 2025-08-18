@@ -6,7 +6,7 @@
  */
 
 import "./menu-content.css";
-import { html, Template, replaceElements, buildHTML } from "@/lib/html-template";
+import { html, Template, replaceElements, buildHTML, reconcileChildren } from "@/lib/html-template";
 import { Context, formatPrice } from "@/lib/context";
 import { DataCell, SubMenu, ItemGroup, Cell, Cells } from "@/types";
 import { headerCells, DataCellRenderer } from "./menu-header";
@@ -191,67 +191,11 @@ export function template(data: MenuContentData, context: Context): Template {
   `;
 }
 
-export function init(container: HTMLElement, subMenu: SubMenu | undefined, order: OrderMenuItem | undefined, context: Context) {
+export function init(container: HTMLElement, _subMenu: SubMenu | undefined, order: OrderMenuItem | undefined, context: Context) {
   if (order) {
     replaceElements(container, `.${classes.orderItem}`, orderItemTemplate(order, context));
   }
-
-  if (!subMenu?.included) return;
-
-  // Find the included section
-  const includedSection = container.querySelector('[data-included="true"]');
-  const includedGroupItems = includedSection?.querySelector(`.${classes.groupItems}`);
-
-  // Process each included item
-  for (const includedItem of subMenu.included) {
-    // Check if we have a custom item definition
-    if (includedItem.item != null) {
-      // Create a new element from the provided item
-      // Compute price for the included item
-      let price = 0;
-      if (typeof includedItem.item.price === 'number') {
-        price = includedItem.item.price;
-      }
-      const displayItem: DisplayMenuItem = { data: includedItem.item, price, quantity: 0, total: 0 };
-      const newElementTemplate = MenuItemUI.template(displayItem, context);
-      
-      // Convert template to DOM element
-      const tempDiv = document.createElement('div');
-      tempDiv.innerHTML = buildHTML(newElementTemplate);
-      const newElement = tempDiv.firstElementChild as HTMLElement;
-      
-      if (!newElement) continue;
-      
-      // Handle display property
-      if (includedItem.display === "none") {
-        // Add but hide the new item
-        newElement.style.display = "none";
-        includedGroupItems?.appendChild(newElement);
-      } else if (includedItem.display === "included" && includedGroupItems) {
-        // Add to included section (most common case for one-off ingredients)
-        includedGroupItems.appendChild(newElement);
-      } else if (includedItem.display === undefined) {
-        // Replace existing item if it exists
-        const existingElement = container.querySelector(`#menu-item-${includedItem.itemId}`);
-        if (existingElement) {
-          existingElement.parentNode?.replaceChild(newElement, existingElement);
-        } else if (includedGroupItems) {
-          // If no existing element, add to included section
-          includedGroupItems.appendChild(newElement);
-        }
-      }
-    } else {
-      // Just mark existing item with data attributes or hide
-      const existingElement = container.querySelector(`#menu-item-${includedItem.itemId}`);
-      if (existingElement) {
-        if (includedItem.display === "none") {
-          (existingElement as HTMLElement).style.display = "none";
-        } else if (includedItem.display === "included") {
-          existingElement.setAttribute("data-included", "true");
-        }
-      }
-    }
-  }
+  // Removed manual DOM manipulation - now handled by data-driven updates in update()
 }
 
 /**
@@ -265,6 +209,40 @@ export function handleDataChange(
 ): boolean {
   // TODO: Implement specific change handlers for performance
   return false; // Return false to trigger full re-render
+}
+
+/**
+ * Build children for a menu group, reusing existing DOM elements
+ */
+function buildGroupChildren(
+  container: Element,
+  itemIds: string[],
+  items: Record<string, DisplayMenuItem>,
+  context: Context
+): Element[] {
+  const children: Element[] = [];
+  
+  for (const itemId of itemIds) {
+    const item = items[itemId];
+    if (!item) continue;
+    
+    // Try to find existing element
+    let element = container.querySelector(`#menu-item-${itemId}`);
+    
+    if (!element) {
+      // Create new element from template
+      const template = MenuItemUI.template(item, context);
+      const temp = document.createElement('div');
+      temp.innerHTML = buildHTML(template);
+      element = temp.firstElementChild;
+    }
+    
+    if (element) {
+      children.push(element as Element);
+    }
+  }
+  
+  return children;
 }
 
 /**
@@ -295,6 +273,31 @@ export function update(
         const elt = container.querySelector(`.${classes.orderItem} .${classes.orderPrice}`);
         if (elt && data.order) {
           elt.textContent = formatPrice(data.order.unitPrice, context.currency);
+        }
+      }
+    }
+  }
+
+  // Handle itemGroups changes
+  if (changes.itemGroups) {
+    for (const [groupId, groupChanges] of Object.entries(changes.itemGroups)) {
+      if (groupChanges && 'itemIds' in groupChanges) {
+        const groupElement = container.querySelector(`[data-group-id="${groupId}"]`);
+        if (groupElement) {
+          const itemsContainer = groupElement.querySelector(`.${classes.groupItems}`);
+          if (itemsContainer && data.itemGroups) {
+            const group = data.itemGroups[groupId];
+            if (group) {
+              // Build new children array from updated itemIds
+              const newChildren = buildGroupChildren(
+                itemsContainer,
+                group.itemIds,
+                data.items,
+                context
+              );
+              reconcileChildren(itemsContainer, newChildren);
+            }
+          }
         }
       }
     }

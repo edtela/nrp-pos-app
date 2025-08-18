@@ -12,6 +12,11 @@ export type DisplayMenuItem = {
   total: number;
 };
 
+export function toDisplayMenuItem(data: MenuItem) {
+  //TODO make price optional
+  return { data, price: data.price ?? 0, quantity: 0, total: 0 };
+}
+
 export type OrderMenuItem = {
   order?: OrderItem;
   menuItem: MenuItem;
@@ -51,51 +56,7 @@ const bindings: DataBinding<MenuPageData>[] = [
   // When parent order is set, update the variant of the menu
   {
     onChange: [{ order: typeChange }],
-    update: (data: MenuPageData) => {
-      const order = data.order;
-      if (order == null) return {};
-
-      const stmt: Update<MenuPageData> = { items: {} };
-      if (order.menuItem.subMenu?.included) {
-        order.menuItem.subMenu.included.reduce((u, includedItem) => {
-          (u as any)[includedItem.itemId] = {
-            [WHERE]: (item: any) => item != null,
-            included: true,
-            selected: true,
-            quantity: 1,
-          };
-          return u;
-        }, stmt.items);
-      }
-
-      if (order.order) {
-        //override selected and quantity for included
-        order.order.modifiers.reduce((u, mod) => {
-          (u as any)[mod.menuItemId] = {
-            ...((u as any)[mod.menuItemId] ?? {}),
-            [WHERE]: (item: any) => item != null,
-            selected: mod.quantity > 0,
-            quantity: mod.quantity,
-          };
-          return u;
-        }, stmt.items);
-      }
-
-      // Set variant selection if the menu item has variant pricing
-      if (isVariantPricing(order.menuItem.price) && data.variants) {
-        const variantGroup = data.variants[order.menuItem.price.groupId];
-        if (variantGroup) {
-          stmt.variants = {
-            [order.menuItem.price.groupId]: {
-              [WHERE]: (v: VariantGroup) => v != null,
-              selectedId: variantGroup.selectedId,
-            },
-          };
-        }
-      }
-
-      return stmt;
-    },
+    update: orderChanged,
   },
   // Variant selection, update menu items and order
   {
@@ -255,4 +216,99 @@ export class MenuModel {
     }
     return undefined;
   }
+}
+
+function orderChanged(data: MenuPageData) {
+  const order = data.order;
+  if (order == null) return {};
+
+  const itemGroupChanges: Record<string, { remove: string[]; add: string[] }> = {};
+
+  const stmt: Update<MenuPageData> = { items: {} };
+  if (order.menuItem.subMenu?.included) {
+    for (const included of order.menuItem.subMenu.included) {
+      const itemId = included.item?.id || included.itemId;
+      
+      if (included.item) {
+        // Replace/add the custom item
+        (stmt.items as any)[included.item.id] = [toDisplayMenuItem(included.item)];
+      } else {
+        // Update existing item properties
+        (stmt.items as any)[included.itemId] = {
+          [WHERE]: (item: any) => item != null,
+          included: true,
+          selected: true,
+          quantity: 1,
+        };
+      }
+
+      // Handle moving items between groups
+      if (included.display && data.itemGroups) {
+        for (const [groupId, group] of Object.entries(data.itemGroups)) {
+          const hasItem = group.itemIds.includes(itemId);
+          const shouldHaveItem = groupId === included.display;
+          
+          if (hasItem && !shouldHaveItem) {
+            // Remove from this group
+            if (!itemGroupChanges[groupId]) {
+              itemGroupChanges[groupId] = { remove: [], add: [] };
+            }
+            itemGroupChanges[groupId].remove.push(itemId);
+          } else if (!hasItem && shouldHaveItem) {
+            // Add to this group
+            if (!itemGroupChanges[groupId]) {
+              itemGroupChanges[groupId] = { remove: [], add: [] };
+            }
+            itemGroupChanges[groupId].add.push(itemId);
+          }
+        }
+      }
+    }
+  }
+
+  for (const [groupId, changes] of Object.entries(itemGroupChanges)) {
+    const itemGroup = data.itemGroups?.[groupId];
+    if (itemGroup) {
+      // Start with existing items, remove unwanted, add new ones
+      const ids = itemGroup.itemIds.filter((id) => !changes.remove.includes(id));
+      changes.add.forEach((add) => {
+        if (!ids.includes(add)) {
+          ids.push(add);
+        }
+      });
+
+      if (!stmt.itemGroups) {
+        stmt.itemGroups = {};
+      }
+      (stmt.itemGroups as any)[groupId] = { itemIds: [ids] };
+    }
+  }
+
+  if (order.order) {
+    //override selected and quantity for included
+    order.order.modifiers.reduce((u, mod) => {
+      (u as any)[mod.menuItemId] = {
+        ...((u as any)[mod.menuItemId] ?? {}),
+        [WHERE]: (item: any) => item != null,
+        selected: mod.quantity > 0,
+        quantity: mod.quantity,
+      };
+      return u;
+    }, stmt.items);
+  }
+
+  // Set variant selection if the menu item has variant pricing
+  if (isVariantPricing(order.menuItem.price) && data.variants) {
+    const variantGroup = data.variants[order.menuItem.price.groupId];
+    if (variantGroup) {
+      stmt.variants = {
+        [order.menuItem.price.groupId]: {
+          [WHERE]: (v: VariantGroup) => v != null,
+          selectedId: variantGroup.selectedId,
+        },
+      };
+    }
+  }
+
+  return stmt;
 }

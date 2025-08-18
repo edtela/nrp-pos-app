@@ -290,3 +290,32 @@ export function addEventHandler<T extends Record<string, any>>(
     handler(data);
   });
 }
+
+/**
+ * Reconcile container's children with a new set of elements
+ * Preserves existing DOM elements when possible, minimizing reflows
+ * @param container The container element
+ * @param newChildren Array of elements that should be the container's children
+ */
+export function reconcileChildren(container: Element, newChildren: Element[]): void {
+  const existingChildren = Array.from(container.children);
+  
+  // If no changes in length and all elements are the same, do nothing
+  if (existingChildren.length === newChildren.length && 
+      existingChildren.every((child, i) => child === newChildren[i])) {
+    return;
+  }
+  
+  // Create a document fragment for batch DOM updates
+  const fragment = document.createDocumentFragment();
+  
+  // Add all new children to the fragment
+  // If the child is already in the container, it will be moved (not cloned)
+  newChildren.forEach(child => {
+    fragment.appendChild(child);
+  });
+  
+  // Clear container and append the fragment
+  container.innerHTML = '';
+  container.appendChild(fragment);
+}
