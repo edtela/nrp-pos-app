@@ -8,7 +8,7 @@
  * - Automatic state restoration on page load
  */
 
-import { MenuItem, Menu } from "@/types";
+import { MenuItem, Menu, isVariantPricing } from "@/types";
 import { DisplayMenuItem } from "@/model/menu-model";
 import { OrderItem } from "@/model/order-model";
 import { DisplayMenu } from "@/model/menu-model";
@@ -255,8 +255,21 @@ class AppRouter {
     // Three-layer structure: map items directly
     const mappedItems: Record<string, DisplayMenuItem> = {};
     for (const [id, item] of Object.entries(rawMenu.items)) {
+      // Compute initial price based on item type
+      let price = 0;
+      if (typeof item.price === 'number') {
+        price = item.price;
+      } else if (isVariantPricing(item.price)) {
+        // Use the default selected variant's price
+        const variantGroup = rawMenu.variants?.[item.price.groupId];
+        if (variantGroup) {
+          price = item.price.prices[variantGroup.selectedId] ?? 0;
+        }
+      }
+      
       mappedItems[id] = {
         data: item,
+        price,
         quantity: 0,
         total: 0
       };

@@ -207,7 +207,12 @@ export function init(container: HTMLElement, subMenu: SubMenu | undefined, order
     // Check if we have a custom item definition
     if (includedItem.item != null) {
       // Create a new element from the provided item
-      const displayItem: DisplayMenuItem = { data: includedItem.item, quantity: 0, total: 0 };
+      // Compute price for the included item
+      let price = 0;
+      if (typeof includedItem.item.price === 'number') {
+        price = includedItem.item.price;
+      }
+      const displayItem: DisplayMenuItem = { data: includedItem.item, price, quantity: 0, total: 0 };
       const newElementTemplate = MenuItemUI.template(displayItem, context);
       
       // Convert template to DOM element
@@ -278,10 +283,10 @@ export function update(
       replaceElements(container, `.${classes.orderItem}`, orderItemTemplate(data.order, context));
     } else {
       // Update price if changed
-      if (changes.order.menuItem?.price !== undefined) {
+      if (changes.order.unitPrice !== undefined) {
         const elt = container.querySelector(`.${classes.orderItem} .${classes.orderPrice}`);
         if (elt) {
-          elt.textContent = formatPrice(changes.order.menuItem.price, context.currency);
+          elt.textContent = formatPrice(changes.order.unitPrice, context.currency);
         }
       }
 

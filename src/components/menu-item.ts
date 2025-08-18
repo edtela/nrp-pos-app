@@ -49,7 +49,7 @@ export function template(item: DisplayMenuItem, context: Context): Template {
           <span class="${classes.name}">${item.data.name}</span>
           ${item.data.description ? html`<p class="${classes.description}">${item.data.description}</p>` : ""}
         </div>
-        ${priceTemplate(context, item.data.price)}
+        ${priceTemplate(context, item.price)}
       </div>
     </div>
   `;
@@ -65,8 +65,8 @@ export function update(
 ): void {
   // Note: This component treats container AS the menu item element itself
   // Check if price has changed
-  if (changes.data && "price" in changes.data) {
-    replaceElements(container, `.${classes.price}`, priceTemplate(context, changes.data.price));
+  if ("price" in changes) {
+    replaceElements(container, `.${classes.price}`, priceTemplate(context, changes.price));
   }
 
   if ("selected" in changes) {

@@ -1,10 +1,11 @@
-import { Menu, MenuItem, VariantGroup } from "@/types";
+import { Menu, MenuItem, VariantGroup, isVariantPricing } from "@/types";
 import { anyChange, state, typeChange } from "@/lib/data-model";
 import { ALL, DataBinding, Update, UpdateResult, WHERE } from "@/lib/data-model-types";
 import { OrderItem, OrderModifier } from "./order-model";
 
 export type DisplayMenuItem = {
   data: MenuItem;
+  price: number; // Computed price based on selected variant or fixed price
   selected?: boolean;
   included?: boolean;
   quantity: number;
@@ -23,14 +24,22 @@ export type OrderMenuItem = {
 
 export type DisplayMenu = Menu<DisplayMenuItem>;
 
-export function toOrderMenuItem(item: MenuItem): OrderMenuItem {
+export function toOrderMenuItem(item: MenuItem, variantId?: string): OrderMenuItem {
+  // Compute the price based on whether it's fixed or variant-based
+  let price = 0;
+  if (typeof item.price === 'number') {
+    price = item.price;
+  } else if (item.price && variantId) {
+    price = item.price.prices[variantId] ?? 0;
+  }
+  
   return {
     menuItem: item,
     modifiers: [],
     modifiersPrice: 0,
-    unitPrice: item.price ?? 0,
+    unitPrice: price,
     quantity: 1,
-    total: item.price ?? 0,
+    total: price,
   };
 }
 
@@ -74,14 +83,17 @@ const bindings: DataBinding<MenuPageData>[] = [
         }, stmt.menu);
       }
 
-      if (order.menuItem.variants?.selectedId) {
-        const variants = order.menuItem.variants;
-        stmt.variants = {
-          [variants.groupId]: {
-            [WHERE]: (v: VariantGroup) => v != null,
-            selectedId: variants.selectedId,
-          },
-        };
+      // Set variant selection if the menu item has variant pricing
+      if (isVariantPricing(order.menuItem.price)) {
+        const variantGroup = data.variants[order.menuItem.price.groupId];
+        if (variantGroup) {
+          stmt.variants = {
+            [order.menuItem.price.groupId]: {
+              [WHERE]: (v: VariantGroup) => v != null,
+              selectedId: variantGroup.selectedId,
+            },
+          };
+        }
       }
 
       return stmt;
@@ -91,24 +103,32 @@ const bindings: DataBinding<MenuPageData>[] = [
   {
     init: true,
     onChange: ["variants", [ALL], "selectedId"],
-    update: (group: VariantGroup) => ({
-      order: {
-        [WHERE]: (order) => order != null && order.menuItem.variants?.groupId === group.id,
-        menuItem: {
-          variants: { selectedId: group.selectedId },
-          price: (_, item) => item.variants?.price[group.selectedId],
-        },
-      },
-      menu: {
-        [ALL]: {
-          [WHERE]: (item) => item.data.variants?.groupId === group.id,
-          data: {
-            variants: { selectedId: group.selectedId },
-            price: (_, item) => item.variants?.price[group.selectedId],
+    update: (group: VariantGroup, _, data) => {
+      const updates: Update<MenuPageData> = {
+        menu: {
+          [ALL]: {
+            [WHERE]: (item) => isVariantPricing(item.data.price) && item.data.price.groupId === group.id,
+            price: (_, item) => {
+              if (isVariantPricing(item.data.price)) {
+                return item.data.price.prices[group.selectedId] ?? 0;
+              }
+              return 0;
+            },
           },
         },
-      },
-    }),
+      };
+
+      // Update order if it has variant pricing
+      if (data.order && isVariantPricing(data.order.menuItem.price) && data.order.menuItem.price.groupId === group.id) {
+        const newPrice = data.order.menuItem.price.prices[group.selectedId] ?? 0;
+        updates.order = {
+          unitPrice: newPrice,
+          total: newPrice * (data.order?.quantity ?? 1),
+        };
+      }
+
+      return updates;
+    },
   },
   // Choice selection. On single selection, unselect others
   {
@@ -148,10 +168,10 @@ const bindings: DataBinding<MenuPageData>[] = [
   },
   //update item total price
   {
-    onChange: ["menu", [ALL], { data: { price: anyChange }, quantity: anyChange, included: anyChange }],
+    onChange: ["menu", [ALL], { price: anyChange, quantity: anyChange, included: anyChange }],
     update(item: DisplayMenuItem) {
       const additionalQty = item.quantity - (item.included ? 1 : 0);
-      const total = additionalQty * (item.data.price ?? 0);
+      const total = additionalQty * item.price;
       return { menu: { [item.data.id]: { total } } };
     },
   },
@@ -170,7 +190,7 @@ const bindings: DataBinding<MenuPageData>[] = [
             menuItemId: item.data.id,
             name: item.data.name,
             quantity: item.quantity,
-            price: item.data.price ?? 0,
+            price: item.price,
           }));
         console.log("SETTIGN MODS: ");
         return { order: { modifiers: [modifiers] } };
@@ -194,8 +214,7 @@ const bindings: DataBinding<MenuPageData>[] = [
       const order = data.order;
       if (!order) return {};
 
-      const price = order.menuItem.price ?? 0;
-      const unitPrice = price + order.modifiersPrice;
+      const unitPrice = order.unitPrice + order.modifiersPrice;
       const total = order.quantity * unitPrice;
       return { order: { unitPrice, total } };
     },

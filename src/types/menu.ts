@@ -66,12 +66,8 @@ export interface MenuItem {
   icon?: string;
 
   // Pricing - if undefined, this is a Category; if defined, this is a SaleItem
-  price?: number;
-  variants?: {
-    groupId: string; // References a Variants definition for variant-based pricing
-    price: VariantPrice;
-    selectedId?: string;
-  };
+  // Can be either a fixed price (number) or variant-based pricing (VariantPricing)
+  price?: number | VariantPricing;
 
   // Constraints
   constraints?: Constraint; // Item constraints and choice reference
@@ -127,6 +123,14 @@ export type VariantPrice = {
 };
 
 /**
+ * Variant pricing configuration including the group reference and prices
+ */
+export interface VariantPricing {
+  groupId: string; // References a VariantGroup definition
+  prices: VariantPrice; // Price for each variant ID
+}
+
+/**
  * Type guards
  */
 export function hasItemGroups(menu: Menu): boolean {
@@ -142,15 +146,15 @@ export function isCategory(item: MenuItem | undefined): boolean {
 }
 
 export function isSaleItem(item: MenuItem | undefined): boolean {
-  return item?.price !== undefined || item?.variants !== undefined;
+  return item?.price !== undefined;
 }
 
-export function isVariantPrice(price?: number | VariantPrice): price is VariantPrice {
-  return price != null && typeof price !== "number";
+export function isVariantPricing(price?: number | VariantPricing): price is VariantPricing {
+  return price != null && typeof price === "object" && "groupId" in price && "prices" in price;
 }
 
-export function hasVariantPricing(item: MenuItem): item is MenuItem & { price: VariantPrice } {
-  return typeof item.price === "object" && item.price !== null;
+export function hasVariantPricing(item: MenuItem): item is MenuItem & { price: VariantPricing } {
+  return isVariantPricing(item.price);
 }
 
 export function hasFixedPricing(item: MenuItem): item is MenuItem & { price: number } {

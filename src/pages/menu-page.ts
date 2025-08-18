@@ -265,7 +265,7 @@ export function hydrate(container: Element, displayMenu: DisplayMenu, context: C
           menuItemId: item.data.id,
           name: item.data.name,
           quantity: item.quantity,
-          price: item.data.price ?? 0,
+          price: item.price,
         }));
 
       const orderItem: OrderItem = {
