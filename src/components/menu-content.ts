@@ -58,6 +58,7 @@ function generateModificationTokens(modifiers: OrderMenuItem["modifiers"]): Modi
 const classes = {
   container: "menu-content",
   group: "menu-group",
+  groupHeader: "menu-group-header",
   groupItems: "menu-group-items",
   orderItem: "order-item",
   orderInfo: "order-info",
@@ -142,10 +143,23 @@ function createDataCellRenderer(menu: DisplayMenu, context: Context): DataCellRe
  * Template for rendering an item group
  */
 function itemGroupTemplate(menu: DisplayMenu, group: ItemGroup, context: Context): Template {
+  // Check if group has any visible items
+  const visibleItems = group.itemIds.filter(itemId => menu.items[itemId]);
+  
+  // Don't render empty groups
+  if (visibleItems.length === 0) {
+    return html``;
+  }
+  
   return html`
-    <div class="${classes.group}">
+    <div class="${classes.group}" data-group-id="${group.id}">
+      ${group.name ? html`
+        <div class="${classes.groupHeader}">
+          ${group.name}
+        </div>
+      ` : ''}
       <div class="${classes.groupItems}">
-        ${group.itemIds.map((itemId) => {
+        ${visibleItems.map((itemId) => {
           const item = menu.items[itemId];
           if (!item) return html``;
           return MenuItemUI.template(item, context);
@@ -283,19 +297,28 @@ export function update(
     for (const [groupId, groupChanges] of Object.entries(changes.itemGroups)) {
       if (groupChanges && 'itemIds' in groupChanges) {
         const groupElement = container.querySelector(`[data-group-id="${groupId}"]`);
-        if (groupElement) {
-          const itemsContainer = groupElement.querySelector(`.${classes.groupItems}`);
-          if (itemsContainer && data.itemGroups) {
-            const group = data.itemGroups[groupId];
-            if (group) {
-              // Build new children array from updated itemIds
-              const newChildren = buildGroupChildren(
-                itemsContainer,
-                group.itemIds,
-                data.items,
-                context
-              );
-              reconcileChildren(itemsContainer, newChildren);
+        if (groupElement && data.itemGroups) {
+          const group = data.itemGroups[groupId];
+          if (group) {
+            const visibleItems = group.itemIds.filter(itemId => data.items[itemId]);
+            
+            // Hide entire group if no visible items
+            if (visibleItems.length === 0) {
+              (groupElement as HTMLElement).style.display = 'none';
+            } else {
+              (groupElement as HTMLElement).style.display = '';
+              
+              const itemsContainer = groupElement.querySelector(`.${classes.groupItems}`);
+              if (itemsContainer) {
+                // Build new children array from updated itemIds
+                const newChildren = buildGroupChildren(
+                  itemsContainer,
+                  visibleItems,
+                  data.items,
+                  context
+                );
+                reconcileChildren(itemsContainer, newChildren);
+              }
             }
           }
         }
