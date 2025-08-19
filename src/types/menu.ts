@@ -6,6 +6,7 @@
  */
 
 import { Cells } from "./display.js";
+import { Update } from "tsqn";
 
 /**
  * Item group - semantic collection of related menu items
@@ -48,6 +49,7 @@ export interface Menu<T = MenuItem> {
 export interface SubMenu {
   menuId: string;
   included: IncludedItem[];
+  preUpdate?: Update<Menu>[];  // Updates to apply before processing included items
 }
 
 export interface IncludedItem {

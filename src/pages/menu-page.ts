@@ -229,6 +229,14 @@ export function hydrate(container: Element, displayMenu: DisplayMenu, context: C
 
   let changes: UpdateResult<MenuPageData> | undefined = model.setMenu(displayMenu);
   if (navContext.order) {
+    // Execute preUpdate statements if they exist
+    if (navContext.order.menuItem.subMenu?.preUpdate) {
+      // Cast preUpdate to Update<MenuPageData> since we're only updating shared fields
+      const updates = navContext.order.menuItem.subMenu.preUpdate as Update<MenuPageData>[];
+      changes = model.updateAll(updates, changes);
+    }
+    
+    // Then process the order normally
     changes = model.update({ order: [navContext.order] }, changes);
   }
   update(page, changes, model.data, context);
