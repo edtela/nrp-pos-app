@@ -82,9 +82,7 @@ function orderItemTemplate(order: OrderMenuItem | undefined, context: Context): 
   return html`
     <div class="${classes.orderItem}">
       <div class="${classes.orderInfo}">
-        <span class="${classes.orderTitle}">
-          ${order.menuItem.name}
-        </span>
+        <span class="${classes.orderTitle}"> ${order.menuItem.name} </span>
         <span class="${classes.orderPrice}">${formatPrice(order.unitPrice, context.currency)}</span>
       </div>
       ${modifications.length > 0
@@ -96,7 +94,7 @@ function orderItemTemplate(order: OrderMenuItem | undefined, context: Context): 
                     ${mod.name}
                     ${mod.type === "added-priced" && mod.price ? ` (+${formatPrice(mod.price, context.currency)})` : ""}
                   </span>
-                `
+                `,
               )}
             </div>
           `
@@ -143,25 +141,14 @@ function createDataCellRenderer(menu: DisplayMenu, context: Context): DataCellRe
  * Template for rendering an item group
  */
 function itemGroupTemplate(menu: DisplayMenu, group: ItemGroup, context: Context): Template {
-  // Check if group has any visible items
-  const visibleItems = group.itemIds.filter(itemId => menu.items[itemId]);
-  
-  // Don't render empty groups
-  if (visibleItems.length === 0) {
-    return html``;
-  }
+  const isEmpty = group.itemIds.length === 0;
   
   return html`
-    <div class="${classes.group}" data-group-id="${group.id}">
-      ${group.name ? html`
-        <div class="${classes.groupHeader}">
-          ${group.name}
-        </div>
-      ` : ''}
+    <div class="${classes.group}" data-group-id="${group.id}" ${isEmpty ? 'style="display: none;"' : ''}>
+      ${group.name ? html` <div class="${classes.groupHeader}">${group.name}</div> ` : ""}
       <div class="${classes.groupItems}">
-        ${visibleItems.map((itemId) => {
+        ${group.itemIds.map((itemId) => {
           const item = menu.items[itemId];
-          if (!item) return html``;
           return MenuItemUI.template(item, context);
         })}
       </div>
@@ -174,7 +161,7 @@ function itemGroupTemplate(menu: DisplayMenu, group: ItemGroup, context: Context
  */
 function processLayoutCells(cells: Cells, dataRenderer: DataCellRenderer): Template {
   if (Array.isArray(cells)) {
-    return html`${cells.map(cell => processSingleCell(cell, dataRenderer))}`;
+    return html`${cells.map((cell) => processSingleCell(cell, dataRenderer))}`;
   }
   return processSingleCell(cells, dataRenderer);
 }
@@ -183,7 +170,7 @@ function processLayoutCells(cells: Cells, dataRenderer: DataCellRenderer): Templ
  * Process a single cell
  */
 function processSingleCell(cell: Cell, dataRenderer: DataCellRenderer): Template {
-  if ('type' in cell) {
+  if ("type" in cell) {
     // DataCell - use renderer
     return dataRenderer(cell as DataCell);
   }
@@ -196,16 +183,20 @@ function processSingleCell(cell: Cell, dataRenderer: DataCellRenderer): Template
  */
 export function template(data: MenuContentData, context: Context): Template {
   const dataRenderer = createDataCellRenderer(data.menu, context);
-  
+
   return html`
     <div class="${classes.container}">
-      ${orderItemTemplate(data.order, context)}
-      ${processLayoutCells(data.menu.layout, dataRenderer)}
+      ${orderItemTemplate(data.order, context)} ${processLayoutCells(data.menu.layout, dataRenderer)}
     </div>
   `;
 }
 
-export function init(container: HTMLElement, _subMenu: SubMenu | undefined, order: OrderMenuItem | undefined, context: Context) {
+export function init(
+  container: HTMLElement,
+  _subMenu: SubMenu | undefined,
+  order: OrderMenuItem | undefined,
+  context: Context,
+) {
   if (order) {
     replaceElements(container, `.${classes.orderItem}`, orderItemTemplate(order, context));
   }
@@ -219,7 +210,7 @@ export function handleDataChange(
   _container: HTMLElement,
   _data: MenuPageData,
   _change: DataChange<MenuPageData>,
-  _context: Context
+  _context: Context,
 ): boolean {
   // TODO: Implement specific change handlers for performance
   return false; // Return false to trigger full re-render
@@ -232,30 +223,29 @@ function buildGroupChildren(
   container: Element,
   itemIds: string[],
   items: Record<string, DisplayMenuItem>,
-  context: Context
+  context: Context,
 ): Element[] {
   const children: Element[] = [];
-  
+
   for (const itemId of itemIds) {
     const item = items[itemId];
-    if (!item) continue;
-    
+
     // Try to find existing element
     let element = container.querySelector(`#menu-item-${itemId}`);
-    
+
     if (!element) {
       // Create new element from template
       const template = MenuItemUI.template(item, context);
-      const temp = document.createElement('div');
+      const temp = document.createElement("div");
       temp.innerHTML = buildHTML(template);
       element = temp.firstElementChild;
     }
-    
+
     if (element) {
       children.push(element as Element);
     }
   }
-  
+
   return children;
 }
 
@@ -266,7 +256,7 @@ export function update(
   container: HTMLElement,
   changes: DataChange<MenuPageData>,
   context: Context,
-  data: MenuPageData
+  data: MenuPageData,
 ): void {
   // Handle order updates
   if (changes.order) {
@@ -295,28 +285,22 @@ export function update(
   // Handle itemGroups changes
   if (changes.itemGroups) {
     for (const [groupId, groupChanges] of Object.entries(changes.itemGroups)) {
-      if (groupChanges && 'itemIds' in groupChanges) {
+      if (groupChanges && "itemIds" in groupChanges) {
         const groupElement = container.querySelector(`[data-group-id="${groupId}"]`);
         if (groupElement && data.itemGroups) {
           const group = data.itemGroups[groupId];
           if (group) {
-            const visibleItems = group.itemIds.filter(itemId => data.items[itemId]);
-            
-            // Hide entire group if no visible items
-            if (visibleItems.length === 0) {
-              (groupElement as HTMLElement).style.display = 'none';
+            // Update display based on whether group has items
+            if (group.itemIds.length === 0) {
+              (groupElement as HTMLElement).style.display = "none";
             } else {
-              (groupElement as HTMLElement).style.display = '';
-              
+              // Remove display style to show the group
+              (groupElement as HTMLElement).style.removeProperty('display');
+
               const itemsContainer = groupElement.querySelector(`.${classes.groupItems}`);
               if (itemsContainer) {
                 // Build new children array from updated itemIds
-                const newChildren = buildGroupChildren(
-                  itemsContainer,
-                  visibleItems,
-                  data.items,
-                  context
-                );
+                const newChildren = buildGroupChildren(container, group.itemIds, data.items, context);
                 reconcileChildren(itemsContainer, newChildren);
               }
             }

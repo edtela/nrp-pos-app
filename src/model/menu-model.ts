@@ -12,9 +12,9 @@ export type DisplayMenuItem = {
   total: number;
 };
 
-export function toDisplayMenuItem(data: MenuItem) {
+export function toDisplayMenuItem(data: MenuItem): DisplayMenuItem {
   //TODO make price optional
-  return { data, price: data.price ?? 0, quantity: 0, total: 0 };
+  return { data, price: 0, quantity: 0, total: 0 };
 }
 
 export type OrderMenuItem = {
@@ -228,10 +228,14 @@ function orderChanged(data: MenuPageData) {
   if (order.menuItem.subMenu?.included) {
     for (const included of order.menuItem.subMenu.included) {
       const itemId = included.item?.id || included.itemId;
-      
+
       if (included.item) {
         // Replace/add the custom item
-        (stmt.items as any)[included.item.id] = [toDisplayMenuItem(included.item)];
+        const customItem = toDisplayMenuItem(included.item);
+        customItem.included = true;
+        customItem.selected = true;
+        customItem.quantity = 1;
+        (stmt.items as any)[included.item.id] = [customItem];
       } else {
         // Update existing item properties
         (stmt.items as any)[included.itemId] = {
@@ -247,7 +251,7 @@ function orderChanged(data: MenuPageData) {
         for (const [groupId, group] of Object.entries(data.itemGroups)) {
           const hasItem = group.itemIds.includes(itemId);
           const shouldHaveItem = groupId === included.display;
-          
+
           if (hasItem && !shouldHaveItem) {
             // Remove from this group
             if (!itemGroupChanges[groupId]) {
