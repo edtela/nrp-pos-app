@@ -257,7 +257,7 @@ export function hydrate(container: Element, displayMenu: DisplayMenu, context: C
       const modifiers = Object.values(model.data.items)
         .filter((item) => {
           if (item.included) {
-            return item.quantity !== 1 && !item.data.constraints?.choice?.single;
+            return item.quantity !== 1 && !item.isSingleChoice;
           }
           return item.quantity > 0;
         })

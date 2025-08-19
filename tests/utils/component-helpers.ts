@@ -92,9 +92,10 @@ export function createRadioItem(overrides: any = {}) {
       id: 'radio-item',
       name: 'Radio Item',
       icon: '○',
-      constraints: { choice: { single: true } },
+      constraints: { choiceId: 'single-choice' },
       ...overrides.data
     },
+    isSingleChoice: true,
     ...overrides
   });
 }

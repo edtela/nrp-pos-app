@@ -29,7 +29,7 @@ function priceTemplate(context: Context, price?: number): Template {
  * Menu item template - pure function
  */
 export function template(item: DisplayMenuItem, context: Context): Template {
-  const controlType = item.data.constraints?.choice?.single ? "radio" : item.data.subMenu ? "nav" : "check";
+  const controlType = item.isSingleChoice ? "radio" : item.data.subMenu ? "nav" : "check";
 
   return html`
     <div

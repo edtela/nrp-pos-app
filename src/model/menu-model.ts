@@ -10,11 +10,21 @@ export type DisplayMenuItem = {
   included?: boolean;
   quantity: number;
   total: number;
+  isSingleChoice?: boolean; // Computed from choice definition (true if min=1 and max=1)
 };
 
-export function toDisplayMenuItem(data: MenuItem): DisplayMenuItem {
+export function toDisplayMenuItem(data: MenuItem, choices?: Record<string, any>): DisplayMenuItem {
   //TODO make price optional
-  return { data, price: 0, quantity: 0, total: 0 };
+  // Compute isSingleChoice from choice definition if available
+  let isSingleChoice: boolean | undefined;
+  if (data.constraints?.choiceId && choices) {
+    const choice = choices[data.constraints.choiceId];
+    if (choice) {
+      isSingleChoice = choice.min === 1 && choice.max === 1;
+    }
+  }
+  
+  return { data, price: 0, quantity: 0, total: 0, isSingleChoice };
 }
 
 export type OrderMenuItem = {
@@ -94,11 +104,11 @@ const bindings: DataBinding<MenuPageData>[] = [
   {
     onChange: ["items", [ALL], "selected"],
     update(selectItem: DisplayMenuItem) {
-      if (selectItem.selected && selectItem.data.constraints?.choice?.single) {
+      if (selectItem.selected && selectItem.isSingleChoice) {
         return {
           items: {
             [ALL]: {
-              [WHERE]: (item) => item.data.constraints?.choice?.id === selectItem.data.constraints?.choice?.id,
+              [WHERE]: (item) => item.data.constraints?.choiceId === selectItem.data.constraints?.choiceId,
               selected: (_, item) => item.data.id === selectItem.data.id,
             },
           },
@@ -142,7 +152,7 @@ const bindings: DataBinding<MenuPageData>[] = [
         const modifiers: OrderModifier[] = Object.values(data.items)
           .filter((item) => {
             if (item.included) {
-              return item.quantity !== 1 && !item.data.constraints?.choice?.single;
+              return item.quantity !== 1 && !item.isSingleChoice;
             }
             return item.quantity > 0;
           })
@@ -231,7 +241,7 @@ function orderChanged(data: MenuPageData) {
 
       if (included.item) {
         // Replace/add the custom item
-        const customItem = toDisplayMenuItem(included.item);
+        const customItem = toDisplayMenuItem(included.item, data.choices);
         customItem.included = true;
         customItem.selected = true;
         customItem.quantity = 1;

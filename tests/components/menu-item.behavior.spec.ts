@@ -119,9 +119,10 @@ test.describe('Menu Item Component Behavior', () => {
             id: 'mozzarella', 
             name: 'Mozzarella', 
             icon: '🧀',
-            constraints: { choice: { single: true } }
+            constraints: { choiceId: 'cheese-choice' }
           },
-          selected: false
+          selected: false,
+          isSingleChoice: true
         });
       });
 
@@ -138,9 +139,10 @@ test.describe('Menu Item Component Behavior', () => {
           data: { 
             id: 'mozzarella', 
             name: 'Mozzarella',
-            constraints: { choice: { single: true } }
+            constraints: { choiceId: 'cheese-choice' }
           },
-          selected: false
+          selected: false,
+          isSingleChoice: true
         });
       });
 

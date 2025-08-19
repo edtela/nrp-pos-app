@@ -92,7 +92,7 @@ export interface Choice {
   max?: number; // Maximum items that can be selected (undefined = unlimited)
 }
 
-export type Constraint = { min?: number; max?: number; choice?: { id: string; single: boolean } };
+export type Constraint = { min?: number; max?: number; choiceId?: string };
 
 /**
  * Product variant (e.g., size options like mini, standard, large)
