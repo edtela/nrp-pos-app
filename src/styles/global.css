@@ -35,3 +35,25 @@
     margin: 24px 0 8px 0;
     text-align: left;
 }
+
+/* Static variant button - displays like a selected variant but not interactive */
+.variant-button-static {
+    display: block;
+    width: fit-content;
+    min-width: 100px;
+    max-width: 150px;
+    padding: 0 var(--md-sys-spacing-lg);
+    background: var(--md-sys-color-secondary-container);
+    color: var(--md-sys-color-on-secondary-container);
+    border: 1px solid var(--md-sys-color-outline);
+    border-radius: 9999px;
+    font-size: var(--md-sys-typescale-label-large-size);
+    line-height: 40px;
+    height: 40px;
+    font-weight: 500;
+    letter-spacing: var(--md-sys-typescale-label-large-tracking);
+    text-align: center;
+    margin: 0 auto var(--md-sys-spacing-md) auto;
+    pointer-events: none;
+    user-select: none;
+}

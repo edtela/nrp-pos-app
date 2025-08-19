@@ -142,9 +142,9 @@ function createDataCellRenderer(menu: DisplayMenu, context: Context): DataCellRe
  */
 function itemGroupTemplate(menu: DisplayMenu, group: ItemGroup, context: Context): Template {
   const isEmpty = group.itemIds.length === 0;
-  
+
   return html`
-    <div class="${classes.group}" data-group-id="${group.id}" ${isEmpty ? 'style="display: none;"' : ''}>
+    <div class="${classes.group}" data-group-id="${group.id}" ${isEmpty ? 'style="display: none;"' : ""}>
       ${group.name ? html` <div class="${classes.groupHeader}">${group.name}</div> ` : ""}
       <div class="${classes.groupItems}">
         ${group.itemIds.map((itemId) => {
@@ -295,7 +295,7 @@ export function update(
               (groupElement as HTMLElement).style.display = "none";
             } else {
               // Remove display style to show the group
-              (groupElement as HTMLElement).style.removeProperty('display');
+              (groupElement as HTMLElement).style.removeProperty("display");
 
               const itemsContainer = groupElement.querySelector(`.${classes.groupItems}`);
               if (itemsContainer) {
@@ -316,6 +316,15 @@ export function update(
       const menuItemElement = container.querySelector(`#menu-item-${itemId}`);
       if (menuItemElement && itemChanges) {
         MenuItemUI.update(menuItemElement, itemChanges, context);
+      }
+    }
+  }
+
+  if (changes.variants) {
+    for (const [groupId, groupChanges] of Object.entries(changes.variants)) {
+      const groupElement = container.querySelector(`#variant-group-${groupId}`);
+      if (groupElement && groupChanges) {
+        VariantGroupUI.update(groupElement, groupChanges as any, context);
       }
     }
   }
