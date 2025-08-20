@@ -6,9 +6,9 @@
  */
 
 import "./menu-content.css";
-import { html, Template, replaceElements, buildHTML, reconcileChildren } from "@/lib/html-template";
+import { html, Template, render, reconcileChildren, buildHTML } from "@/lib/html-template";
 import { Context, formatPrice } from "@/lib/context";
-import { DataCell, SubMenu, ItemGroup, Cell, Cells } from "@/types";
+import { DataCell, ItemGroup } from "@/types";
 import { headerCells, DataCellRenderer } from "./menu-header";
 import * as MenuItemUI from "./menu-item";
 import * as VariantGroupUI from "./variant";
@@ -104,14 +104,6 @@ function orderItemTemplate(order: OrderMenuItem | undefined, context: Context): 
 }
 
 /**
- * Menu content data
- */
-export interface MenuContentData {
-  menu: DisplayMenu;
-  order?: OrderMenuItem;
-}
-
-/**
  * Create data cell renderer for the menu
  */
 function createDataCellRenderer(menu: DisplayMenu, context: Context): DataCellRenderer {
@@ -157,63 +149,17 @@ function itemGroupTemplate(menu: DisplayMenu, group: ItemGroup, context: Context
 }
 
 /**
- * Process layout cells recursively
- */
-function processLayoutCells(cells: Cells, dataRenderer: DataCellRenderer): Template {
-  if (Array.isArray(cells)) {
-    return html`${cells.map((cell) => processSingleCell(cell, dataRenderer))}`;
-  }
-  return processSingleCell(cells, dataRenderer);
-}
-
-/**
- * Process a single cell
- */
-function processSingleCell(cell: Cell, dataRenderer: DataCellRenderer): Template {
-  if ("type" in cell) {
-    // DataCell - use renderer
-    return dataRenderer(cell as DataCell);
-  }
-  // Regular display cell - use header cells renderer
-  return headerCells(cell, dataRenderer);
-}
-
-/**
  * Main template for menu content
  */
-export function template(data: MenuContentData, context: Context): Template {
-  const dataRenderer = createDataCellRenderer(data.menu, context);
+export function template(data: MenuPageData, context: Context): Template {
+  const dataRenderer = createDataCellRenderer(data, context);
 
   return html`
     <div class="${classes.container}">
-      ${orderItemTemplate(data.order, context)} ${processLayoutCells(data.menu.layout, dataRenderer)}
+      <div class="order-slot slot">${orderItemTemplate(data.order, context)}</div>
+      ${headerCells(data.layout, dataRenderer)}
     </div>
   `;
-}
-
-export function init(
-  container: HTMLElement,
-  _subMenu: SubMenu | undefined,
-  order: OrderMenuItem | undefined,
-  context: Context,
-) {
-  if (order) {
-    replaceElements(container, `.${classes.orderItem}`, orderItemTemplate(order, context));
-  }
-  // Removed manual DOM manipulation - now handled by data-driven updates in update()
-}
-
-/**
- * Handle data changes for reactive updates
- */
-export function handleDataChange(
-  _container: HTMLElement,
-  _data: MenuPageData,
-  _change: DataChange<MenuPageData>,
-  _context: Context,
-): boolean {
-  // TODO: Implement specific change handlers for performance
-  return false; // Return false to trigger full re-render
 }
 
 /**
@@ -252,33 +198,12 @@ function buildGroupChildren(
 /**
  * Update function for menu-page
  */
-export function update(
-  container: HTMLElement,
-  changes: DataChange<MenuPageData>,
-  context: Context,
-  data: MenuPageData,
-): void {
+export function update(container: Element, changes: DataChange<MenuPageData>, ctx: Context, data: MenuPageData): void {
   // Handle order updates
   if (changes.order) {
-    // If modifiers changed, re-render the entire order item
-    if (changes.order.modifiers) {
-      replaceElements(container, `.${classes.orderItem}`, orderItemTemplate(data.order, context));
-    } else {
-      // Update price if changed
-      if (changes.order.unitPrice !== undefined) {
-        const elt = container.querySelector(`.${classes.orderItem} .${classes.orderPrice}`);
-        if (elt) {
-          elt.textContent = formatPrice(changes.order.unitPrice, context.currency);
-        }
-      }
-
-      // Update modifierPrice if changed
-      if ("modifiersPrice" in changes.order) {
-        const elt = container.querySelector(`.${classes.orderItem} .${classes.orderPrice}`);
-        if (elt && data.order) {
-          elt.textContent = formatPrice(data.order.unitPrice, context.currency);
-        }
-      }
+    const orderSlot = container.querySelector(".order-slot");
+    if (orderSlot) {
+      render(orderItemTemplate(data.order, ctx), orderSlot);
     }
   }
 
@@ -300,7 +225,7 @@ export function update(
               const itemsContainer = groupElement.querySelector(`.${classes.groupItems}`);
               if (itemsContainer) {
                 // Build new children array from updated itemIds
-                const newChildren = buildGroupChildren(container, group.itemIds, data.items, context);
+                const newChildren = buildGroupChildren(container, group.itemIds, data.items, ctx);
                 reconcileChildren(itemsContainer, newChildren);
               }
             }
@@ -315,7 +240,7 @@ export function update(
     for (const [itemId, itemChanges] of Object.entries(changes.items)) {
       const menuItemElement = container.querySelector(`#menu-item-${itemId}`);
       if (menuItemElement && itemChanges) {
-        MenuItemUI.update(menuItemElement, itemChanges, context);
+        MenuItemUI.update(menuItemElement, itemChanges, ctx);
       }
     }
   }
@@ -324,7 +249,7 @@ export function update(
     for (const [groupId, groupChanges] of Object.entries(changes.variants)) {
       const groupElement = container.querySelector(`#variant-group-${groupId}`);
       if (groupElement && groupChanges) {
-        VariantGroupUI.update(groupElement, groupChanges as any, context);
+        VariantGroupUI.update(groupElement, groupChanges as any, ctx);
       }
     }
   }

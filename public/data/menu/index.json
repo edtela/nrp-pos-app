@@ -12,7 +12,8 @@
       "subMenu": {
         "menuId": "espresso-menu",
         "included": []
-      }
+      },
+      "order": 0
     },
     "tea": {
       "id": "tea",
@@ -23,7 +24,8 @@
       "subMenu": {
         "menuId": "tea-menu",
         "included": []
-      }
+      },
+      "order": 1
     },
     "juice": {
       "id": "juice",
@@ -34,7 +36,8 @@
       "subMenu": {
         "menuId": "juice-menu",
         "included": []
-      }
+      },
+      "order": 2
     },
     "smoothie": {
       "id": "smoothie",
@@ -45,7 +48,8 @@
       "subMenu": {
         "menuId": "smoothie-menu",
         "included": []
-      }
+      },
+      "order": 3
     },
     "yogurt": {
       "id": "yogurt",
@@ -56,7 +60,8 @@
       "subMenu": {
         "menuId": "yogurt-menu",
         "included": []
-      }
+      },
+      "order": 4
     },
     "crepes": {
       "id": "crepes",
@@ -67,7 +72,8 @@
       "subMenu": {
         "menuId": "crepes-menu",
         "included": []
-      }
+      },
+      "order": 5
     },
     "toasts": {
       "id": "toasts",
@@ -78,7 +84,8 @@
       "subMenu": {
         "menuId": "toasts-menu",
         "included": []
-      }
+      },
+      "order": 6
     }
   },
   "itemGroups": {

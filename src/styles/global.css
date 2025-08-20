@@ -36,6 +36,11 @@
     text-align: left;
 }
 
+/* Utility class for content slots that don't affect layout when empty */
+.slot:empty {
+    display: none;
+}
+
 /* Static variant button - displays like a selected variant but not interactive */
 .variant-button-static {
     display: block;

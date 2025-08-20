@@ -35,7 +35,7 @@ export function template(displayMenu: DisplayMenu, context: Context): Template {
   return html`
     <div class="${layoutStyles.pageContainer}">
       <header class="${layoutStyles.header}">${AppHeader.template(headerData, context)}</header>
-      <main class="${layoutStyles.content}">${MenuContentUI.template({ menu: displayMenu }, context)}</main>
+      <main class="${layoutStyles.content}">${MenuContentUI.template(displayMenu, context)}</main>
       <div class="${layoutStyles.bottomBar}">
         ${AppBottomBar.template(displayMenu.modifierMenu ? "add" : "view", context)}
       </div>
@@ -194,8 +194,6 @@ export function hydrate(container: Element, displayMenu: DisplayMenu, context: C
     return; // Exit early, no need to set up other handlers
   }
 
-  MenuContentUI.init(page, navContext.menuItem?.subMenu, navContext.order, context);
-
   const bottomBar = page.querySelector(`.${layoutStyles.bottomBar}`) as HTMLElement;
   if (bottomBar) {
     if (navContext.order) {
@@ -235,8 +233,7 @@ export function hydrate(container: Element, displayMenu: DisplayMenu, context: C
       const updates = preUpdate.map((p) => toDisplayMenuUpdate(p));
       try {
         changes = model.updateAll(updates as any, changes);
-      } catch {
-      }
+      } catch {}
     }
 
     // Then process the order normally
