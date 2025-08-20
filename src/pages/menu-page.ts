@@ -13,7 +13,7 @@ import * as MenuContentUI from "@/components/menu-content";
 import * as AppHeader from "@/components/app-header";
 import * as AppBottomBar from "@/components/app-bottom-bar";
 import { styles as layoutStyles } from "@/components/app-layout";
-import { MenuPageData, MenuModel, toOrderMenuItem, DisplayMenu } from "@/model/menu-model";
+import { MenuPageData, MenuModel, toOrderMenuItem, DisplayMenu, toDisplayMenuUpdate } from "@/model/menu-model";
 import { DataChange, Update, UpdateResult } from "@/lib/data-model-types";
 import { MENU_ITEM_CLICK } from "@/components/menu-item";
 import { saveOrderItem, OrderItem, getOrder } from "@/model/order-model";
@@ -230,12 +230,15 @@ export function hydrate(container: Element, displayMenu: DisplayMenu, context: C
   let changes: UpdateResult<MenuPageData> | undefined = model.setMenu(displayMenu);
   if (navContext.order) {
     // Execute preUpdate statements if they exist
-    if (navContext.order.menuItem.subMenu?.preUpdate) {
-      // Cast preUpdate to Update<MenuPageData> since we're only updating shared fields
-      const updates = navContext.order.menuItem.subMenu.preUpdate as Update<MenuPageData>[];
-      changes = model.updateAll(updates, changes);
+    const preUpdate = navContext.order.menuItem.subMenu?.preUpdate;
+    if (preUpdate) {
+      const updates = preUpdate.map((p) => toDisplayMenuUpdate(p));
+      try {
+        changes = model.updateAll(updates as any, changes);
+      } catch {
+      }
     }
-    
+
     // Then process the order normally
     changes = model.update({ order: [navContext.order] }, changes);
   }
@@ -251,6 +254,11 @@ export function hydrate(container: Element, displayMenu: DisplayMenu, context: C
     if (item?.data.subMenu) {
       router.goto.menuItem(item.data);
     } else {
+      // Prevent deselecting required items
+      if (item.isRequired && item.selected) {
+        // Item is required and already selected - don't toggle
+        return;
+      }
       runUpdate({ items: { [item.data.id]: { selected: (v) => !v } } });
     }
   });

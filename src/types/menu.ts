@@ -19,7 +19,6 @@ export interface ItemGroup {
   icon?: string;
 }
 
-
 /**
  * Menu container with three-layer architecture
  */
@@ -27,20 +26,25 @@ export interface Menu<T = MenuItem> {
   id: string;
   name: string;
   currency: string; // Currency code for prices in this menu (e.g., 'USD', 'ALL')
-  
+
   // Layer 1: Data - all items indexed by ID
   items: Record<string, T>;
-  
+
   // Layer 2: Semantic - meaningful groupings of items
   itemGroups: Record<string, ItemGroup>;
-  
+
   // Layer 3: Presentation - layout using Cells (can include DataCell with type="item-group")
   layout: Cells;
-  
+
   // Supporting definitions
   choices?: Record<string, Choice>; // Choice definitions referenced by items via choiceId
   variants?: Record<string, VariantGroup>; // Variant definitions referenced by items
   modifierMenu?: boolean; // If true, requires an OrderItem in the stack to display
+}
+
+//Simplified update statement. Add fields as needed
+export interface MenuPreUpdate {
+  items?: Record<string, Update<MenuItem>>;
 }
 
 // For Categories: submenu to navigate to
@@ -49,7 +53,7 @@ export interface Menu<T = MenuItem> {
 export interface SubMenu {
   menuId: string;
   included: IncludedItem[];
-  preUpdate?: Update<Menu>[];  // Updates to apply before processing included items
+  preUpdate?: MenuPreUpdate[]; // Updates to apply before processing included items
 }
 
 export interface IncludedItem {
@@ -71,8 +75,8 @@ export interface MenuItem {
   // Can be either a fixed price (number) or variant-based pricing (VariantPricing)
   price?: number | VariantPricing;
 
-  // Constraints
-  constraints?: Constraint; // Item constraints and choice reference
+  // Constraints - always present to avoid serialization issues with tsqn symbols
+  constraints: Constraint; // Item constraints and choice reference (default: {})
 
   // Navigation
   subMenu?: SubMenu;
@@ -169,10 +173,8 @@ export function hasFixedPricing(item: MenuItem): item is MenuItem & { price: num
 export function getItemsInGroup<T = MenuItem>(menu: Menu<T>, groupId: string): T[] {
   const group = menu.itemGroups[groupId];
   if (!group) return [];
-  
-  return group.itemIds
-    .map(id => menu.items[id])
-    .filter(item => item !== undefined);
+
+  return group.itemIds.map((id) => menu.items[id]).filter((item) => item !== undefined);
 }
 
 /**
@@ -198,14 +200,14 @@ export function* iterateItemGroups(menu: Menu): Generator<ItemGroup> {
  */
 export function mapMenuItems<I, O>(menu: Menu<I>, mapper: (item: I) => O): Menu<O> {
   const mappedItems: Record<string, O> = {};
-  
+
   for (const [id, item] of Object.entries(menu.items)) {
     mappedItems[id] = mapper(item);
   }
-  
+
   return {
     ...menu,
-    items: mappedItems
+    items: mappedItems,
   };
 }
 
@@ -225,6 +227,6 @@ export function addItemToGroup(menu: Menu, groupId: string, itemId: string): voi
 export function removeItemFromGroup(menu: Menu, groupId: string, itemId: string): void {
   const group = menu.itemGroups[groupId];
   if (group) {
-    group.itemIds = group.itemIds.filter(id => id !== itemId);
+    group.itemIds = group.itemIds.filter((id) => id !== itemId);
   }
 }

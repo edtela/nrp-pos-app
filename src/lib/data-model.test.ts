@@ -1431,11 +1431,11 @@ describe('data-model', () => {
                 };
 
                 const data: TestData = {
-                    callback: () => console.log('old'),
+                    callback: () => {},
                     handler: (x) => `old: ${x}`
                 };
 
-                const newCallback = () => console.log('new');
+                const newCallback = () => {};
                 const newHandler = (x: number) => `new: ${x}`;
 
                 const changes = update(data, {

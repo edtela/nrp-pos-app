@@ -33,7 +33,6 @@ test.describe('Included State Visual Test', () => {
       };
     });
     
-    console.log('Pseudo-element styles:', pseudoStyles);
     
     // Should show "remove" (minus icon) in error color
     expect(pseudoStyles.content).toBe('"remove"');
@@ -67,7 +66,6 @@ test.describe('Included State Visual Test', () => {
       };
     });
     
-    console.log('Radio pseudo-element styles:', pseudoStyles);
     
     // Should show red border
     expect(pseudoStyles.borderColor).toContain('179'); // Part of rgb(179, 38, 30) - error color

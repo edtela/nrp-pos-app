@@ -8,6 +8,7 @@
       "name": "Kafe",
       "description": "Espresso, kafe speciale dhe pije të nxehta",
       "icon": "☕",
+      "constraints": {},
       "subMenu": {
         "menuId": "espresso-menu",
         "included": []
@@ -18,6 +19,7 @@
       "name": "Çaj",
       "description": "Çaje bimore, frutore dhe speciale",
       "icon": "🍵",
+      "constraints": {},
       "subMenu": {
         "menuId": "tea-menu",
         "included": []
@@ -28,6 +30,7 @@
       "name": "Lëngje",
       "description": "Lëngje të freskëta dhe përzierje",
       "icon": "🥤",
+      "constraints": {},
       "subMenu": {
         "menuId": "juice-menu",
         "included": []
@@ -38,6 +41,7 @@
       "name": "Smoothie",
       "description": "Smoothie dhe smoothie bowls",
       "icon": "🥤",
+      "constraints": {},
       "subMenu": {
         "menuId": "smoothie-menu",
         "included": []
@@ -48,6 +52,7 @@
       "name": "Kos",
       "description": "Kos me aromë dhe kombinime",
       "icon": "🥛",
+      "constraints": {},
       "subMenu": {
         "menuId": "yogurt-menu",
         "included": []
@@ -58,6 +63,7 @@
       "name": "Krepe",
       "description": "Krepe të ëmbla dhe të kripura",
       "icon": "🥞",
+      "constraints": {},
       "subMenu": {
         "menuId": "crepes-menu",
         "included": []
@@ -68,6 +74,7 @@
       "name": "Tost",
       "description": "Yoast dhe Avotoast",
       "icon": "🍞",
+      "constraints": {},
       "subMenu": {
         "menuId": "toasts-menu",
         "included": []

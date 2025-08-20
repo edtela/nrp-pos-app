@@ -1,4 +1,4 @@
-import { Menu, MenuItem, VariantGroup, isVariantPricing } from "@/types";
+import { Menu, MenuItem, MenuPreUpdate, VariantGroup, isVariantPricing } from "@/types";
 import { anyChange, state, typeChange } from "@/lib/data-model";
 import { ALL, DataBinding, Update, UpdateResult, WHERE } from "@/lib/data-model-types";
 import { OrderItem, OrderModifier } from "./order-model";
@@ -11,20 +11,24 @@ export type DisplayMenuItem = {
   quantity: number;
   total: number;
   isSingleChoice?: boolean; // Computed from choice definition (true if min=1 and max=1)
+  isRequired?: boolean; // Computed from constraints (true if min >= 1)
 };
 
 export function toDisplayMenuItem(data: MenuItem, choices?: Record<string, any>): DisplayMenuItem {
   //TODO make price optional
   // Compute isSingleChoice from choice definition if available
   let isSingleChoice: boolean | undefined;
-  if (data.constraints?.choiceId && choices) {
+  if (data.constraints.choiceId && choices) {
     const choice = choices[data.constraints.choiceId];
     if (choice) {
       isSingleChoice = choice.min === 1 && choice.max === 1;
     }
   }
-  
-  return { data, price: 0, quantity: 0, total: 0, isSingleChoice };
+
+  // Compute isRequired from constraints
+  const isRequired = data.constraints.min !== undefined && data.constraints.min >= 1;
+
+  return { data, price: 0, quantity: 0, total: 0, isSingleChoice, isRequired };
 }
 
 export type OrderMenuItem = {
@@ -62,11 +66,42 @@ export type MenuPageData = DisplayMenu & {
   order?: OrderMenuItem;
 };
 
+export function toDisplayMenuUpdate(menuUpdate: MenuPreUpdate): Update<DisplayMenu> {
+  const itemsUpdate = menuUpdate.items;
+  if (!itemsUpdate) {
+    return menuUpdate as Update<DisplayMenu>;
+  }
+
+  const dItemsUpdate: Record<string, Update<DisplayMenuItem>> = {};
+
+  for (const key in itemsUpdate) {
+    const itemUpdate = itemsUpdate[key];
+    if (typeof itemUpdate === "function") {
+      throw Error("Invalid update");
+    }
+
+    if (Array.isArray(itemUpdate)) {
+      const dItem = toDisplayMenuItem(itemUpdate[0], {});
+      dItemsUpdate[key] = [dItem];
+    } else {
+      dItemsUpdate[key] = { data: itemUpdate };
+    }
+  }
+
+  return { ...menuUpdate, items: dItemsUpdate } as Update<DisplayMenu>;
+}
+
 const bindings: DataBinding<MenuPageData>[] = [
   // When parent order is set, update the variant of the menu
   {
     onChange: [{ order: typeChange }],
     update: orderChanged,
+  },
+  {
+    onChange: ["items", [ALL], "data", "constraints", "min"],
+    update: (item: DisplayMenuItem) => {
+      return { items: { [item.data.id]: { isRequired: (item.data.constraints.min ?? 0) > 0 } } };
+    },
   },
   // Variant selection, update menu items and order
   {
@@ -162,7 +197,6 @@ const bindings: DataBinding<MenuPageData>[] = [
             quantity: item.quantity,
             price: item.price,
           }));
-        console.log("SETTIGN MODS: ");
         return { order: { modifiers: [modifiers] } };
       }
       return {};

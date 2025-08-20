@@ -221,3 +221,30 @@
     font-feature-settings: "liga";
     line-height: 1;
 }
+
+/* Required item styles */
+/* When a required item is selected, show it's locked/required */
+.menu-item[data-required="true"][data-selected="true"] {
+    cursor: default;
+}
+
+/* Reduce hover effect for selected required items */
+.menu-item[data-required="true"][data-selected="true"]:hover {
+    background: var(--md-sys-color-surface-container-low);
+}
+
+/* Make the checkmark slightly different to indicate it's locked */
+.menu-item[data-required="true"][data-selected="true"] .menu-item-control::after {
+    opacity: 0.85; /* Slightly faded to show it's locked */
+}
+
+/* Add a subtle animation when trying to click a locked item */
+@keyframes shake-locked {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-2px); }
+    75% { transform: translateX(2px); }
+}
+
+.menu-item[data-required="true"][data-selected="true"]:active .menu-item-control {
+    animation: shake-locked 0.2s ease-in-out;
+}

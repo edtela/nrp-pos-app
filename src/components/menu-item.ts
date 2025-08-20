@@ -40,6 +40,7 @@ export function template(item: DisplayMenuItem, context: Context): Template {
       data-control-type="${controlType}"
       ${dataAttr("included", item.included)}
       ${dataAttr("selected", item.selected)}
+      ${dataAttr("required", item.isRequired)}
       ${onClick(MENU_ITEM_CLICK)}
     >
       <div class="${classes.content}">
@@ -58,11 +59,7 @@ export function template(item: DisplayMenuItem, context: Context): Template {
 /**
  * Update menu item
  */
-export function update(
-  container: Element,
-  changes: DataChange<DisplayMenuItem>,
-  context: Context
-): void {
+export function update(container: Element, changes: DataChange<DisplayMenuItem>, context: Context): void {
   // Note: This component treats container AS the menu item element itself
   // Check if price has changed
   if ("price" in changes) {
@@ -75,6 +72,10 @@ export function update(
 
   if ("included" in changes) {
     setDataAttribute(container as HTMLElement, "included", changes.included);
+  }
+
+  if ("isRequired" in changes) {
+    setDataAttribute(container as HTMLElement, "required", changes.isRequired);
   }
 }
 

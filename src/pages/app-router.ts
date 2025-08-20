@@ -269,19 +269,23 @@ class AppRouter {
       
       // Compute isSingleChoice from choice definition if constraints reference a choice
       let isSingleChoice: boolean | undefined;
-      if (item.constraints?.choiceId && rawMenu.choices) {
+      if (item.constraints.choiceId && rawMenu.choices) {
         const choice = rawMenu.choices[item.constraints.choiceId];
         if (choice) {
           isSingleChoice = choice.min === 1 && choice.max === 1;
         }
       }
       
+      // Compute isRequired from constraints
+      const isRequired = item.constraints.min !== undefined && item.constraints.min >= 1;
+      
       mappedItems[id] = {
         data: item,
         price,
         quantity: 0,
         total: 0,
-        isSingleChoice
+        isSingleChoice,
+        isRequired
       };
     }
     

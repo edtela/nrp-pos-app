@@ -19,12 +19,10 @@ test.describe('Navigation with Included Items', () => {
       // Check if there are any included items
       const includedSection = page.locator('[data-included="true"]').first();
       if (await includedSection.count() > 0) {
-        console.log('Found included section');
         
         // Check if included items are displayed correctly
         const includedItems = page.locator('.menu-item[data-included="true"]');
         const count = await includedItems.count();
-        console.log(`Found ${count} included items`);
         
         if (count > 0) {
           // Check the first included item
@@ -36,7 +34,6 @@ test.describe('Navigation with Included Items', () => {
           const isSelected = await firstIncluded.getAttribute('data-selected');
           const controlType = await firstIncluded.getAttribute('data-control-type');
           
-          console.log(`First included item - type: ${controlType}, selected: ${isSelected}`);
           
           if (controlType === 'check' && isSelected !== 'true') {
             await expect(control).toBeVisible();
@@ -51,7 +48,6 @@ test.describe('Navigation with Included Items', () => {
               };
             });
             
-            console.log('Included checkbox pseudo-styles:', pseudoStyles);
             expect(pseudoStyles.content).toBe('"remove"');
             expect(pseudoStyles.color).toContain('179'); // Error color
           }
@@ -103,7 +99,6 @@ test.describe('Navigation with Included Items', () => {
       };
     });
     
-    console.log('After setting included:', pseudoStyles);
     expect(pseudoStyles.content).toBe('"remove"');
     expect(pseudoStyles.color).toContain('179');
     
@@ -118,7 +113,6 @@ test.describe('Navigation with Included Items', () => {
       };
     });
     
-    console.log('After selecting:', selectedStyles);
     expect(selectedStyles.content).toBe('"check"');
     expect(selectedStyles.color).toContain('27'); // Primary color
   });
