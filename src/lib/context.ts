@@ -301,3 +301,31 @@ export const commonTranslations = {
     it: 'Invia ordine'
   })
 };
+
+/**
+ * Create context-aware utility functions for cleaner usage in components
+ * Usage: const { formatPrice, t } = withContext(context);
+ * 
+ * @param context - The context object containing language and currency settings
+ * @returns Object with utility functions bound to the context
+ */
+export function withContext(context: Context) {
+  // Use default context if not provided
+  const ctx = context || DEFAULT_CONTEXT;
+  
+  return {
+    // Price formatting bound to context's currency
+    formatPrice: (amount: number) => formatPrice(amount, ctx.currency),
+    
+    // Translation helper bound to context's language
+    t: (key: keyof typeof commonTranslations) => commonTranslations[key](ctx),
+    
+    // Direct access to context values
+    lang: ctx.lang,
+    currencyCode: ctx.currency.code,
+    currencySymbol: ctx.currency.symbol,
+    
+    // Helper for conditional rendering based on language
+    isLanguage: (lang: Language) => ctx.lang === lang,
+  };
+}

@@ -7,7 +7,7 @@
 
 import "./app-bottom-bar.css";
 import { html, onClick, Template, render } from "@/lib/html-template";
-import { Context, commonTranslations, formatPrice } from "@/lib/context";
+import { Context, withContext } from "@/lib/context";
 import { DataChange } from "@/lib/data-model-types";
 
 // Event types
@@ -42,21 +42,23 @@ type BottomBarConfig = {
 
 // Configuration for each mode
 function getConfigs(context: Context): Record<BottomBarMode, BottomBarConfig> {
+  const { t } = withContext(context);
+  
   return {
     view: {
-      left: { field: "itemCount", label: commonTranslations.items(context) },
-      action: { label: commonTranslations.viewOrder(context), onClick: VIEW_ORDER_EVENT },
-      right: { field: "total", label: commonTranslations.total(context) },
+      left: { field: "itemCount", label: t('items') },
+      action: { label: t('viewOrder'), onClick: VIEW_ORDER_EVENT },
+      right: { field: "total", label: t('total') },
     },
     add: {
-      left: { field: "quantity", label: commonTranslations.quantity(context) },
-      action: { label: commonTranslations.addToOrder(context), onClick: ADD_TO_ORDER_EVENT },
-      right: { field: "total", label: commonTranslations.total(context) },
+      left: { field: "quantity", label: t('quantity') },
+      action: { label: t('addToOrder'), onClick: ADD_TO_ORDER_EVENT },
+      right: { field: "total", label: t('total') },
     },
     send: {
-      left: { field: "itemCount", label: commonTranslations.items(context) },
-      action: { label: commonTranslations.sendOrder(context), onClick: SEND_ORDER_EVENT },
-      right: { field: "total", label: commonTranslations.total(context) },
+      left: { field: "itemCount", label: t('items') },
+      action: { label: t('sendOrder'), onClick: SEND_ORDER_EVENT },
+      right: { field: "total", label: t('total') },
     },
   };
 }
@@ -67,9 +69,10 @@ function getConfigs(context: Context): Record<BottomBarMode, BottomBarConfig> {
 export function template(mode: BottomBarMode = "view", context: Context): Template {
   const configs = getConfigs(context);
   const config = configs[mode];
+  const { formatPrice } = withContext(context);
   
   // Default display value for price field
-  const defaultPrice = context ? formatPrice(0, context.currency) : "$0.00";
+  const defaultPrice = context ? formatPrice(0) : "$0.00";
 
   return html`
     <div class="${classes.infoSection}" data-bottom-bar-field="${config.left.field}">
@@ -90,10 +93,12 @@ export function template(mode: BottomBarMode = "view", context: Context): Templa
 
 // Field formatters for consistent value formatting
 function getFieldFormatters(context: Context): Record<keyof Omit<BottomBarData, "mode">, (value: any) => string> {
+  const { formatPrice } = withContext(context);
+  
   return {
     itemCount: (value) => String(value || 0),
     quantity: (value) => String(value || 0),
-    total: (value) => formatPrice(value || 0, context.currency),
+    total: (value) => formatPrice(value || 0),
   };
 }
 

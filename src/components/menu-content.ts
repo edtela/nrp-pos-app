@@ -7,7 +7,7 @@
 
 import "./menu-content.css";
 import { html, Template, render, reconcileChildren, buildHTML } from "@/lib/html-template";
-import { Context, formatPrice } from "@/lib/context";
+import { Context, withContext } from "@/lib/context";
 import { DataCell, ItemGroup } from "@/types";
 import { headerCells, DataCellRenderer } from "./menu-header";
 import * as MenuItemUI from "./menu-item";
@@ -41,14 +41,15 @@ export const menuContainer = classes.container;
 function orderItemTemplate(order: OrderMenuItem | undefined, context: Context): Template {
   if (!order) return html``;
 
-  // TODO: Use order.price when available
+  const { formatPrice } = withContext(context);
+  
   const showModifiersPrice = order.modifiersPrice > 0;
   const showUnitPrice = order.modifiersPrice !== 0;
 
   return html`
     <div class="${classes.orderItem}">
       <span class="${classes.orderTitle}">${order.menuItem.name}</span>
-      <span class="${classes.orderPrice}">${formatPrice(order.price, context.currency)}</span>
+      <span class="${classes.orderPrice}">${formatPrice(order.price)}</span>
 
       <div class="${classes.orderModifications}">
         ${order.modifiers && order.modifiers.length > 0
@@ -59,11 +60,11 @@ function orderItemTemplate(order: OrderMenuItem | undefined, context: Context): 
       </div>
 
       <span class="${classes.modifiersPrice}" style="${showModifiersPrice ? "" : "visibility: hidden;"}">
-        ${showModifiersPrice ? `+${formatPrice(order.modifiersPrice, context.currency)}` : ""}
+        ${showModifiersPrice ? `+${formatPrice(order.modifiersPrice)}` : ""}
       </span>
 
       <span class="${classes.unitPrice}" style="${showUnitPrice ? "" : "visibility: hidden;"}">
-        ${showUnitPrice ? formatPrice(order.unitPrice, context.currency) : ""}
+        ${showUnitPrice ? formatPrice(order.unitPrice) : ""}
       </span>
     </div>
   `;

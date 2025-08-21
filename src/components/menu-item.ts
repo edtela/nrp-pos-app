@@ -7,7 +7,7 @@
 
 import "./menu-item.css";
 import { html, Template, replaceElements, onClick, dataAttr, setDataAttribute } from "@/lib/html-template";
-import { Context, formatPrice } from "@/lib/context";
+import { Context, withContext } from "@/lib/context";
 import { DataChange } from "@/lib/data-model-types";
 import { DisplayMenuItem } from "@/model/menu-model";
 
@@ -20,7 +20,8 @@ export const MENU_ITEM_CLICK = "menu-item-click";
  */
 function priceTemplate(context: Context, price?: number): Template {
   if (typeof price === "number") {
-    return price === 0 ? html`` : html`<span class="${classes.price}">${formatPrice(price, context.currency)}</span>`;
+    const { formatPrice } = withContext(context);
+    return price === 0 ? html`` : html`<span class="${classes.price}">${formatPrice(price)}</span>`;
   }
   return html`<span class="${classes.price} material-icons">chevron_right</span>`;
 }
