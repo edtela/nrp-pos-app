@@ -24,10 +24,11 @@ const classes = {
   groupHeader: "menu-group-header",
   groupItems: "menu-group-items",
   orderItem: "order-item",
-  orderInfo: "order-info",
   orderTitle: "order-title",
   orderPrice: "order-price",
   orderModifications: "order-modifications",
+  modifiersPrice: "modifiers-price",
+  unitPrice: "unit-price",
   modificationToken: "modification-token",
 };
 
@@ -40,23 +41,33 @@ export const menuContainer = classes.container;
 function orderItemTemplate(order: OrderMenuItem | undefined, context: Context): Template {
   if (!order) return html``;
 
+  // TODO: Use order.price when available
+  const basePrice = 0;
+  const showModifiersPrice = order.modifiersPrice > 0;
+  const showUnitPrice = order.modifiersPrice !== 0;
+
   return html`
     <div class="${classes.orderItem}">
-      <div class="${classes.orderInfo}">
-        <span class="${classes.orderTitle}"> ${order.menuItem.name} </span>
-        <span class="${classes.orderPrice}">${formatPrice(order.unitPrice, context.currency)}</span>
+      <span class="${classes.orderTitle}">${order.menuItem.name}</span>
+      <span class="${classes.orderPrice}">${formatPrice(basePrice, context.currency)}</span>
+      
+      <div class="${classes.orderModifications}">
+        ${order.modifiers && order.modifiers.length > 0
+          ? order.modifiers.map(
+              (mod) => html`
+                <span class="${classes.modificationToken}" data-type="${mod.modType}">${mod.name}</span>
+              `,
+            )
+          : ""}
       </div>
-      ${order.modifiers && order.modifiers.length > 0
-        ? html`
-            <div class="${classes.orderModifications}">
-              ${order.modifiers.map(
-                (mod) => html`
-                  <span class="${classes.modificationToken}" data-type="${mod.modType}"> ${mod.name} </span>
-                `,
-              )}
-            </div>
-          `
-        : ""}
+      
+      <span class="${classes.modifiersPrice}" style="${showModifiersPrice ? '' : 'visibility: hidden;'}">
+        ${showModifiersPrice ? `+${formatPrice(order.modifiersPrice, context.currency)}` : ""}
+      </span>
+      
+      <span class="${classes.unitPrice}" style="${showUnitPrice ? '' : 'visibility: hidden;'}">
+        ${showUnitPrice ? formatPrice(order.unitPrice, context.currency) : ""}
+      </span>
     </div>
   `;
 }

@@ -37,6 +37,11 @@
 }
 
 .order-item {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-rows: auto 1fr auto;
+  align-items: baseline;
+  min-height: 6.5rem;
   background: transparent;
   border-bottom: 1px solid var(--md-sys-color-outline-variant);
   margin-bottom: var(--md-sys-spacing-lg);
@@ -44,37 +49,53 @@
   padding-bottom: var(--md-sys-spacing-lg);
 }
 
-.order-info {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: var(--md-sys-spacing-md);
-}
-
 .order-title {
+  grid-column: 1;
+  grid-row: 1;
   font-size: var(--md-sys-typescale-title-large-size);
   line-height: var(--md-sys-typescale-title-large-line-height);
   font-weight: var(--md-sys-typescale-title-large-weight);
   color: var(--md-sys-color-on-surface);
   margin: 0;
   text-align: left;
-  flex: 1;
 }
 
 .order-price {
+  grid-column: 2;
+  grid-row: 1;
   font-size: var(--md-sys-typescale-title-medium-size);
   line-height: var(--md-sys-typescale-title-medium-line-height);
   font-weight: var(--md-sys-typescale-title-medium-weight);
   color: var(--md-sys-color-primary);
-  flex-shrink: 0;
   text-align: right;
 }
 
 .order-modifications {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  margin-top: var(--md-sys-spacing-sm);
+  grid-column: 1;
+  grid-row: 2 / 4;
+  display: block;
+  align-self: start;
+  margin-top: var(--md-sys-spacing-xs);
+}
+
+.modifiers-price {
+  grid-column: 2;
+  grid-row: 2;
+  font-size: var(--md-sys-typescale-body-small-size);
+  line-height: var(--md-sys-typescale-body-small-line-height);
+  color: var(--md-sys-color-on-surface-variant);
+  text-align: right;
+  align-self: start;
+}
+
+.unit-price {
+  grid-column: 2;
+  grid-row: 3;
+  font-size: var(--md-sys-typescale-body-small-size);
+  line-height: var(--md-sys-typescale-body-small-line-height);
+  color: var(--md-sys-color-on-surface-variant);
+  text-align: right;
+  align-self: end;
 }
 
 /* Modification tokens */
@@ -85,6 +106,8 @@
   border-radius: var(--md-sys-shape-corner-extra-small);
   background: var(--md-sys-color-surface-container);
   display: inline-block;
+  margin-right: 4px;
+  margin-bottom: 2px;
 }
 
 .modification-token[data-type="remove"] {
