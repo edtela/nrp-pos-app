@@ -12,8 +12,11 @@ export type Order = {
 export type OrderItem = {
   id: string;
   menuItem: MenuItem;
-  modifiers: OrderModifier[];
   quantity: number;
+  price: number;
+  variant?: { id: string; name: string };
+  modifiers: OrderModifier[];
+  modifiersPrice: number;
   unitPrice: number;
   total: number;
 };
@@ -48,7 +51,7 @@ export function generateOptimisticId(): string {
 }
 
 export function storageKey(id: string) {
-  return `order-v4-${id}`;
+  return `order-v5-${id}`;
 }
 
 export function getStore(id: string) {

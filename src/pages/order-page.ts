@@ -21,22 +21,16 @@ import { DataChange } from "@/lib/data-model-types";
 export function template(data: OrderPageData, context: Context) {
   const headerData: AppHeader.HeaderData = {
     leftButton: {
-      type: 'add',
-      onClick: () => getNavigationService().goto.home()
-    }
+      type: "add",
+      onClick: () => getNavigationService().goto.home(),
+    },
   };
-  
+
   return html`
     <div class="${layoutStyles.pageContainer}">
-      <header class="${layoutStyles.header}">
-        ${AppHeader.template(headerData, context)}
-      </header>
-      <main class="${layoutStyles.content}">
-        ${OrderContentUI.template(data, context)}
-      </main>
-      <div class="${layoutStyles.bottomBar}">
-        ${AppBottomBar.template("send", context)}
-      </div>
+      <header class="${layoutStyles.header}">${AppHeader.template(headerData, context)}</header>
+      <main class="${layoutStyles.content}">${OrderContentUI.template(data, context)}</main>
+      <div class="${layoutStyles.bottomBar}">${AppBottomBar.template("send", context)}</div>
     </div>
   `;
 }
@@ -48,9 +42,9 @@ export function hydrate(container: Element, _data: OrderPageData, context: Conte
   if (header) {
     const headerData: AppHeader.HeaderData = {
       leftButton: {
-        type: 'add',
-        onClick: () => getNavigationService().goto.home()
-      }
+        type: "add",
+        onClick: () => getNavigationService().goto.home(),
+      },
     };
     AppHeader.hydrate(header, context, headerData);
   }
@@ -69,10 +63,14 @@ export function hydrate(container: Element, _data: OrderPageData, context: Conte
     // Update bottom bar with actual counts
     const bottomBar = container.querySelector(`.${layoutStyles.bottomBar}`) as HTMLElement;
     if (bottomBar) {
-      AppBottomBar.update(bottomBar, {
-        itemCount: sessionData.order.itemIds.length,
-        total: sessionData.order.total
-      } as Partial<BottomBarData>, context);
+      AppBottomBar.update(
+        bottomBar,
+        {
+          itemCount: sessionData.order.itemIds.length,
+          total: sessionData.order.total,
+        } as Partial<BottomBarData>,
+        context,
+      );
     }
   }
 
@@ -112,7 +110,7 @@ export function hydrate(container: Element, _data: OrderPageData, context: Conte
       // Get the order item and navigate to modify it
       const displayItem = model.getData().items[itemId];
       if (displayItem) {
-        getNavigationService().modifyOrderItem(displayItem.item);
+        getNavigationService().editOrder(displayItem.item);
       }
     }
   });
@@ -125,7 +123,12 @@ export function hydrate(container: Element, _data: OrderPageData, context: Conte
   });
 }
 
-function update(container: Element, changes: DataChange<OrderPageData> | undefined, data: OrderPageData, context: Context) {
+function update(
+  container: Element,
+  changes: DataChange<OrderPageData> | undefined,
+  data: OrderPageData,
+  context: Context,
+) {
   if (!changes) return;
 
   requestAnimationFrame(() => {

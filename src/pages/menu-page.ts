@@ -6,20 +6,20 @@
  */
 
 import { addEventHandler, html, Template, render } from "@/lib/html-template";
-import { isSaleItem } from "@/types";
 import { navigate } from "@/lib/router";
-import { NavStackItem, getNavigationService } from "@/services/navigation-service";
+import { getNavigationService } from "@/services/navigation-service";
 import { Context, commonTranslations } from "@/lib/context";
 import * as MenuContentUI from "@/components/menu-content";
 import * as AppHeader from "@/components/app-header";
 import * as AppBottomBar from "@/components/app-bottom-bar";
 import { styles as layoutStyles } from "@/components/app-layout";
-import { MenuPageData, MenuModel, toOrderMenuItem, DisplayMenu, toDisplayMenuUpdate } from "@/model/menu-model";
+import { MenuPageData, MenuModel, DisplayMenu, toDisplayMenuUpdate, toOrderMenuItem } from "@/model/menu-model";
 import { DataChange, Update, UpdateResult } from "@/lib/data-model-types";
 import { MENU_ITEM_CLICK } from "@/components/menu-item";
 import { saveOrderItem, OrderItem, getOrder } from "@/model/order-model";
 import { VARIANT_SELECT_EVENT } from "@/components/variant";
 import { ADD_TO_ORDER_EVENT, VIEW_ORDER_EVENT } from "@/components/app-bottom-bar";
+import { isSaleItem } from "@/types";
 
 // Template function - pure rendering with data
 export function template(displayMenu: DisplayMenu, context: Context): Template {
@@ -42,25 +42,6 @@ export function template(displayMenu: DisplayMenu, context: Context): Template {
       </div>
     </div>
   `;
-}
-
-function toContext(navItem?: NavStackItem) {
-  if (!navItem) return {};
-
-  if (navItem.type === "modify") {
-    const order = toOrderMenuItem(navItem.item.menuItem);
-    order.order = navItem.item;
-    order.quantity = navItem.item.quantity;
-    return { menuItem: navItem.item.menuItem, order };
-  }
-
-  const menuItem = navItem.item;
-  if (isSaleItem(menuItem)) {
-    const order = toOrderMenuItem(menuItem);
-    return { menuItem, order };
-  }
-
-  return { menuItem };
 }
 
 /**
@@ -172,12 +153,12 @@ export function hydrate(container: Element, displayMenu: DisplayMenu, context: C
     AppHeader.hydrate(header, context, headerData);
   }
 
-  const navigationService = getNavigationService();
-  const navItem = navigationService.truncateStack(displayMenu.id);
-  const navContext = toContext(navItem);
+  const navService = getNavigationService();
+  const pageState = navService.setCurrentPage(displayMenu.id) ?? {};
+  const order: OrderItem = pageState.order;
 
   // Check if this is a modifier menu without an order context
-  if (displayMenu.modifierMenu && !navContext.order) {
+  if (displayMenu.modifierMenu && !order) {
     // Replace the entire page content with error template
     render(modifierMenuErrorTemplate(context), container);
 
@@ -192,24 +173,24 @@ export function hydrate(container: Element, displayMenu: DisplayMenu, context: C
       };
       AppHeader.hydrate(errorHeader, context, headerData);
     }
-    
+
     // Add click handler for the home button in the error message
-    const homeButton = container.querySelector('.nav-home-button') as HTMLButtonElement;
+    const homeButton = container.querySelector(".nav-home-button") as HTMLButtonElement;
     if (homeButton) {
       homeButton.onclick = () => navigate.toHome();
     }
-    
+
     return; // Exit early, no need to set up other handlers
   }
 
   const bottomBar = page.querySelector(`.${layoutStyles.bottomBar}`) as HTMLElement;
   if (bottomBar) {
-    if (navContext.order) {
+    if (order) {
       AppBottomBar.update(
         bottomBar,
         {
-          quantity: navContext.order.quantity,
-          total: navContext.order.total,
+          quantity: order.quantity,
+          total: order.total,
         },
         context,
       );
@@ -234,9 +215,9 @@ export function hydrate(container: Element, displayMenu: DisplayMenu, context: C
   }
 
   let changes: UpdateResult<MenuPageData> | undefined = model.setMenu(displayMenu);
-  if (navContext.order) {
+  if (order) {
     // Execute preUpdate statements if they exist
-    const preUpdate = navContext.order.menuItem.subMenu?.preUpdate;
+    const preUpdate = order.menuItem.subMenu?.preUpdate;
     if (preUpdate) {
       const updates = preUpdate.map((p) => toDisplayMenuUpdate(p));
       try {
@@ -245,7 +226,7 @@ export function hydrate(container: Element, displayMenu: DisplayMenu, context: C
     }
 
     // Then process the order normally
-    changes = model.update({ order: [navContext.order] }, changes);
+    changes = model.update({ order: [order] }, changes);
   }
   update(page, changes, model.data, context);
 
@@ -257,7 +238,11 @@ export function hydrate(container: Element, displayMenu: DisplayMenu, context: C
     const item = model.data.items[data.id];
 
     if (item?.data.subMenu) {
-      navigationService.goto.menuItem(item.data);
+      if (isSaleItem(item.data)) {
+        navService.editOrder(toOrderMenuItem(item.data));
+      } else {
+        navService.goto.menuItem(item.data);
+      }
     } else {
       // Prevent deselecting required items
       if (item.isRequired && item.selected) {
@@ -269,28 +254,20 @@ export function hydrate(container: Element, displayMenu: DisplayMenu, context: C
   });
 
   addEventHandler(page, VIEW_ORDER_EVENT, () => {
-    navigationService.goto.order();
+    navService.goto.order();
   });
 
   addEventHandler(page, ADD_TO_ORDER_EVENT, () => {
     const order = model.data.order;
     if (order) {
-      const orderItem: OrderItem = {
-        ...(order.order ?? { id: "" }),
-        menuItem: order.menuItem,
-        quantity: order.quantity,
-        modifiers: order.modifiers,
-        unitPrice: order.unitPrice,
-        total: order.total,
-      };
-      saveOrderItem(orderItem);
+      const modifying = order.id.length > 0;
+      saveOrderItem(order);
 
       // Check if we're in modify mode
-      if (order.order) {
-        navigationService.context.clearStack();
-        navigationService.goto.order();
+      if (modifying) {
+        navService.goto.order();
       } else {
-        navigationService.goto.back();
+        navService.goto.back();
       }
     }
   });

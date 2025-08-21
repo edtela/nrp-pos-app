@@ -12,8 +12,9 @@ import { DataCell, ItemGroup } from "@/types";
 import { headerCells, DataCellRenderer } from "./menu-header";
 import * as MenuItemUI from "./menu-item";
 import * as VariantGroupUI from "./variant";
-import { DisplayMenuItem, MenuPageData, OrderMenuItem, DisplayMenu } from "@/model/menu-model";
+import { DisplayMenuItem, MenuPageData, DisplayMenu } from "@/model/menu-model";
 import { DataChange } from "@/lib/data-model-types";
+import { OrderItem } from "@/model/order-model";
 
 /**
  * Classes for menu content component
@@ -38,11 +39,11 @@ export const menuContainer = classes.container;
 /**
  * Order item template
  */
-function orderItemTemplate(order: OrderMenuItem | undefined, context: Context): Template {
+function orderItemTemplate(order: OrderItem | undefined, context: Context): Template {
   if (!order) return html``;
 
   const { formatPrice } = withContext(context);
-  
+
   const showModifiersPrice = order.modifiersPrice > 0;
   const showUnitPrice = order.modifiersPrice !== 0;
 

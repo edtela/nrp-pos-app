@@ -23,8 +23,6 @@ import { fetchPageData } from "@/services/menu-data-service";
  * Handles page rendering, hydration, data fetching, and context creation
  */
 class PageRenderer {
-
-
   /**
    * Fetch static data for a page (menu data or empty order)
    */
@@ -38,13 +36,13 @@ class PageRenderer {
    */
   getContext(menu?: Menu | DisplayMenu): Context {
     const lang = getCurrentLanguage();
-    
+
     // If menu has currency, use it; otherwise use language default
     if (menu?.currency) {
       const currencyFormat = getCurrencyFormat(menu.currency);
       return createContext(lang, currencyFormat);
     }
-    
+
     return createContext(lang);
   }
 
@@ -53,10 +51,8 @@ class PageRenderer {
    */
   renderPage(container: Element, pageData: PageStaticData): void {
     // Get context with menu currency if it's a menu page
-    const context = pageData.type === "menu" 
-      ? this.getContext(pageData.data)
-      : this.getContext();
-    
+    const context = pageData.type === "menu" ? this.getContext(pageData.data) : this.getContext();
+
     if (pageData.type === "order") {
       render(OrderPage.template(pageData.data, context), container);
     } else {
@@ -69,10 +65,8 @@ class PageRenderer {
    */
   hydratePage(container: Element, pageData: PageStaticData): void {
     // Get context with menu currency if it's a menu page
-    const context = pageData.type === "menu" 
-      ? this.getContext(pageData.data)
-      : this.getContext();
-    
+    const context = pageData.type === "menu" ? this.getContext(pageData.data) : this.getContext();
+
     if (pageData.type === "order") {
       OrderPage.hydrate(container, pageData.data, context);
     } else {
@@ -108,6 +102,3 @@ export const getRouter = getPageRenderer;
  */
 export type { PageRenderer };
 export type AppRouter = PageRenderer; // Backward compatibility alias
-
-// Re-export NavStackItem from NavigationService for backward compatibility
-export type { NavStackItem } from "@/services/navigation-service";

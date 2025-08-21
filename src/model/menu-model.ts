@@ -31,24 +31,12 @@ export function toDisplayMenuItem(data: MenuItem, choices?: Record<string, any>)
   return { data, price: 0, quantity: 0, total: 0, isSingleChoice, isRequired };
 }
 
-export type OrderMenuItem = {
-  order?: OrderItem;
-  menuItem: MenuItem;
-  price: number;
-  variant?: { id: string; name: string };
-  quantity: number;
-  modifiers: OrderModifier[];
-  modifiersPrice: number;
-  unitPrice: number;
-  total: number;
-};
-
 export type DisplayMenu = Menu<DisplayMenuItem>;
 
-export function toOrderMenuItem(item: MenuItem, variantId?: string): OrderMenuItem {
+export function toOrderMenuItem(item: MenuItem, variantId?: string): OrderItem {
   // Compute the price based on whether it's fixed or variant-based
   let price = 0;
-  let variant: OrderMenuItem["variant"];
+  let variant: OrderItem["variant"];
   if (typeof item.price === "number") {
     price = item.price;
   } else if (item.price && variantId) {
@@ -57,6 +45,7 @@ export function toOrderMenuItem(item: MenuItem, variantId?: string): OrderMenuIt
   }
 
   return {
+    id: "",
     menuItem: item,
     modifiers: [],
     price,
@@ -69,7 +58,7 @@ export function toOrderMenuItem(item: MenuItem, variantId?: string): OrderMenuIt
 }
 
 export type MenuPageData = DisplayMenu & {
-  order?: OrderMenuItem;
+  order?: OrderItem;
 };
 
 export function toDisplayMenuUpdate(menuUpdate: MenuPreUpdate): Update<DisplayMenu> {
@@ -297,9 +286,9 @@ function orderChanged(data: MenuPageData) {
     }
   }
 
-  if (order.order) {
+  if (order.modifiers.length > 0) {
     //override selected and quantity for included
-    order.order.modifiers.reduce((u, mod) => {
+    order.modifiers.reduce((u, mod) => {
       (u as any)[mod.menuItemId] = {
         ...((u as any)[mod.menuItemId] ?? {}),
         [WHERE]: (item: any) => item != null,
