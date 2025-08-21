@@ -34,6 +34,8 @@ export function toDisplayMenuItem(data: MenuItem, choices?: Record<string, any>)
 export type OrderMenuItem = {
   order?: OrderItem;
   menuItem: MenuItem;
+  price: number;
+  variant?: { id: string; name: string };
   quantity: number;
   modifiers: OrderModifier[];
   modifiersPrice: number;
@@ -46,15 +48,19 @@ export type DisplayMenu = Menu<DisplayMenuItem>;
 export function toOrderMenuItem(item: MenuItem, variantId?: string): OrderMenuItem {
   // Compute the price based on whether it's fixed or variant-based
   let price = 0;
+  let variant: OrderMenuItem["variant"];
   if (typeof item.price === "number") {
     price = item.price;
   } else if (item.price && variantId) {
+    variant = { id: variantId, name: variantId };
     price = item.price.prices[variantId] ?? 0;
   }
 
   return {
     menuItem: item,
     modifiers: [],
+    price,
+    variant,
     modifiersPrice: 0,
     unitPrice: price,
     quantity: 1,
@@ -159,42 +165,7 @@ const bindings: DataBinding<MenuPageData>[] = [
   //can be done on selection
   {
     onChange: [{ items: { [ALL]: { included: anyChange, quantity: anyChange } } }],
-    update(data: MenuPageData) {
-      if (data.order) {
-        const modifiers: OrderModifier[] = Object.values(data.items)
-          .map((item) => {
-            let modType: OrderModifier["modType"] | undefined;
-            if (item.included) {
-              if (item.quantity !== 1 && !item.isSingleChoice) {
-                modType = "remove";
-              }
-            } else if (item.quantity > 0) {
-              modType = item.price > 0 ? "add" : "modify";
-            }
-
-            if (modType) {
-              return {
-                menuItemId: item.data.id,
-                name: item.data.name,
-                quantity: item.quantity,
-                price: item.price,
-                modType,
-              };
-            }
-
-            return undefined;
-          })
-          .filter((a) => a != null)
-          .sort((a, b) => {
-            if (a.modType === b.modType) {
-              return a.name.localeCompare(b.name);
-            }
-            return a.modType === "remove" ? -1 : a.modType === "add" ? -1 : 1;
-          });
-        return { order: { modifiers: [modifiers] } };
-      }
-      return {};
-    },
+    update: updateModifiers,
   },
   {
     onChange: [{ items: { [ALL]: { total: anyChange } } }],
@@ -212,7 +183,7 @@ const bindings: DataBinding<MenuPageData>[] = [
       const order = data.order;
       if (!order) return {};
 
-      const unitPrice = order.unitPrice + order.modifiersPrice;
+      const unitPrice = order.price + order.modifiersPrice;
       const total = order.quantity * unitPrice;
       return { order: { unitPrice, total } };
     },
@@ -373,12 +344,49 @@ function variantChanged(data: MenuPageData, groupId: string) {
 
   // Update order if it has variant pricing
   if (data.order && isVariantPricing(data.order.menuItem.price) && data.order.menuItem.price.groupId === group.id) {
+    const variant = group.variants.find((v) => v.id === group.selectedId);
     const newPrice = data.order.menuItem.price.prices[group.selectedId] ?? 0;
     updates.order = {
-      unitPrice: newPrice,
-      total: newPrice * (data.order?.quantity ?? 1),
+      price: newPrice,
+      variant: variant,
     };
   }
 
   return updates;
+}
+
+function updateModifiers(data: MenuPageData): Update<MenuPageData> {
+  if (!data.order) return {};
+
+  const modifiers: OrderModifier[] = Object.values(data.items)
+    .map((item) => {
+      let modType: OrderModifier["modType"] | undefined;
+      if (item.included) {
+        if (item.quantity !== 1 && !item.isSingleChoice) {
+          modType = "remove";
+        }
+      } else if (item.quantity > 0) {
+        modType = item.price > 0 ? "add" : "modify";
+      }
+
+      if (modType) {
+        return {
+          menuItemId: item.data.id,
+          name: item.data.name,
+          quantity: item.quantity,
+          price: item.price,
+          modType,
+        };
+      }
+
+      return undefined;
+    })
+    .filter((a) => a != null)
+    .sort((a, b) => {
+      if (a.modType === b.modType) {
+        return a.name.localeCompare(b.name);
+      }
+      return a.modType === "remove" ? -1 : a.modType === "add" ? -1 : 1;
+    });
+  return { order: { modifiers: [modifiers] } };
 }

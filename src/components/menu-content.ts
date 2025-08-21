@@ -42,30 +42,27 @@ function orderItemTemplate(order: OrderMenuItem | undefined, context: Context): 
   if (!order) return html``;
 
   // TODO: Use order.price when available
-  const basePrice = 0;
   const showModifiersPrice = order.modifiersPrice > 0;
   const showUnitPrice = order.modifiersPrice !== 0;
 
   return html`
     <div class="${classes.orderItem}">
       <span class="${classes.orderTitle}">${order.menuItem.name}</span>
-      <span class="${classes.orderPrice}">${formatPrice(basePrice, context.currency)}</span>
-      
+      <span class="${classes.orderPrice}">${formatPrice(order.price, context.currency)}</span>
+
       <div class="${classes.orderModifications}">
         ${order.modifiers && order.modifiers.length > 0
           ? order.modifiers.map(
-              (mod) => html`
-                <span class="${classes.modificationToken}" data-type="${mod.modType}">${mod.name}</span>
-              `,
+              (mod) => html` <span class="${classes.modificationToken}" data-type="${mod.modType}">${mod.name}</span> `,
             )
           : ""}
       </div>
-      
-      <span class="${classes.modifiersPrice}" style="${showModifiersPrice ? '' : 'visibility: hidden;'}">
+
+      <span class="${classes.modifiersPrice}" style="${showModifiersPrice ? "" : "visibility: hidden;"}">
         ${showModifiersPrice ? `+${formatPrice(order.modifiersPrice, context.currency)}` : ""}
       </span>
-      
-      <span class="${classes.unitPrice}" style="${showUnitPrice ? '' : 'visibility: hidden;'}">
+
+      <span class="${classes.unitPrice}" style="${showUnitPrice ? "" : "visibility: hidden;"}">
         ${showUnitPrice ? formatPrice(order.unitPrice, context.currency) : ""}
       </span>
     </div>
