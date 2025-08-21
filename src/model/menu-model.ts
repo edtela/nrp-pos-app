@@ -97,42 +97,17 @@ const bindings: DataBinding<MenuPageData>[] = [
     onChange: [{ order: typeChange }],
     update: orderChanged,
   },
-  {
-    onChange: ["items", [ALL], "data", "constraints", "min"],
-    update: (item: DisplayMenuItem) => {
-      return { items: { [item.data.id]: { isRequired: (item.data.constraints.min ?? 0) > 0 } } };
-    },
-  },
   // Variant selection, update menu items and order
   {
     init: true,
     onChange: ["variants", ALL, "selectedId"],
-    update: (data: MenuPageData, groupId: string) => {
-      const group = data.variants?.[groupId]!;
-      const updates: Update<MenuPageData> = {
-        items: {
-          [ALL]: {
-            [WHERE]: (item) => isVariantPricing(item.data.price) && item.data.price.groupId === groupId,
-            price: (_, item) => {
-              if (isVariantPricing(item.data.price)) {
-                return item.data.price.prices[group.selectedId] ?? 0;
-              }
-              return 0;
-            },
-          },
-        },
-      };
-
-      // Update order if it has variant pricing
-      if (data.order && isVariantPricing(data.order.menuItem.price) && data.order.menuItem.price.groupId === group.id) {
-        const newPrice = data.order.menuItem.price.prices[group.selectedId] ?? 0;
-        updates.order = {
-          unitPrice: newPrice,
-          total: newPrice * (data.order?.quantity ?? 1),
-        };
-      }
-
-      return updates;
+    update: variantChanged,
+  },
+  //update required based on min constraints
+  {
+    onChange: ["items", [ALL], "data", "constraints", "min"],
+    update: (item: DisplayMenuItem) => {
+      return { items: { [item.data.id]: { isRequired: (item.data.constraints.min ?? 0) > 0 } } };
     },
   },
   // Choice selection. On single selection, unselect others
@@ -180,23 +155,42 @@ const bindings: DataBinding<MenuPageData>[] = [
       return { items: { [item.data.id]: { total } } };
     },
   },
+  //create list of modifiers whenever included flag or quantity changes
+  //can be done on selection
   {
     onChange: [{ items: { [ALL]: { included: anyChange, quantity: anyChange } } }],
     update(data: MenuPageData) {
       if (data.order) {
         const modifiers: OrderModifier[] = Object.values(data.items)
-          .filter((item) => {
+          .map((item) => {
+            let modType: OrderModifier["modType"] | undefined;
             if (item.included) {
-              return item.quantity !== 1 && !item.isSingleChoice;
+              if (item.quantity !== 1 && !item.isSingleChoice) {
+                modType = "remove";
+              }
+            } else if (item.quantity > 0) {
+              modType = item.price > 0 ? "add" : "modify";
             }
-            return item.quantity > 0;
+
+            if (modType) {
+              return {
+                menuItemId: item.data.id,
+                name: item.data.name,
+                quantity: item.quantity,
+                price: item.price,
+                modType,
+              };
+            }
+
+            return undefined;
           })
-          .map((item) => ({
-            menuItemId: item.data.id,
-            name: item.data.name,
-            quantity: item.quantity,
-            price: item.price,
-          }));
+          .filter((a) => a != null)
+          .sort((a, b) => {
+            if (a.modType === b.modType) {
+              return a.name.localeCompare(b.name);
+            }
+            return a.modType === "remove" ? -1 : a.modType === "add" ? -1 : 1;
+          });
         return { order: { modifiers: [modifiers] } };
       }
       return {};
@@ -359,4 +353,32 @@ function orderChanged(data: MenuPageData) {
   }
 
   return stmt;
+}
+
+function variantChanged(data: MenuPageData, groupId: string) {
+  const group = data.variants?.[groupId]!;
+  const updates: Update<MenuPageData> = {
+    items: {
+      [ALL]: {
+        [WHERE]: (item) => isVariantPricing(item.data.price) && item.data.price.groupId === groupId,
+        price: (_, item) => {
+          if (isVariantPricing(item.data.price)) {
+            return item.data.price.prices[group.selectedId] ?? 0;
+          }
+          return 0;
+        },
+      },
+    },
+  };
+
+  // Update order if it has variant pricing
+  if (data.order && isVariantPricing(data.order.menuItem.price) && data.order.menuItem.price.groupId === group.id) {
+    const newPrice = data.order.menuItem.price.prices[group.selectedId] ?? 0;
+    updates.order = {
+      unitPrice: newPrice,
+      total: newPrice * (data.order?.quantity ?? 1),
+    };
+  }
+
+  return updates;
 }

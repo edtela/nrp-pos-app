@@ -23,6 +23,7 @@ export type OrderModifier = {
   name: string;
   quantity: number;
   price: number;
+  modType: "add" | "remove" | "modify";
 };
 
 export type DisplayItem = {

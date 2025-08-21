@@ -267,25 +267,11 @@ export function hydrate(container: Element, displayMenu: DisplayMenu, context: C
   addEventHandler(page, ADD_TO_ORDER_EVENT, () => {
     const order = model.data.order;
     if (order) {
-      const modifiers = Object.values(model.data.items)
-        .filter((item) => {
-          if (item.included) {
-            return item.quantity !== 1 && !item.isSingleChoice;
-          }
-          return item.quantity > 0;
-        })
-        .map((item) => ({
-          menuItemId: item.data.id,
-          name: item.data.name,
-          quantity: item.quantity,
-          price: item.price,
-        }));
-
       const orderItem: OrderItem = {
         ...(order.order ?? { id: "" }),
         menuItem: order.menuItem,
         quantity: order.quantity,
-        modifiers,
+        modifiers: order.modifiers,
         unitPrice: order.unitPrice,
         total: order.total,
       };

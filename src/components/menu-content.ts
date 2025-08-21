@@ -16,43 +16,6 @@ import { DisplayMenuItem, MenuPageData, OrderMenuItem, DisplayMenu } from "@/mod
 import { DataChange } from "@/lib/data-model-types";
 
 /**
- * Modification token types
- */
-type ModificationTokenType = "removed" | "added-free" | "added-priced";
-
-interface ModificationToken {
-  name: string;
-  type: ModificationTokenType;
-  price?: number;
-}
-
-/**
- * Generate modification tokens from modifiers
- */
-function generateModificationTokens(modifiers: OrderMenuItem["modifiers"]): ModificationToken[] {
-  if (!modifiers) return [];
-
-  return modifiers.map((modifier) => {
-    if (modifier.quantity === 0) {
-      return { name: modifier.name, type: "removed", price: modifier.price };
-    }
-
-    if (modifier.price === 0) {
-      return {
-        name: modifier.name,
-        type: "added-free",
-      };
-    }
-
-    return {
-      name: modifier.name,
-      type: "added-priced",
-      price: modifier.price,
-    };
-  });
-}
-
-/**
  * Classes for menu content component
  */
 const classes = {
@@ -77,23 +40,18 @@ export const menuContainer = classes.container;
 function orderItemTemplate(order: OrderMenuItem | undefined, context: Context): Template {
   if (!order) return html``;
 
-  const modifications = generateModificationTokens(order.modifiers);
-
   return html`
     <div class="${classes.orderItem}">
       <div class="${classes.orderInfo}">
         <span class="${classes.orderTitle}"> ${order.menuItem.name} </span>
         <span class="${classes.orderPrice}">${formatPrice(order.unitPrice, context.currency)}</span>
       </div>
-      ${modifications.length > 0
+      ${order.modifiers && order.modifiers.length > 0
         ? html`
             <div class="${classes.orderModifications}">
-              ${modifications.map(
+              ${order.modifiers.map(
                 (mod) => html`
-                  <span class="${classes.modificationToken}" data-type="${mod.type}">
-                    ${mod.name}
-                    ${mod.type === "added-priced" && mod.price ? ` (+${formatPrice(mod.price, context.currency)})` : ""}
-                  </span>
+                  <span class="${classes.modificationToken}" data-type="${mod.modType}"> ${mod.name} </span>
                 `,
               )}
             </div>

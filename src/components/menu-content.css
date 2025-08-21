@@ -87,17 +87,25 @@
   display: inline-block;
 }
 
-.modification-token[data-type="removed"] {
+.modification-token[data-type="remove"] {
   color: var(--md-sys-color-error);
   background: var(--md-sys-color-error-container);
 }
 
-.modification-token[data-type="added-priced"] {
+.modification-token[data-type="remove"]::before {
+  content: "− ";
+}
+
+.modification-token[data-type="add"] {
   color: var(--md-sys-color-primary);
   background: var(--md-sys-color-primary-container);
 }
 
-.modification-token[data-type="added-free"] {
+.modification-token[data-type="add"]::before {
+  content: "+ ";
+}
+
+.modification-token[data-type="modify"] {
   color: var(--md-sys-color-on-surface-variant);
 }
 
