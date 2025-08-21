@@ -81,18 +81,24 @@ class NavigationService {
   /**
    * Truncate the navigation stack to a specific menu
    * Cleans up orphaned page states
+   * 
+   * Behavior:
+   * - If menuId is undefined: clears entire stack (for home/order navigation)
+   * - If menuId is in stack: removes everything after it
+   * - If menuId is NOT in stack: clears entire stack (stale navigation)
+   * - If menuId is already at top: no change needed
    */
   private truncateStack(menuId?: string) {
     const navStack = this.getNavStack();
     let stack = navStack.get([]);
 
-    // Find the menu in the stack
+    // Find the menu in the stack (-1 if not found or undefined)
     const idx = menuId ? stack.indexOf(menuId) : -1;
     if (idx !== stack.length - 1) {
       // Get items that will be removed
       const toRemove = stack.slice(idx + 1);
 
-      // Truncate stack
+      // Truncate stack (empty if idx is -1)
       stack = stack.slice(0, idx + 1);
       navStack.set(stack);
 
