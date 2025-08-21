@@ -366,22 +366,6 @@ export function getRouter(): AppRouter {
 }
 
 /**
- * Export router for backward compatibility (will be removed)
- * @deprecated Use getRouter() instead
- */
-export const router = new Proxy({} as AppRouter, {
-  get(_target, prop) {
-    const instance = getRouter();
-    const value = (instance as any)[prop];
-    // If it's a function, bind it to the instance to preserve 'this' context
-    if (typeof value === 'function') {
-      return value.bind(instance);
-    }
-    return value;
-  }
-});
-
-/**
  * Type exports for consumers
  */
 export type { AppRouter };

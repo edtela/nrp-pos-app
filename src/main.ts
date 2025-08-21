@@ -1,4 +1,4 @@
-import { router } from "@/pages/app-router";
+import { getRouter } from "@/pages/app-router";
 import { initializeGlobalClickHandler } from "@/lib/html-template";
 import { initTheme } from "@/lib/theme";
 import "./styles/theme.css";
@@ -21,6 +21,8 @@ async function init() {
 
   const path = window.location.pathname;
   
+  const router = getRouter();
+  
   if (window.__PRELOADED_DATA__) {
     // SSG mode - HTML is already rendered, just hydrate
     router.hydratePage(app, window.__PRELOADED_DATA__);
@@ -39,6 +41,7 @@ init().catch(console.error);
 window.addEventListener("popstate", async () => {
   if (!app) return;
   
+  const router = getRouter();
   // Always client-side for navigation
   const path = window.location.pathname;
   const pageData = await router.fetchStaticData(path);

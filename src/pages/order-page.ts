@@ -6,7 +6,7 @@
  */
 
 import { html, addEventHandler, STATE_UPDATE_EVENT } from "@/lib/html-template";
-import { router } from "@/pages/app-router";
+import { getRouter } from "@/pages/app-router";
 import { Context } from "@/lib/context";
 import * as OrderContentUI from "@/components/order-content";
 import * as OrderItemUI from "@/components/order-item";
@@ -22,7 +22,7 @@ export function template(data: OrderPageData, context: Context) {
   const headerData: AppHeader.HeaderData = {
     leftButton: {
       type: 'add',
-      onClick: () => router.goto.home()
+      onClick: () => getRouter().goto.home()
     }
   };
   
@@ -49,7 +49,7 @@ export function hydrate(container: Element, _data: OrderPageData, context: Conte
     const headerData: AppHeader.HeaderData = {
       leftButton: {
         type: 'add',
-        onClick: () => router.goto.home()
+        onClick: () => getRouter().goto.home()
       }
     };
     AppHeader.hydrate(header, context, headerData);
@@ -112,7 +112,7 @@ export function hydrate(container: Element, _data: OrderPageData, context: Conte
       // Get the order item and navigate to modify it
       const displayItem = model.getData().items[itemId];
       if (displayItem) {
-        router.goto.modifyOrderItem(displayItem.item);
+        getRouter().goto.modifyOrderItem(displayItem.item);
       }
     }
   });
