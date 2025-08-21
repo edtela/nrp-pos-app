@@ -8,18 +8,18 @@
  * - Automatic state restoration on page load
  */
 
-import { MenuItem, Menu, isVariantPricing } from "@/types";
-import { DisplayMenuItem } from "@/model/menu-model";
+import { MenuItem, Menu } from "@/types";
 import { OrderItem } from "@/model/order-model";
 import { DisplayMenu } from "@/model/menu-model";
 import { createStore } from "@/lib/storage";
 import { PageStaticData } from "@/types/page-data";
 import { render } from "@/lib/html-template";
-import { getCurrentLanguage, parseLanguageFromUrl } from "@/lib/language";
+import { getCurrentLanguage } from "@/lib/language";
 import { createContext, Context, getCurrencyFormat } from "@/lib/context";
 import * as MenuPage from "./menu-page";
 import * as OrderPage from "./order-page";
-import { navigate, getMenuDataPath, isOrderPage, parseMenuId } from "./route-builder";
+import { navigate } from "./route-builder";
+import { fetchPageData } from "@/services/menu-data-service";
 
 /**
  * Navigation stack item types
@@ -202,84 +202,7 @@ class AppRouter {
    * Fetch static data for a page (menu data or empty order)
    */
   async fetchStaticData(path: string): Promise<PageStaticData> {
-    // Check if this is the order page
-    if (isOrderPage(path)) {
-      // Order page returns empty data structure
-      return {
-        type: "order",
-        data: {
-          order: { itemIds: [], total: 0 },
-          items: {}
-        }
-      };
-    }
-    
-    // Parse language and menu ID from path
-    const { language } = parseLanguageFromUrl(path);
-    const menuId = parseMenuId(path);
-    
-    // Fetch menu data - server handles fallback to default language
-    const dataPath = getMenuDataPath(menuId, language);
-    const response = await fetch(dataPath);
-    
-    if (!response.ok) {
-      throw new Error(`Failed to load menu: ${response.statusText}`);
-    }
-    
-    const rawMenu: Menu = await response.json();
-    return this.transformToDisplayMenu(rawMenu);
-  }
-
-  /**
-   * Transform raw menu to display menu
-   */
-  private transformToDisplayMenu(rawMenu: Menu): PageStaticData {
-    // Three-layer structure: map items directly
-    const mappedItems: Record<string, DisplayMenuItem> = {};
-    for (const [id, item] of Object.entries(rawMenu.items)) {
-      // Compute initial price based on item type
-      let price = 0;
-      if (typeof item.price === 'number') {
-        price = item.price;
-      } else if (isVariantPricing(item.price)) {
-        // Use the default selected variant's price
-        const variantGroup = rawMenu.variants?.[item.price.groupId];
-        if (variantGroup) {
-          price = item.price.prices[variantGroup.selectedId] ?? 0;
-        }
-      }
-      
-      // Compute isSingleChoice from choice definition if constraints reference a choice
-      let isSingleChoice: boolean | undefined;
-      if (item.constraints.choiceId && rawMenu.choices) {
-        const choice = rawMenu.choices[item.constraints.choiceId];
-        if (choice) {
-          isSingleChoice = choice.min === 1 && choice.max === 1;
-        }
-      }
-      
-      // Compute isRequired from constraints
-      const isRequired = item.constraints.min !== undefined && item.constraints.min >= 1;
-      
-      mappedItems[id] = {
-        data: item,
-        price,
-        quantity: 0,
-        total: 0,
-        isSingleChoice,
-        isRequired
-      };
-    }
-    
-    const displayMenu: DisplayMenu = {
-      ...rawMenu,
-      items: mappedItems
-    } as DisplayMenu;
-    
-    return {
-      type: "menu",
-      data: displayMenu
-    };
+    return fetchPageData(path);
   }
 
   /**
