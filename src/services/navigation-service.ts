@@ -9,29 +9,28 @@ import { createStore } from "@/lib/storage";
 import { navigate } from "@/lib/router";
 
 /**
- * Enhanced navigation entry with page state
+ * Page state that can be saved and restored
  */
-export type NavigationEntry = {
-  menuId: string;
+export type PageState = {
+  variants?: Record<string, string>; // groupId -> selectedId
+  selectedItems?: string[]; // IDs of selected items
+  quantities?: Record<string, number>; // itemId -> quantity
+  scrollPosition?: number; // Scroll position for restoration
+};
+
+/**
+ * Navigation entry stored with the page state
+ * Contains context about how we got to this page
+ */
+export type NavigationContext = {
   type: "browse" | "modify";
-  
-  // Context data for the navigation
-  context: {
-    menuItem?: MenuItem;
-    orderItem?: OrderItem;
-  };
-  
-  // Page state that should be restored
-  pageState?: {
-    variants?: Record<string, string>; // groupId -> selectedId
-    selectedItems?: string[]; // IDs of selected items
-    quantities?: Record<string, number>; // itemId -> quantity
-  };
+  menuItem?: MenuItem; // The menu item that led to this page
+  orderItem?: OrderItem; // For modify mode
 };
 
 /**
  * Legacy navigation stack item for backward compatibility
- * Will be migrated to NavigationEntry
+ * Will be removed after menu-page is updated
  */
 export type NavStackItem =
   | { type: "browse"; item: MenuItem }
@@ -41,8 +40,10 @@ export type NavStackItem =
  * Navigation Service - handles all navigation logic and state
  */
 class NavigationService {
-  private navStack: ReturnType<typeof createStore<NavStackItem[]>> | null = null;
-  private pageStates: Map<string, NavigationEntry['pageState']> = new Map();
+  // Simple stack of menu IDs
+  private navStack: ReturnType<typeof createStore<string[]>> | null = null;
+  
+  // Modify context stored separately
   private modifyContext: ReturnType<typeof createStore<OrderItem | null>> | null = null;
 
   /**
@@ -51,7 +52,7 @@ class NavigationService {
   private init(): void {
     if (typeof window !== 'undefined' && typeof sessionStorage !== 'undefined') {
       if (!this.navStack) {
-        this.navStack = createStore<NavStackItem[]>("nav-stack-v1", "session");
+        this.navStack = createStore<string[]>("nav-stack-v2", "session");
       }
       if (!this.modifyContext) {
         this.modifyContext = createStore<OrderItem | null>("modify-context", "session");
@@ -62,7 +63,7 @@ class NavigationService {
   /**
    * Get the nav stack, initializing if needed
    */
-  private getNavStack(): ReturnType<typeof createStore<NavStackItem[]>> {
+  private getNavStack(): ReturnType<typeof createStore<string[]>> {
     this.init();
     if (!this.navStack) {
       // Return a mock store for non-browser environments
@@ -91,79 +92,129 @@ class NavigationService {
   }
 
   /**
+   * Get storage key for page state
+   */
+  private getPageStateKey(menuId: string): string {
+    return `page-state-${menuId}`;
+  }
+
+  /**
+   * Get storage key for navigation context
+   */
+  private getNavigationContextKey(menuId: string): string {
+    return `nav-context-${menuId}`;
+  }
+
+  /**
+   * Save page state for a specific menu
+   */
+  savePageState(menuId: string, state: PageState): void {
+    if (typeof sessionStorage === 'undefined') return;
+    
+    if (state && Object.keys(state).length > 0) {
+      sessionStorage.setItem(
+        this.getPageStateKey(menuId),
+        JSON.stringify(state)
+      );
+    }
+  }
+
+  /**
+   * Get saved page state for a specific menu
+   */
+  getPageState(menuId: string): PageState | null {
+    if (typeof sessionStorage === 'undefined') return null;
+    
+    const stored = sessionStorage.getItem(this.getPageStateKey(menuId));
+    return stored ? JSON.parse(stored) : null;
+  }
+
+  /**
+   * Clear page state for a specific menu
+   */
+  clearPageState(menuId: string): void {
+    if (typeof sessionStorage === 'undefined') return;
+    
+    sessionStorage.removeItem(this.getPageStateKey(menuId));
+    sessionStorage.removeItem(this.getNavigationContextKey(menuId));
+  }
+
+  /**
+   * Save navigation context for a menu
+   */
+  private saveNavigationContext(menuId: string, context: NavigationContext): void {
+    if (typeof sessionStorage === 'undefined') return;
+    
+    sessionStorage.setItem(
+      this.getNavigationContextKey(menuId),
+      JSON.stringify(context)
+    );
+  }
+
+  /**
+   * Get navigation context for a menu
+   */
+  getNavigationContext(menuId: string): NavigationContext | null {
+    if (typeof sessionStorage === 'undefined') return null;
+    
+    const stored = sessionStorage.getItem(this.getNavigationContextKey(menuId));
+    return stored ? JSON.parse(stored) : null;
+  }
+
+  /**
    * Truncate the navigation stack to a specific menu
-   * Used when navigating directly or via browser back/forward
-   * @param menuId - The menu ID to truncate to
-   * @returns The current navigation item after truncation, or undefined
+   * Cleans up orphaned page states
    */
   truncateStack(menuId: string): NavStackItem | undefined {
     const navStack = this.getNavStack();
     let stack = navStack.get([]);
 
-    // Find the item in stack that matches this menuId
-    const idx = stack.findIndex((stackItem) => {
-      if (stackItem.type === "browse") {
-        return stackItem.item.subMenu?.menuId === menuId;
-      } else {
-        // For modify items, check the original menu item
-        return stackItem.item.menuItem.subMenu?.menuId === menuId;
-      }
-    });
+    // Find the menu in the stack
+    const idx = stack.indexOf(menuId);
 
     if (idx !== -1) {
       if (idx !== stack.length - 1) {
-        // Truncate everything after this item
+        // Get items that will be removed
+        const toRemove = stack.slice(idx + 1);
+        
+        // Truncate stack
         stack = stack.slice(0, idx + 1);
         navStack.set(stack);
         
-        // Clear page states for truncated pages
-        const truncatedMenuIds = new Set<string>();
-        for (let i = idx + 1; i < stack.length; i++) {
-          const item = stack[i];
-          const menuId = item.type === "browse" 
-            ? item.item.subMenu?.menuId 
-            : item.item.menuItem.subMenu?.menuId;
-          if (menuId) {
-            truncatedMenuIds.add(menuId);
-          }
-        }
-        truncatedMenuIds.forEach(id => this.pageStates.delete(id));
+        // Clean up orphaned page states
+        toRemove.forEach(id => {
+          this.clearPageState(id);
+        });
       }
-      // Return the item at this position
-      return stack[idx];
+      
+      // Get the navigation context for this menu to return legacy NavStackItem
+      const context = this.getNavigationContext(menuId);
+      if (context) {
+        if (context.type === "modify" && context.orderItem) {
+          return { type: "modify", item: context.orderItem };
+        } else if (context.type === "browse" && context.menuItem) {
+          return { type: "browse", item: context.menuItem };
+        }
+      }
+      
+      return undefined;
     }
 
-    // Menu not found in stack - clear it (direct navigation)
+    // Menu not found in stack - clear everything
+    stack.forEach(id => {
+      this.clearPageState(id);
+    });
     navStack.set([]);
-    this.pageStates.clear();
+    
     return undefined;
   }
 
   /**
-   * Save the current page state for a menu
-   * @param menuId - The menu ID to save state for
-   * @param state - The state to save
+   * Get the current menu ID from the top of the stack
    */
-  savePageState(menuId: string, state: NavigationEntry['pageState']): void {
-    if (state && Object.keys(state).length > 0) {
-      this.pageStates.set(menuId, state);
-    }
-  }
-
-  /**
-   * Get saved page state for a menu
-   * @param menuId - The menu ID to get state for
-   * @returns The saved state or undefined
-   */
-  getPageState(menuId: string): NavigationEntry['pageState'] | undefined {
-    return this.pageStates.get(menuId);
-  }
-
-  /**
-   * Clear all page states (for fresh navigation)
-   */
-  private clearPageStates(): void {
-    this.pageStates.clear();
+  getCurrentMenuId(): string | undefined {
+    const stack = this.getNavStack().get([]);
+    return stack.length > 0 ? stack[stack.length - 1] : undefined;
   }
 
   /**
@@ -172,7 +223,6 @@ class NavigationService {
   goto = {
     /**
      * Navigate to a menu item (for drilling down into submenus)
-     * @param item - The menu item to navigate to
      */
     menuItem: (item: MenuItem): void => {
       if (!item.subMenu) {
@@ -180,14 +230,22 @@ class NavigationService {
         return;
       }
 
+      const menuId = item.subMenu.menuId;
+      
       // Add to navigation stack
       const navStack = this.getNavStack();
       const stack = navStack.get([]);
-      stack.push({ type: "browse", item });
+      stack.push(menuId);
       navStack.set(stack);
 
+      // Save navigation context for this menu
+      this.saveNavigationContext(menuId, {
+        type: "browse",
+        menuItem: item
+      });
+
       // Navigate using router
-      navigate.toMenu(item.subMenu.menuId);
+      navigate.toMenu(menuId);
     },
 
     /**
@@ -202,9 +260,11 @@ class NavigationService {
      */
     home: (): void => {
       // Clear navigation context when going home
-      this.clearPageStates();
-      const navStack = this.getNavStack();
-      navStack.set([]);
+      const stack = this.getNavStack().get([]);
+      stack.forEach(id => {
+        this.clearPageState(id);
+      });
+      this.getNavStack().set([]);
       
       navigate.toHome();
     },
@@ -224,7 +284,6 @@ class NavigationService {
   /**
    * Navigate to modify an order item
    * This is a high-level business operation that handles the full flow
-   * @param orderItem - The order item to modify
    */
   modifyOrderItem(orderItem: OrderItem): void {
     const menuItem = orderItem.menuItem;
@@ -233,15 +292,24 @@ class NavigationService {
     const modifyStore = this.getModifyContextStore();
     modifyStore.set(orderItem);
 
-    // Set up navigation stack for modify mode
-    const navStack = this.getNavStack();
-    navStack.set([{ type: "modify", item: orderItem }]);
+    // Clear any existing navigation
+    const oldStack = this.getNavStack().get([]);
+    oldStack.forEach(id => {
+      this.clearPageState(id);
+    });
 
-    // Clear page states for fresh modify experience
-    this.clearPageStates();
+    // Set up new navigation stack with just this menu
+    const menuId = menuItem.subMenu?.menuId || "index";
+    const navStack = this.getNavStack();
+    navStack.set([menuId]);
+
+    // Save navigation context as modify
+    this.saveNavigationContext(menuId, {
+      type: "modify",
+      orderItem: orderItem
+    });
 
     // Navigate to the appropriate menu
-    const menuId = menuItem.subMenu?.menuId || "index";
     navigate.toMenu(menuId);
   }
 
@@ -266,38 +334,50 @@ class NavigationService {
    */
   context = {
     /**
-     * Get the current navigation item
-     * @returns The current item or undefined if stack is empty
+     * Get the current navigation item (legacy support)
      */
     getCurrentItem: (): NavStackItem | undefined => {
-      const navStack = this.getNavStack();
-      const stack = navStack.get([]);
-      return stack.length > 0 ? stack[stack.length - 1] : undefined;
+      const menuId = this.getCurrentMenuId();
+      if (!menuId) return undefined;
+      
+      const context = this.getNavigationContext(menuId);
+      if (!context) return undefined;
+      
+      if (context.type === "modify" && context.orderItem) {
+        return { type: "modify", item: context.orderItem };
+      } else if (context.type === "browse" && context.menuItem) {
+        return { type: "browse", item: context.menuItem };
+      }
+      
+      return undefined;
     },
 
     /**
      * Check if currently in modify mode
-     * @returns True if modifying an order item
      */
     isModifying: (): boolean => {
-      const current = this.context.getCurrentItem();
-      return current?.type === "modify";
+      const menuId = this.getCurrentMenuId();
+      if (!menuId) return false;
+      
+      const context = this.getNavigationContext(menuId);
+      return context?.type === "modify";
     },
 
     /**
      * Clear the entire navigation stack
      */
     clearStack: (): void => {
-      const navStack = this.getNavStack();
-      navStack.set([]);
-      this.clearPageStates();
+      const stack = this.getNavStack().get([]);
+      stack.forEach(id => {
+        this.clearPageState(id);
+      });
+      this.getNavStack().set([]);
     },
 
     /**
-     * Get the full navigation stack
-     * @returns The complete navigation stack
+     * Get the full navigation stack (just IDs now)
      */
-    getStack: (): NavStackItem[] => {
+    getStack: (): string[] => {
       const navStack = this.getNavStack();
       return navStack.get([]);
     },
