@@ -1,4 +1,4 @@
-import { getRouter } from "@/pages/app-router";
+import { getRouter } from "@/pages/page-renderer";
 import { initializeGlobalClickHandler } from "@/lib/html-template";
 import { initTheme } from "@/lib/theme";
 import "./styles/theme.css";

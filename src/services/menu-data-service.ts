@@ -9,7 +9,7 @@ import { DisplayMenuItem, DisplayMenu } from "@/model/menu-model";
 import { OrderPageData } from "@/model/order-model";
 import { PageStaticData } from "@/types/page-data";
 import { Language, parseLanguageFromUrl } from "@/lib/language";
-import { getMenuDataPath, isOrderPage, parseMenuId } from "@/pages/route-builder";
+import { getMenuDataPath, isOrderPage, parseMenuId } from "@/lib/router";
 
 /**
  * Fetch page data based on the path

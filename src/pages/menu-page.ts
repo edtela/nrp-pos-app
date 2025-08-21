@@ -7,8 +7,8 @@
 
 import { addEventHandler, html, Template, render } from "@/lib/html-template";
 import { isSaleItem } from "@/types";
-import { NavStackItem, getRouter } from "@/pages/app-router";
-import { navigate } from "@/pages/route-builder";
+import { navigate } from "@/lib/router";
+import { NavStackItem, getNavigationService } from "@/services/navigation-service";
 import { Context, commonTranslations } from "@/lib/context";
 import * as MenuContentUI from "@/components/menu-content";
 import * as AppHeader from "@/components/app-header";
@@ -172,8 +172,8 @@ export function hydrate(container: Element, displayMenu: DisplayMenu, context: C
     AppHeader.hydrate(header, context, headerData);
   }
 
-  const router = getRouter();
-  const navItem = router.truncateStack(displayMenu.id);
+  const navigationService = getNavigationService();
+  const navItem = navigationService.truncateStack(displayMenu.id);
   const navContext = toContext(navItem);
 
   // Check if this is a modifier menu without an order context
@@ -257,7 +257,7 @@ export function hydrate(container: Element, displayMenu: DisplayMenu, context: C
     const item = model.data.items[data.id];
 
     if (item?.data.subMenu) {
-      router.goto.menuItem(item.data);
+      navigationService.goto.menuItem(item.data);
     } else {
       // Prevent deselecting required items
       if (item.isRequired && item.selected) {
@@ -269,7 +269,7 @@ export function hydrate(container: Element, displayMenu: DisplayMenu, context: C
   });
 
   addEventHandler(page, VIEW_ORDER_EVENT, () => {
-    router.goto.order();
+    navigationService.goto.order();
   });
 
   addEventHandler(page, ADD_TO_ORDER_EVENT, () => {
@@ -287,10 +287,10 @@ export function hydrate(container: Element, displayMenu: DisplayMenu, context: C
 
       // Check if we're in modify mode
       if (order.order) {
-        router.context.clearStack();
-        router.goto.order();
+        navigationService.context.clearStack();
+        navigationService.goto.order();
       } else {
-        router.goto.back();
+        navigationService.goto.back();
       }
     }
   });
