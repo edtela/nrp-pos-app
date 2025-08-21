@@ -15,10 +15,11 @@ import { DisplayMenu } from "@/model/menu-model";
 import { createStore } from "@/lib/storage";
 import { PageStaticData } from "@/types/page-data";
 import { render } from "@/lib/html-template";
-import { getCurrentLanguage, parseLanguageFromUrl, buildLanguageUrl } from "@/lib/language";
+import { getCurrentLanguage, parseLanguageFromUrl } from "@/lib/language";
 import { createContext, Context, getCurrencyFormat } from "@/lib/context";
 import * as MenuPage from "./menu-page";
 import * as OrderPage from "./order-page";
+import { navigate, getMenuDataPath, isOrderPage, parseMenuId } from "./route-builder";
 
 /**
  * Navigation stack item types
@@ -113,9 +114,8 @@ class AppRouter {
       stack.push({ type: "browse", item });
       navStack.set(stack);
 
-      // Navigate with language support
-      const lang = getCurrentLanguage();
-      window.location.href = buildLanguageUrl(`/${item.subMenu.menuId}`, lang);
+      // Navigate using RouteBuilder
+      navigate.toMenu(item.subMenu.menuId);
     },
 
     /**
@@ -129,33 +129,30 @@ class AppRouter {
       const navStack = this.getNavStack();
       navStack.set([{ type: "modify", item: orderItem }]);
 
-      // Navigate to the menu page where this item came from with language support
+      // Navigate to the menu page where this item came from
       const menuId = menuItem.subMenu?.menuId || "index";
-      const lang = getCurrentLanguage();
-      window.location.href = buildLanguageUrl(`/${menuId}`, lang);
+      navigate.toMenu(menuId);
     },
 
     /**
      * Navigate to the order page
      */
     order: (): void => {
-      const lang = getCurrentLanguage();
-      window.location.href = buildLanguageUrl("/order", lang);
+      navigate.toOrder();
     },
 
     /**
      * Navigate to the home page
      */
     home: (): void => {
-      const lang = getCurrentLanguage();
-      window.location.href = buildLanguageUrl("/", lang);
+      navigate.toHome();
     },
 
     /**
      * Navigate back in browser history
      */
     back: (): void => {
-      window.history.back();
+      navigate.back();
     },
   };
 
@@ -200,27 +197,13 @@ class AppRouter {
     },
   };
 
-  /**
-   * Get menu file from URL path
-   */
-  private getMenuFileFromPath(path: string): string {
-    // Parse language from path
-    const { path: cleanPath } = parseLanguageFromUrl(path);
-    const menuName = cleanPath.slice(1); // Remove leading slash
-    if (!menuName || menuName === "menu") {
-      return "index.json";
-    }
-    return `${menuName}.json`;
-  }
 
   /**
    * Fetch static data for a page (menu data or empty order)
    */
   async fetchStaticData(path: string): Promise<PageStaticData> {
-    // Parse language from path
-    const { language, path: cleanPath } = parseLanguageFromUrl(path);
-    
-    if (cleanPath === "/order") {
+    // Check if this is the order page
+    if (isOrderPage(path)) {
       // Order page returns empty data structure
       return {
         type: "order",
@@ -231,20 +214,19 @@ class AppRouter {
       };
     }
     
-    // Menu pages fetch menu data with language support
-    const menuFile = this.getMenuFileFromPath(cleanPath);
-    const response = await fetch(`/data/menu/${language}/${menuFile}`);
-    if (!response.ok) {
-      // Fallback to default language if not found
-      const fallbackResponse = await fetch(`/data/menu/${menuFile}`);
-      if (!fallbackResponse.ok) {
-        throw new Error(`Failed to load menu: ${response.statusText}`);
-      }
-      const rawMenu: Menu = await fallbackResponse.json();
-      return this.transformToDisplayMenu(rawMenu);
-    }
-    const rawMenu: Menu = await response.json();
+    // Parse language and menu ID from path
+    const { language } = parseLanguageFromUrl(path);
+    const menuId = parseMenuId(path);
     
+    // Fetch menu data - server handles fallback to default language
+    const dataPath = getMenuDataPath(menuId, language);
+    const response = await fetch(dataPath);
+    
+    if (!response.ok) {
+      throw new Error(`Failed to load menu: ${response.statusText}`);
+    }
+    
+    const rawMenu: Menu = await response.json();
     return this.transformToDisplayMenu(rawMenu);
   }
 

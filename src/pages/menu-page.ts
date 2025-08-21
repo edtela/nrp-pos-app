@@ -8,6 +8,7 @@
 import { addEventHandler, html, Template, render } from "@/lib/html-template";
 import { isSaleItem } from "@/types";
 import { NavStackItem, getRouter } from "@/pages/app-router";
+import { navigate } from "@/pages/route-builder";
 import { Context, commonTranslations } from "@/lib/context";
 import * as MenuContentUI from "@/components/menu-content";
 import * as AppHeader from "@/components/app-header";
@@ -28,7 +29,7 @@ export function template(displayMenu: DisplayMenu, context: Context): Template {
   const headerData: AppHeader.HeaderData = {
     leftButton: {
       type: leftButtonType,
-      onClick: leftButtonType === "home" ? () => (window.location.href = "/") : () => window.history.back(),
+      onClick: leftButtonType === "home" ? () => navigate.toHome() : () => navigate.back(),
     },
   };
 
@@ -69,7 +70,7 @@ function modifierMenuErrorTemplate(context: Context): Template {
   const headerData: AppHeader.HeaderData = {
     leftButton: {
       type: "home",
-      onClick: () => (window.location.href = "/"),
+      onClick: () => navigate.toHome(),
     },
   };
 
@@ -130,7 +131,7 @@ function modifierMenuErrorTemplate(context: Context): Template {
           </p>
 
           <button
-            onclick="window.location.href='/'"
+            class="nav-home-button"
             style="
             background-color: var(--md-sys-color-primary);
             color: var(--md-sys-color-on-primary);
@@ -165,7 +166,7 @@ export function hydrate(container: Element, displayMenu: DisplayMenu, context: C
     const headerData: AppHeader.HeaderData = {
       leftButton: {
         type: leftButtonType,
-        onClick: leftButtonType === "home" ? () => (window.location.href = "/") : () => window.history.back(),
+        onClick: leftButtonType === "home" ? () => navigate.toHome() : () => navigate.back(),
       },
     };
     AppHeader.hydrate(header, context, headerData);
@@ -186,11 +187,18 @@ export function hydrate(container: Element, displayMenu: DisplayMenu, context: C
       const headerData: AppHeader.HeaderData = {
         leftButton: {
           type: "home",
-          onClick: () => (window.location.href = "/"),
+          onClick: () => navigate.toHome(),
         },
       };
       AppHeader.hydrate(errorHeader, context, headerData);
     }
+    
+    // Add click handler for the home button in the error message
+    const homeButton = container.querySelector('.nav-home-button') as HTMLButtonElement;
+    if (homeButton) {
+      homeButton.onclick = () => navigate.toHome();
+    }
+    
     return; // Exit early, no need to set up other handlers
   }
 
