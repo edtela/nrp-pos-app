@@ -72,7 +72,7 @@ function orderItemTemplate(order: OrderItem | undefined, context: Context): Temp
 export function template(data: MenuPageData, context: Context): Template {
   return html`
     <div class="${classes.container}">
-      ${orderItemTemplate(data.order, context)}
+      <div class="order-slot slot">${orderItemTemplate(data.order, context)}</div>
       ${MenuContent.template(data, context)}
     </div>
   `;
@@ -84,9 +84,9 @@ export function template(data: MenuPageData, context: Context): Template {
 export function update(container: Element, changes: DataChange<MenuPageData>, ctx: Context, data: MenuPageData): void {
   // Handle order updates
   if (changes.order) {
-    const orderElement = container.querySelector(`.${classes.orderItem}`);
-    if (orderElement && orderElement.parentElement) {
-      render(orderItemTemplate(data.order, ctx), orderElement.parentElement);
+    const orderSlot = container.querySelector(".order-slot");
+    if (orderSlot) {
+      render(orderItemTemplate(data.order, ctx), orderSlot);
     }
   }
 
