@@ -6,7 +6,7 @@
  */
 
 import { addEventHandler, html, Template, render } from "@/lib/html-template";
-import { navigate } from "@/lib/router";
+import { navigate } from "@/pages/page-router";
 import { getNavigationService } from "@/services/navigation-service";
 import { Context, commonTranslations } from "@/lib/context";
 import * as MenuContentUI from "@/components/menu-content";

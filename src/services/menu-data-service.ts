@@ -9,7 +9,7 @@ import { toDisplayMenu } from "@/model/menu-model";
 import { OrderPageData } from "@/model/order-model";
 import { PageStaticData } from "@/types/page-data";
 import { getCurrentLanguage, Language, parseLanguageFromUrl } from "@/lib/language";
-import { isOrderPage, parseMenuId } from "@/lib/router";
+import { isOrderPage, parseMenuId } from "@/pages/page-router";
 
 /**
  * Get menu JSON filename from menu ID

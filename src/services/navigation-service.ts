@@ -6,7 +6,7 @@
 import { MenuItem } from "@/types";
 import { OrderItem } from "@/model/order-model";
 import { createStore } from "@/lib/storage";
-import { navigate } from "@/lib/router";
+import { navigate } from "@/pages/page-router";
 
 export type PageState = Record<string, any>;
 
