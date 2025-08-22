@@ -6,12 +6,13 @@
  */
 
 import { html, Template, toClassSelectors, domUpdate } from "@/lib/html-template";
-import { Context, withContext } from "@/lib/context";
+import { Context, withContext, commonTranslations } from "@/lib/context";
 import { MenuPageData } from "@/model/menu-model";
 import { DataChange } from "@/lib/data-model-types";
 import { OrderItem } from "@/model/order-model";
 import * as MenuContent from "./menu-content";
 import { styles } from "@/styles/styles";
+import { navigate } from "@/pages/page-router";
 
 // Export for menu-page selector
 export const modifierMenuContainer = "modifier-menu-content";
@@ -120,12 +121,80 @@ function orderItemTemplate(): Template {
 }
 
 /**
+ * Error content template
+ */
+function errorContentTemplate(context: Context): Template {
+  return html`
+    <div class="modifier-error" style="
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      padding: var(--md-sys-spacing-xl);
+      text-align: center;
+      gap: var(--md-sys-spacing-lg);
+    ">
+      <span class="material-icons" style="
+        font-size: 64px;
+        color: var(--md-sys-color-outline);
+      ">error_outline</span>
+
+      <h2 style="
+        font-size: var(--md-sys-typescale-headline-medium-size);
+        line-height: var(--md-sys-typescale-headline-medium-line-height);
+        color: var(--md-sys-color-on-surface);
+        margin: 0;
+      ">
+        ${context.lang === "sq"
+          ? "Nuk mund të aksesoni këtë menu"
+          : context.lang === "it"
+            ? "Impossibile accedere a questo menu"
+            : "Cannot access this menu"}
+      </h2>
+
+      <p style="
+        font-size: var(--md-sys-typescale-body-large-size);
+        line-height: var(--md-sys-typescale-body-large-line-height);
+        color: var(--md-sys-color-on-surface-variant);
+        margin: 0;
+        max-width: 400px;
+      ">
+        ${context.lang === "sq"
+          ? "Ky menu kërkon një artikull të zgjedhur. Ju lutemi filloni nga menuja kryesore."
+          : context.lang === "it"
+            ? "Questo menu richiede un articolo selezionato. Si prega di iniziare dal menu principale."
+            : "This menu requires a selected item. Please start from the main menu."}
+      </p>
+
+      <button class="nav-home-button" style="
+        background-color: var(--md-sys-color-primary);
+        color: var(--md-sys-color-on-primary);
+        border: none;
+        border-radius: var(--md-sys-shape-corner-full);
+        padding: var(--md-sys-spacing-sm) var(--md-sys-spacing-xl);
+        font-size: var(--md-sys-typescale-label-large-size);
+        font-weight: var(--md-sys-typescale-label-large-weight);
+        cursor: pointer;
+        margin-top: var(--md-sys-spacing-md);
+      ">
+        ${commonTranslations.menu(context)}
+      </button>
+    </div>
+  `;
+}
+
+/**
  * Main template for modifier menu content
  */
 export function template(data: MenuPageData, context: Context): Template {
   return html`
-    <div class="${modifierMenuContainer}" style="display: flex; flex-direction: column;">
-      ${orderItemTemplate()} ${MenuContent.template(data, context)}
+    <div class="${modifierMenuContainer}" style="display: flex; flex-direction: column; height: 100%;">
+      ${errorContentTemplate(context)}
+      <div class="modifier-content" style="display: flex; flex-direction: column;">
+        ${orderItemTemplate()}
+        ${MenuContent.template(data, context)}
+      </div>
     </div>
   `;
 }
@@ -155,6 +224,22 @@ export function updateOrder(container: Element, changes: DataChange<OrderItem>, 
 
   if (changes.modifiers && data.order) {
     domUpdate.setHTML(container, selectors.tokens, orderTokensTemplate(data.order));
+  }
+}
+
+/**
+ * Show error state when modifier menu has no order context
+ */
+export function showError(container: Element): void {
+  // Hide regular content
+  domUpdate.setStyle(container, '.modifier-content', 'display', 'none');
+  // Show error content
+  domUpdate.setStyle(container, '.modifier-error', 'display', 'flex');
+  
+  // Set up click handler for home button
+  const homeButton = container.querySelector('.nav-home-button') as HTMLButtonElement;
+  if (homeButton) {
+    homeButton.onclick = () => navigate.toHome();
   }
 }
 
