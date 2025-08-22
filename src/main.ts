@@ -1,50 +1,27 @@
-import { getRouter } from "@/pages/page-renderer";
-import { initializeGlobalClickHandler } from "@/lib/html-template";
-import { initTheme } from "@/lib/theme";
-import "./styles/theme.css";
-import "./styles/global.css";
+/**
+ * Main Entry Point - SSG Mode
+ * Used for statically generated sites where HTML is pre-rendered
+ * Only performs hydration of pre-existing HTML
+ */
 
-// Initialize theme system
-initTheme();
+import { initializeApp, getAppElement, getPageRenderer } from "@/app-init";
 
-// Initialize global click handler
-initializeGlobalClickHandler();
+// Initialize common app features
+initializeApp();
 
-// Get the root element
-const app = document.getElementById("app");
-
-// Initialize the app
+// Hydrate the pre-rendered page
 async function init() {
-  if (!app) {
-    throw new Error("App root element not found");
-  }
-
-  const path = window.location.pathname;
+  const app = getAppElement();
+  const router = getPageRenderer();
   
-  const router = getRouter();
-  
-  if (window.__PRELOADED_DATA__) {
-    // SSG mode - HTML is already rendered, just hydrate
-    router.hydratePage(app, window.__PRELOADED_DATA__);
-  } else {
-    // Client mode - fetch data, render, then hydrate
-    const pageData = await router.fetchStaticData(path);
-    router.renderPage(app, pageData);
-    router.hydratePage(app, pageData);
+  // In SSG mode, data is always preloaded
+  if (!window.__PRELOADED_DATA__) {
+    throw new Error("No preloaded data found. This is a production build that requires SSG.");
   }
+  
+  // Just hydrate - HTML is already rendered
+  router.hydratePage(app, window.__PRELOADED_DATA__);
 }
 
 // Start the application
 init().catch(console.error);
-
-// Handle navigation (for development)
-window.addEventListener("popstate", async () => {
-  if (!app) return;
-  
-  const router = getRouter();
-  // Always client-side for navigation
-  const path = window.location.pathname;
-  const pageData = await router.fetchStaticData(path);
-  router.renderPage(app, pageData);
-  router.hydratePage(app, pageData);
-});
