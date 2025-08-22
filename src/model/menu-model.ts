@@ -3,20 +3,39 @@ import { anyChange, state, typeChange } from "@/lib/data-model";
 import { ALL, DataBinding, Update, UpdateResult, WHERE } from "@/lib/data-model-types";
 import { OrderItem, OrderModifier } from "./order-model";
 
+export function extractPricing(item: MenuItem, variants?: Record<string, VariantGroup>) {
+  if (typeof item.price === "number") {
+    return { price: item.price };
+  }
+
+  if (isVariantPricing(item.price)) {
+    // Use the default selected variant's price
+    const variantGroup = variants?.[item.price.groupId];
+    if (variantGroup) {
+      const price = item.price.prices[variantGroup.selectedId] ?? 0;
+      return { price, variantId: variantGroup.selectedId };
+    }
+  }
+
+  return { price: 0 };
+}
+
 export type DisplayMenuItem = {
   data: MenuItem;
   price: number; // Computed price based on selected variant or fixed price
+  variantId?: string;
   selected?: boolean;
   included?: boolean;
   quantity: number;
   total: number;
+  isCategory: boolean;
   isSingleChoice?: boolean; // Computed from choice definition (true if min=1 and max=1)
   isRequired?: boolean; // Computed from constraints (true if min >= 1)
 };
 
-export function toDisplayMenuItem(data: MenuItem, choices?: Record<string, any>): DisplayMenuItem {
-  //TODO make price optional
+export function toDisplayMenuItem(data: MenuItem, menu: DisplayMenu | Menu): DisplayMenuItem {
   // Compute isSingleChoice from choice definition if available
+  const choices = menu.choices;
   let isSingleChoice: boolean | undefined;
   if (data.constraints.choiceId && choices) {
     const choice = choices[data.constraints.choiceId];
@@ -27,21 +46,34 @@ export function toDisplayMenuItem(data: MenuItem, choices?: Record<string, any>)
 
   // Compute isRequired from constraints
   const isRequired = data.constraints.min !== undefined && data.constraints.min >= 1;
+  const isCategory = data.price == null;
 
-  return { data, price: 0, quantity: 0, total: 0, isSingleChoice, isRequired };
+  const { price, variantId } = extractPricing(data, menu.variants);
+  return { data, price, variantId, quantity: 0, total: 0, isCategory, isSingleChoice, isRequired };
 }
 
 export type DisplayMenu = Menu<DisplayMenuItem>;
 
-export function toOrderMenuItem(item: MenuItem, variantId?: string): OrderItem {
+export function toDisplayMenu(menu: Menu): DisplayMenu {
+  const displayItems: Record<string, DisplayMenuItem> = {};
+
+  for (const [id, item] of Object.entries(menu.items)) {
+    displayItems[id] = toDisplayMenuItem(item, menu);
+  }
+
+  return { ...menu, items: displayItems };
+}
+
+export function toOrderMenuItem(item: MenuItem, pageData: MenuPageData): OrderItem {
   // Compute the price based on whether it's fixed or variant-based
   let price = 0;
   let variant: OrderItem["variant"];
   if (typeof item.price === "number") {
     price = item.price;
-  } else if (item.price && variantId) {
-    variant = { id: variantId, name: variantId };
-    price = item.price.prices[variantId] ?? 0;
+  } else if (item.price) {
+    const group = (pageData.variants ?? {})[item.price.groupId];
+    variant = group.variants.find((v) => (v.id = group.selectedId));
+    price = item.price.prices[group.selectedId] ?? 0;
   }
 
   return {
@@ -61,29 +93,29 @@ export type MenuPageData = DisplayMenu & {
   order?: OrderItem;
 };
 
-export function toDisplayMenuUpdate(menuUpdate: MenuPreUpdate): Update<DisplayMenu> {
-  const itemsUpdate = menuUpdate.items;
+export function toDisplayMenuUpdate(stmt: MenuPreUpdate, menu: DisplayMenu): Update<DisplayMenu> {
+  const itemsUpdate = stmt.items;
   if (!itemsUpdate) {
-    return menuUpdate as Update<DisplayMenu>;
+    return stmt as Update<DisplayMenu>;
   }
 
   const dItemsUpdate: Record<string, Update<DisplayMenuItem>> = {};
 
   for (const key in itemsUpdate) {
-    const itemUpdate = itemsUpdate[key];
-    if (typeof itemUpdate === "function") {
+    const itemStmt = itemsUpdate[key];
+    if (typeof itemStmt === "function") {
       throw Error("Invalid update");
     }
 
-    if (Array.isArray(itemUpdate)) {
-      const dItem = toDisplayMenuItem(itemUpdate[0], {});
+    if (Array.isArray(itemStmt)) {
+      const dItem = toDisplayMenuItem(itemStmt[0], menu);
       dItemsUpdate[key] = [dItem];
     } else {
-      dItemsUpdate[key] = { data: itemUpdate };
+      dItemsUpdate[key] = { data: itemStmt };
     }
   }
 
-  return { ...menuUpdate, items: dItemsUpdate } as Update<DisplayMenu>;
+  return { ...stmt, items: dItemsUpdate } as Update<DisplayMenu>;
 }
 
 const bindings: DataBinding<MenuPageData>[] = [
@@ -225,24 +257,13 @@ function orderChanged(data: MenuPageData) {
   const stmt: Update<MenuPageData> = { items: {} };
   if (order.menuItem.subMenu?.included) {
     for (const included of order.menuItem.subMenu.included) {
-      const itemId = included.item?.id || included.itemId;
-
-      if (included.item) {
-        // Replace/add the custom item
-        const customItem = toDisplayMenuItem(included.item, data.choices);
-        customItem.included = true;
-        customItem.selected = true;
-        customItem.quantity = 1;
-        (stmt.items as any)[included.item.id] = [customItem];
-      } else {
-        // Update existing item properties
-        (stmt.items as any)[included.itemId] = {
-          [WHERE]: (item: any) => item != null,
-          included: true,
-          selected: true,
-          quantity: 1,
-        };
-      }
+      const itemId = included.itemId;
+      (stmt.items as any)[included.itemId] = {
+        [WHERE]: (item: any) => item != null,
+        included: true,
+        selected: true,
+        quantity: 1,
+      };
 
       // Handle moving items between groups
       if (included.display && data.itemGroups) {
@@ -327,6 +348,7 @@ function variantChanged(data: MenuPageData, groupId: string) {
           }
           return 0;
         },
+        variantId: group.selectedId,
       },
     },
   };

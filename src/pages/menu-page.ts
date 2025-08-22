@@ -156,6 +156,7 @@ export function hydrate(container: Element, displayMenu: DisplayMenu, context: C
   const navService = getNavigationService();
   const pageState = navService.setCurrentPage(displayMenu.id) ?? {};
   const order: OrderItem = pageState.order;
+  console.log("ORDER: ", order);
 
   // Check if this is a modifier menu without an order context
   if (displayMenu.modifierMenu && !order) {
@@ -219,7 +220,7 @@ export function hydrate(container: Element, displayMenu: DisplayMenu, context: C
     // Execute preUpdate statements if they exist
     const preUpdate = order.menuItem.subMenu?.preUpdate;
     if (preUpdate) {
-      const updates = preUpdate.map((p) => toDisplayMenuUpdate(p));
+      const updates = preUpdate.map((p) => toDisplayMenuUpdate(p, model.data));
       try {
         changes = model.updateAll(updates as any, changes);
       } catch {}
@@ -239,7 +240,7 @@ export function hydrate(container: Element, displayMenu: DisplayMenu, context: C
 
     if (item?.data.subMenu) {
       if (isSaleItem(item.data)) {
-        navService.editOrder(toOrderMenuItem(item.data));
+        navService.editOrder(toOrderMenuItem(item.data, model.data));
       } else {
         navService.goto.menuItem(item.data);
       }
