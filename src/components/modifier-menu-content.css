@@ -24,10 +24,6 @@
 .order-title {
   grid-column: 1;
   grid-row: 1;
-  font-size: var(--md-sys-typescale-title-large-size);
-  line-height: var(--md-sys-typescale-title-large-line-height);
-  font-weight: var(--md-sys-typescale-title-large-weight);
-  color: var(--md-sys-color-on-surface);
   margin: 0;
   text-align: left;
 }
@@ -35,10 +31,6 @@
 .order-price {
   grid-column: 2;
   grid-row: 1;
-  font-size: var(--md-sys-typescale-title-medium-size);
-  line-height: var(--md-sys-typescale-title-medium-line-height);
-  font-weight: var(--md-sys-typescale-title-medium-weight);
-  color: var(--md-sys-color-primary);
   text-align: right;
 }
 
@@ -53,9 +45,6 @@
 .modifiers-price {
   grid-column: 2;
   grid-row: 2;
-  font-size: var(--md-sys-typescale-body-small-size);
-  line-height: var(--md-sys-typescale-body-small-line-height);
-  color: var(--md-sys-color-on-surface-variant);
   text-align: right;
   align-self: start;
 }
@@ -63,43 +52,15 @@
 .unit-price {
   grid-column: 2;
   grid-row: 3;
-  font-size: var(--md-sys-typescale-body-small-size);
-  line-height: var(--md-sys-typescale-body-small-line-height);
-  color: var(--md-sys-color-on-surface-variant);
   text-align: right;
   align-self: end;
 }
 
-/* Modification tokens */
+/* Modification tokens - layout only, appearance styles in styles.css */
 .modification-token {
-  font-size: var(--md-sys-typescale-body-small-size);
-  line-height: var(--md-sys-typescale-body-small-line-height);
   padding: 2px 8px;
   border-radius: var(--md-sys-shape-corner-extra-small);
-  background: var(--md-sys-color-surface-container);
   display: inline-block;
   margin-right: 4px;
   margin-bottom: 2px;
-}
-
-.modification-token[data-type="remove"] {
-  color: var(--md-sys-color-error);
-  background: var(--md-sys-color-error-container);
-}
-
-.modification-token[data-type="remove"]::before {
-  content: "− ";
-}
-
-.modification-token[data-type="add"] {
-  color: var(--md-sys-color-primary);
-  background: var(--md-sys-color-primary-container);
-}
-
-.modification-token[data-type="add"]::before {
-  content: "+ ";
-}
-
-.modification-token[data-type="modify"] {
-  color: var(--md-sys-color-on-surface-variant);
 }

@@ -12,6 +12,7 @@ import { MenuPageData } from "@/model/menu-model";
 import { DataChange } from "@/lib/data-model-types";
 import { OrderItem } from "@/model/order-model";
 import * as MenuContent from "./menu-content";
+import { styles } from "@/styles/styles";
 
 /**
  * Classes for modifier menu content component
@@ -44,22 +45,27 @@ function orderItemTemplate(order: OrderItem | undefined, context: Context): Temp
 
   return html`
     <div class="${classes.orderItem}">
-      <span class="${classes.orderTitle}">${title}</span>
-      <span class="${classes.orderPrice}">${formatPrice(order.price)}</span>
+      <span class="${classes.orderTitle} ${styles.title.large}">${title}</span>
+      <span class="${classes.orderPrice} ${styles.price.primary}">${formatPrice(order.price)}</span>
 
       <div class="${classes.orderModifications}">
         ${order.modifiers && order.modifiers.length > 0
           ? order.modifiers.map(
-              (mod) => html` <span class="${classes.modificationToken}" data-type="${mod.modType}">${mod.name}</span> `,
+              (mod) => {
+                const tokenStyle = mod.modType === 'remove' ? styles.token.remove : 
+                                  mod.modType === 'add' ? styles.token.add : 
+                                  styles.token.modify;
+                return html` <span class="${classes.modificationToken} ${styles.token.base} ${tokenStyle}">${mod.name}</span> `;
+              }
             )
           : ""}
       </div>
 
-      <span class="${classes.modifiersPrice}" style="${showModifiersPrice ? "" : "visibility: hidden;"}">
+      <span class="${classes.modifiersPrice} ${styles.price.secondary}" style="${showModifiersPrice ? "" : "visibility: hidden;"}">
         ${showModifiersPrice ? `+${formatPrice(order.modifiersPrice)}` : ""}
       </span>
 
-      <span class="${classes.unitPrice}" style="${showUnitPrice ? "" : "visibility: hidden;"}">
+      <span class="${classes.unitPrice} ${styles.price.secondary}" style="${showUnitPrice ? "" : "visibility: hidden;"}">
         ${showUnitPrice ? formatPrice(order.unitPrice) : ""}
       </span>
     </div>

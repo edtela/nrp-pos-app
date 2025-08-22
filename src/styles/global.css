@@ -4,6 +4,9 @@
  * These styles are not managed by Linaria to allow dynamic class names from JSON
  */
 
+/* Import common styles for text appearance */
+@import './styles.css';
+
 /* Menu section header styles - used for section titles like "Classic Pizzas" */
 .menu-items-title {
     font: var(--md-sys-typescale-label-large-font);
