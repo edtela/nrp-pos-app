@@ -8,8 +8,33 @@ import { Menu } from "@/types";
 import { toDisplayMenu } from "@/model/menu-model";
 import { OrderPageData } from "@/model/order-model";
 import { PageStaticData } from "@/types/page-data";
-import { Language, parseLanguageFromUrl } from "@/lib/language";
-import { getMenuDataPath, isOrderPage, parseMenuId } from "@/lib/router";
+import { getCurrentLanguage, Language, parseLanguageFromUrl } from "@/lib/language";
+import { isOrderPage, parseMenuId } from "@/lib/router";
+
+/**
+ * Get menu JSON filename from menu ID
+ * @param menuId - The menu ID ('index' for root menu)
+ */
+export function getMenuFileName(menuId: string | null): string {
+  if (!menuId || menuId === "menu") {
+    return "index.json";
+  }
+  return `${menuId}.json`;
+}
+
+/**
+ * Get menu data file path
+ * Server handles fallback to default language, so we always include language
+ * @param menuId - The menu ID ('index' for root menu)
+ * @param language - The language (defaults to current)
+ */
+export function getMenuDataPath(menuId: string | null, language?: Language): string {
+  const fileName = getMenuFileName(menuId);
+  const lang = language ?? getCurrentLanguage();
+
+  // Always include language in path - server handles fallback to default language
+  return `/data/menu/${lang}/${fileName}`;
+}
 
 /**
  * Fetch page data based on the path

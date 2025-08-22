@@ -25,11 +25,11 @@ export function buildRoute(
   options?: {
     language?: Language;
     preserveQuery?: boolean;
-  }
+  },
 ): string {
   const lang = options?.language ?? getCurrentLanguage();
   const url = buildLanguageUrl(path, lang);
-  
+
   // Preserve query string if requested
   if (options?.preserveQuery && typeof window !== "undefined") {
     const currentQuery = window.location.search;
@@ -37,7 +37,7 @@ export function buildRoute(
       return url + currentQuery;
     }
   }
-  
+
   return url;
 }
 
@@ -52,10 +52,10 @@ export function navigateTo(
     language?: Language;
     preserveQuery?: boolean;
     replace?: boolean;
-  }
+  },
 ): void {
   const url = buildRoute(path, options);
-  
+
   if (options?.replace) {
     window.location.replace(url);
   } else {
@@ -76,15 +76,13 @@ export const routes = {
  * Type-safe navigation functions
  */
 export const navigate = {
-  toHome: (options?: { language?: Language; replace?: boolean }) => 
-    navigateTo(ROUTES.HOME, options),
-    
-  toOrder: (options?: { language?: Language; replace?: boolean }) => 
-    navigateTo(ROUTES.ORDER, options),
-    
-  toMenu: (menuId: string, options?: { language?: Language; replace?: boolean }) => 
+  toHome: (options?: { language?: Language; replace?: boolean }) => navigateTo(ROUTES.HOME, options),
+
+  toOrder: (options?: { language?: Language; replace?: boolean }) => navigateTo(ROUTES.ORDER, options),
+
+  toMenu: (menuId: string, options?: { language?: Language; replace?: boolean }) =>
     navigateTo(ROUTES.MENU(menuId), options),
-    
+
   back: () => window.history.back(),
 } as const;
 
@@ -94,47 +92,22 @@ export const navigate = {
  */
 export function parseMenuId(path?: string): string | null {
   const targetPath = path ?? window.location.pathname;
-  
+
   // Remove language prefix if present
-  const cleanPath = targetPath.replace(/^\/(sq|en|it)/, '');
-  
+  const cleanPath = targetPath.replace(/^\/(sq|en|it)/, "");
+
   // Handle root and order specially
-  if (cleanPath === '/' || cleanPath === '') {
-    return 'index';  // Root menu is 'index'
+  if (cleanPath === "/" || cleanPath === "") {
+    return "index"; // Root menu is 'index'
   }
-  
-  if (cleanPath === '/order') {
-    return null;  // Order page has no menu
+
+  if (cleanPath === "/order") {
+    return null; // Order page has no menu
   }
-  
+
   // Extract menu ID (everything after the first slash)
-  const menuId = cleanPath.slice(1).split('/')[0];
-  return menuId || 'index';
-}
-
-/**
- * Get menu JSON filename from menu ID
- * @param menuId - The menu ID ('index' for root menu)
- */
-export function getMenuFileName(menuId: string | null): string {
-  if (!menuId || menuId === 'menu') {
-    return 'index.json';
-  }
-  return `${menuId}.json`;
-}
-
-/**
- * Get menu data file path
- * Server handles fallback to default language, so we always include language
- * @param menuId - The menu ID ('index' for root menu)
- * @param language - The language (defaults to current)
- */
-export function getMenuDataPath(menuId: string | null, language?: Language): string {
-  const fileName = getMenuFileName(menuId);
-  const lang = language ?? getCurrentLanguage();
-  
-  // Always include language in path - server handles fallback to default language
-  return `/data/menu/${lang}/${fileName}`;
+  const menuId = cleanPath.slice(1).split("/")[0];
+  return menuId || "index";
 }
 
 /**
@@ -143,8 +116,8 @@ export function getMenuDataPath(menuId: string | null, language?: Language): str
  */
 export function isOrderPage(path?: string): boolean {
   const targetPath = path ?? window.location.pathname;
-  const cleanPath = targetPath.replace(/^\/(sq|en|it)/, '');
-  return cleanPath === '/order';
+  const cleanPath = targetPath.replace(/^\/(sq|en|it)/, "");
+  return cleanPath === "/order";
 }
 
 /**
@@ -153,6 +126,6 @@ export function isOrderPage(path?: string): boolean {
  */
 export function isHomePage(path?: string): boolean {
   const targetPath = path ?? window.location.pathname;
-  const cleanPath = targetPath.replace(/^\/(sq|en|it)/, '');
-  return cleanPath === '/' || cleanPath === '';
+  const cleanPath = targetPath.replace(/^\/(sq|en|it)/, "");
+  return cleanPath === "/" || cleanPath === "";
 }
