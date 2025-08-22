@@ -69,6 +69,18 @@ class NavigationService {
     return stored ? JSON.parse(stored) : null;
   }
 
+  updateCurrentState(state: PageState) {
+    const menuId = this.getCurrentMenuId();
+    if (menuId) {
+      const current = this.getPageState(menuId);
+      if (current) {
+        this.savePageState(menuId, { ...current, ...state });
+      } else {
+        this.savePageState(menuId, state);
+      }
+    }
+  }
+
   /**
    * Clear page state for a specific menu
    */
@@ -81,7 +93,7 @@ class NavigationService {
   /**
    * Truncate the navigation stack to a specific menu
    * Cleans up orphaned page states
-   * 
+   *
    * Behavior:
    * - If menuId is undefined: clears entire stack (for home/order navigation)
    * - If menuId is in stack: removes everything after it

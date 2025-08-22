@@ -20,6 +20,7 @@ import { saveOrderItem, OrderItem, getOrder } from "@/model/order-model";
 import { VARIANT_SELECT_EVENT } from "@/components/variant";
 import { ADD_TO_ORDER_EVENT, VIEW_ORDER_EVENT } from "@/components/app-bottom-bar";
 import { isSaleItem } from "@/types";
+import { ALL, select } from "tsqn";
 
 // Template function - pure rendering with data
 export function template(displayMenu: DisplayMenu, context: Context): Template {
@@ -156,7 +157,6 @@ export function hydrate(container: Element, displayMenu: DisplayMenu, context: C
   const navService = getNavigationService();
   const pageState = navService.setCurrentPage(displayMenu.id) ?? {};
   const order: OrderItem = pageState.order;
-  console.log("ORDER: ", order);
 
   // Check if this is a modifier menu without an order context
   if (displayMenu.modifierMenu && !order) {
@@ -216,19 +216,24 @@ export function hydrate(container: Element, displayMenu: DisplayMenu, context: C
   }
 
   let changes: UpdateResult<MenuPageData> | undefined = model.setMenu(displayMenu);
+
+  const stmts: Update<MenuPageData>[] = [];
   if (order) {
     // Execute preUpdate statements if they exist
     const preUpdate = order.menuItem.subMenu?.preUpdate;
     if (preUpdate) {
-      const updates = preUpdate.map((p) => toDisplayMenuUpdate(p, model.data));
-      try {
-        changes = model.updateAll(updates as any, changes);
-      } catch {}
+      const updates = preUpdate.map((p) => toDisplayMenuUpdate(p, model.data)) as any[];
+      stmts.push(...updates);
     }
 
     // Then process the order normally
-    changes = model.update({ order: [order] }, changes);
+    stmts.push({ order: [order] });
   }
+
+  if (pageState.variants) {
+    stmts.push(pageState.variants);
+  }
+  changes = model.updateAll(stmts, changes);
   update(page, changes, model.data, context);
 
   addEventHandler(page, VARIANT_SELECT_EVENT, (data) => {
@@ -287,5 +292,14 @@ function update(page: Element, event: DataChange<MenuPageData> | undefined, data
     if (bottomBar) {
       AppBottomBar.update(bottomBar, { total: event.order.total }, context);
     }
+  }
+
+  if (event.order) {
+    const ns = getNavigationService();
+    ns.updateCurrentState({ order: data.order });
+  } else if (event.variants) {
+    const ns = getNavigationService();
+    const selected = select(data, { variants: { [ALL]: { selectedId: true } } });
+    ns.updateCurrentState({ variants: selected });
   }
 }
