@@ -246,6 +246,49 @@ function dispatchCustomEvent(target: HTMLElement, eventData: string, originalEve
 }
 
 /**
+ * Converts class names to class selectors 
+ * @param targets - Object with class names as values
+ * @returns Same object structure with class selectors as values
+ */
+export function toClassSelectors<T extends Record<string, string>>(
+  targets: T
+): { [K in keyof T]: `.${T[K]}` } {
+  return Object.fromEntries(
+    Object.entries(targets).map(([key, value]) => [key, `.${value}`])
+  ) as { [K in keyof T]: `.${T[K]}` };
+}
+
+/**
+ * DOM update utilities for granular updates
+ */
+export const domUpdate = {
+  setTextContent(container: Element, selector: string, value: string): void {
+    const elt = container.querySelector(selector);
+    if (elt) {
+      elt.textContent = value;
+    }
+  },
+
+  setStyle(container: Element, selector: string, key: string, value: string): void {
+    const elt = container.querySelector(selector);
+    if (elt) {
+      (elt as HTMLElement).style[key as any] = value;
+    }
+  },
+
+  setVisibility(container: Element, selector: string, visible: boolean): void {
+    this.setStyle(container, selector, "visibility", visible ? "visible" : "hidden");
+  },
+
+  setHTML(container: Element, selector: string, template: Template): void {
+    const elt = container.querySelector(selector);
+    if (elt) {
+      render(template, elt);
+    }
+  }
+};
+
+/**
  * Update click handler on an existing DOM element
  * @param element The element to update
  * @param eventTypeOrUpdate The new click handler value
