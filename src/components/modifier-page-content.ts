@@ -1,21 +1,23 @@
 /**
- * Modifier Menu Content Component
- * Displays order item being modified and the menu content for modifications
- *
- * @see /component-guidelines.md for component patterns and conventions
+ * Modifier Page Content Component
+ * Full page component for modifier menu pages
+ * Includes app header, order display, menu content for modifications, and bottom bar
  */
 
 import { html, Template, toClassSelectors, domUpdate } from "@/lib/html-template";
 import { Context, withContext, commonTranslations } from "@/lib/context";
-import { MenuPageData } from "@/model/menu-model";
+import { DisplayMenu, MenuPageData } from "@/model/menu-model";
 import { DataChange } from "@/lib/data-model-types";
 import { OrderItem } from "@/model/order-model";
 import * as MenuContent from "./menu-content";
+import * as AppHeader from "./app-header";
+import * as AppBottomBar from "./app-bottom-bar";
+import { styles as layoutStyles } from "./app-layout";
 import { styles } from "@/styles/styles";
 import { navigate } from "@/pages/page-router";
 
-// Export for menu-page selector
-export const modifierMenuContainer = "modifier-menu-content";
+// Export for page selector
+export const modifierPageContainer = "modifier-page-content";
 
 const targets = {
   title: "menu-order-title",
@@ -185,15 +187,29 @@ function errorContentTemplate(context: Context): Template {
 }
 
 /**
- * Main template for modifier menu content
+ * Main template for modifier page content
  */
-export function template(data: MenuPageData, context: Context): Template {
+export function template(displayMenu: DisplayMenu, context: Context): Template {
+  // Always use back button for modifier menus
+  const headerData: AppHeader.HeaderData = {
+    leftButton: {
+      type: "back",
+      onClick: () => navigate.back(),
+    },
+  };
+
   return html`
-    <div class="${modifierMenuContainer}" style="display: flex; flex-direction: column; height: 100%;">
-      ${errorContentTemplate(context)}
-      <div class="modifier-content" style="display: flex; flex-direction: column;">
-        ${orderItemTemplate()}
-        ${MenuContent.template(data, context)}
+    <div class="${layoutStyles.pageContainer}">
+      <header class="${layoutStyles.header}">${AppHeader.template(headerData, context)}</header>
+      <main class="${layoutStyles.content}" style="display: flex; flex-direction: column; height: 100%;">
+        ${errorContentTemplate(context)}
+        <div class="modifier-content" style="display: flex; flex-direction: column;">
+          ${orderItemTemplate()}
+          ${MenuContent.template(displayMenu, context)}
+        </div>
+      </main>
+      <div class="${layoutStyles.bottomBar}">
+        ${AppBottomBar.template("add", context)}
       </div>
     </div>
   `;
@@ -228,16 +244,58 @@ export function updateOrder(container: Element, changes: DataChange<OrderItem>, 
 }
 
 /**
+ * Hydrate function - attaches event handlers
+ */
+export function hydrate(container: Element, _displayMenu: DisplayMenu, context: Context, order?: OrderItem): void {
+  const page = container.querySelector(`.${layoutStyles.pageContainer}`) as HTMLElement;
+  if (!page) return;
+
+  // Check if this is a modifier menu without an order context
+  if (!order) {
+    showError(page);
+    return;
+  }
+
+  // Hydrate header with navigation
+  const header = page.querySelector(`.${layoutStyles.header}`) as HTMLElement;
+  if (header) {
+    const headerData: AppHeader.HeaderData = {
+      leftButton: {
+        type: "back",
+        onClick: () => navigate.back(),
+      },
+    };
+    AppHeader.hydrate(header, context, headerData);
+  }
+
+  // Update bottom bar with order state
+  const bottomBar = page.querySelector(`.${layoutStyles.bottomBar}`) as HTMLElement;
+  if (bottomBar && order) {
+    AppBottomBar.update(
+      bottomBar,
+      {
+        quantity: order.quantity,
+        total: order.total,
+      },
+      context,
+    );
+  }
+}
+
+/**
  * Show error state when modifier menu has no order context
  */
-export function showError(container: Element): void {
+function showError(container: Element): void {
+  const content = container.querySelector(`.${layoutStyles.content}`) as HTMLElement;
+  if (!content) return;
+  
   // Hide regular content
-  domUpdate.setStyle(container, '.modifier-content', 'display', 'none');
+  domUpdate.setStyle(content, '.modifier-content', 'display', 'none');
   // Show error content
-  domUpdate.setStyle(container, '.modifier-error', 'display', 'flex');
+  domUpdate.setStyle(content, '.modifier-error', 'display', 'flex');
   
   // Set up click handler for home button
-  const homeButton = container.querySelector('.nav-home-button') as HTMLButtonElement;
+  const homeButton = content.querySelector('.nav-home-button') as HTMLButtonElement;
   if (homeButton) {
     homeButton.onclick = () => navigate.toHome();
   }
@@ -247,13 +305,24 @@ export function showError(container: Element): void {
  * Update function for menu-page
  */
 export function update(container: Element, changes: DataChange<MenuPageData>, ctx: Context, data: MenuPageData): void {
+  const content = container.querySelector(`.${layoutStyles.content}`) as HTMLElement;
+  if (!content) return;
+
   // Handle order updates
   if ("order" in changes) {
-    updateOrder(container, changes.order as any, ctx, data);
+    updateOrder(content, changes.order as any, ctx, data);
+    
+    // Also update bottom bar total if needed
+    if (changes.order && "total" in changes.order) {
+      const bottomBar = container.querySelector(`.${layoutStyles.bottomBar}`) as HTMLElement;
+      if (bottomBar) {
+        AppBottomBar.update(bottomBar, { total: changes.order.total }, ctx);
+      }
+    }
   }
 
   // Delegate other updates to menu-content
-  const menuContentElement = container.querySelector(`.${MenuContent.menuContainer}`);
+  const menuContentElement = content.querySelector(`.${MenuContent.menuContainer}`);
   if (menuContentElement) {
     MenuContent.update(menuContentElement, changes, ctx, data);
   }

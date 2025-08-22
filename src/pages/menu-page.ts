@@ -1,118 +1,53 @@
 /**
- * Menu Page
- * Main page component for displaying menu data
+ * Menu Page Controller
+ * Handles menu page logic and coordinates between components
  *
  * @see /component-guidelines.md for component patterns and conventions
  */
 
-import { addEventHandler, html, Template } from "@/lib/html-template";
-import { navigate } from "@/pages/page-router";
+import { addEventHandler, Template } from "@/lib/html-template";
 import { getNavigationService } from "@/services/navigation-service";
 import { Context } from "@/lib/context";
-import * as MenuContentUI from "@/components/menu-content";
-import * as ModifierMenuContentUI from "@/components/modifier-menu-content";
-import * as AppHeader from "@/components/app-header";
-import * as AppBottomBar from "@/components/app-bottom-bar";
-import { styles as layoutStyles } from "@/components/app-layout";
+import * as MenuPageContent from "@/components/menu-page-content";
+import * as ModifierPageContent from "@/components/modifier-page-content";
 import { MenuPageData, MenuModel, DisplayMenu, toDisplayMenuUpdate, toOrderMenuItem } from "@/model/menu-model";
 import { DataChange, Update, UpdateResult } from "@/lib/data-model-types";
 import { MENU_ITEM_CLICK } from "@/components/menu-item";
-import { saveOrderItem, OrderItem, getOrder } from "@/model/order-model";
+import { saveOrderItem, OrderItem } from "@/model/order-model";
 import { VARIANT_SELECT_EVENT } from "@/components/variant";
 import { ADD_TO_ORDER_EVENT, VIEW_ORDER_EVENT } from "@/components/app-bottom-bar";
 import { isSaleItem } from "@/types";
 import { ALL, select } from "tsqn";
 
-// Template function - pure rendering with data
+// Template function - delegates to appropriate page component
 export function template(displayMenu: DisplayMenu, context: Context): Template {
-  // Determine left button type based on menu ID
-  const leftButtonType: AppHeader.LeftButtonType = displayMenu.id === "main-menu" ? "home" : "back";
-
-  const headerData: AppHeader.HeaderData = {
-    leftButton: {
-      type: leftButtonType,
-      onClick: leftButtonType === "home" ? () => navigate.toHome() : () => navigate.back(),
-    },
-  };
-
-  const isModifierMenu = displayMenu.modifierMenu;
-  const contentTemplate = isModifierMenu 
-    ? ModifierMenuContentUI.template(displayMenu, context)
-    : MenuContentUI.template(displayMenu, context);
-
-  return html`
-    <div class="${layoutStyles.pageContainer}">
-      <header class="${layoutStyles.header}">${AppHeader.template(headerData, context)}</header>
-      <main class="${layoutStyles.content}">${contentTemplate}</main>
-      <div class="${layoutStyles.bottomBar}">
-        ${AppBottomBar.template(isModifierMenu ? "add" : "view", context)}
-      </div>
-    </div>
-  `;
+  if (displayMenu.modifierMenu) {
+    return ModifierPageContent.template(displayMenu, context);
+  } else {
+    return MenuPageContent.template(displayMenu, context);
+  }
 }
 
 // Hydrate function - attaches event handlers and loads session data
 export function hydrate(container: Element, displayMenu: DisplayMenu, context: Context) {
-  const page = container.querySelector(`.${layoutStyles.pageContainer}`) as HTMLElement;
-  if (!page) return;
-
-  // Hydrate header with navigation
-  const header = page.querySelector(`.${layoutStyles.header}`) as HTMLElement;
-  if (header) {
-    const leftButtonType: AppHeader.LeftButtonType = displayMenu.id === "main-menu" ? "home" : "back";
-
-    const headerData: AppHeader.HeaderData = {
-      leftButton: {
-        type: leftButtonType,
-        onClick: leftButtonType === "home" ? () => navigate.toHome() : () => navigate.back(),
-      },
-    };
-    AppHeader.hydrate(header, context, headerData);
-  }
-
   const navService = getNavigationService();
   const pageState = navService.setCurrentPage(displayMenu.id) ?? {};
   const order: OrderItem = pageState.order;
 
-  // Check if this is a modifier menu without an order context
-  if (displayMenu.modifierMenu && !order) {
-    // Show error state in the modifier menu content
-    const modifierContent = page.querySelector(`.${layoutStyles.content}`) as HTMLElement;
-    if (modifierContent) {
-      ModifierMenuContentUI.showError(modifierContent);
-    }
-    return; // Exit early, no need to set up other handlers
-  }
-
-  const bottomBar = page.querySelector(`.${layoutStyles.bottomBar}`) as HTMLElement;
-  if (bottomBar) {
-    if (order) {
-      AppBottomBar.update(
-        bottomBar,
-        {
-          quantity: order.quantity,
-          total: order.total,
-        },
-        context,
-      );
-    } else {
-      const mainOrder = getOrder();
-      AppBottomBar.update(
-        bottomBar,
-        {
-          itemCount: mainOrder.itemIds.length,
-          total: mainOrder.total,
-        },
-        context,
-      );
-    }
+  // Delegate to appropriate page component for hydration
+  if (displayMenu.modifierMenu) {
+    ModifierPageContent.hydrate(container, displayMenu, context, order);
+    // If no order, the component will handle showing the error
+    if (!order) return;
+  } else {
+    MenuPageContent.hydrate(container, displayMenu, context);
   }
 
   // Initialize model
   const model = new MenuModel();
   function runUpdate(stmt: Update<MenuPageData>) {
     const result = model.update(stmt);
-    update(page, result, model.data, context);
+    update(container, result, model.data, context);
   }
 
   let changes: UpdateResult<MenuPageData> | undefined = model.setMenu(displayMenu);
@@ -134,13 +69,13 @@ export function hydrate(container: Element, displayMenu: DisplayMenu, context: C
     stmts.push(pageState.variants);
   }
   changes = model.updateAll(stmts, changes);
-  update(page, changes, model.data, context);
+  update(container, changes, model.data, context);
 
-  addEventHandler(page, VARIANT_SELECT_EVENT, (data) => {
+  addEventHandler(container, VARIANT_SELECT_EVENT, (data) => {
     runUpdate({ variants: { [data.variantGroupId]: { selectedId: data.variantId } } });
   });
 
-  addEventHandler(page, MENU_ITEM_CLICK, (data) => {
+  addEventHandler(container, MENU_ITEM_CLICK, (data) => {
     const item = model.data.items[data.id];
 
     if (item?.data.subMenu) {
@@ -159,11 +94,11 @@ export function hydrate(container: Element, displayMenu: DisplayMenu, context: C
     }
   });
 
-  addEventHandler(page, VIEW_ORDER_EVENT, () => {
+  addEventHandler(container, VIEW_ORDER_EVENT, () => {
     navService.goto.order();
   });
 
-  addEventHandler(page, ADD_TO_ORDER_EVENT, () => {
+  addEventHandler(container, ADD_TO_ORDER_EVENT, () => {
     const order = model.data.order;
     if (order) {
       const modifying = order.id.length > 0;
@@ -179,31 +114,17 @@ export function hydrate(container: Element, displayMenu: DisplayMenu, context: C
   });
 }
 
-function update(page: Element, event: DataChange<MenuPageData> | undefined, data: MenuPageData, context: Context) {
+function update(container: Element, event: DataChange<MenuPageData> | undefined, data: MenuPageData, context: Context) {
   if (!event) return;
 
-  const isModifierMenu = data.modifierMenu;
-  
-  // Find the correct content container based on menu type
-  const content = isModifierMenu 
-    ? page.querySelector(`.${ModifierMenuContentUI.modifierMenuContainer}`) as HTMLElement
-    : page.querySelector(`.${MenuContentUI.menuContainer}`) as HTMLElement;
-    
-  if (content) {
-    if (isModifierMenu) {
-      ModifierMenuContentUI.update(content, event, context, data);
-    } else {
-      MenuContentUI.update(content, event, context, data);
-    }
+  // Delegate to appropriate page component for updates
+  if (data.modifierMenu) {
+    ModifierPageContent.update(container, event, context, data);
+  } else {
+    MenuPageContent.update(container, event, context, data);
   }
 
-  if (event.order && "total" in event.order) {
-    const bottomBar = page.querySelector(`.${layoutStyles.bottomBar}`) as HTMLElement;
-    if (bottomBar) {
-      AppBottomBar.update(bottomBar, { total: event.order.total }, context);
-    }
-  }
-
+  // Save state changes
   if (event.order) {
     const ns = getNavigationService();
     ns.updateCurrentState({ order: data.order });
