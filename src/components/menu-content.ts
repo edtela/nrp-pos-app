@@ -6,15 +6,14 @@
  */
 
 import "./menu-content.css";
-import { html, Template, render, reconcileChildren, buildHTML } from "@/lib/html-template";
-import { Context, withContext } from "@/lib/context";
+import { html, Template, reconcileChildren, buildHTML } from "@/lib/html-template";
+import { Context } from "@/lib/context";
 import { DataCell, ItemGroup } from "@/types";
 import { headerCells, DataCellRenderer } from "./menu-header";
 import * as MenuItemUI from "./menu-item";
 import * as VariantGroupUI from "./variant";
 import { DisplayMenuItem, MenuPageData, DisplayMenu } from "@/model/menu-model";
 import { DataChange } from "@/lib/data-model-types";
-import { OrderItem } from "@/model/order-model";
 
 /**
  * Classes for menu content component
@@ -24,52 +23,10 @@ const classes = {
   group: "menu-group",
   groupHeader: "menu-group-header",
   groupItems: "menu-group-items",
-  orderItem: "order-item",
-  orderTitle: "order-title",
-  orderPrice: "order-price",
-  orderModifications: "order-modifications",
-  modifiersPrice: "modifiers-price",
-  unitPrice: "unit-price",
-  modificationToken: "modification-token",
 };
 
 // Export for menu-page
 export const menuContainer = classes.container;
-
-/**
- * Order item template
- */
-function orderItemTemplate(order: OrderItem | undefined, context: Context): Template {
-  if (!order) return html``;
-
-  const { formatPrice } = withContext(context);
-
-  const showModifiersPrice = order.modifiersPrice > 0;
-  const showUnitPrice = order.modifiersPrice !== 0;
-
-  return html`
-    <div class="${classes.orderItem}">
-      <span class="${classes.orderTitle}">${order.menuItem.name}</span>
-      <span class="${classes.orderPrice}">${formatPrice(order.price)}</span>
-
-      <div class="${classes.orderModifications}">
-        ${order.modifiers && order.modifiers.length > 0
-          ? order.modifiers.map(
-              (mod) => html` <span class="${classes.modificationToken}" data-type="${mod.modType}">${mod.name}</span> `,
-            )
-          : ""}
-      </div>
-
-      <span class="${classes.modifiersPrice}" style="${showModifiersPrice ? "" : "visibility: hidden;"}">
-        ${showModifiersPrice ? `+${formatPrice(order.modifiersPrice)}` : ""}
-      </span>
-
-      <span class="${classes.unitPrice}" style="${showUnitPrice ? "" : "visibility: hidden;"}">
-        ${showUnitPrice ? formatPrice(order.unitPrice) : ""}
-      </span>
-    </div>
-  `;
-}
 
 /**
  * Create data cell renderer for the menu
@@ -124,7 +81,6 @@ export function template(data: MenuPageData, context: Context): Template {
 
   return html`
     <div class="${classes.container}">
-      <div class="order-slot slot">${orderItemTemplate(data.order, context)}</div>
       ${headerCells(data.layout, dataRenderer)}
     </div>
   `;
@@ -167,14 +123,6 @@ function buildGroupChildren(
  * Update function for menu-page
  */
 export function update(container: Element, changes: DataChange<MenuPageData>, ctx: Context, data: MenuPageData): void {
-  // Handle order updates
-  if (changes.order) {
-    const orderSlot = container.querySelector(".order-slot");
-    if (orderSlot) {
-      render(orderItemTemplate(data.order, ctx), orderSlot);
-    }
-  }
-
   // Handle itemGroups changes
   if (changes.itemGroups) {
     for (const [groupId, groupChanges] of Object.entries(changes.itemGroups)) {

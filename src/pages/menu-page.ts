@@ -10,6 +10,7 @@ import { navigate } from "@/pages/page-router";
 import { getNavigationService } from "@/services/navigation-service";
 import { Context, commonTranslations } from "@/lib/context";
 import * as MenuContentUI from "@/components/menu-content";
+import * as ModifierMenuContentUI from "@/components/modifier-menu-content";
 import * as AppHeader from "@/components/app-header";
 import * as AppBottomBar from "@/components/app-bottom-bar";
 import { styles as layoutStyles } from "@/components/app-layout";
@@ -34,12 +35,17 @@ export function template(displayMenu: DisplayMenu, context: Context): Template {
     },
   };
 
+  const isModifierMenu = displayMenu.modifierMenu;
+  const contentTemplate = isModifierMenu 
+    ? ModifierMenuContentUI.template(displayMenu, context)
+    : MenuContentUI.template(displayMenu, context);
+
   return html`
     <div class="${layoutStyles.pageContainer}">
       <header class="${layoutStyles.header}">${AppHeader.template(headerData, context)}</header>
-      <main class="${layoutStyles.content}">${MenuContentUI.template(displayMenu, context)}</main>
+      <main class="${layoutStyles.content}">${contentTemplate}</main>
       <div class="${layoutStyles.bottomBar}">
-        ${AppBottomBar.template(displayMenu.modifierMenu ? "add" : "view", context)}
+        ${AppBottomBar.template(isModifierMenu ? "add" : "view", context)}
       </div>
     </div>
   `;
@@ -282,9 +288,19 @@ export function hydrate(container: Element, displayMenu: DisplayMenu, context: C
 function update(page: Element, event: DataChange<MenuPageData> | undefined, data: MenuPageData, context: Context) {
   if (!event) return;
 
-  const content = page.querySelector(`.${MenuContentUI.menuContainer}`) as HTMLElement;
+  const isModifierMenu = data.modifierMenu;
+  
+  // Find the correct content container based on menu type
+  const content = isModifierMenu 
+    ? page.querySelector(`.${ModifierMenuContentUI.modifierMenuContainer}`) as HTMLElement
+    : page.querySelector(`.${MenuContentUI.menuContainer}`) as HTMLElement;
+    
   if (content) {
-    MenuContentUI.update(content, event, context, data);
+    if (isModifierMenu) {
+      ModifierMenuContentUI.update(content, event, context, data);
+    } else {
+      MenuContentUI.update(content, event, context, data);
+    }
   }
 
   if (event.order && "total" in event.order) {
