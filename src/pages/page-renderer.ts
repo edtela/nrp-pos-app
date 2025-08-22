@@ -16,19 +16,12 @@ import { getCurrentLanguage } from "@/lib/language";
 import { createContext, Context, getCurrencyFormat } from "@/lib/context";
 import * as MenuPage from "./menu-page";
 import * as OrderPage from "./order-page";
-import { fetchPageData } from "@/services/menu-data-service";
 
 /**
  * Page Renderer
- * Handles page rendering, hydration, data fetching, and context creation
+ * Handles page rendering, hydration, and context creation
  */
 class PageRenderer {
-  /**
-   * Fetch static data for a page (menu data or empty order)
-   */
-  async fetchStaticData(path: string): Promise<PageStaticData> {
-    return fetchPageData(path);
-  }
 
   /**
    * Get context for current environment

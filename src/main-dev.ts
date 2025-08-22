@@ -5,6 +5,7 @@
  */
 
 import { initializeApp, getAppElement, getPageRenderer } from "@/app-init";
+import { fetchPageData } from "@/services/menu-data-service";
 
 // Initialize common app features
 initializeApp();
@@ -18,7 +19,7 @@ async function init() {
   const path = window.location.pathname;
   
   // Dev mode - fetch data, render, then hydrate
-  const pageData = await router.fetchStaticData(path);
+  const pageData = await fetchPageData(path);
   router.renderPage(app, pageData);
   router.hydratePage(app, pageData);
 }
@@ -26,7 +27,7 @@ async function init() {
 // Handle browser navigation (back/forward buttons)
 window.addEventListener("popstate", async () => {
   const path = window.location.pathname;
-  const pageData = await router.fetchStaticData(path);
+  const pageData = await fetchPageData(path);
   router.renderPage(app, pageData);
   router.hydratePage(app, pageData);
 });

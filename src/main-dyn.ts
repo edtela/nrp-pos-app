@@ -5,6 +5,7 @@
  */
 
 import { initializeApp, getAppElement, getPageRenderer } from "@/app-init";
+import { fetchPageData } from "@/services/menu-data-service";
 
 // Initialize common app features
 initializeApp();
@@ -16,7 +17,7 @@ async function init() {
   const router = getPageRenderer();
   
   // Dynamic mode - fetch data, render, then hydrate
-  const pageData = await router.fetchStaticData(path);
+  const pageData = await fetchPageData(path);
   router.renderPage(app, pageData);
   router.hydratePage(app, pageData);
 }
