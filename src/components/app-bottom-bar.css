@@ -61,3 +61,36 @@
   box-shadow: var(--md-sys-elevation-level1);
   transform: scale(0.98);
 }
+
+/* Icon with badge styles */
+.app-bottom-bar-icon-with-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  min-width: 80px;
+}
+
+.app-bottom-bar-icon {
+  font-size: 28px;
+  color: var(--md-sys-color-on-surface);
+}
+
+.app-bottom-bar-badge {
+  position: absolute;
+  top: -4px;
+  right: calc(50% - 24px);
+  background-color: var(--md-sys-color-error);
+  color: var(--md-sys-color-on-error);
+  border-radius: var(--md-sys-shape-corner-full);
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--md-sys-typescale-label-small-size);
+  font-weight: var(--md-sys-typescale-label-small-weight);
+  line-height: 1;
+  box-shadow: var(--md-sys-elevation-level1);
+}

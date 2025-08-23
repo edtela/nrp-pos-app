@@ -80,19 +80,31 @@ function getConfig(mode: BottomBarMode, context: Context): BottomBarConfig {
 export function template(mode: BottomBarMode, context: Context): Template {
   const config = getConfig(mode, context);
 
+  // Use cart icon with badge for view-order mode
+  const quantityContent = mode === 'view-order' 
+    ? html`
+        <div class="${classes.iconWithBadge}">
+          <span class="material-icons ${classes.icon}">shopping_cart</span>
+          <span class="${classes.badge}" data-bottom-bar-quantity></span>
+        </div>
+      `
+    : html`
+        <div class="${classes.infoSection}">
+          <div class="${classes.infoValue}" data-bottom-bar-quantity></div>
+          <div class="${classes.infoLabel}">${config.quantityLabel}</div>
+        </div>
+      `;
+
   return html`
     <div class="${classes.container}">
-      <div class="${classes.infoSection}" data-bottom-bar-quantity>
-        <div class="${classes.infoValue}"></div>
-        <div class="${classes.infoLabel}">${config.quantityLabel}</div>
-      </div>
+      ${quantityContent}
 
       <button class="${classes.actionButton}" data-bottom-bar-button ${onClick(config.actionEvent)}>
         ${config.actionLabel}
       </button>
 
-      <div class="${classes.infoSection}" data-bottom-bar-price>
-        <div class="${classes.infoValue}"></div>
+      <div class="${classes.infoSection}">
+        <div class="${classes.infoValue}" data-bottom-bar-price></div>
         <div class="${classes.infoLabel}">${config.priceLabel}</div>
       </div>
     </div>
@@ -117,24 +129,18 @@ export function update(
 
   // Update quantity if provided
   if ('quantity' in changes && changes.quantity !== undefined) {
-    const quantitySection = container.querySelector('[data-bottom-bar-quantity]');
-    if (quantitySection) {
-      const valueElement = quantitySection.querySelector(`.${classes.infoValue}`);
-      if (valueElement) {
-        valueElement.textContent = String(changes.quantity);
-      }
+    const quantityElement = container.querySelector('[data-bottom-bar-quantity]');
+    if (quantityElement) {
+      quantityElement.textContent = String(changes.quantity);
     }
   }
 
   // Update price if provided
   if ('price' in changes && changes.price !== undefined) {
-    const priceSection = container.querySelector('[data-bottom-bar-price]');
-    if (priceSection) {
-      const valueElement = priceSection.querySelector(`.${classes.infoValue}`);
-      if (valueElement) {
-        const { formatPrice } = withContext(context);
-        valueElement.textContent = formatPrice(changes.price);
-      }
+    const priceElement = container.querySelector('[data-bottom-bar-price]');
+    if (priceElement) {
+      const { formatPrice } = withContext(context);
+      priceElement.textContent = formatPrice(changes.price);
     }
   }
 }
@@ -148,6 +154,9 @@ export const classes = {
   infoValue: "app-bottom-bar-info-value",
   infoLabel: "app-bottom-bar-info-label",
   actionButton: "app-bottom-bar-action-button",
+  iconWithBadge: "app-bottom-bar-icon-with-badge",
+  icon: "app-bottom-bar-icon",
+  badge: "app-bottom-bar-badge",
 } as const;
 
 // Export as styles for backward compatibility
