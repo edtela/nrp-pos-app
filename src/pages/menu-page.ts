@@ -10,7 +10,7 @@ import { getNavigationService } from "@/services/navigation-service";
 import { Context } from "@/lib/context";
 import * as MenuPageContent from "@/components/menu-page-content";
 import * as ModifierPageContent from "@/components/modifier-page-content";
-import { MenuPageData, MenuModel, DisplayMenu, toDisplayMenuUpdate, toOrderMenuItem } from "@/model/menu-model";
+import { MenuPageData, MenuModel, DisplayMenu, toDisplayMenuUpdate, toOrderItem } from "@/model/menu-model";
 import { DataChange, Update, UpdateResult } from "@/lib/data-model-types";
 import { MENU_ITEM_CLICK } from "@/components/menu-item";
 import { saveOrderItem, OrderItem } from "@/model/order-model";
@@ -80,7 +80,7 @@ export function hydrate(container: Element, displayMenu: DisplayMenu, context: C
 
     if (item?.data.subMenu) {
       if (isSaleItem(item.data)) {
-        navService.editOrder(toOrderMenuItem(item.data, model.data));
+        navService.editOrder(toOrderItem(item.data, model.data));
       } else {
         navService.goto.menuItem(item.data);
       }

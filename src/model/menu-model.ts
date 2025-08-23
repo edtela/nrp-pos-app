@@ -37,7 +37,7 @@ export function toDisplayMenuItem(data: MenuItem, menu: DisplayMenu | Menu): Dis
   // Compute isSingleChoice from choice definition if available
   const choices = menu.choices;
   let isSingleChoice: boolean | undefined;
-  if (data.constraints.choiceId && choices) {
+  if (choices && data.constraints.choiceId) {
     const choice = choices[data.constraints.choiceId];
     if (choice) {
       isSingleChoice = choice.min === 1 && choice.max === 1;
@@ -64,7 +64,7 @@ export function toDisplayMenu(menu: Menu): DisplayMenu {
   return { ...menu, items: displayItems };
 }
 
-export function toOrderMenuItem(item: MenuItem, pageData: MenuPageData): OrderItem {
+export function toOrderItem(item: MenuItem, pageData: MenuPageData): OrderItem {
   // Compute the price based on whether it's fixed or variant-based
   let price = 0;
   let variant: OrderItem["variant"];
@@ -72,7 +72,7 @@ export function toOrderMenuItem(item: MenuItem, pageData: MenuPageData): OrderIt
     price = item.price;
   } else if (item.price) {
     const group = (pageData.variants ?? {})[item.price.groupId];
-    variant = group.variants.find((v) => (v.id = group.selectedId));
+    variant = group.variants.find((v) => v.id === group.selectedId);
     price = item.price.prices[group.selectedId] ?? 0;
   }
 
@@ -119,14 +119,13 @@ export function toDisplayMenuUpdate(stmt: MenuPreUpdate, menu: DisplayMenu): Upd
 }
 
 const bindings: DataBinding<MenuPageData>[] = [
-  // When parent order is set, update the variant of the menu
+  // When parent order is set, update selected variant, item selection
   {
     onChange: [{ order: typeChange }],
     update: orderChanged,
   },
   // Variant selection, update menu items and order
   {
-    init: true,
     onChange: ["variants", ALL, "selectedId"],
     update: variantChanged,
   },
@@ -188,6 +187,7 @@ const bindings: DataBinding<MenuPageData>[] = [
     onChange: [{ items: { [ALL]: { included: anyChange, quantity: anyChange } } }],
     update: updateModifiers,
   },
+  //When the total of any item changes, recalculate order.modifiersPrice
   {
     onChange: [{ items: { [ALL]: { total: anyChange } } }],
     update(data: MenuPageData) {
@@ -198,6 +198,7 @@ const bindings: DataBinding<MenuPageData>[] = [
       return {};
     },
   },
+  //Update order unit price and total
   {
     onChange: [{ order: { price: anyChange, modifiersPrice: anyChange, quantity: anyChange } }],
     update(data: MenuPageData) {
@@ -221,7 +222,6 @@ export class MenuModel {
       ...displayMenu,
       order: undefined,
     };
-
     return this.model.setData(this.data);
   }
 
@@ -321,16 +321,14 @@ function orderChanged(data: MenuPageData) {
   }
 
   // Set variant selection if the menu item has variant pricing
-  if (isVariantPricing(order.menuItem.price) && data.variants) {
-    const variantGroup = data.variants[order.menuItem.price.groupId];
-    if (variantGroup) {
-      stmt.variants = {
-        [order.menuItem.price.groupId]: {
-          [WHERE]: (v: VariantGroup) => v != null,
-          selectedId: variantGroup.selectedId,
-        },
-      };
-    }
+  if (order.variant && isVariantPricing(order.menuItem.price)) {
+    stmt.variants = {
+      [WHERE]: (v) => v != null,
+      [order.menuItem.price.groupId]: {
+        [WHERE]: (v: VariantGroup) => v != null,
+        selectedId: order.variant.id,
+      },
+    };
   }
 
   return stmt;
