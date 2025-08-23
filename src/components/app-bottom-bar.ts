@@ -81,18 +81,20 @@ export function template(mode: BottomBarMode, context: Context): Template {
   const config = getConfig(mode, context);
 
   return html`
-    <div class="${classes.infoSection}" data-bottom-bar-quantity>
-      <div class="${classes.infoValue}"></div>
-      <div class="${classes.infoLabel}">${config.quantityLabel}</div>
-    </div>
+    <div class="${classes.container}">
+      <div class="${classes.infoSection}" data-bottom-bar-quantity>
+        <div class="${classes.infoValue}"></div>
+        <div class="${classes.infoLabel}">${config.quantityLabel}</div>
+      </div>
 
-    <button class="${classes.actionButton}" data-bottom-bar-button ${onClick(config.actionEvent)}>
-      ${config.actionLabel}
-    </button>
+      <button class="${classes.actionButton}" data-bottom-bar-button ${onClick(config.actionEvent)}>
+        ${config.actionLabel}
+      </button>
 
-    <div class="${classes.infoSection}" data-bottom-bar-price>
-      <div class="${classes.infoValue}"></div>
-      <div class="${classes.infoLabel}">${config.priceLabel}</div>
+      <div class="${classes.infoSection}" data-bottom-bar-price>
+        <div class="${classes.infoValue}"></div>
+        <div class="${classes.infoLabel}">${config.priceLabel}</div>
+      </div>
     </div>
   `;
 }
@@ -141,6 +143,7 @@ export function update(
  * App Bottom Bar Class Names
  */
 export const classes = {
+  container: "app-bottom-bar-container",
   infoSection: "app-bottom-bar-info-section",
   infoValue: "app-bottom-bar-info-value",
   infoLabel: "app-bottom-bar-info-label",

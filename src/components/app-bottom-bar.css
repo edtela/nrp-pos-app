@@ -3,6 +3,14 @@
  * Material Design 3 Bottom App Bar with info displays and primary action
  */
 
+.app-bottom-bar-container {
+  display: grid;
+  grid-template-columns: minmax(80px, 1fr) minmax(120px, 2fr) minmax(80px, 1fr);
+  align-items: center;
+  width: 100%;
+  gap: var(--md-sys-spacing-sm);
+}
+
 .app-bottom-bar-info-section {
   display: flex;
   flex-direction: column;
@@ -32,7 +40,9 @@
   border-radius: var(--md-sys-shape-corner-full);
   padding: 0 var(--md-sys-spacing-xl);
   height: 40px;
-  min-width: 120px;
+  width: 100%;
+  max-width: 280px;
+  justify-self: center;
   font-size: var(--md-sys-typescale-label-large-size);
   line-height: var(--md-sys-typescale-label-large-line-height);
   font-weight: var(--md-sys-typescale-label-large-weight);
