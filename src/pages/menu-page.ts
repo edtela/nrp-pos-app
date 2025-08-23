@@ -17,7 +17,7 @@ import { saveOrderItem, OrderItem } from "@/model/order-model";
 import { VARIANT_SELECT_EVENT } from "@/components/variant";
 import { ADD_TO_ORDER_EVENT, VIEW_ORDER_EVENT } from "@/components/app-bottom-bar";
 import { isSaleItem } from "@/types";
-import { ALL, select } from "tsqn";
+import { ALL, select, WHERE } from "tsqn";
 
 // Template function - delegates to appropriate page component
 export function template(displayMenu: DisplayMenu, context: Context): Template {
@@ -109,6 +109,17 @@ export function hydrate(container: Element, displayMenu: DisplayMenu, context: C
         navService.goto.order();
       } else {
         navService.goto.back();
+      }
+    } else {
+      const quickOrder = model.data.quickOrder;
+      if (quickOrder) {
+        const orders = quickOrder.selectedIds.map((id) => toOrderItem(model.data.items[id].data, model.data));
+        orders.forEach((o) => saveOrderItem(o));
+
+        runUpdate({
+          quickOrder: [],
+          items: { [ALL]: { [WHERE]: (item) => item.selected === true, selected: false } },
+        });
       }
     }
   });

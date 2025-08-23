@@ -235,6 +235,12 @@ export const commonTranslations = {
     it: 'Aggiorna ordine'
   }),
   
+  saveChanges: createTranslation({
+    sq: 'Ruaj ndryshimet',
+    en: 'Save Changes',
+    it: 'Salva modifiche'
+  }),
+  
   yourOrderIsEmpty: createTranslation({
     sq: 'Porosia juaj është bosh',
     en: 'Your order is empty',

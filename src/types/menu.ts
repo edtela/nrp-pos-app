@@ -80,6 +80,9 @@ export interface MenuItem {
 
   // Navigation
   subMenu?: SubMenu;
+  
+  // Display order - assigned based on layout traversal during generation
+  order?: number;
 }
 
 /**

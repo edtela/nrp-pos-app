@@ -1,5 +1,5 @@
 {
-  "id": "index",
+  "id": "main-menu",
   "name": "Aromal",
   "currency": "ALL",
   "items": {
@@ -92,7 +92,15 @@
     "group-1": {
       "id": "group-1",
       "name": "Group 1",
-      "itemIds": ["coffee", "tea", "juice", "smoothie", "yogurt", "crepes", "toasts"]
+      "itemIds": [
+        "coffee",
+        "tea",
+        "juice",
+        "smoothie",
+        "yogurt",
+        "crepes",
+        "toasts"
+      ]
     }
   },
   "layout": [

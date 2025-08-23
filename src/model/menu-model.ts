@@ -91,6 +91,10 @@ export function toOrderItem(item: MenuItem, pageData: MenuPageData): OrderItem {
 
 export type MenuPageData = DisplayMenu & {
   order?: OrderItem;
+  quickOrder?: {
+    selectedIds: string[];
+    total: number;
+  };
 };
 
 export function toDisplayMenuUpdate(stmt: MenuPreUpdate, menu: DisplayMenu): Update<DisplayMenu> {
@@ -195,7 +199,15 @@ const bindings: DataBinding<MenuPageData>[] = [
         let modifiersPrice = Object.values(data.items).reduce((sum, c) => (sum += c.total ?? 0), 0);
         return { order: { modifiersPrice: Math.max(0, modifiersPrice) } };
       }
-      return {};
+
+      const quickItems = Object.values(data.items).filter((item) => item.total > 0);
+      if (quickItems.length === 0) {
+        return { quickOrder: [] };
+      }
+
+      const total = quickItems.reduce((sum, c) => (sum += c.total ?? 0), 0);
+      const selectedIds = quickItems.map((item) => item.data.id);
+      return { quickOrder: [{ selectedIds, total }] };
     },
   },
   //Update order unit price and total

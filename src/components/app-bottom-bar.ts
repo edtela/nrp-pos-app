@@ -14,9 +14,10 @@ import { DataChange } from "@/lib/data-model-types";
 export const VIEW_ORDER_EVENT = "view-order-event";
 export const ADD_TO_ORDER_EVENT = "add-to-order-event";
 export const SEND_ORDER_EVENT = "send-order-event";
+export const SAVE_CHANGES_EVENT = "save-changes-event";
 
 // Type definitions
-export type BottomBarMode = "view" | "add" | "send" | "quickOrder";
+export type BottomBarMode = "view" | "add" | "send" | "quickOrder" | "modify";
 
 export type BottomBarData = {
   mode: BottomBarMode;
@@ -64,6 +65,11 @@ function getConfigs(context: Context): Record<BottomBarMode, BottomBarConfig> {
     quickOrder: {
       left: { field: "selected", label: t('selected') },
       action: { label: t('addToOrder'), onClick: ADD_TO_ORDER_EVENT },
+      right: { field: "total", label: t('total') },
+    },
+    modify: {
+      left: { field: "quantity", label: t('quantity') },
+      action: { label: t('saveChanges'), onClick: SAVE_CHANGES_EVENT },
       right: { field: "total", label: t('total') },
     },
   };
