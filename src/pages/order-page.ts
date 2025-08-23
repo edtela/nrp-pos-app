@@ -12,7 +12,6 @@ import * as OrderContentUI from "@/components/order-content";
 import * as OrderItemUI from "@/components/order-item";
 import * as AppHeader from "@/components/app-header";
 import * as AppBottomBar from "@/components/app-bottom-bar";
-import { BottomBarData } from "@/components/app-bottom-bar";
 import { styles as layoutStyles } from "@/components/app-layout";
 import { orderModel, OrderPageData } from "@/model/order-model";
 import { DataChange } from "@/lib/data-model-types";
@@ -30,7 +29,7 @@ export function template(data: OrderPageData, context: Context) {
     <div class="${layoutStyles.pageContainer}">
       <header class="${layoutStyles.header}">${AppHeader.template(headerData, context)}</header>
       <main class="${layoutStyles.content}">${OrderContentUI.template(data, context)}</main>
-      <div class="${layoutStyles.bottomBar}">${AppBottomBar.template("send", context)}</div>
+      <div class="${layoutStyles.bottomBar}">${AppBottomBar.template("send-order", context)}</div>
     </div>
   `;
 }
@@ -66,9 +65,9 @@ export function hydrate(container: Element, _data: OrderPageData, context: Conte
       AppBottomBar.update(
         bottomBar,
         {
-          itemCount: sessionData.order.itemIds.length,
-          total: sessionData.order.total,
-        } as Partial<BottomBarData>,
+          quantity: sessionData.order.itemIds.length,
+          price: sessionData.order.total,
+        },
         context,
       );
     }
@@ -140,9 +139,9 @@ function update(
     if (changes.order) {
       const bottomBar = container.querySelector(`.${layoutStyles.bottomBar}`) as HTMLElement;
       if (bottomBar) {
-        const stmt = { total: changes.order.total } as Partial<BottomBarData>;
+        const stmt: any = { price: changes.order.total };
         if (Array.isArray(changes.order.itemIds)) {
-          stmt.itemCount = changes.order.itemIds.length;
+          stmt.quantity = changes.order.itemIds.length;
         }
         AppBottomBar.update(bottomBar, stmt, context);
       }

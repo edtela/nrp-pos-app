@@ -8,7 +8,6 @@
 import "./app-bottom-bar.css";
 import { html, onClick, Template, render } from "@/lib/html-template";
 import { Context, withContext } from "@/lib/context";
-import { DataChange } from "@/lib/data-model-types";
 
 // Event types
 export const VIEW_ORDER_EVENT = "view-order-event";
@@ -17,132 +16,122 @@ export const SEND_ORDER_EVENT = "send-order-event";
 export const SAVE_CHANGES_EVENT = "save-changes-event";
 
 // Type definitions
-export type BottomBarMode = "view" | "add" | "send" | "quickOrder" | "modify";
+export type BottomBarMode = 'add-to-order' | 'modify-order' | 'quick-order' | 'view-order' | 'send-order';
 
 export type BottomBarData = {
   mode: BottomBarMode;
-  itemCount?: number;
-  quantity?: number;
-  selected?: number;
-  total?: number;
+  quantity: number;
+  price: number;
 };
 
 type BottomBarConfig = {
-  left: {
-    field: string;
-    label: string;
-  };
-  action: {
-    onClick?: any;
-    label: string;
-  };
-  right: {
-    field: string;
-    label: string;
-  };
+  quantityLabel: string;
+  priceLabel: string;
+  actionLabel: string;
+  actionEvent: string;
 };
 
 // Configuration for each mode
-function getConfigs(context: Context): Record<BottomBarMode, BottomBarConfig> {
+function getConfig(mode: BottomBarMode, context: Context): BottomBarConfig {
   const { t } = withContext(context);
   
-  return {
-    view: {
-      left: { field: "itemCount", label: t('items') },
-      action: { label: t('viewOrder'), onClick: VIEW_ORDER_EVENT },
-      right: { field: "total", label: t('total') },
-    },
-    add: {
-      left: { field: "quantity", label: t('quantity') },
-      action: { label: t('addToOrder'), onClick: ADD_TO_ORDER_EVENT },
-      right: { field: "total", label: t('total') },
-    },
-    send: {
-      left: { field: "itemCount", label: t('items') },
-      action: { label: t('sendOrder'), onClick: SEND_ORDER_EVENT },
-      right: { field: "total", label: t('total') },
-    },
-    quickOrder: {
-      left: { field: "selected", label: t('selected') },
-      action: { label: t('addToOrder'), onClick: ADD_TO_ORDER_EVENT },
-      right: { field: "total", label: t('total') },
-    },
-    modify: {
-      left: { field: "quantity", label: t('quantity') },
-      action: { label: t('saveChanges'), onClick: SAVE_CHANGES_EVENT },
-      right: { field: "total", label: t('total') },
-    },
-  };
+  switch (mode) {
+    case 'view-order':
+      return {
+        quantityLabel: t('items'),
+        priceLabel: t('total'),
+        actionLabel: t('viewOrder'),
+        actionEvent: VIEW_ORDER_EVENT,
+      };
+    case 'add-to-order':
+      return {
+        quantityLabel: t('quantity'),
+        priceLabel: t('total'),
+        actionLabel: t('addToOrder'),
+        actionEvent: ADD_TO_ORDER_EVENT,
+      };
+    case 'send-order':
+      return {
+        quantityLabel: t('items'),
+        priceLabel: t('total'),
+        actionLabel: t('sendOrder'),
+        actionEvent: SEND_ORDER_EVENT,
+      };
+    case 'quick-order':
+      return {
+        quantityLabel: t('selected'),
+        priceLabel: t('total'),
+        actionLabel: t('addToOrder'),
+        actionEvent: ADD_TO_ORDER_EVENT,
+      };
+    case 'modify-order':
+      return {
+        quantityLabel: t('quantity'),
+        priceLabel: t('total'),
+        actionLabel: t('saveChanges'),
+        actionEvent: SAVE_CHANGES_EVENT,
+      };
+  }
 }
 
 /**
  * Bottom bar template - Material Design 3 Bottom App Bar
  */
-export function template(mode: BottomBarMode = "view", context: Context): Template {
-  const configs = getConfigs(context);
-  const config = configs[mode];
-  const { formatPrice } = withContext(context);
-  
-  // Default display value for price field
-  const defaultPrice = context ? formatPrice(0) : "$0.00";
+export function template(mode: BottomBarMode, context: Context): Template {
+  const config = getConfig(mode, context);
 
   return html`
-    <div class="${classes.infoSection}" data-bottom-bar-field="${config.left.field}">
-      <div class="${classes.infoValue}">0</div>
-      <div class="${classes.infoLabel}">${config.left.label}</div>
+    <div class="${classes.infoSection}" data-bottom-bar-quantity>
+      <div class="${classes.infoValue}"></div>
+      <div class="${classes.infoLabel}">${config.quantityLabel}</div>
     </div>
 
-    <button class="${classes.actionButton}" data-bottom-bar-button ${onClick(config.action.onClick)}>
-      ${config.action.label}
+    <button class="${classes.actionButton}" data-bottom-bar-button ${onClick(config.actionEvent)}>
+      ${config.actionLabel}
     </button>
 
-    <div class="${classes.infoSection}" data-bottom-bar-field="${config.right.field}">
-      <div class="${classes.infoValue}">${defaultPrice}</div>
-      <div class="${classes.infoLabel}">${config.right.label}</div>
+    <div class="${classes.infoSection}" data-bottom-bar-price>
+      <div class="${classes.infoValue}"></div>
+      <div class="${classes.infoLabel}">${config.priceLabel}</div>
     </div>
   `;
-}
-
-// Field formatters for consistent value formatting
-function getFieldFormatters(context: Context): Record<keyof Omit<BottomBarData, "mode">, (value: any) => string> {
-  const { formatPrice } = withContext(context);
-  
-  return {
-    itemCount: (value) => String(value || 0),
-    quantity: (value) => String(value || 0),
-    selected: (value) => String(value || 0),
-    total: (value) => formatPrice(value || 0),
-  };
 }
 
 /**
  * Update the bottom bar with changes
  * @param container The bottom bar container element  
- * @param changes Changes to apply
+ * @param changes Partial changes to apply
  * @param context Runtime context with language and currency
  */
 export function update(
   container: Element,
-  changes: DataChange<BottomBarData>,
+  changes: Partial<BottomBarData>,
   context: Context
 ): void {
-  // If mode changed, re-render with empty values
+  // If mode changed, re-render with blank values
   if ('mode' in changes && changes.mode !== undefined) {
     render(template(changes.mode, context), container);
   }
 
-  // Update individual fields
-  const formatters = getFieldFormatters(context);
-  const fieldsToUpdate = ['itemCount', 'quantity', 'selected', 'total'] as const;
-  
-  for (const field of fieldsToUpdate) {
-    if (field in changes) {
-      const element = container.querySelector(`[data-bottom-bar-field="${field}"]`);
-      if (element) {
-        const valueElement = element.querySelector(`.${classes.infoValue}`);
-        if (valueElement && field in formatters) {
-          valueElement.textContent = formatters[field]((changes as any)[field]);
-        }
+  // Update quantity if provided
+  if ('quantity' in changes && changes.quantity !== undefined) {
+    const quantitySection = container.querySelector('[data-bottom-bar-quantity]');
+    if (quantitySection) {
+      const valueElement = quantitySection.querySelector(`.${classes.infoValue}`);
+      if (valueElement) {
+        valueElement.textContent = String(changes.quantity);
+      }
+    }
+  }
+
+  // Update price if provided
+  if ('price' in changes && changes.price !== undefined) {
+    const priceSection = container.querySelector('[data-bottom-bar-price]');
+    if (priceSection) {
+      const valueElement = priceSection.querySelector(`.${classes.infoValue}`);
+      if (valueElement) {
+        const { formatPrice } = withContext(context);
+        valueElement.textContent = formatPrice(changes.price);
       }
     }
   }

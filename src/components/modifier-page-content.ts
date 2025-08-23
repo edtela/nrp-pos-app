@@ -209,7 +209,7 @@ export function template(displayMenu: DisplayMenu, context: Context): Template {
         </div>
       </main>
       <div class="${layoutStyles.bottomBar}">
-        ${AppBottomBar.template("add", context)}
+        ${AppBottomBar.template("add-to-order", context)}
       </div>
     </div>
   `;
@@ -275,7 +275,7 @@ export function hydrate(container: Element, _displayMenu: DisplayMenu, context: 
       bottomBar,
       {
         quantity: order.quantity,
-        total: order.total,
+        price: order.total,
       },
       context,
     );
@@ -316,7 +316,7 @@ export function update(container: Element, changes: DataChange<MenuPageData>, ct
     if (changes.order && "total" in changes.order) {
       const bottomBar = container.querySelector(`.${layoutStyles.bottomBar}`) as HTMLElement;
       if (bottomBar) {
-        AppBottomBar.update(bottomBar, { total: changes.order.total }, ctx);
+        AppBottomBar.update(bottomBar, { price: changes.order.total }, ctx);
       }
     }
   }

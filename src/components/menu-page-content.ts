@@ -37,7 +37,7 @@ export function template(displayMenu: DisplayMenu, context: Context): Template {
     <div class="${layoutStyles.pageContainer}">
       <header class="${layoutStyles.header}">${AppHeader.template(headerData, context)}</header>
       <main class="${layoutStyles.content}">${MenuContent.template(displayMenu, context)}</main>
-      <div class="${layoutStyles.bottomBar}">${AppBottomBar.template("view", context)}</div>
+      <div class="${layoutStyles.bottomBar}">${AppBottomBar.template("view-order", context)}</div>
     </div>
   `;
 }
@@ -70,8 +70,8 @@ export function hydrate(container: Element, displayMenu: DisplayMenu, context: C
     AppBottomBar.update(
       bottomBar,
       {
-        itemCount: mainOrder.itemIds.length,
-        total: mainOrder.total,
+        quantity: mainOrder.itemIds.length,
+        price: mainOrder.total,
       },
       context,
     );
@@ -89,9 +89,9 @@ export function update(container: Element, changes: DataChange<MenuPageData>, ct
       AppBottomBar.update(
         bottomBar,
         {
-          mode: "view",
-          itemCount: mainOrder.itemIds.length,
-          total: mainOrder.total,
+          mode: "view-order",
+          quantity: mainOrder.itemIds.length,
+          price: mainOrder.total,
         },
         ctx,
       );
@@ -99,9 +99,9 @@ export function update(container: Element, changes: DataChange<MenuPageData>, ct
       AppBottomBar.update(
         bottomBar,
         {
-          mode: "quickOrder",
-          selected: data.quickOrder.selectedIds.length,
-          total: data.quickOrder.total,
+          mode: "quick-order",
+          quantity: data.quickOrder.selectedIds.length,
+          price: data.quickOrder.total,
         },
         ctx,
       );
@@ -110,8 +110,8 @@ export function update(container: Element, changes: DataChange<MenuPageData>, ct
     AppBottomBar.update(
       bottomBar,
       {
-        selected: data.quickOrder.selectedIds.length,
-        total: data.quickOrder.total,
+        quantity: data.quickOrder.selectedIds.length,
+        price: data.quickOrder.total,
       },
       ctx,
     );
