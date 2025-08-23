@@ -271,6 +271,12 @@ export const commonTranslations = {
     it: 'Quantità'
   }),
   
+  selected: createTranslation({
+    sq: 'Zgjedhur',
+    en: 'Selected',
+    it: 'Selezionato'
+  }),
+  
   price: createTranslation({
     sq: 'Çmimi',
     en: 'Price',

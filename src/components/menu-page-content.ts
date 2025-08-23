@@ -14,6 +14,7 @@ import * as AppBottomBar from "./app-bottom-bar";
 import { styles as layoutStyles } from "./app-layout";
 import { navigate } from "@/pages/page-router";
 import { getOrder } from "@/model/order-model";
+import { typeChange } from "tsqn";
 
 // Export for page selector
 export const menuPageContainer = "menu-page-content";
@@ -35,12 +36,8 @@ export function template(displayMenu: DisplayMenu, context: Context): Template {
   return html`
     <div class="${layoutStyles.pageContainer}">
       <header class="${layoutStyles.header}">${AppHeader.template(headerData, context)}</header>
-      <main class="${layoutStyles.content}">
-        ${MenuContent.template(displayMenu, context)}
-      </main>
-      <div class="${layoutStyles.bottomBar}">
-        ${AppBottomBar.template("view", context)}
-      </div>
+      <main class="${layoutStyles.content}">${MenuContent.template(displayMenu, context)}</main>
+      <div class="${layoutStyles.bottomBar}">${AppBottomBar.template("view", context)}</div>
     </div>
   `;
 }
@@ -85,6 +82,41 @@ export function hydrate(container: Element, displayMenu: DisplayMenu, context: C
  * Update function for menu-page
  */
 export function update(container: Element, changes: DataChange<MenuPageData>, ctx: Context, data: MenuPageData): void {
+  const bottomBar = container.querySelector(`.${layoutStyles.bottomBar}`) as HTMLElement;
+  if (typeChange("quickOrder", changes)) {
+    if (data.quickOrder == null) {
+      const mainOrder = getOrder();
+      AppBottomBar.update(
+        bottomBar,
+        {
+          mode: "view",
+          itemCount: mainOrder.itemIds.length,
+          total: mainOrder.total,
+        },
+        ctx,
+      );
+    } else {
+      AppBottomBar.update(
+        bottomBar,
+        {
+          mode: "quickOrder",
+          selected: data.quickOrder.selectedIds.length,
+          total: data.quickOrder.total,
+        },
+        ctx,
+      );
+    }
+  } else if (changes.quickOrder && data.quickOrder) {
+    AppBottomBar.update(
+      bottomBar,
+      {
+        selected: data.quickOrder.selectedIds.length,
+        total: data.quickOrder.total,
+      },
+      ctx,
+    );
+  }
+
   // Delegate updates to menu-content
   const content = container.querySelector(`.${layoutStyles.content} .${MenuContent.menuContainer}`) as HTMLElement;
   if (content) {

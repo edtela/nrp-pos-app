@@ -16,12 +16,13 @@ export const ADD_TO_ORDER_EVENT = "add-to-order-event";
 export const SEND_ORDER_EVENT = "send-order-event";
 
 // Type definitions
-export type BottomBarMode = "view" | "add" | "send";
+export type BottomBarMode = "view" | "add" | "send" | "quickOrder";
 
 export type BottomBarData = {
   mode: BottomBarMode;
   itemCount?: number;
   quantity?: number;
+  selected?: number;
   total?: number;
 };
 
@@ -58,6 +59,11 @@ function getConfigs(context: Context): Record<BottomBarMode, BottomBarConfig> {
     send: {
       left: { field: "itemCount", label: t('items') },
       action: { label: t('sendOrder'), onClick: SEND_ORDER_EVENT },
+      right: { field: "total", label: t('total') },
+    },
+    quickOrder: {
+      left: { field: "selected", label: t('selected') },
+      action: { label: t('addToOrder'), onClick: ADD_TO_ORDER_EVENT },
       right: { field: "total", label: t('total') },
     },
   };
@@ -98,6 +104,7 @@ function getFieldFormatters(context: Context): Record<keyof Omit<BottomBarData, 
   return {
     itemCount: (value) => String(value || 0),
     quantity: (value) => String(value || 0),
+    selected: (value) => String(value || 0),
     total: (value) => formatPrice(value || 0),
   };
 }
@@ -120,7 +127,7 @@ export function update(
 
   // Update individual fields
   const formatters = getFieldFormatters(context);
-  const fieldsToUpdate = ['itemCount', 'quantity', 'total'] as const;
+  const fieldsToUpdate = ['itemCount', 'quantity', 'selected', 'total'] as const;
   
   for (const field of fieldsToUpdate) {
     if (field in changes) {
