@@ -10,6 +10,7 @@
 
 import { Menu } from "@/types";
 import { DisplayMenu } from "@/model/menu-model";
+import { OrderPageData } from "@/model/order-model";
 import { PageStaticData } from "@/types/page-data";
 import { render } from "@/lib/html-template";
 import { getCurrentLanguage } from "@/lib/language";
@@ -25,14 +26,14 @@ class PageRenderer {
 
   /**
    * Get context for current environment
-   * @param menu Optional menu data to extract currency from
+   * @param data Optional menu or order data to extract currency from
    */
-  getContext(menu?: Menu | DisplayMenu): Context {
+  getContext(data?: Menu | DisplayMenu | OrderPageData): Context {
     const lang = getCurrentLanguage();
 
-    // If menu has currency, use it; otherwise use language default
-    if (menu?.currency) {
-      const currencyFormat = getCurrencyFormat(menu.currency);
+    // Check for currency in the data
+    if (data?.currency) {
+      const currencyFormat = getCurrencyFormat(data.currency);
       return createContext(lang, currencyFormat);
     }
 
@@ -43,8 +44,8 @@ class PageRenderer {
    * Render a page with static data
    */
   renderPage(container: Element, pageData: PageStaticData): void {
-    // Get context with menu currency if it's a menu page
-    const context = pageData.type === "menu" ? this.getContext(pageData.data) : this.getContext();
+    // Get context with appropriate currency
+    const context = this.getContext(pageData.data);
 
     if (pageData.type === "order") {
       render(OrderPage.template(pageData.data, context), container);
@@ -57,8 +58,8 @@ class PageRenderer {
    * Hydrate a page with event handlers and session data
    */
   hydratePage(container: Element, pageData: PageStaticData): void {
-    // Get context with menu currency if it's a menu page
-    const context = pageData.type === "menu" ? this.getContext(pageData.data) : this.getContext();
+    // Get context with appropriate currency
+    const context = this.getContext(pageData.data);
 
     if (pageData.type === "order") {
       OrderPage.hydrate(container, pageData.data, context);

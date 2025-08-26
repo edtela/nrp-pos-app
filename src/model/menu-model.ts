@@ -79,6 +79,7 @@ export function toOrderItem(item: MenuItem, pageData: MenuPageData): OrderItem {
   return {
     id: "",
     menuItem: item,
+    currency: pageData.currency, // Get currency from menu
     modifiers: [],
     price,
     variant,

@@ -7,7 +7,7 @@
 
 import "./order-item.css";
 import { html, Template, dataAttr, CLICK_EVENT, onClick, replaceElement } from "@/lib/html-template";
-import { Context } from "@/lib/context";
+import { Context, withContext } from "@/lib/context";
 import { OrderModifier, DisplayItem } from "@/model/order-model";
 import { styles as itemListStyles } from "./item-list";
 import { DataChange } from "@/lib/data-model-types";
@@ -74,7 +74,7 @@ function modificationTokenTemplate(token: ModificationToken): Template {
 /**
  * Modification item template for expanded view (vertical list with prices)
  */
-function modificationItemTemplate(modifier: OrderModifier): Template {
+function modificationItemTemplate(modifier: OrderModifier, formatPrice: (amount: number) => string): Template {
   const isRemoved = modifier.quantity === 0;
   const hasPriceDisplay = modifier.price > 0;
   const className = isRemoved ? classes.modItemRemoved : modifier.price > 0 ? classes.modItemPriced : classes.modItemFree;
@@ -84,7 +84,7 @@ function modificationItemTemplate(modifier: OrderModifier): Template {
   return html`
     <div class="${classes.modItem} ${className}">
       <span class="${classes.modItemName}">${prefix}${modifier.name}</span>
-      ${hasPriceDisplay ? html`<span class="${classes.modItemPrice}">$${modifier.price.toFixed(2)}</span>` : ""}
+      ${hasPriceDisplay ? html`<span class="${classes.modItemPrice}">${formatPrice(modifier.price)}</span>` : ""}
     </div>
   `;
 }
@@ -92,7 +92,8 @@ function modificationItemTemplate(modifier: OrderModifier): Template {
 /**
  * Order item template
  */
-export function template(displayItem: DisplayItem): Template {
+export function template(displayItem: DisplayItem, context: Context): Template {
+  const { formatPrice } = withContext(context);
   const item = displayItem.item;
   const hasModifiers = item.modifiers && item.modifiers.length > 0;
   const tokens = hasModifiers ? generateModificationTokens(item.modifiers) : [];
@@ -113,7 +114,7 @@ export function template(displayItem: DisplayItem): Template {
           <div class="${classes.details}">
             <div class="${classes.titleSection}">
               <h3 class="${classes.name}">${item.menuItem.name}</h3>
-              <div class="${classes.price}">$${item.total.toFixed(2)}</div>
+              <div class="${classes.price}">${formatPrice(item.total)}</div>
             </div>
             <div class="${classes.descriptionSection}">
               ${!displayItem.expanded
@@ -124,7 +125,7 @@ export function template(displayItem: DisplayItem): Template {
                     : ""
                 : ""}
               ${showQuantityInHeader
-                ? html`<span class="${classes.quantity}">${item.quantity} × $${item.unitPrice.toFixed(2)}</span>`
+                ? html`<span class="${classes.quantity}">${item.quantity} × ${formatPrice(item.unitPrice)}</span>`
                 : ""}
             </div>
           </div>
@@ -150,7 +151,7 @@ export function template(displayItem: DisplayItem): Template {
                 : ""}
               ${hasModifiers
                 ? html`<div class="${classes.modificationsList}">
-                    ${item.modifiers.map((modifier) => modificationItemTemplate(modifier))}
+                    ${item.modifiers.map((modifier) => modificationItemTemplate(modifier, formatPrice))}
                   </div>`
                 : ""}
               <div class="${classes.expandedControls}">
@@ -214,12 +215,13 @@ export function template(displayItem: DisplayItem): Template {
 export function update(
   container: Element,
   changes: DataChange<DisplayItem>,
-  _context: Context,
+  context: Context,
   data: DisplayItem
 ): void {
+  const { formatPrice } = withContext(context);
   // Handle expanded state changes - requires re-render
   if ("expanded" in changes) {
-    replaceElement(container, template(data));
+    replaceElement(container, template(data, context));
     return;
   }
 
@@ -243,7 +245,7 @@ export function update(
 
     const quantityHeader = container.querySelector(`.${classes.quantity}`) as HTMLElement;
     if (quantityHeader) {
-      quantityHeader.textContent = `${itemData.quantity} × $${itemData.unitPrice.toFixed(2)}`;
+      quantityHeader.textContent = `${itemData.quantity} × ${formatPrice(itemData.unitPrice)}`;
       if (itemData.quantity > 1) {
         quantityHeader.classList.remove(classes.quantityHidden);
       } else {
@@ -265,7 +267,7 @@ export function update(
   if (itemChanges.total !== undefined) {
     const priceElement = container.querySelector(`.${classes.price}`);
     if (priceElement) {
-      priceElement.textContent = `$${itemData.total.toFixed(2)}`;
+      priceElement.textContent = formatPrice(itemData.total);
     }
   }
 }

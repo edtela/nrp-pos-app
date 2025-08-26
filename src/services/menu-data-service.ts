@@ -46,7 +46,7 @@ export async function fetchPageData(path: string): Promise<PageStaticData> {
   if (isOrderPage(path)) {
     return {
       type: "order",
-      data: createEmptyOrderData(),
+      data: await createEmptyOrderData(),
     };
   }
 
@@ -80,11 +80,25 @@ export async function fetchMenuData(menuId: string | null, language: Language): 
 }
 
 /**
+ * Fetch order configuration
+ */
+export async function fetchOrderConfig(): Promise<{ currency: string; taxRate: number; serviceFee: number }> {
+  const response = await fetch('/data/order.json');
+  if (!response.ok) {
+    // Fallback to default if config doesn't exist
+    return { currency: 'ALL', taxRate: 0, serviceFee: 0 };
+  }
+  return response.json();
+}
+
+/**
  * Create empty order page data
  */
-export function createEmptyOrderData(): OrderPageData {
+export async function createEmptyOrderData(): Promise<OrderPageData> {
+  const config = await fetchOrderConfig();
   return {
-    order: { itemIds: [], total: 0 },
+    order: { itemIds: [], total: 0, currency: config.currency },
     items: {},
+    currency: config.currency,
   };
 }

@@ -7,11 +7,13 @@ import { state } from "@/lib/data-model";
 export type Order = {
   itemIds: string[];
   total: number;
+  currency: string;
 };
 
 export type OrderItem = {
   id: string;
   menuItem: MenuItem;
+  currency: string;
   quantity: number;
   price: number;
   variant?: { id: string; name: string };
@@ -39,6 +41,7 @@ export type OrderPageData = {
   order: Order;
   items: Record<string, DisplayItem>;
   expandedId?: string;
+  currency: string;
 };
 
 export const MAIN_ORDER_ID = "main";
@@ -59,7 +62,8 @@ export function getStore(id: string) {
 }
 
 export function getOrder() {
-  return createStore(storageKey(MAIN_ORDER_ID), "session").get({ itemIds: [], total: 0 }) as Order;
+  // For now, use ALL as default currency - in production this should come from order config
+  return createStore(storageKey(MAIN_ORDER_ID), "session").get({ itemIds: [], total: 0, currency: "ALL" }) as Order;
 }
 
 export function getOrderItem(id: string) {
@@ -82,14 +86,17 @@ export function saveOrderItem(item: OrderItem) {
 
   createStore<Order>(storageKey(MAIN_ORDER_ID), "session").replace((old) => {
     if (old == null) {
-      return { itemIds: [item.id], total: item.total };
+      return { itemIds: [item.id], total: item.total, currency: item.currency };
     }
+
+    // Update currency if it's different (should typically match)
+    const currency = old.currency || item.currency;
 
     if (!old.itemIds.includes(item.id)) {
-      return { itemIds: [...old.itemIds, item.id], total: old.total + delta };
+      return { itemIds: [...old.itemIds, item.id], total: old.total + delta, currency };
     }
 
-    return { ...old, total: old.total + delta };
+    return { ...old, total: old.total + delta, currency };
   });
 }
 
@@ -106,7 +113,7 @@ export function readOrderData() {
       };
     }
   }
-  return { order, items };
+  return { order, items, currency: order.currency };
 }
 
 export function orderModel() {
@@ -130,7 +137,7 @@ export function orderModel() {
           }
           total += item.total;
         }
-        return { order: [{ itemIds: orderIds, total }] };
+        return { order: [{ itemIds: orderIds, total, currency: data.order.currency }] };
       },
     },
     // unset expandedId when expanded item is deleted

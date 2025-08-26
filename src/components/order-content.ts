@@ -35,14 +35,14 @@ function emptyOrderTemplate(context: Context): Template {
 /**
  * Order items list template
  */
-function orderItemsTemplate(data: OrderPageData): Template {
+function orderItemsTemplate(data: OrderPageData, context: Context): Template {
   // Use orderIds for proper ordering
   const orderedItems = data.order.itemIds.map((id) => data.items[id]).filter((item) => item != null);
 
   return html`
     <div class="${itemListStyles.scrollContainer}">
       <div class="${itemListStyles.items}" data-has-expanded="${data.expandedId != null}">
-        ${orderedItems.map((displayItem) => OrderItemUI.template(displayItem))}
+        ${orderedItems.map((displayItem) => OrderItemUI.template(displayItem, context))}
       </div>
     </div>
   `;
@@ -55,7 +55,7 @@ export function template(data: OrderPageData, context: Context): Template {
   const hasItems = data.order.itemIds.length > 0;
 
   return html`
-    <div class="${itemListStyles.container}">${hasItems ? orderItemsTemplate(data) : emptyOrderTemplate(context)}</div>
+    <div class="${itemListStyles.container}">${hasItems ? orderItemsTemplate(data, context) : emptyOrderTemplate(context)}</div>
   `;
 }
 
