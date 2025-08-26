@@ -6,8 +6,6 @@
  */
 
 import { Template } from "@/lib/template";
-import { addEventHandler } from "@/lib/events";
-import { navigate } from "@/lib/dom-events";
 import { Context } from "@/lib/context";
 import * as MenuPageContent from "@/components/menu-page-content";
 import * as ModifierPageContent from "@/components/modifier-page-content";
@@ -102,24 +100,19 @@ export function hydrate(container: Element, menu: DisplayMenu, context: Context)
   changes = model.updateAll(stmts, changes);
   update(container, changes, model.data, context);
 
-  node.on(VARIANT_SELECT_EVENT, (data: any) => {
+  node.on(VARIANT_SELECT_EVENT, (data) => {
     runUpdate({ variants: { [data.variantGroupId]: { selectedId: data.variantId } } });
   });
 
-  addEventHandler(container, MENU_ITEM_CLICK, (data) => {
+  node.on(MENU_ITEM_CLICK, (data) => {
     const item = model.data.items[data.id];
 
     if (item?.data.subMenu) {
       if (isSaleItem(item.data)) {
         const orderItem = toOrderItem(item.data, model.data);
-        navigate(container, "menu", {
-          menuId: item.data.subMenu.menuId,
-          state: { order: orderItem },
-        });
+        node.dispatch("navigate", { to: "menu", menuId: item.data.subMenu.menuId, state: { order: orderItem } });
       } else {
-        navigate(container, "menu", {
-          menuId: item.data.subMenu.menuId,
-        });
+        node.dispatch("navigate", { to: "menu", menuId: item.data.subMenu.menuId });
       }
     } else {
       // Prevent deselecting required items
@@ -131,11 +124,11 @@ export function hydrate(container: Element, menu: DisplayMenu, context: Context)
     }
   });
 
-  addEventHandler(container, VIEW_ORDER_EVENT, () => {
-    navigate(container, "order");
+  node.on(VIEW_ORDER_EVENT, () => {
+    node.dispatch("navigate", { to: "order" });
   });
 
-  addEventHandler(container, ADD_TO_ORDER_EVENT, () => {
+  node.on(ADD_TO_ORDER_EVENT, () => {
     const order = model.data.order;
     if (order) {
       const modifying = order.id.length > 0;
@@ -143,9 +136,9 @@ export function hydrate(container: Element, menu: DisplayMenu, context: Context)
 
       // Check if we're in modify mode
       if (modifying) {
-        navigate(container, "order");
+        node.dispatch("navigate", { to: "order" });
       } else {
-        navigate(container, "back");
+        node.dispatch("navigate", { to: "back" });
       }
     } else {
       const quickOrder = model.data.quickOrder;

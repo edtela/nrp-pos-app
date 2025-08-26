@@ -192,6 +192,20 @@ export class DomNode {
     return this;
   }
 
+  /**
+   * Dispatch a custom event
+   */
+  dispatch(eventType: string, data?: any): DomNode {
+    if (this.element) {
+      const event = new CustomEvent(`app:${eventType}`, {
+        bubbles: true,
+        detail: data
+      });
+      this.element.dispatchEvent(event);
+    }
+    return this;
+  }
+
   onClick(handler: (e: MouseEvent) => void): DomNode {
     if (this.element) {
       this.element.addEventListener("click", (e) => handler(e as MouseEvent));
