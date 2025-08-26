@@ -12,7 +12,7 @@ import { Menu } from "@/types";
 import { DisplayMenu } from "@/model/menu-model";
 import { OrderPageData } from "@/model/order-model";
 import { PageStaticData } from "@/types/page-data";
-import { render } from "@/lib/html-template";
+import { render } from "@/lib/template";
 import { getCurrentLanguage } from "@/lib/language";
 import { createContext, Context, getCurrencyFormat } from "@/lib/context";
 import * as MenuPage from "./menu-page";

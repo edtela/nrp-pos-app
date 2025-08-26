@@ -4,7 +4,8 @@
  * Includes app header, order display, menu content for modifications, and bottom bar
  */
 
-import { html, Template, toClassSelectors, domUpdate } from "@/lib/html-template";
+import { html, Template, toClassSelectors } from "@/lib/template";
+import { dom } from "@/lib/dom-node";
 import { Context, withContext, commonTranslations } from "@/lib/context";
 import { DisplayMenu, MenuPageData } from "@/model/menu-model";
 import { DataChange } from "@/lib/data-model-types";
@@ -218,28 +219,30 @@ export function template(displayMenu: DisplayMenu, context: Context): Template {
 export function updateOrder(container: Element, changes: DataChange<OrderItem>, ctx: Context, data: MenuPageData): void {
   const { formatPrice } = withContext(ctx);
 
+  const node = dom(container);
+  
   if (changes.price !== undefined) {
-    domUpdate.setTextContent(container, selectors.price, formatPrice(changes.price));
+    node.select(selectors.price).setText(formatPrice(changes.price));
   }
 
   if (changes.unitPrice !== undefined) {
-    domUpdate.setTextContent(container, selectors.unitPrice, formatPrice(changes.unitPrice));
+    node.select(selectors.unitPrice).setText(formatPrice(changes.unitPrice));
   }
 
   if (changes.modifiersPrice !== undefined) {
-    domUpdate.setTextContent(container, selectors.modifiersPrice, `+${formatPrice(changes.modifiersPrice)}`);
-    domUpdate.setVisibility(container, selectors.unitPrice, changes.modifiersPrice !== 0);
-    domUpdate.setVisibility(container, selectors.modifiersPrice, changes.modifiersPrice > 0);
+    node.select(selectors.modifiersPrice).setText(`+${formatPrice(changes.modifiersPrice)}`);
+    node.select(selectors.unitPrice).setVisibility(changes.modifiersPrice !== 0);
+    node.select(selectors.modifiersPrice).setVisibility(changes.modifiersPrice > 0);
   }
 
   if (changes.menuItem || changes.variant) {
     const order = data.order;
     const title = order?.variant ? `${order.menuItem.name} - ${order.variant.name}` : (order?.menuItem.name ?? "");
-    domUpdate.setTextContent(container, selectors.title, title);
+    node.select(selectors.title).setText(title);
   }
 
   if (changes.modifiers && data.order) {
-    domUpdate.setHTML(container, selectors.tokens, orderTokensTemplate(data.order));
+    node.select(selectors.tokens).setHTML(orderTokensTemplate(data.order));
   }
 }
 
@@ -290,9 +293,9 @@ function showError(container: Element): void {
   if (!content) return;
   
   // Hide regular content
-  domUpdate.setStyle(content, '.modifier-content', 'display', 'none');
+  dom(content).select('.modifier-content').setStyle('display', 'none');
   // Show error content
-  domUpdate.setStyle(content, '.modifier-error', 'display', 'flex');
+  dom(content).select('.modifier-error').setStyle('display', 'flex');
   
   // Set up click handler for home button
   const homeButton = content.querySelector('.nav-home-button') as HTMLButtonElement;

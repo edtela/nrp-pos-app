@@ -4,7 +4,7 @@
  * Includes app header, menu content, and bottom bar
  */
 
-import { html, Template } from "@/lib/html-template";
+import { html, Template } from "@/lib/template";
 import { Context } from "@/lib/context";
 import { DisplayMenu, MenuPageData } from "@/model/menu-model";
 import { DataChange } from "@/lib/data-model-types";

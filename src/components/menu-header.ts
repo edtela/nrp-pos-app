@@ -5,7 +5,7 @@
  * @see /component-guidelines.md for component patterns and conventions
  */
 
-import { html, Template, classMap, styleMap } from '@/lib/html-template';
+import { html, Template, classMap, styleMap } from '@/lib/template';
 import { Cells, Cell, isTextCell, isImageCell, isDataCell, isLayoutCell, DataCell } from '@/types';
 
 /**

@@ -6,7 +6,7 @@
  */
 
 import "./menu-content.css";
-import { html, Template, reconcileChildren, buildHTML } from "@/lib/html-template";
+import { html, Template, reconcileChildren, buildHTML } from "@/lib/template";
 import { Context } from "@/lib/context";
 import { DataCell, ItemGroup } from "@/types";
 import { headerCells, DataCellRenderer } from "./menu-header";

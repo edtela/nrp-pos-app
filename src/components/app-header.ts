@@ -6,7 +6,7 @@
  */
 
 import './app-header.css';
-import { html, Template } from '@/lib/html-template';
+import { html, Template } from '@/lib/template';
 import { Context, commonTranslations } from '@/lib/context';
 import * as AppMenu from './app-menu';
 

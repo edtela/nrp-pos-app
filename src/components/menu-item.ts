@@ -6,7 +6,8 @@
  */
 
 import "./menu-item.css";
-import { html, Template, replaceElements, onClick, dataAttr, setDataAttribute } from "@/lib/html-template";
+import { html, Template, replaceElements, dataAttr } from "@/lib/template";
+import { onClick, setDataAttribute } from "@/lib/events";
 import { Context, withContext } from "@/lib/context";
 import { DataChange } from "@/lib/data-model-types";
 import { DisplayMenuItem } from "@/model/menu-model";

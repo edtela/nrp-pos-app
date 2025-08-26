@@ -5,7 +5,7 @@
  * @see /component-guidelines.md for component patterns and conventions
  */
 
-import { html, Template, render } from "@/lib/html-template";
+import { html, Template, render } from "@/lib/template";
 import { Context, commonTranslations } from "@/lib/context";
 import { OrderPageData } from "@/model/order-model";
 import * as OrderItemUI from "./order-item";

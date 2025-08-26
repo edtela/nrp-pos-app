@@ -5,8 +5,9 @@
  * @see /component-guidelines.md for component patterns and conventions
  */
 
-import { addEventHandler, Template } from "@/lib/html-template";
-import { getNavigationService } from "@/services/navigation-service";
+import { Template } from "@/lib/template";
+import { addEventHandler } from "@/lib/events";
+import { NavigationMessenger } from "@/lib/messaging";
 import { Context } from "@/lib/context";
 import * as MenuPageContent from "@/components/menu-page-content";
 import * as ModifierPageContent from "@/components/modifier-page-content";
@@ -29,9 +30,36 @@ export function template(displayMenu: DisplayMenu, context: Context): Template {
 }
 
 // Hydrate function - attaches event handlers and loads session data
+// Helper functions for page state (temporary until full migration)
+function getPageState(menuId: string): any {
+  if (typeof sessionStorage === "undefined") return null;
+  const stored = sessionStorage.getItem(`page-state-${menuId}`);
+  return stored ? JSON.parse(stored) : null;
+}
+
+function setCurrentPage(_menuId: string): void {
+  // Truncate navigation stack logic will be handled by navigation message handler
+  return;
+}
+
+function updatePageState(menuId: string, state: any): void {
+  if (typeof sessionStorage === "undefined") return;
+  const current = getPageState(menuId) || {};
+  sessionStorage.setItem(`page-state-${menuId}`, JSON.stringify({ ...current, ...state }));
+}
+
+function getCurrentMenuId(): string | undefined {
+  // Get from navigation stack in session storage
+  if (typeof sessionStorage === "undefined") return undefined;
+  const stackStr = sessionStorage.getItem("nav-stack-v3");
+  if (!stackStr) return undefined;
+  const stack = JSON.parse(stackStr);
+  return stack.length > 0 ? stack[stack.length - 1] : undefined;
+}
+
 export function hydrate(container: Element, displayMenu: DisplayMenu, context: Context) {
-  const navService = getNavigationService();
-  const pageState = navService.setCurrentPage(displayMenu.id) ?? {};
+  const pageState = getPageState(displayMenu.id) ?? {};
+  setCurrentPage(displayMenu.id);
   const order: OrderItem = pageState.order;
 
   // Delegate to appropriate page component for hydration
@@ -79,10 +107,12 @@ export function hydrate(container: Element, displayMenu: DisplayMenu, context: C
     const item = model.data.items[data.id];
 
     if (item?.data.subMenu) {
+      const nav = new NavigationMessenger();
       if (isSaleItem(item.data)) {
-        navService.editOrder(toOrderItem(item.data, model.data));
+        const orderItem = toOrderItem(item.data, model.data);
+        nav.menu(item.data.subMenu.menuId, { order: orderItem });
       } else {
-        navService.goto.menuItem(item.data);
+        nav.menu(item.data.subMenu.menuId);
       }
     } else {
       // Prevent deselecting required items
@@ -95,7 +125,7 @@ export function hydrate(container: Element, displayMenu: DisplayMenu, context: C
   });
 
   addEventHandler(container, VIEW_ORDER_EVENT, () => {
-    navService.goto.order();
+    new NavigationMessenger().order();
   });
 
   addEventHandler(container, ADD_TO_ORDER_EVENT, () => {
@@ -105,10 +135,11 @@ export function hydrate(container: Element, displayMenu: DisplayMenu, context: C
       saveOrderItem(order);
 
       // Check if we're in modify mode
+      const nav = new NavigationMessenger();
       if (modifying) {
-        navService.goto.order();
+        nav.order();
       } else {
-        navService.goto.back();
+        nav.back();
       }
     } else {
       const quickOrder = model.data.quickOrder;
@@ -136,12 +167,11 @@ function update(container: Element, event: DataChange<MenuPageData> | undefined,
   }
 
   // Save state changes
+  const menuId = getCurrentMenuId() || '';
   if (event.order) {
-    const ns = getNavigationService();
-    ns.updateCurrentState({ order: data.order });
+    updatePageState(menuId, { order: data.order });
   } else if (event.variants) {
-    const ns = getNavigationService();
     const selected = select(data, { variants: { [ALL]: { selectedId: true } } });
-    ns.updateCurrentState({ variants: selected });
+    updatePageState(menuId, { variants: selected });
   }
 }

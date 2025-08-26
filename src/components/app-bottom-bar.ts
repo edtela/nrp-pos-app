@@ -6,7 +6,8 @@
  */
 
 import "./app-bottom-bar.css";
-import { html, onClick, Template, render } from "@/lib/html-template";
+import { html, Template, render } from "@/lib/template";
+import { onClick } from "@/lib/events";
 import { Context, withContext } from "@/lib/context";
 
 // Event types

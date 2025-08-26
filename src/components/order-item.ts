@@ -6,7 +6,9 @@
  */
 
 import "./order-item.css";
-import { html, Template, dataAttr, CLICK_EVENT, onClick, replaceElement } from "@/lib/html-template";
+import { html, Template, dataAttr } from "@/lib/template";
+import { CLICK_EVENT, onClick } from "@/lib/events";
+import { replaceElement } from "@/lib/template";
 import { Context, withContext } from "@/lib/context";
 import { OrderModifier, DisplayItem } from "@/model/order-model";
 import { styles as itemListStyles } from "./item-list";

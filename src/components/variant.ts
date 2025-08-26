@@ -6,7 +6,8 @@
  */
 
 import "./variant.css";
-import { html, Template, onClick } from "@/lib/html-template";
+import { html, Template } from "@/lib/template";
+import { onClick } from "@/lib/events";
 import { Context } from "@/lib/context";
 import { VariantGroup } from "@/types";
 import { DataChange } from "@/lib/data-model-types";
