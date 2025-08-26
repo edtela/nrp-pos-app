@@ -1,6 +1,6 @@
 /**
  * Events Module - UI event handling
- * 
+ *
  * Manages click events and other UI interactions through data attributes.
  * Separate from the messaging system which handles app-level communication.
  */
@@ -126,32 +126,3 @@ function dispatchCustomEvent(target: HTMLElement, eventData: string, originalEve
  * Type-safe event handler
  */
 export type AppEventHandler<T> = (data: T) => void;
-
-/**
- * Add a type-safe event handler
- */
-export function addEventHandler<T extends Record<string, any>>(
-  element: Element,
-  eventName: string,
-  handler: AppEventHandler<T>,
-): void {
-  element.addEventListener(`app:${eventName}`, (e: Event) => {
-    const customEvent = e as CustomEvent;
-    const { dataset } = customEvent.detail;
-
-    // Convert dataset strings to proper types based on common patterns
-    const data = {} as T;
-    for (const [key, value] of Object.entries(dataset)) {
-      if (value === "true" || value === "false") {
-        (data as any)[key] = value === "true";
-      } else if (value && !isNaN(Number(value))) {
-        // Only convert to number if it's a valid number
-        (data as any)[key] = Number(value);
-      } else {
-        (data as any)[key] = value;
-      }
-    }
-
-    handler(data);
-  });
-}

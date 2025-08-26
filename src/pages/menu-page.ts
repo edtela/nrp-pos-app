@@ -108,11 +108,12 @@ export function hydrate(container: Element, menu: DisplayMenu, context: Context)
     const item = model.data.items[data.id];
 
     if (item?.data.subMenu) {
+      const menuId = item.data.subMenu.menuId;
       if (isSaleItem(item.data)) {
         const orderItem = toOrderItem(item.data, model.data);
-        node.dispatch("navigate", { to: "menu", menuId: item.data.subMenu.menuId, state: { order: orderItem } });
+        node.dispatch("navigate", { to: "menu", menuId, state: { order: orderItem } });
       } else {
-        node.dispatch("navigate", { to: "menu", menuId: item.data.subMenu.menuId });
+        node.dispatch("navigate", { to: "menu", menuId });
       }
     } else {
       // Prevent deselecting required items

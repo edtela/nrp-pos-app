@@ -6,9 +6,9 @@
  */
 
 import { html } from "@/lib/template";
-import { addEventHandler, STATE_UPDATE_EVENT } from "@/lib/events";
-import { navigate } from "@/lib/dom-events";
+import { STATE_UPDATE_EVENT } from "@/lib/events";
 import { Context } from "@/lib/context";
+import { dom } from "@/lib/dom-node";
 import * as OrderContentUI from "@/components/order-content";
 import * as OrderItemUI from "@/components/order-item";
 import * as AppHeader from "@/components/app-header";
@@ -22,7 +22,7 @@ export function template(data: OrderPageData, context: Context) {
   const headerData: AppHeader.HeaderData = {
     leftButton: {
       type: "add",
-      onClick: () => navigate(document.body, 'home'),
+      onClick: () => dom(document.body).dispatch('navigate', { to: 'home' }),
     },
   };
 
@@ -37,13 +37,15 @@ export function template(data: OrderPageData, context: Context) {
 
 // Hydrate function - loads session data and attaches event handlers
 export function hydrate(container: Element, _data: OrderPageData, context: Context) {
+  const node = dom(container);
+
   // Hydrate header with navigation
   const header = container.querySelector(`.${layoutStyles.header}`) as HTMLElement;
   if (header) {
     const headerData: AppHeader.HeaderData = {
       leftButton: {
         type: "add",
-        onClick: () => navigate(document.body, 'home'),
+        onClick: () => node.dispatch('navigate', { to: 'home' }),
       },
     };
     AppHeader.hydrate(header, context, headerData);
@@ -75,14 +77,13 @@ export function hydrate(container: Element, _data: OrderPageData, context: Conte
   }
 
   // Attach event handlers
-  container.addEventListener(`app:${STATE_UPDATE_EVENT}`, (e: Event) => {
-    const customEvent = e as CustomEvent;
-    const changes = model.update(customEvent.detail);
+  node.on(STATE_UPDATE_EVENT, (data) => {
+    const changes = model.update(data);
     update(container, changes, model.getData(), context);
   });
 
   // Handle increase quantity event
-  addEventHandler(container, OrderItemUI.INCREASE_QUANTITY_EVENT, (data) => {
+  node.on(OrderItemUI.INCREASE_QUANTITY_EVENT, (data) => {
     const itemId = data.itemId;
     if (itemId) {
       const changes = model.update({
@@ -93,7 +94,7 @@ export function hydrate(container: Element, _data: OrderPageData, context: Conte
   });
 
   // Handle decrease quantity event
-  addEventHandler(container, OrderItemUI.DECREASE_QUANTITY_EVENT, (data) => {
+  node.on(OrderItemUI.DECREASE_QUANTITY_EVENT, (data) => {
     const itemId = data.itemId;
     if (itemId) {
       const changes = model.update({
@@ -104,7 +105,7 @@ export function hydrate(container: Element, _data: OrderPageData, context: Conte
   });
 
   // Handle modify item event
-  addEventHandler(container, OrderItemUI.MODIFY_ITEM_EVENT, (data) => {
+  node.on(OrderItemUI.MODIFY_ITEM_EVENT, (data) => {
     const itemId = data.itemId;
     if (itemId) {
       // Get the order item and navigate to modify it
@@ -113,7 +114,8 @@ export function hydrate(container: Element, _data: OrderPageData, context: Conte
         // Navigate to modifier page with order item
         const menuItem = displayItem.item.menuItem;
         if (menuItem.subMenu) {
-          navigate(document.body, 'menu', { 
+          node.dispatch('navigate', { 
+            to: 'menu',
             menuId: menuItem.subMenu.menuId, 
             state: { order: displayItem.item }
           });
@@ -123,7 +125,7 @@ export function hydrate(container: Element, _data: OrderPageData, context: Conte
   });
 
   // Handle toggle events - update expanded state in model
-  addEventHandler(container, OrderItemUI.TOGGLE_ITEM_EVENT, (data) => {
+  node.on(OrderItemUI.TOGGLE_ITEM_EVENT, (data) => {
     const stmt = { expandedId: (current?: string) => (current === data.itemId ? undefined : data.itemId) };
     const changes = model.update(stmt);
     update(container, changes, model.getData(), context);
