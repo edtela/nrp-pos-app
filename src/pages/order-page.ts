@@ -7,7 +7,7 @@
 
 import { html } from "@/lib/template";
 import { addEventHandler, STATE_UPDATE_EVENT } from "@/lib/events";
-import { NavigationMessenger } from "@/lib/messaging";
+import { navigate } from "@/lib/dom-events";
 import { Context } from "@/lib/context";
 import * as OrderContentUI from "@/components/order-content";
 import * as OrderItemUI from "@/components/order-item";
@@ -22,7 +22,7 @@ export function template(data: OrderPageData, context: Context) {
   const headerData: AppHeader.HeaderData = {
     leftButton: {
       type: "add",
-      onClick: () => new NavigationMessenger().home(),
+      onClick: () => navigate(document.body, 'home'),
     },
   };
 
@@ -43,7 +43,7 @@ export function hydrate(container: Element, _data: OrderPageData, context: Conte
     const headerData: AppHeader.HeaderData = {
       leftButton: {
         type: "add",
-        onClick: () => new NavigationMessenger().home(),
+        onClick: () => navigate(document.body, 'home'),
       },
     };
     AppHeader.hydrate(header, context, headerData);
@@ -111,10 +111,12 @@ export function hydrate(container: Element, _data: OrderPageData, context: Conte
       const displayItem = model.getData().items[itemId];
       if (displayItem) {
         // Navigate to modifier page with order item
-        const nav = new NavigationMessenger();
         const menuItem = displayItem.item.menuItem;
         if (menuItem.subMenu) {
-          nav.menu(menuItem.subMenu.menuId, { order: displayItem.item });
+          navigate(document.body, 'menu', { 
+            menuId: menuItem.subMenu.menuId, 
+            state: { order: displayItem.item }
+          });
         }
       }
     }

@@ -7,7 +7,7 @@
 
 import { Template } from "@/lib/template";
 import { addEventHandler } from "@/lib/events";
-import { NavigationMessenger } from "@/lib/messaging";
+import { navigate } from "@/lib/dom-events";
 import { Context } from "@/lib/context";
 import * as MenuPageContent from "@/components/menu-page-content";
 import * as ModifierPageContent from "@/components/modifier-page-content";
@@ -107,12 +107,16 @@ export function hydrate(container: Element, displayMenu: DisplayMenu, context: C
     const item = model.data.items[data.id];
 
     if (item?.data.subMenu) {
-      const nav = new NavigationMessenger();
       if (isSaleItem(item.data)) {
         const orderItem = toOrderItem(item.data, model.data);
-        nav.menu(item.data.subMenu.menuId, { order: orderItem });
+        navigate(container, 'menu', {
+          menuId: item.data.subMenu.menuId,
+          state: { order: orderItem }
+        });
       } else {
-        nav.menu(item.data.subMenu.menuId);
+        navigate(container, 'menu', {
+          menuId: item.data.subMenu.menuId
+        });
       }
     } else {
       // Prevent deselecting required items
@@ -125,7 +129,7 @@ export function hydrate(container: Element, displayMenu: DisplayMenu, context: C
   });
 
   addEventHandler(container, VIEW_ORDER_EVENT, () => {
-    new NavigationMessenger().order();
+    navigate(container, 'order');
   });
 
   addEventHandler(container, ADD_TO_ORDER_EVENT, () => {
@@ -135,11 +139,10 @@ export function hydrate(container: Element, displayMenu: DisplayMenu, context: C
       saveOrderItem(order);
 
       // Check if we're in modify mode
-      const nav = new NavigationMessenger();
       if (modifying) {
-        nav.order();
+        navigate(container, 'order');
       } else {
-        nav.back();
+        navigate(container, 'back');
       }
     } else {
       const quickOrder = model.data.quickOrder;

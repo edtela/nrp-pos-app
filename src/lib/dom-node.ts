@@ -1,5 +1,5 @@
 /**
- * DomNode - A null-safe wrapper for DOM elements with built-in messaging
+ * DomNode - Simplified null-safe wrapper for DOM elements
  * 
  * Provides chainable API for DOM manipulation that safely handles null elements.
  * All operations are no-ops when the wrapped element is null.
@@ -7,28 +7,6 @@
 
 import type { Template } from "./template";
 import { render } from "./template";
-
-/**
- * Message types for DOM-based communication
- */
-export interface DomMessage {
-  channel: string;
-  data: any;
-  timestamp: number;
-  origin?: Element;
-}
-
-export interface DomRequest extends DomMessage {
-  requestId: string;
-}
-
-export interface DomResponse extends DomMessage {
-  requestId: string;
-  error?: Error;
-}
-
-export type MessageHandler = (data: any, message: DomMessage) => void;
-export type RequestHandler = (data: any, request: DomRequest) => any | Promise<any>;
 
 /**
  * DomNode class - wraps a DOM element with null-safe operations
@@ -200,154 +178,17 @@ export class DomNode {
   }
 
   /**
-   * Messaging methods
+   * Simple event handling
    */
-  dispatch(type: "message" | "request", channel: string, data: any): DomNode {
-    if (!this.element) return this;
-
-    const message: DomMessage = {
-      channel,
-      data,
-      timestamp: Date.now(),
-      origin: this.element,
-    };
-
-    const eventType = type === "message" ? `dom:message:${channel}` : `dom:request:${channel}`;
-    const event = new CustomEvent(eventType, {
-      bubbles: true,
-      detail: message,
-    });
-
-    this.element.dispatchEvent(event);
-    return this;
-  }
-
-  dispatchMessage(channel: string, data: any): DomNode {
-    return this.dispatch("message", channel, data);
-  }
-
-  async dispatchRequest(channel: string, data: any, timeout: number = 5000): Promise<any> {
-    if (!this.element) {
-      throw new Error("Cannot dispatch request from null element");
-    }
-
-    const element = this.element; // Capture element reference for closure
-    const requestId = `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
-    const request: DomRequest = {
-      channel,
-      data,
-      timestamp: Date.now(),
-      origin: element,
-      requestId,
-    };
-
-    return new Promise((resolve, reject) => {
-      const timeoutId = setTimeout(() => {
-        element.removeEventListener(`dom:response:${requestId}`, responseHandler);
-        reject(new Error(`Request timeout for channel: ${channel}`));
-      }, timeout);
-
-      const responseHandler = (event: Event) => {
-        clearTimeout(timeoutId);
-        const response = (event as CustomEvent<DomResponse>).detail;
-        
-        if (response.error) {
-          reject(response.error);
-        } else {
-          resolve(response.data);
-        }
-      };
-
-      element.addEventListener(`dom:response:${requestId}`, responseHandler, { once: true });
-
-      const event = new CustomEvent(`dom:request:${channel}`, {
-        bubbles: true,
-        detail: request,
-      });
-
-      element.dispatchEvent(event);
-    });
-  }
-
-  /**
-   * Event handling methods
-   */
-  on(eventType: string, handler: EventListener | EventListenerObject, options?: AddEventListenerOptions): DomNode {
+  on(eventType: string, handler: EventListener): DomNode {
     if (this.element) {
-      this.element.addEventListener(eventType, handler, options);
+      this.element.addEventListener(eventType, handler);
     }
     return this;
-  }
-
-  off(eventType: string, handler: EventListener | EventListenerObject, options?: EventListenerOptions): DomNode {
-    if (this.element) {
-      this.element.removeEventListener(eventType, handler, options);
-    }
-    return this;
-  }
-
-  once(eventType: string, handler: EventListener | EventListenerObject): DomNode {
-    return this.on(eventType, handler, { once: true });
   }
 
   onClick(handler: EventListener): DomNode {
     return this.on("click", handler);
-  }
-
-  onMessage(channel: string, handler: MessageHandler): DomNode {
-    if (this.element) {
-      const wrappedHandler = (event: Event) => {
-        const message = (event as CustomEvent<DomMessage>).detail;
-        handler(message.data, message);
-      };
-      this.element.addEventListener(`dom:message:${channel}`, wrappedHandler as EventListener);
-    }
-    return this;
-  }
-
-  onRequest(channel: string, handler: RequestHandler): DomNode {
-    if (this.element) {
-      const wrappedHandler = async (event: Event) => {
-        const request = (event as CustomEvent<DomRequest>).detail;
-        const responseChannel = `dom:response:${request.requestId}`;
-        
-        try {
-          const result = await handler(request.data, request);
-          const response: DomResponse = {
-            channel: request.channel,
-            data: result,
-            timestamp: Date.now(),
-            requestId: request.requestId,
-          };
-          
-          const responseEvent = new CustomEvent(responseChannel, {
-            bubbles: true,
-            detail: response,
-          });
-          
-          // Dispatch response back to the origin element
-          request.origin?.dispatchEvent(responseEvent);
-        } catch (error) {
-          const response: DomResponse = {
-            channel: request.channel,
-            data: null,
-            timestamp: Date.now(),
-            requestId: request.requestId,
-            error: error as Error,
-          };
-          
-          const responseEvent = new CustomEvent(responseChannel, {
-            bubbles: true,
-            detail: response,
-          });
-          
-          request.origin?.dispatchEvent(responseEvent);
-        }
-      };
-      
-      this.element.addEventListener(`dom:request:${channel}`, wrappedHandler as EventListener);
-    }
-    return this;
   }
 
   /**
@@ -404,14 +245,6 @@ export class DomNode {
   children(): DomNode[] {
     if (!this.element) return [];
     return Array.from(this.element.children).map(el => new DomNode(el));
-  }
-
-  firstChild(): DomNode {
-    return new DomNode(this.element?.firstElementChild || null);
-  }
-
-  lastChild(): DomNode {
-    return new DomNode(this.element?.lastElementChild || null);
   }
 
   /**

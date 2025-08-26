@@ -6,7 +6,7 @@
 import { initializeGlobalClickHandler } from "@/lib/events";
 import { initTheme } from "@/lib/theme";
 import { getPageRenderer } from "@/pages/page-renderer";
-import { setupNavigationListener, type NavigateMessage } from "@/lib/messaging";
+import { listen, AppEvents, type NavigateEvent } from "@/lib/dom-events";
 import { navigate } from "@/pages/page-router";
 import "./styles/theme.css";
 import "./styles/global.css";
@@ -21,27 +21,27 @@ export function initializeApp(): void {
   // Initialize global click handler
   initializeGlobalClickHandler();
   
-  // Set up navigation message handler
-  setupNavigationListener((message: NavigateMessage) => {
-    switch (message.to) {
+  // Set up navigation event listener at document body
+  listen<NavigateEvent>(document.body, AppEvents.NAVIGATE, (data) => {
+    switch (data.to) {
       case "home":
         navigate.toHome();
         break;
       case "menu":
-        if (message.menuId) {
+        if (data.menuId) {
           // Handle navigation stack for menu navigation
           if (typeof sessionStorage !== "undefined") {
             const stackStr = sessionStorage.getItem("nav-stack-v3") || "[]";
             const stack = JSON.parse(stackStr);
-            stack.push(message.menuId);
+            stack.push(data.menuId);
             sessionStorage.setItem("nav-stack-v3", JSON.stringify(stack));
             
             // Save page state if provided
-            if (message.state) {
-              sessionStorage.setItem(`page-state-${message.menuId}`, JSON.stringify(message.state));
+            if (data.state) {
+              sessionStorage.setItem(`page-state-${data.menuId}`, JSON.stringify(data.state));
             }
           }
-          navigate.toMenu(message.menuId);
+          navigate.toMenu(data.menuId);
         }
         break;
       case "order":
