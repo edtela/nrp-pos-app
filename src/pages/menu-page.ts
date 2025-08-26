@@ -19,6 +19,7 @@ import { VARIANT_SELECT_EVENT } from "@/components/variant";
 import { ADD_TO_ORDER_EVENT, VIEW_ORDER_EVENT } from "@/components/app-bottom-bar";
 import { isSaleItem } from "@/types";
 import { ALL, select, WHERE } from "tsqn";
+import { dom } from "@/lib/dom-node";
 
 // Template function - delegates to appropriate page component
 export function template(displayMenu: DisplayMenu, context: Context): Template {
@@ -57,18 +58,20 @@ function getCurrentMenuId(): string | undefined {
   return stack.length > 0 ? stack[stack.length - 1] : undefined;
 }
 
-export function hydrate(container: Element, displayMenu: DisplayMenu, context: Context) {
-  const pageState = getPageState(displayMenu.id) ?? {};
-  setCurrentPage(displayMenu.id);
+export function hydrate(container: Element, menu: DisplayMenu, context: Context) {
+  const node = dom(container);
+
+  const pageState = getPageState(menu.id) ?? {};
+  setCurrentPage(menu.id);
   const order: OrderItem = pageState.order;
 
   // Delegate to appropriate page component for hydration
-  if (displayMenu.modifierMenu) {
-    ModifierPageContent.hydrate(container, displayMenu, context, order);
+  if (menu.modifierMenu) {
+    ModifierPageContent.hydrate(container, menu, context, order);
     // If no order, the component will handle showing the error
     if (!order) return;
   } else {
-    MenuPageContent.hydrate(container, displayMenu, context);
+    MenuPageContent.hydrate(container, menu, context);
   }
 
   // Initialize model
@@ -78,7 +81,7 @@ export function hydrate(container: Element, displayMenu: DisplayMenu, context: C
     update(container, result, model.data, context);
   }
 
-  let changes: UpdateResult<MenuPageData> | undefined = model.setMenu(displayMenu);
+  let changes: UpdateResult<MenuPageData> | undefined = model.setMenu(menu);
 
   const stmts: Update<MenuPageData>[] = [];
   if (order) {
@@ -99,7 +102,7 @@ export function hydrate(container: Element, displayMenu: DisplayMenu, context: C
   changes = model.updateAll(stmts, changes);
   update(container, changes, model.data, context);
 
-  addEventHandler(container, VARIANT_SELECT_EVENT, (data) => {
+  node.on(VARIANT_SELECT_EVENT, (data: any) => {
     runUpdate({ variants: { [data.variantGroupId]: { selectedId: data.variantId } } });
   });
 
@@ -109,13 +112,13 @@ export function hydrate(container: Element, displayMenu: DisplayMenu, context: C
     if (item?.data.subMenu) {
       if (isSaleItem(item.data)) {
         const orderItem = toOrderItem(item.data, model.data);
-        navigate(container, 'menu', {
+        navigate(container, "menu", {
           menuId: item.data.subMenu.menuId,
-          state: { order: orderItem }
+          state: { order: orderItem },
         });
       } else {
-        navigate(container, 'menu', {
-          menuId: item.data.subMenu.menuId
+        navigate(container, "menu", {
+          menuId: item.data.subMenu.menuId,
         });
       }
     } else {
@@ -129,7 +132,7 @@ export function hydrate(container: Element, displayMenu: DisplayMenu, context: C
   });
 
   addEventHandler(container, VIEW_ORDER_EVENT, () => {
-    navigate(container, 'order');
+    navigate(container, "order");
   });
 
   addEventHandler(container, ADD_TO_ORDER_EVENT, () => {
@@ -140,9 +143,9 @@ export function hydrate(container: Element, displayMenu: DisplayMenu, context: C
 
       // Check if we're in modify mode
       if (modifying) {
-        navigate(container, 'order');
+        navigate(container, "order");
       } else {
-        navigate(container, 'back');
+        navigate(container, "back");
       }
     } else {
       const quickOrder = model.data.quickOrder;
@@ -170,7 +173,7 @@ function update(container: Element, event: DataChange<MenuPageData> | undefined,
   }
 
   // Save state changes
-  const menuId = getCurrentMenuId() || '';
+  const menuId = getCurrentMenuId() || "";
   if (event.order) {
     updatePageState(menuId, { order: data.order });
   } else if (event.variants) {

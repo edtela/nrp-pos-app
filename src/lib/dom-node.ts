@@ -180,15 +180,23 @@ export class DomNode {
   /**
    * Simple event handling
    */
-  on(eventType: string, handler: EventListener): DomNode {
+  on(eventType: string, handler: (data: any) => void): DomNode {
     if (this.element) {
-      this.element.addEventListener(eventType, handler);
+      this.element.addEventListener(`app:${eventType}`, (e: Event) => {
+        const customEvent = e as CustomEvent;
+        const dataset = customEvent.detail?.dataset || customEvent.detail;
+        // Pass dataset directly without type conversions
+        handler(dataset);
+      });
     }
     return this;
   }
 
-  onClick(handler: EventListener): DomNode {
-    return this.on("click", handler);
+  onClick(handler: (e: MouseEvent) => void): DomNode {
+    if (this.element) {
+      this.element.addEventListener("click", (e) => handler(e as MouseEvent));
+    }
+    return this;
   }
 
   /**
