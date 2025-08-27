@@ -203,17 +203,10 @@
     transform: translateY(-50%);
 }
 
-/* Chevron icon for categories */
-.menu-item-price.material-icons {
-    font-family: "Material Icons";
-    font-size: 24px;
+/* Chevron icon for categories - now handled by SVG in menu-item.ts */
+.menu-item-price svg {
     color: var(--md-sys-color-on-surface-variant);
-    font-weight: 400;
-    text-rendering: optimizeLegibility;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    font-feature-settings: "liga";
-    line-height: 1;
+    vertical-align: middle;
 }
 
 /* Required item styles */

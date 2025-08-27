@@ -50,25 +50,25 @@
   --md-sys-color-inverse-primary: #87D9A0;
 
   /* Typography System */
-  --md-sys-typescale-display-large-font: 400 57px/64px 'Roboto', sans-serif;
-  --md-sys-typescale-display-medium-font: 400 45px/52px 'Roboto', sans-serif;
-  --md-sys-typescale-display-small-font: 400 36px/44px 'Roboto', sans-serif;
+  --md-sys-typescale-display-large-font: 400 57px/64px system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Helvetica Neue', sans-serif;
+  --md-sys-typescale-display-medium-font: 400 45px/52px system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Helvetica Neue', sans-serif;
+  --md-sys-typescale-display-small-font: 400 36px/44px system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Helvetica Neue', sans-serif;
   
-  --md-sys-typescale-headline-large-font: 400 32px/40px 'Roboto', sans-serif;
-  --md-sys-typescale-headline-medium-font: 400 28px/36px 'Roboto', sans-serif;
-  --md-sys-typescale-headline-small-font: 400 24px/32px 'Roboto', sans-serif;
+  --md-sys-typescale-headline-large-font: 400 32px/40px system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Helvetica Neue', sans-serif;
+  --md-sys-typescale-headline-medium-font: 400 28px/36px system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Helvetica Neue', sans-serif;
+  --md-sys-typescale-headline-small-font: 400 24px/32px system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Helvetica Neue', sans-serif;
   
-  --md-sys-typescale-title-large-font: 400 22px/28px 'Roboto', sans-serif;
-  --md-sys-typescale-title-medium-font: 500 16px/24px 'Roboto', sans-serif;
-  --md-sys-typescale-title-small-font: 500 14px/20px 'Roboto', sans-serif;
+  --md-sys-typescale-title-large-font: 400 22px/28px system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Helvetica Neue', sans-serif;
+  --md-sys-typescale-title-medium-font: 500 16px/24px system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Helvetica Neue', sans-serif;
+  --md-sys-typescale-title-small-font: 500 14px/20px system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Helvetica Neue', sans-serif;
   
-  --md-sys-typescale-body-large-font: 400 16px/24px 'Roboto', sans-serif;
-  --md-sys-typescale-body-medium-font: 400 14px/20px 'Roboto', sans-serif;
-  --md-sys-typescale-body-small-font: 400 12px/16px 'Roboto', sans-serif;
+  --md-sys-typescale-body-large-font: 400 16px/24px system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Helvetica Neue', sans-serif;
+  --md-sys-typescale-body-medium-font: 400 14px/20px system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Helvetica Neue', sans-serif;
+  --md-sys-typescale-body-small-font: 400 12px/16px system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Helvetica Neue', sans-serif;
   
-  --md-sys-typescale-label-large-font: 500 14px/20px 'Roboto', sans-serif;
-  --md-sys-typescale-label-medium-font: 500 12px/16px 'Roboto', sans-serif;
-  --md-sys-typescale-label-small-font: 500 11px/16px 'Roboto', sans-serif;
+  --md-sys-typescale-label-large-font: 500 14px/20px system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Helvetica Neue', sans-serif;
+  --md-sys-typescale-label-medium-font: 500 12px/16px system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Helvetica Neue', sans-serif;
+  --md-sys-typescale-label-small-font: 500 11px/16px system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Helvetica Neue', sans-serif;
 
   /* Typography Individual Properties */
   --md-sys-typescale-display-large-size: 57px;
