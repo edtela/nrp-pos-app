@@ -6,6 +6,7 @@
 import './app-menu.css';
 import { html, Template } from '@/lib/template';
 import { Context, commonTranslations } from '@/lib/context';
+import { getIcon } from '@/lib/icons';
 import { 
   getCurrentLanguage, 
   getAvailableLanguages, 
@@ -48,7 +49,7 @@ export function template(context: Context): Template {
       <div class="${classes.header}">
         <h2 class="${classes.title}">${settingsText()}</h2>
         <button class="${classes.closeButton}" data-action="close-menu">
-          <span class="material-icons">close</span>
+          ${getIcon('close')}
         </button>
       </div>
       
@@ -56,7 +57,7 @@ export function template(context: Context): Template {
         <!-- Language Section -->
         <div class="${classes.section}">
           <h3 class="${classes.sectionTitle}">
-            <span class="material-icons ${classes.sectionIcon}">language</span>
+            <span class="${classes.sectionIcon}">${getIcon('language')}</span>
             ${languageText()}
           </h3>
           <div class="${classes.optionGroup}">
@@ -69,7 +70,7 @@ export function template(context: Context): Template {
                 <span class="${classes.optionIcon}">${getLanguageFlag(lang)}</span>
                 <span class="${classes.optionLabel}">${getLanguageName(lang)}</span>
                 ${lang === currentLang ? html`
-                  <span class="material-icons ${classes.optionCheck}">check</span>
+                  <span class="${classes.optionCheck}">${getIcon('check')}</span>
                 ` : ''}
               </button>
             `)}
@@ -79,7 +80,7 @@ export function template(context: Context): Template {
         <!-- Theme Section -->
         <div class="${classes.section}">
           <h3 class="${classes.sectionTitle}">
-            <span class="material-icons ${classes.sectionIcon}">palette</span>
+            <span class="${classes.sectionIcon}">${getIcon('palette')}</span>
             ${themeText()}
           </h3>
           <div class="${classes.optionGroup}">
@@ -89,10 +90,10 @@ export function template(context: Context): Template {
                 data-action="select-theme"
                 data-theme="${theme}"
               >
-                <span class="material-icons ${classes.optionIcon}">${getThemeIcon(theme)}</span>
+                <span class="${classes.optionIcon}">${getThemeIcon(theme)}</span>
                 <span class="${classes.optionLabel}">${getThemeName(theme, context)}</span>
                 ${theme === currentTheme ? html`
-                  <span class="material-icons ${classes.optionCheck}">check</span>
+                  <span class="${classes.optionCheck}">${getIcon('check')}</span>
                 ` : ''}
               </button>
             `)}
@@ -102,7 +103,7 @@ export function template(context: Context): Template {
         <!-- About Section -->
         <div class="${classes.section}">
           <h3 class="${classes.sectionTitle}">
-            <span class="material-icons ${classes.sectionIcon}">info</span>
+            <span class="${classes.sectionIcon}">${getIcon('info')}</span>
             ${aboutText()}
           </h3>
           <div class="${classes.about}">
@@ -220,7 +221,7 @@ export function hydrate(container: Element, _context: Context): void {
         button.classList.add(classes.optionActive);
         if (!button.querySelector(`.${classes.optionCheck}`)) {
           button.insertAdjacentHTML('beforeend', 
-            `<span class="material-icons ${classes.optionCheck}">check</span>`
+            `<span class="${classes.optionCheck}">${getIcon('check')}</span>`
           );
         }
       }

@@ -9,6 +9,7 @@ import "./app-bottom-bar.css";
 import { html, Template, render } from "@/lib/template";
 import { onClick } from "@/lib/events";
 import { Context, withContext } from "@/lib/context";
+import { getIcon } from "@/lib/icons";
 
 // Event types
 export const VIEW_ORDER_EVENT = "view-order-event";
@@ -85,7 +86,7 @@ export function template(mode: BottomBarMode, context: Context): Template {
   const quantityContent = mode === 'view-order' 
     ? html`
         <div class="${classes.iconWithBadge}">
-          <span class="material-icons ${classes.icon}">shopping_cart</span>
+          <span class="${classes.icon}">${getIcon('shopping_cart')}</span>
           <span class="${classes.badge}" data-bottom-bar-quantity></span>
         </div>
       `

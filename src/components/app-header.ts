@@ -8,6 +8,7 @@
 import './app-header.css';
 import { html, Template } from '@/lib/template';
 import { Context, commonTranslations } from '@/lib/context';
+import { getIcon } from '@/lib/icons';
 import * as AppMenu from './app-menu';
 
 /**
@@ -33,9 +34,9 @@ export interface HeaderData {
  */
 function getLeftButtonIcon(type: LeftButtonType): string {
   switch (type) {
-    case 'back': return 'arrow_back';
-    case 'home': return 'home';
-    case 'add': return 'add_circle_outline';
+    case 'back': return getIcon('arrow_back');
+    case 'home': return getIcon('home');
+    case 'add': return getIcon('add_circle_outline');
     default: return '';
   }
 }
@@ -54,14 +55,14 @@ export function template(data: HeaderData = {}, context: Context): Template {
     <div class="${classes.headerContent}">
       ${showLeftButton ? html`
         <button class="${classes.iconButton} ${classes.leftButton}" data-action="left-button-click">
-          <span class="material-icons">${leftIcon}</span>
+          ${leftIcon}
         </button>
       ` : html`
         <div class="${classes.iconButton} ${classes.leftButton}"></div>
       `}
       
       <div class="${classes.searchContainer}">
-        <span class="material-icons ${classes.searchIcon}">search</span>
+        <span class="${classes.searchIcon}">${getIcon('search')}</span>
         <input 
           type="text" 
           class="${classes.searchInput}"
@@ -70,7 +71,7 @@ export function template(data: HeaderData = {}, context: Context): Template {
       </div>
       
       <button class="${classes.iconButton} ${classes.menuButton}" data-action="toggle-app-menu">
-        <span class="material-icons">menu</span>
+        ${getIcon('menu')}
       </button>
     </div>
     

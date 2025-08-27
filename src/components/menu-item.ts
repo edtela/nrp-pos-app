@@ -11,6 +11,7 @@ import { onClick, setDataAttribute } from "@/lib/events";
 import { Context, withContext } from "@/lib/context";
 import { DataChange } from "@/lib/data-model-types";
 import { DisplayMenuItem } from "@/model/menu-model";
+import { getIcon } from "@/lib/icons";
 
 export const ORDER_ITEM_EVENT = "order-item";
 export const OPEN_MENU_EVENT = "open-menu";
@@ -24,7 +25,7 @@ function priceTemplate(context: Context, price?: number): Template {
     const { formatPrice } = withContext(context);
     return price === 0 ? html`` : html`<span class="${classes.price}">${formatPrice(price)}</span>`;
   }
-  return html`<span class="${classes.price} material-icons">chevron_right</span>`;
+  return html`<span class="${classes.price}">${getIcon('chevron_right')}</span>`;
 }
 
 /**

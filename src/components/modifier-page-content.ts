@@ -10,6 +10,7 @@ import { Context, withContext, commonTranslations } from "@/lib/context";
 import { DisplayMenu, MenuPageData } from "@/model/menu-model";
 import { DataChange } from "@/lib/data-model-types";
 import { OrderItem } from "@/model/order-model";
+import { getIcon } from "@/lib/icons";
 import * as MenuContent from "./menu-content";
 import * as AppHeader from "./app-header";
 import * as AppBottomBar from "./app-bottom-bar";
@@ -138,10 +139,11 @@ function errorContentTemplate(context: Context): Template {
       text-align: center;
       gap: var(--md-sys-spacing-lg);
     ">
-      <span class="material-icons" style="
+      <span style="
         font-size: 64px;
         color: var(--md-sys-color-outline);
-      ">error_outline</span>
+        display: block;
+      ">${getIcon('error_outline', '', 64)}</span>
 
       <h2 style="
         font-size: var(--md-sys-typescale-headline-medium-size);

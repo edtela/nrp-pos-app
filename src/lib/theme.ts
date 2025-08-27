@@ -5,6 +5,7 @@
 
 import { createStore } from "./storage";
 import { Context, commonTranslations } from "./context";
+import { getIcon } from "./icons";
 
 export type Theme = "light" | "dark" | "system";
 
@@ -122,10 +123,10 @@ export function getThemeName(theme: Theme, context?: Context): string {
  * Get theme icon
  */
 export function getThemeIcon(theme: Theme): string {
-  const icons: Record<Theme, string> = {
-    light: "light_mode",
-    dark: "dark_mode",
-    system: "brightness_auto"
+  const iconMap = {
+    light: 'light_mode' as const,
+    dark: 'dark_mode' as const,
+    system: 'brightness_auto' as const
   };
-  return icons[theme] || "brightness_auto";
+  return getIcon(iconMap[theme] || 'brightness_auto');
 }
