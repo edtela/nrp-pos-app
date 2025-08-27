@@ -12,6 +12,17 @@ RUN npm ci
 # Copy source code
 COPY . .
 
+# Verify critical files exist
+RUN test -f build/css-loader.mjs || (echo "ERROR: build/css-loader.mjs not found!" && exit 1)
+RUN test -f build/generate-static.ts || (echo "ERROR: build/generate-static.ts not found!" && exit 1)
+RUN test -d src/vendor/tsqn || (echo "ERROR: src/vendor/tsqn directory not found!" && exit 1)
+
+# List build directory for debugging (will show in Railway logs)
+RUN echo "=== Build directory contents ===" && ls -la build/
+
+# Clean any previous build artifacts
+RUN rm -rf dist
+
 # Build the application
 RUN npm run build
 
