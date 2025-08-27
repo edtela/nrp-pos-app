@@ -11,7 +11,7 @@ import {
   META,
   type Update,
   type UpdateResult,
-} from "tsqn";
+} from "@/vendor/tsqn/index.js";
 import { type DataChange, type DataBinding } from "./data-model-types";
 
 // Re-export from tsqn

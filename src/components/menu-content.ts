@@ -126,7 +126,7 @@ export function update(container: Element, changes: DataChange<MenuPageData>, ct
   // Handle itemGroups changes
   if (changes.itemGroups) {
     for (const [groupId, groupChanges] of Object.entries(changes.itemGroups)) {
-      if (groupChanges && "itemIds" in groupChanges) {
+      if (groupChanges && typeof groupChanges === 'object' && "itemIds" in groupChanges) {
         const groupElement = container.querySelector(`[data-group-id="${groupId}"]`);
         if (groupElement && data.itemGroups) {
           const group = data.itemGroups[groupId];

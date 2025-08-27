@@ -23,7 +23,6 @@
   },
   "dependencies": {
     "compression": "^1.7.4",
-    "express": "^4.18.2",
-    "tsqn": "file:../tsqn"
+    "express": "^4.18.2"
   }
 }
