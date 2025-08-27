@@ -40,6 +40,9 @@ RUN npm ci --only=production
 # Copy built files from builder
 COPY --from=builder /app/dist ./dist
 
+# Copy public directory for data files
+COPY public ./public
+
 # Copy server file
 COPY server.js ./
 

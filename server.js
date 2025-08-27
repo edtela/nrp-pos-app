@@ -21,7 +21,7 @@ app.use((req, res, next) => {
   next();
 });
 
-// Serve static files with proper caching
+// Serve static files from dist with proper caching
 app.use(express.static(path.join(__dirname, 'dist'), {
   maxAge: '1y',
   etag: true,
@@ -31,6 +31,12 @@ app.use(express.static(path.join(__dirname, 'dist'), {
       res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
     }
   }
+}));
+
+// Serve data files from public directory
+app.use('/data', express.static(path.join(__dirname, 'public/data'), {
+  maxAge: '1h',  // Cache data files for 1 hour
+  etag: true
 }));
 
 // API routes (add your server-side features here)
