@@ -47,46 +47,40 @@
 
 /* Checkmark for selected check items */
 .menu-item[data-control-type="check"][data-selected="true"] .menu-item-control::after {
-    content: "check";
-    font-family: "Material Icons";
-    font-size: 24px;
-    color: var(--md-sys-color-primary);
+    content: "";
     position: absolute;
     left: 0;
     top: 0;
     width: 24px;
     height: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: transparent;
-    font-weight: 400;
-    text-rendering: optimizeLegibility;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    font-feature-settings: "liga";
+    background-color: var(--md-sys-color-primary);
+    -webkit-mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>');
+    mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>');
+    -webkit-mask-size: 24px 24px;
+    mask-size: 24px 24px;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    mask-position: center;
 }
 
 /* Red minus for included but not selected check items */
 .menu-item[data-control-type="check"][data-included="true"]:not([data-selected="true"]) .menu-item-control::after {
-    content: "remove";
-    font-family: "Material Icons";
-    font-size: 24px;
-    color: var(--md-sys-color-error);
+    content: "";
     position: absolute;
     left: 0;
     top: 0;
     width: 24px;
     height: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: transparent;
-    font-weight: 400;
-    text-rendering: optimizeLegibility;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    font-feature-settings: "liga";
+    background-color: var(--md-sys-color-error);
+    -webkit-mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 13H5v-2h14v2z"/></svg>');
+    mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 13H5v-2h14v2z"/></svg>');
+    -webkit-mask-size: 24px 24px;
+    mask-size: 24px 24px;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    mask-position: center;
 }
 
 /* Radio button circle */
