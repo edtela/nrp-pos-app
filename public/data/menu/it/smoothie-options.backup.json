@@ -1,0 +1,101 @@
+{
+  "id": "smoothie-options",
+  "name": "Opzioni Smoothie",
+  "currency": "ALL",
+  "items": {},
+  "itemGroups": {},
+  "layout": {
+    "groups": [
+      {
+        "header": {
+          "text": {
+            "sq": "Fruta",
+            "en": "Fruits",
+            "it": "Frutta"
+          },
+          "classes": [
+            "menu-items-title"
+          ]
+        },
+        "items": [
+          "banana",
+          "blueberries",
+          "strawberries",
+          "raspberries",
+          "blackberries",
+          "mango",
+          "pineapple",
+          "kiwi",
+          "avocado"
+        ]
+      },
+      {
+        "header": {
+          "text": {
+            "sq": "Arra dhe Fara",
+            "en": "Nuts and Seeds",
+            "it": "Noci e Semi"
+          },
+          "classes": [
+            "menu-items-title"
+          ]
+        },
+        "items": [
+          "mix-seeds",
+          "granola",
+          "hazelnuts",
+          "dates"
+        ]
+      },
+      {
+        "header": {
+          "text": {
+            "sq": "Gjalpë Arre",
+            "en": "Nut Butters",
+            "it": "Burri di Noci"
+          },
+          "classes": [
+            "menu-items-title"
+          ]
+        },
+        "items": [
+          "peanut-butter",
+          "walnut-butter"
+        ]
+      },
+      {
+        "header": {
+          "text": {
+            "sq": "Perime dhe Gjelbërime",
+            "en": "Vegetables and Greens",
+            "it": "Verdure"
+          },
+          "classes": [
+            "menu-items-title"
+          ]
+        },
+        "items": [
+          "spinach"
+        ]
+      },
+      {
+        "header": {
+          "text": {
+            "sq": "Superushqime",
+            "en": "Superfoods",
+            "it": "Superfood"
+          },
+          "classes": [
+            "menu-items-title"
+          ]
+        },
+        "items": [
+          "matcha",
+          "whey-protein",
+          "goji-berry"
+        ]
+      }
+    ]
+  },
+  "modifierMenu": true
+}

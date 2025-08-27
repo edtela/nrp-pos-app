@@ -1,0 +1,369 @@
+{
+  "id": "yogurt-options-savory",
+  "name": "Opzioni Yogurt",
+  "currency": "ALL",
+  "items": {
+    "opt-walnuts": {
+      "id": "opt-walnuts",
+      "name": "Noci",
+      "icon": "🌰",
+      "price": 40,
+      "constraints": {},
+      "order": 14
+    },
+    "opt-almonds": {
+      "id": "opt-almonds",
+      "name": "Mandorle",
+      "icon": "🟤",
+      "price": 40,
+      "constraints": {},
+      "order": 11
+    },
+    "opt-granola": {
+      "id": "opt-granola",
+      "name": "Granola",
+      "icon": "🥣",
+      "price": 40,
+      "constraints": {},
+      "order": 30
+    },
+    "opt-hazelnuts": {
+      "id": "opt-hazelnuts",
+      "name": "Nocciole",
+      "icon": "🌰",
+      "price": 40,
+      "constraints": {},
+      "order": 13
+    },
+    "opt-mixed-nuts": {
+      "id": "opt-mixed-nuts",
+      "name": "Mix di Noci",
+      "icon": "🥜",
+      "price": 40,
+      "constraints": {},
+      "order": 12
+    },
+    "opt-mixed-seeds": {
+      "id": "opt-mixed-seeds",
+      "name": "Semi Misti",
+      "icon": "🌻",
+      "price": 40,
+      "constraints": {},
+      "order": 22
+    },
+    "opt-sunflower-seeds": {
+      "id": "opt-sunflower-seeds",
+      "name": "Semi di Girasole",
+      "icon": "🌻",
+      "price": 40,
+      "constraints": {},
+      "order": 19
+    },
+    "opt-pumpkin-seeds": {
+      "id": "opt-pumpkin-seeds",
+      "name": "Semi di Zucca",
+      "icon": "🎃",
+      "price": 40,
+      "constraints": {},
+      "order": 21
+    },
+    "opt-pineapple": {
+      "id": "opt-pineapple",
+      "name": "Ananas",
+      "icon": "🍍",
+      "price": 50,
+      "constraints": {},
+      "order": 23
+    },
+    "opt-avocado": {
+      "id": "opt-avocado",
+      "name": "Avocado",
+      "icon": "🥑",
+      "price": 50,
+      "constraints": {},
+      "order": 24
+    },
+    "opt-mango": {
+      "id": "opt-mango",
+      "name": "Mango",
+      "icon": "🥭",
+      "price": 50,
+      "constraints": {},
+      "order": 26
+    },
+    "opt-dark-chocolate": {
+      "id": "opt-dark-chocolate",
+      "name": "Cioccolato Fondente",
+      "icon": "🍫",
+      "price": 50,
+      "constraints": {},
+      "order": 25
+    },
+    "opt-hemp-seeds": {
+      "id": "opt-hemp-seeds",
+      "name": "Semi di Canapa",
+      "icon": "🌿",
+      "price": 50,
+      "constraints": {},
+      "order": 17
+    },
+    "opt-pine-nut": {
+      "id": "opt-pine-nut",
+      "name": "Pinoli",
+      "icon": "🌰",
+      "price": 50,
+      "constraints": {},
+      "order": 15
+    },
+    "opt-pistachios": {
+      "id": "opt-pistachios",
+      "name": "Pistacchi",
+      "icon": "🟢",
+      "price": 100,
+      "constraints": {},
+      "order": 16
+    },
+    "opt-cucumber": {
+      "id": "opt-cucumber",
+      "name": "Cetriolo",
+      "icon": "🥒",
+      "price": 40,
+      "constraints": {},
+      "order": 0
+    },
+    "opt-dried-tomatoes": {
+      "id": "opt-dried-tomatoes",
+      "name": "Pomodori Secchi",
+      "icon": "🍅",
+      "price": 40,
+      "constraints": {},
+      "order": 3
+    },
+    "opt-corn": {
+      "id": "opt-corn",
+      "name": "Mais",
+      "icon": "🌽",
+      "price": 40,
+      "constraints": {},
+      "order": 1
+    },
+    "opt-pomadorini": {
+      "id": "opt-pomadorini",
+      "name": "Pomadorini",
+      "icon": "🍅",
+      "price": 40,
+      "constraints": {},
+      "order": 2
+    },
+    "opt-olives": {
+      "id": "opt-olives",
+      "name": "Olive",
+      "icon": "🫒",
+      "price": 40,
+      "constraints": {},
+      "order": 8
+    },
+    "opt-feta-cheese": {
+      "id": "opt-feta-cheese",
+      "name": "Feta",
+      "icon": "🧀",
+      "price": 50,
+      "constraints": {},
+      "order": 5
+    },
+    "opt-oregano": {
+      "id": "opt-oregano",
+      "name": "Origano",
+      "icon": "🌿",
+      "price": 0,
+      "constraints": {},
+      "order": 9
+    },
+    "opt-parsley": {
+      "id": "opt-parsley",
+      "name": "Prezzemolo",
+      "icon": "🌿",
+      "price": 0,
+      "constraints": {},
+      "order": 10
+    },
+    "opt-ajvar": {
+      "id": "opt-ajvar",
+      "name": "Ajvar",
+      "icon": "🌶️",
+      "price": 0,
+      "constraints": {},
+      "order": 4
+    },
+    "opt-evoo": {
+      "id": "opt-evoo",
+      "name": "Olio EVO",
+      "icon": "🫒",
+      "price": 0,
+      "constraints": {},
+      "order": 7
+    },
+    "opt-lemon": {
+      "id": "opt-lemon",
+      "name": "Limone",
+      "icon": "🍋",
+      "price": 0,
+      "constraints": {},
+      "order": 6
+    },
+    "opt-lemon-peel": {
+      "id": "opt-lemon-peel",
+      "name": "Scorza di Limone",
+      "icon": "🍋",
+      "price": 0,
+      "constraints": {},
+      "order": 31
+    },
+    "opt-flax-seeds": {
+      "id": "opt-flax-seeds",
+      "name": "Semi di Lino",
+      "icon": "🌾",
+      "price": 40,
+      "constraints": {},
+      "order": 20
+    },
+    "opt-cinnamon": {
+      "id": "opt-cinnamon",
+      "name": "Cannella",
+      "icon": "🟤",
+      "price": 0,
+      "constraints": {},
+      "order": 29
+    },
+    "opt-chia-seeds": {
+      "id": "opt-chia-seeds",
+      "name": "Semi di Chia",
+      "icon": "🌱",
+      "price": 40,
+      "constraints": {},
+      "order": 18
+    },
+    "opt-matcha": {
+      "id": "opt-matcha",
+      "name": "Matcha",
+      "icon": "🍵",
+      "price": 50,
+      "constraints": {},
+      "order": 27
+    },
+    "opt-oat": {
+      "id": "opt-oat",
+      "name": "Avena",
+      "icon": "🌾",
+      "price": 30,
+      "constraints": {},
+      "order": 28
+    }
+  },
+  "itemGroups": {
+    "included": {
+      "id": "included",
+      "name": "Inclusi",
+      "itemIds": []
+    },
+    "group-nuts": {
+      "id": "group-nuts",
+      "name": "Noci",
+      "itemIds": [
+        "opt-almonds",
+        "opt-mixed-nuts",
+        "opt-hazelnuts",
+        "opt-walnuts",
+        "opt-pine-nut",
+        "opt-pistachios"
+      ]
+    },
+    "group-seeds": {
+      "id": "group-seeds",
+      "name": "Semi",
+      "itemIds": [
+        "opt-hemp-seeds",
+        "opt-chia-seeds",
+        "opt-sunflower-seeds",
+        "opt-flax-seeds",
+        "opt-pumpkin-seeds",
+        "opt-mixed-seeds"
+      ]
+    },
+    "group-premium": {
+      "id": "group-premium",
+      "name": "Premium",
+      "itemIds": [
+        "opt-pineapple",
+        "opt-avocado",
+        "opt-dark-chocolate",
+        "opt-mango",
+        "opt-matcha"
+      ]
+    },
+    "group-vegetables": {
+      "id": "group-vegetables",
+      "name": "Verdure",
+      "itemIds": [
+        "opt-cucumber",
+        "opt-corn",
+        "opt-pomadorini",
+        "opt-dried-tomatoes"
+      ]
+    },
+    "group-savory": {
+      "id": "group-savory",
+      "name": "Salati",
+      "itemIds": [
+        "opt-ajvar",
+        "opt-feta-cheese",
+        "opt-lemon",
+        "opt-evoo",
+        "opt-olives",
+        "opt-oregano",
+        "opt-parsley"
+      ]
+    },
+    "group-extras": {
+      "id": "group-extras",
+      "name": "Extra",
+      "itemIds": [
+        "opt-oat",
+        "opt-cinnamon",
+        "opt-granola",
+        "opt-lemon-peel"
+      ]
+    }
+  },
+  "layout": [
+    {
+      "type": "item-group",
+      "data": "included"
+    },
+    {
+      "type": "item-group",
+      "data": "group-vegetables"
+    },
+    {
+      "type": "item-group",
+      "data": "group-savory"
+    },
+    {
+      "type": "item-group",
+      "data": "group-nuts"
+    },
+    {
+      "type": "item-group",
+      "data": "group-seeds"
+    },
+    {
+      "type": "item-group",
+      "data": "group-premium"
+    },
+    {
+      "type": "item-group",
+      "data": "group-extras"
+    }
+  ],
+  "modifierMenu": true
+}

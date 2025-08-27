@@ -1,0 +1,241 @@
+{
+  "id": "tea-options",
+  "name": "Tea Options",
+  "currency": "ALL",
+  "items": {
+    "opt-ginger": {
+      "id": "opt-ginger",
+      "name": "Ginger",
+      "icon": "🫚",
+      "price": 30,
+      "constraints": {},
+      "order": 0
+    },
+    "opt-lemon": {
+      "id": "opt-lemon",
+      "name": "Lemon",
+      "icon": "🍋",
+      "price": 30,
+      "constraints": {},
+      "order": 1
+    },
+    "opt-propolis": {
+      "id": "opt-propolis",
+      "name": "Propolis",
+      "icon": "🍯",
+      "price": 30,
+      "constraints": {},
+      "order": 2
+    },
+    "opt-chamomile": {
+      "id": "opt-chamomile",
+      "name": "Chamomile",
+      "icon": "🌼",
+      "price": 20,
+      "constraints": {},
+      "order": 4
+    },
+    "opt-linden-flower": {
+      "id": "opt-linden-flower",
+      "name": "Linden Flower",
+      "icon": "🌸",
+      "price": 20,
+      "constraints": {},
+      "order": 5
+    },
+    "opt-bilberry": {
+      "id": "opt-bilberry",
+      "name": "Bilberry",
+      "icon": "🫐",
+      "price": 20,
+      "constraints": {},
+      "order": 10
+    },
+    "opt-berries": {
+      "id": "opt-berries",
+      "name": "Berries",
+      "icon": "🍓",
+      "price": 20,
+      "constraints": {},
+      "order": 11
+    },
+    "opt-rose-hip": {
+      "id": "opt-rose-hip",
+      "name": "Rose Hip",
+      "icon": "🌹",
+      "price": 20,
+      "constraints": {},
+      "order": 14
+    },
+    "opt-black-tea": {
+      "id": "opt-black-tea",
+      "name": "Black Tea",
+      "icon": "⚫",
+      "price": 20,
+      "constraints": {},
+      "order": 15
+    },
+    "opt-chai-tea": {
+      "id": "opt-chai-tea",
+      "name": "Chai Tea",
+      "icon": "🟫",
+      "price": 20,
+      "constraints": {},
+      "order": 16
+    },
+    "opt-green-tea": {
+      "id": "opt-green-tea",
+      "name": "Green Tea",
+      "icon": "🟢",
+      "price": 20,
+      "constraints": {},
+      "order": 17
+    },
+    "opt-jasmine-gold": {
+      "id": "opt-jasmine-gold",
+      "name": "Jasmine Gold",
+      "icon": "⭐",
+      "price": 20,
+      "constraints": {},
+      "order": 18
+    },
+    "opt-rooibos-vanilla": {
+      "id": "opt-rooibos-vanilla",
+      "name": "Rooibos Vanilla",
+      "icon": "🟠",
+      "price": 20,
+      "constraints": {},
+      "order": 19
+    },
+    "opt-mountain-tea": {
+      "id": "opt-mountain-tea",
+      "name": "Mountain Tea",
+      "icon": "🌿",
+      "price": 20,
+      "constraints": {},
+      "order": 6
+    },
+    "opt-sage": {
+      "id": "opt-sage",
+      "name": "Sage",
+      "icon": "🍃",
+      "price": 20,
+      "constraints": {},
+      "order": 7
+    },
+    "opt-mint": {
+      "id": "opt-mint",
+      "name": "Mint",
+      "icon": "🌿",
+      "price": 20,
+      "constraints": {},
+      "order": 8
+    },
+    "opt-peppermint": {
+      "id": "opt-peppermint",
+      "name": "Peppermint",
+      "icon": "🍀",
+      "price": 20,
+      "constraints": {},
+      "order": 9
+    },
+    "opt-plumcinnamon": {
+      "id": "opt-plumcinnamon",
+      "name": "Plum+Cinnamon",
+      "icon": "🟣",
+      "price": 20,
+      "constraints": {},
+      "order": 12
+    },
+    "opt-applecinnamon": {
+      "id": "opt-applecinnamon",
+      "name": "Apple+Cinnamon",
+      "icon": "🍎",
+      "price": 20,
+      "constraints": {},
+      "order": 13
+    },
+    "opt-turmeric": {
+      "id": "opt-turmeric",
+      "name": "Turmeric",
+      "icon": "🟡",
+      "price": 30,
+      "constraints": {},
+      "order": 3
+    }
+  },
+  "itemGroups": {
+    "included": {
+      "id": "included",
+      "name": "Included",
+      "itemIds": []
+    },
+    "group-ingredients": {
+      "id": "group-ingredients",
+      "name": "Add-ons",
+      "itemIds": [
+        "opt-ginger",
+        "opt-lemon",
+        "opt-propolis",
+        "opt-turmeric"
+      ]
+    },
+    "group-herbal-teas": {
+      "id": "group-herbal-teas",
+      "name": "Mix with Herbal Tea",
+      "itemIds": [
+        "opt-chamomile",
+        "opt-linden-flower",
+        "opt-mountain-tea",
+        "opt-sage",
+        "opt-mint",
+        "opt-peppermint"
+      ]
+    },
+    "group-classic-teas": {
+      "id": "group-classic-teas",
+      "name": "Mix with Fruity Tea",
+      "itemIds": [
+        "opt-bilberry",
+        "opt-berries",
+        "opt-plumcinnamon",
+        "opt-applecinnamon",
+        "opt-rose-hip"
+      ]
+    },
+    "group-4": {
+      "id": "group-4",
+      "name": "Mix with Special Tea",
+      "itemIds": [
+        "opt-black-tea",
+        "opt-chai-tea",
+        "opt-green-tea",
+        "opt-jasmine-gold",
+        "opt-rooibos-vanilla"
+      ]
+    }
+  },
+  "layout": [
+    {
+      "type": "item-group",
+      "data": "included"
+    },
+    {
+      "type": "item-group",
+      "data": "group-ingredients"
+    },
+    {
+      "type": "item-group",
+      "data": "group-herbal-teas"
+    },
+    {
+      "type": "item-group",
+      "data": "group-classic-teas"
+    },
+    {
+      "type": "item-group",
+      "data": "group-4"
+    }
+  ],
+  "modifierMenu": true
+}

@@ -1,0 +1,68 @@
+{
+  "id": "juice-menu",
+  "name": "Menu Succhi",
+  "currency": "ALL",
+  "items": {},
+  "itemGroups": {},
+  "layout": {
+    "groups": [
+      {
+        "header": {
+          "text": {
+            "sq": "Lëngje Klasike",
+            "en": "Classic Juices",
+            "it": "Succhi Classici"
+          },
+          "classes": [
+            "menu-items-title"
+          ]
+        },
+        "items": [
+          "apple-juice",
+          "orange-juice",
+          "carrot-juice",
+          "celery-juice",
+          "pineapple-juice"
+        ]
+      },
+      {
+        "header": {
+          "text": {
+            "sq": "Përzierje Lëngjesh",
+            "en": "Juice Blends",
+            "it": "Miscele di Succhi"
+          },
+          "classes": [
+            "menu-items-title"
+          ]
+        },
+        "items": [
+          "beet-it",
+          "detox",
+          "greeny",
+          "berry-me",
+          "immunity",
+          "refresh"
+        ]
+      },
+      {
+        "header": {
+          "text": {
+            "sq": "Shots / Ujë Detoksi",
+            "en": "Shots / Detox Water",
+            "it": "Shot / Acqua Detox"
+          },
+          "classes": [
+            "menu-items-title"
+          ]
+        },
+        "items": [
+          "detox-water",
+          "cold-tonic",
+          "ginger-turmeric",
+          "protein-shot"
+        ]
+      }
+    ]
+  }
+}

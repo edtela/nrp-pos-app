@@ -1,0 +1,314 @@
+{
+  "id": "coffee-options",
+  "name": "Opzioni Caffè",
+  "currency": "ALL",
+  "items": {
+    "milk": {
+      "id": "milk",
+      "name": "Latte",
+      "price": 0,
+      "constraints": {
+        "choice": {
+          "id": "milk-choice",
+          "single": true
+        }
+      },
+      "order": 0
+    },
+    "oat-milk": {
+      "id": "oat-milk",
+      "name": "Latte d'Avena",
+      "price": 0,
+      "constraints": {
+        "choice": {
+          "id": "milk-choice",
+          "single": true
+        }
+      },
+      "order": 1
+    },
+    "soya-milk": {
+      "id": "soya-milk",
+      "name": "Latte di Soia",
+      "price": 0,
+      "constraints": {
+        "choice": {
+          "id": "milk-choice",
+          "single": true
+        }
+      },
+      "order": 2
+    },
+    "almond-milk": {
+      "id": "almond-milk",
+      "name": "Latte di Mandorle",
+      "price": 0,
+      "constraints": {
+        "choice": {
+          "id": "milk-choice",
+          "single": true
+        }
+      },
+      "order": 3
+    },
+    "coconut-milk": {
+      "id": "coconut-milk",
+      "name": "Latte di Cocco",
+      "price": 0,
+      "constraints": {
+        "choice": {
+          "id": "milk-choice",
+          "single": true
+        }
+      },
+      "order": 4
+    },
+    "cinnamon": {
+      "id": "cinnamon",
+      "name": "Cannella",
+      "price": 0,
+      "constraints": {},
+      "order": 5
+    },
+    "turmeric": {
+      "id": "turmeric",
+      "name": "Curcuma",
+      "price": 0,
+      "constraints": {},
+      "order": 6
+    },
+    "ginger": {
+      "id": "ginger",
+      "name": "Zenzero",
+      "price": 0,
+      "constraints": {},
+      "order": 7
+    },
+    "pepper": {
+      "id": "pepper",
+      "name": "Pepe",
+      "price": 0,
+      "constraints": {},
+      "order": 8
+    },
+    "honey": {
+      "id": "honey",
+      "name": "Miele",
+      "price": 0,
+      "constraints": {},
+      "order": 9
+    },
+    "sugar": {
+      "id": "sugar",
+      "name": "Zucchero",
+      "price": 0,
+      "constraints": {},
+      "order": 10
+    },
+    "date-syrup": {
+      "id": "date-syrup",
+      "name": "Sciroppo di Datteri",
+      "price": 0,
+      "constraints": {},
+      "order": 11
+    },
+    "salep": {
+      "id": "salep",
+      "name": "Salep",
+      "price": 0,
+      "constraints": {},
+      "order": 12
+    },
+    "walnuts": {
+      "id": "walnuts",
+      "name": "Noci",
+      "price": 0,
+      "constraints": {},
+      "order": 13
+    },
+    "pistachios": {
+      "id": "pistachios",
+      "name": "Pistacchi",
+      "price": 0,
+      "constraints": {},
+      "order": 14
+    },
+    "matcha": {
+      "id": "matcha",
+      "name": "Matcha",
+      "price": 0,
+      "constraints": {},
+      "order": 15
+    },
+    "chai-tea": {
+      "id": "chai-tea",
+      "name": "Tè Chai",
+      "price": 0,
+      "constraints": {},
+      "order": 16
+    },
+    "coffee": {
+      "id": "coffee",
+      "name": "Caffè",
+      "price": 0,
+      "constraints": {},
+      "order": 17
+    },
+    "coffee-beans": {
+      "id": "coffee-beans",
+      "name": "Chicchi di Caffè",
+      "price": 0,
+      "constraints": {},
+      "order": 18
+    },
+    "banana": {
+      "id": "banana",
+      "name": "Banana",
+      "price": 0,
+      "constraints": {},
+      "order": 19
+    },
+    "dates": {
+      "id": "dates",
+      "name": "Datteri",
+      "price": 0,
+      "constraints": {},
+      "order": 20
+    },
+    "aromal-yogurt": {
+      "id": "aromal-yogurt",
+      "name": "Yogurt Aromal",
+      "price": 0,
+      "constraints": {},
+      "order": 21
+    },
+    "dark-chocolate": {
+      "id": "dark-chocolate",
+      "name": "Cioccolato Fondente",
+      "price": 0,
+      "constraints": {},
+      "order": 22
+    },
+    "peanut-butter": {
+      "id": "peanut-butter",
+      "name": "Burro di Arachidi",
+      "price": 0,
+      "constraints": {},
+      "order": 23
+    },
+    "spinach": {
+      "id": "spinach",
+      "name": "Spinaci",
+      "price": 0,
+      "constraints": {},
+      "order": 24
+    }
+  },
+  "itemGroups": {
+    "included": {
+      "id": "included",
+      "name": "Inclusi",
+      "itemIds": []
+    },
+    "group-milk-options": {
+      "id": "group-milk-options",
+      "name": "Opzioni Latte",
+      "itemIds": [
+        "milk",
+        "oat-milk",
+        "soya-milk",
+        "almond-milk",
+        "coconut-milk"
+      ]
+    },
+    "group-spices": {
+      "id": "group-spices",
+      "name": "Spezie",
+      "itemIds": [
+        "cinnamon",
+        "turmeric",
+        "ginger",
+        "pepper"
+      ]
+    },
+    "group-sweeteners": {
+      "id": "group-sweeteners",
+      "name": "Dolcificanti",
+      "itemIds": [
+        "honey",
+        "sugar",
+        "date-syrup"
+      ]
+    },
+    "group-special-ingredients": {
+      "id": "group-special-ingredients",
+      "name": "Ingredienti Speciali",
+      "itemIds": [
+        "salep",
+        "walnuts",
+        "pistachios",
+        "matcha",
+        "chai-tea",
+        "coffee",
+        "coffee-beans"
+      ]
+    },
+    "group-fruits": {
+      "id": "group-fruits",
+      "name": "Frutta",
+      "itemIds": [
+        "banana",
+        "dates"
+      ]
+    },
+    "group-others": {
+      "id": "group-others",
+      "name": "Altri",
+      "itemIds": [
+        "aromal-yogurt",
+        "dark-chocolate",
+        "peanut-butter",
+        "spinach"
+      ]
+    }
+  },
+  "layout": [
+    {
+      "type": "item-group",
+      "data": "included"
+    },
+    {
+      "type": "item-group",
+      "data": "group-milk-options"
+    },
+    {
+      "type": "item-group",
+      "data": "group-spices"
+    },
+    {
+      "type": "item-group",
+      "data": "group-sweeteners"
+    },
+    {
+      "type": "item-group",
+      "data": "group-special-ingredients"
+    },
+    {
+      "type": "item-group",
+      "data": "group-fruits"
+    },
+    {
+      "type": "item-group",
+      "data": "group-others"
+    }
+  ],
+  "choices": {
+    "milk-choice": {
+      "id": "milk-choice",
+      "name": "Scegli il Latte",
+      "min": 0,
+      "max": 1
+    }
+  },
+  "modifierMenu": true
+}

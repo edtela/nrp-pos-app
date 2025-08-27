@@ -1,0 +1,314 @@
+{
+  "id": "juice-options",
+  "name": "Juice Options",
+  "currency": "ALL",
+  "items": {
+    "opt-ginger": {
+      "id": "opt-ginger",
+      "name": "Ginger",
+      "icon": "🫚",
+      "price": 30,
+      "constraints": {},
+      "order": 23
+    },
+    "opt-parsley": {
+      "id": "opt-parsley",
+      "name": "Parsley",
+      "icon": "🌿",
+      "price": 30,
+      "constraints": {},
+      "order": 24
+    },
+    "opt-mint": {
+      "id": "opt-mint",
+      "name": "Mint",
+      "icon": "🌿",
+      "price": 30,
+      "constraints": {},
+      "order": 25
+    },
+    "opt-carrot": {
+      "id": "opt-carrot",
+      "name": "Carrot",
+      "icon": "🥕",
+      "price": 30,
+      "constraints": {},
+      "order": 0
+    },
+    "opt-lemon": {
+      "id": "opt-lemon",
+      "name": "Lemon",
+      "icon": "🍋",
+      "price": 30,
+      "constraints": {},
+      "order": 22
+    },
+    "opt-apple": {
+      "id": "opt-apple",
+      "name": "Apple",
+      "icon": "🍎",
+      "price": 30,
+      "constraints": {},
+      "order": 5
+    },
+    "opt-beet": {
+      "id": "opt-beet",
+      "name": "Beet",
+      "icon": "🟣",
+      "price": 30,
+      "constraints": {},
+      "order": 1
+    },
+    "opt-orange": {
+      "id": "opt-orange",
+      "name": "Orange",
+      "icon": "🍊",
+      "price": 30,
+      "constraints": {},
+      "order": 16
+    },
+    "opt-pear": {
+      "id": "opt-pear",
+      "name": "Pear",
+      "icon": "🍐",
+      "price": 40,
+      "constraints": {},
+      "order": 6
+    },
+    "opt-cucumber": {
+      "id": "opt-cucumber",
+      "name": "Cucumber",
+      "icon": "🥒",
+      "price": 40,
+      "constraints": {},
+      "order": 2
+    },
+    "opt-kiwi": {
+      "id": "opt-kiwi",
+      "name": "Kiwi",
+      "icon": "🥝",
+      "price": 40,
+      "constraints": {},
+      "order": 17
+    },
+    "opt-melon": {
+      "id": "opt-melon",
+      "name": "Melon",
+      "icon": "🍈",
+      "price": 40,
+      "constraints": {},
+      "order": 7
+    },
+    "opt-grape": {
+      "id": "opt-grape",
+      "name": "Grape",
+      "icon": "🍇",
+      "price": 40,
+      "constraints": {},
+      "order": 8
+    },
+    "opt-spinach": {
+      "id": "opt-spinach",
+      "name": "Spinach",
+      "icon": "🥬",
+      "price": 40,
+      "constraints": {},
+      "order": 4
+    },
+    "opt-pineapple": {
+      "id": "opt-pineapple",
+      "name": "Pineapple",
+      "icon": "🍍",
+      "price": 50,
+      "constraints": {},
+      "order": 18
+    },
+    "opt-grapefruit": {
+      "id": "opt-grapefruit",
+      "name": "Grapefruit",
+      "icon": "🟠",
+      "price": 50,
+      "constraints": {},
+      "order": 19
+    },
+    "opt-lime": {
+      "id": "opt-lime",
+      "name": "Lime",
+      "icon": "🟢",
+      "price": 50,
+      "constraints": {},
+      "order": 20
+    },
+    "opt-mango": {
+      "id": "opt-mango",
+      "name": "Mango",
+      "icon": "🥭",
+      "price": 50,
+      "constraints": {},
+      "order": 21
+    },
+    "opt-peach": {
+      "id": "opt-peach",
+      "name": "Peach",
+      "icon": "🍑",
+      "price": 50,
+      "constraints": {},
+      "order": 9
+    },
+    "opt-celery": {
+      "id": "opt-celery",
+      "name": "Celery",
+      "icon": "🟩",
+      "price": 50,
+      "constraints": {},
+      "order": 3
+    },
+    "opt-pomegranate": {
+      "id": "opt-pomegranate",
+      "name": "Pomegranate",
+      "icon": "🔴",
+      "price": 50,
+      "constraints": {},
+      "order": 10
+    },
+    "opt-turmeric": {
+      "id": "opt-turmeric",
+      "name": "Turmeric",
+      "icon": "🟡",
+      "price": 50,
+      "constraints": {},
+      "order": 26
+    },
+    "opt-strawberries": {
+      "id": "opt-strawberries",
+      "name": "Strawberries",
+      "icon": "🍓",
+      "price": 50,
+      "constraints": {},
+      "order": 11
+    },
+    "opt-raspberries": {
+      "id": "opt-raspberries",
+      "name": "Raspberries",
+      "icon": "🔴",
+      "price": 50,
+      "constraints": {},
+      "order": 12
+    },
+    "opt-blueberries": {
+      "id": "opt-blueberries",
+      "name": "Blueberries",
+      "icon": "🫐",
+      "price": 50,
+      "constraints": {},
+      "order": 13
+    },
+    "opt-blackberries": {
+      "id": "opt-blackberries",
+      "name": "Blackberries",
+      "icon": "🟣",
+      "price": 50,
+      "constraints": {},
+      "order": 14
+    },
+    "opt-mixed-berries": {
+      "id": "opt-mixed-berries",
+      "name": "Mixed Berries",
+      "icon": "🫐",
+      "price": 50,
+      "constraints": {},
+      "order": 15
+    }
+  },
+  "itemGroups": {
+    "included": {
+      "id": "included",
+      "name": "Included",
+      "itemIds": []
+    },
+    "group-vegetables": {
+      "id": "group-vegetables",
+      "name": "Vegetables",
+      "itemIds": [
+        "opt-carrot",
+        "opt-beet",
+        "opt-cucumber",
+        "opt-celery",
+        "opt-spinach"
+      ]
+    },
+    "group-fruits": {
+      "id": "group-fruits",
+      "name": "Fruits",
+      "itemIds": [
+        "opt-apple",
+        "opt-pear",
+        "opt-melon",
+        "opt-grape",
+        "opt-peach",
+        "opt-pomegranate"
+      ]
+    },
+    "group-herbs-spices": {
+      "id": "group-herbs-spices",
+      "name": "Herbs & Spices",
+      "itemIds": [
+        "opt-ginger",
+        "opt-parsley",
+        "opt-mint",
+        "opt-turmeric"
+      ]
+    },
+    "group-berries": {
+      "id": "group-berries",
+      "name": "Berries",
+      "itemIds": [
+        "opt-strawberries",
+        "opt-raspberries",
+        "opt-blueberries",
+        "opt-blackberries",
+        "opt-mixed-berries"
+      ]
+    },
+    "group-tropical-citrus": {
+      "id": "group-tropical-citrus",
+      "name": "Tropical & Citrus",
+      "itemIds": [
+        "opt-orange",
+        "opt-kiwi",
+        "opt-pineapple",
+        "opt-grapefruit",
+        "opt-lime",
+        "opt-mango",
+        "opt-lemon"
+      ]
+    }
+  },
+  "layout": [
+    {
+      "type": "item-group",
+      "data": "included"
+    },
+    {
+      "type": "item-group",
+      "data": "group-vegetables"
+    },
+    {
+      "type": "item-group",
+      "data": "group-fruits"
+    },
+    {
+      "type": "item-group",
+      "data": "group-berries"
+    },
+    {
+      "type": "item-group",
+      "data": "group-tropical-citrus"
+    },
+    {
+      "type": "item-group",
+      "data": "group-herbs-spices"
+    }
+  ],
+  "modifierMenu": true
+}

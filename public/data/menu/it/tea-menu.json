@@ -1,0 +1,525 @@
+{
+  "id": "tea-menu",
+  "name": "Menu Tè",
+  "currency": "ALL",
+  "items": {
+    "chamomile": {
+      "id": "chamomile",
+      "name": "Camomilla",
+      "description": "Calmante e rilassante",
+      "icon": "☕",
+      "price": 150,
+      "constraints": {},
+      "subMenu": {
+        "menuId": "tea-options",
+        "included": [
+          {
+            "itemId": "opt-chamomile",
+            "display": "none"
+          }
+        ]
+      },
+      "order": 0
+    },
+    "linden-flower": {
+      "id": "linden-flower",
+      "name": "Fiori di Tiglio",
+      "description": "Delicato e aromatico",
+      "icon": "☕",
+      "price": 150,
+      "constraints": {},
+      "subMenu": {
+        "menuId": "tea-options",
+        "included": [
+          {
+            "itemId": "opt-linden-flower",
+            "display": "none"
+          }
+        ]
+      },
+      "order": 1
+    },
+    "ginger-tea": {
+      "id": "ginger-tea",
+      "name": "Zenzero",
+      "description": "Piccante e riscaldante",
+      "icon": "☕",
+      "price": 150,
+      "constraints": {},
+      "subMenu": {
+        "menuId": "tea-options",
+        "included": [
+          {
+            "itemId": "opt-ginger",
+            "display": "none"
+          }
+        ]
+      },
+      "order": 6
+    },
+    "bilberry": {
+      "id": "bilberry",
+      "name": "Mirtillo",
+      "description": "Ricco di antiossidanti",
+      "icon": "☕",
+      "price": 170,
+      "constraints": {},
+      "subMenu": {
+        "menuId": "tea-options",
+        "included": [
+          {
+            "itemId": "opt-bilberry",
+            "display": "none"
+          }
+        ]
+      },
+      "order": 7
+    },
+    "berries": {
+      "id": "berries",
+      "name": "Frutti di Bosco",
+      "description": "Miscela fruttata",
+      "icon": "☕",
+      "price": 170,
+      "constraints": {},
+      "subMenu": {
+        "menuId": "tea-options",
+        "included": [
+          {
+            "itemId": "opt-berries",
+            "display": "none"
+          }
+        ]
+      },
+      "order": 8
+    },
+    "lemon": {
+      "id": "lemon",
+      "name": "Limone",
+      "description": "Agrumato e vitamina C",
+      "icon": "☕",
+      "price": 170,
+      "constraints": {},
+      "subMenu": {
+        "menuId": "tea-options",
+        "included": [
+          {
+            "itemId": "opt-lemon",
+            "display": "none"
+          }
+        ]
+      },
+      "order": 11
+    },
+    "rose-hip": {
+      "id": "rose-hip",
+      "name": "Rosa Canina",
+      "description": "Delicato e floreale",
+      "icon": "☕",
+      "price": 170,
+      "constraints": {},
+      "subMenu": {
+        "menuId": "tea-options",
+        "included": [
+          {
+            "itemId": "opt-rose-hip",
+            "display": "none"
+          }
+        ]
+      },
+      "order": 12
+    },
+    "black-tea": {
+      "id": "black-tea",
+      "name": "Tè Nero",
+      "description": "Forte ed energizzante",
+      "icon": "☕",
+      "price": 200,
+      "constraints": {},
+      "subMenu": {
+        "menuId": "tea-options",
+        "included": [
+          {
+            "itemId": "opt-black-tea",
+            "display": "none"
+          }
+        ]
+      },
+      "order": 13
+    },
+    "chai-tea": {
+      "id": "chai-tea",
+      "name": "Tè Chai",
+      "description": "Spezie indiane",
+      "icon": "☕",
+      "price": 200,
+      "constraints": {},
+      "subMenu": {
+        "menuId": "tea-options",
+        "included": [
+          {
+            "itemId": "opt-chai-tea",
+            "display": "none"
+          }
+        ]
+      },
+      "order": 14
+    },
+    "green-tea": {
+      "id": "green-tea",
+      "name": "Tè Verde",
+      "description": "Delicato e salutare",
+      "icon": "☕",
+      "price": 200,
+      "constraints": {},
+      "subMenu": {
+        "menuId": "tea-options",
+        "included": [
+          {
+            "itemId": "opt-green-tea",
+            "display": "none"
+          }
+        ]
+      },
+      "order": 15
+    },
+    "jasmine-gold": {
+      "id": "jasmine-gold",
+      "name": "Gelsomino Oro",
+      "description": "Floreale ed elegante",
+      "icon": "☕",
+      "price": 200,
+      "constraints": {},
+      "subMenu": {
+        "menuId": "tea-options",
+        "included": [
+          {
+            "itemId": "opt-jasmine-gold",
+            "display": "none"
+          }
+        ]
+      },
+      "order": 16
+    },
+    "rooibos-vanilla": {
+      "id": "rooibos-vanilla",
+      "name": "Rooibos Vaniglia",
+      "description": "Senza caffeina, dolce",
+      "icon": "☕",
+      "price": 200,
+      "constraints": {},
+      "subMenu": {
+        "menuId": "tea-options",
+        "included": [
+          {
+            "itemId": "opt-rooibos-vanilla",
+            "display": "none"
+          }
+        ]
+      },
+      "order": 17
+    },
+    "iced-berries": {
+      "id": "iced-berries",
+      "name": "Frutti di Bosco Freddi",
+      "description": "Fruttato rinfrescante",
+      "icon": "🥤",
+      "price": 200,
+      "constraints": {},
+      "order": 18
+    },
+    "iced-cherry": {
+      "id": "iced-cherry",
+      "name": "Ciliegia Fredda",
+      "description": "Fruttato e vivace",
+      "icon": "🥤",
+      "price": 200,
+      "constraints": {},
+      "order": 21
+    },
+    "iced-cornelian-cherry": {
+      "id": "iced-cornelian-cherry",
+      "name": "Corniolo Freddo",
+      "description": "Tradizionale e unico",
+      "icon": "🥤",
+      "price": 200,
+      "constraints": {},
+      "order": 22
+    },
+    "iced-rose-petal": {
+      "id": "iced-rose-petal",
+      "name": "Petali di Rosa Freddi",
+      "description": "Elegante e delicato",
+      "icon": "🥤",
+      "price": 200,
+      "constraints": {},
+      "order": 23
+    },
+    "kombucha-ginger": {
+      "id": "kombucha-ginger",
+      "name": "Kombucha Zenzero",
+      "description": "Probiotico e piccante",
+      "icon": "🍾",
+      "price": 350,
+      "constraints": {},
+      "order": 24
+    },
+    "kombucha-luppolo": {
+      "id": "kombucha-luppolo",
+      "name": "Kombucha Luppolo",
+      "description": "Fermentato con luppolo",
+      "icon": "🍾",
+      "price": 350,
+      "constraints": {},
+      "order": 25
+    },
+    "kombucha-passion-fruit": {
+      "id": "kombucha-passion-fruit",
+      "name": "Kombucha Frutto della Passione",
+      "description": "Tropicale e aspro",
+      "icon": "🍾",
+      "price": 350,
+      "constraints": {},
+      "order": 26
+    },
+    "kombucha-raspberry": {
+      "id": "kombucha-raspberry",
+      "name": "Kombucha Lampone",
+      "description": "Fruttato e acidulo",
+      "icon": "🍾",
+      "price": 350,
+      "constraints": {},
+      "order": 27
+    },
+    "kombucha-seasonal": {
+      "id": "kombucha-seasonal",
+      "name": "Kombucha Stagionale",
+      "description": "Chiedere il gusto",
+      "icon": "🍾",
+      "price": 350,
+      "constraints": {},
+      "order": 28
+    },
+    "mountain-tea": {
+      "id": "mountain-tea",
+      "name": "Tè di Montagna",
+      "description": "Tradizionale albanese",
+      "icon": "☕",
+      "price": 150,
+      "constraints": {},
+      "subMenu": {
+        "menuId": "tea-options",
+        "included": [
+          {
+            "itemId": "opt-mountain-tea",
+            "display": "none"
+          }
+        ]
+      },
+      "order": 2
+    },
+    "sage": {
+      "id": "sage",
+      "name": "Salvia",
+      "description": "Erboristico e curativo",
+      "icon": "☕",
+      "price": 150,
+      "constraints": {},
+      "subMenu": {
+        "menuId": "tea-options",
+        "included": [
+          {
+            "itemId": "opt-sage",
+            "display": "none"
+          }
+        ]
+      },
+      "order": 3
+    },
+    "mint": {
+      "id": "mint",
+      "name": "Menta",
+      "description": "Rinfrescante e digestivo",
+      "icon": "☕",
+      "price": 150,
+      "constraints": {},
+      "subMenu": {
+        "menuId": "tea-options",
+        "included": [
+          {
+            "itemId": "opt-mint",
+            "display": "none"
+          }
+        ]
+      },
+      "order": 4
+    },
+    "peppermint": {
+      "id": "peppermint",
+      "name": "Menta Piperita",
+      "description": "Intenso e rinfrescante",
+      "icon": "☕",
+      "price": 150,
+      "constraints": {},
+      "subMenu": {
+        "menuId": "tea-options",
+        "included": [
+          {
+            "itemId": "opt-peppermint",
+            "display": "none"
+          }
+        ]
+      },
+      "order": 5
+    },
+    "plum-cinnamon": {
+      "id": "plum-cinnamon",
+      "name": "Prugna+Cannella",
+      "description": "Dolce e aromatico",
+      "icon": "☕",
+      "price": 170,
+      "constraints": {},
+      "subMenu": {
+        "menuId": "tea-options",
+        "included": [
+          {
+            "itemId": "opt-plumcinnamon",
+            "display": "none"
+          }
+        ]
+      },
+      "order": 9
+    },
+    "apple-cinnamon": {
+      "id": "apple-cinnamon",
+      "name": "Mela+Cannella",
+      "description": "Classico e riscaldante",
+      "icon": "☕",
+      "price": 170,
+      "constraints": {},
+      "subMenu": {
+        "menuId": "tea-options",
+        "included": [
+          {
+            "itemId": "opt-applecinnamon",
+            "display": "none"
+          }
+        ]
+      },
+      "order": 10
+    },
+    "iced-plum": {
+      "id": "iced-plum",
+      "name": "Prugna Fredda",
+      "description": "Dolce e rinfrescante",
+      "icon": "🥤",
+      "price": 200,
+      "constraints": {},
+      "order": 19
+    },
+    "iced-peach": {
+      "id": "iced-peach",
+      "name": "Pesca Fredda",
+      "description": "Delicato ed estivo",
+      "icon": "🥤",
+      "price": 200,
+      "constraints": {},
+      "order": 20
+    }
+  },
+  "itemGroups": {
+    "group-herbal-hot": {
+      "id": "group-herbal-hot",
+      "name": "Tisane",
+      "itemIds": [
+        "chamomile",
+        "linden-flower",
+        "mountain-tea",
+        "sage",
+        "mint",
+        "peppermint",
+        "ginger-tea"
+      ]
+    },
+    "group-fruity-hot": {
+      "id": "group-fruity-hot",
+      "name": "Tè Fruttati",
+      "itemIds": [
+        "bilberry",
+        "berries",
+        "plum-cinnamon",
+        "apple-cinnamon",
+        "lemon",
+        "rose-hip"
+      ]
+    },
+    "group-special-hot": {
+      "id": "group-special-hot",
+      "name": "Tè Speciali",
+      "itemIds": [
+        "black-tea",
+        "chai-tea",
+        "green-tea",
+        "jasmine-gold",
+        "rooibos-vanilla"
+      ]
+    },
+    "group-iced-teas": {
+      "id": "group-iced-teas",
+      "name": "Tè Freddi",
+      "itemIds": [
+        "iced-berries",
+        "iced-plum",
+        "iced-peach",
+        "iced-cherry",
+        "iced-cornelian-cherry",
+        "iced-rose-petal"
+      ]
+    },
+    "group-kombucha": {
+      "id": "group-kombucha",
+      "name": "Kombucha",
+      "itemIds": [
+        "kombucha-ginger",
+        "kombucha-luppolo",
+        "kombucha-passion-fruit",
+        "kombucha-raspberry",
+        "kombucha-seasonal"
+      ]
+    }
+  },
+  "layout": [
+    {
+      "text": "Caldi",
+      "classes": [
+        "menu-title"
+      ]
+    },
+    {
+      "type": "item-group",
+      "data": "group-herbal-hot"
+    },
+    {
+      "type": "item-group",
+      "data": "group-fruity-hot"
+    },
+    {
+      "type": "item-group",
+      "data": "group-special-hot"
+    },
+    {
+      "text": "Freddi",
+      "classes": [
+        "menu-title"
+      ]
+    },
+    {
+      "type": "item-group",
+      "data": "group-iced-teas"
+    },
+    {
+      "type": "item-group",
+      "data": "group-kombucha"
+    }
+  ]
+}

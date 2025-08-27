@@ -1,0 +1,241 @@
+{
+  "id": "tea-options",
+  "name": "Opzioni Tè",
+  "currency": "ALL",
+  "items": {
+    "opt-ginger": {
+      "id": "opt-ginger",
+      "name": "Zenzero",
+      "icon": "🫚",
+      "price": 30,
+      "constraints": {},
+      "order": 0
+    },
+    "opt-lemon": {
+      "id": "opt-lemon",
+      "name": "Limone",
+      "icon": "🍋",
+      "price": 30,
+      "constraints": {},
+      "order": 1
+    },
+    "opt-propolis": {
+      "id": "opt-propolis",
+      "name": "Propoli",
+      "icon": "🍯",
+      "price": 30,
+      "constraints": {},
+      "order": 2
+    },
+    "opt-chamomile": {
+      "id": "opt-chamomile",
+      "name": "Camomilla",
+      "icon": "🌼",
+      "price": 20,
+      "constraints": {},
+      "order": 4
+    },
+    "opt-linden-flower": {
+      "id": "opt-linden-flower",
+      "name": "Fiori di Tiglio",
+      "icon": "🌸",
+      "price": 20,
+      "constraints": {},
+      "order": 5
+    },
+    "opt-bilberry": {
+      "id": "opt-bilberry",
+      "name": "Mirtillo",
+      "icon": "🫐",
+      "price": 20,
+      "constraints": {},
+      "order": 10
+    },
+    "opt-berries": {
+      "id": "opt-berries",
+      "name": "Frutti di Bosco",
+      "icon": "🍓",
+      "price": 20,
+      "constraints": {},
+      "order": 11
+    },
+    "opt-rose-hip": {
+      "id": "opt-rose-hip",
+      "name": "Rosa Canina",
+      "icon": "🌹",
+      "price": 20,
+      "constraints": {},
+      "order": 14
+    },
+    "opt-black-tea": {
+      "id": "opt-black-tea",
+      "name": "Tè Nero",
+      "icon": "⚫",
+      "price": 20,
+      "constraints": {},
+      "order": 15
+    },
+    "opt-chai-tea": {
+      "id": "opt-chai-tea",
+      "name": "Tè Chai",
+      "icon": "🟫",
+      "price": 20,
+      "constraints": {},
+      "order": 16
+    },
+    "opt-green-tea": {
+      "id": "opt-green-tea",
+      "name": "Tè Verde",
+      "icon": "🟢",
+      "price": 20,
+      "constraints": {},
+      "order": 17
+    },
+    "opt-jasmine-gold": {
+      "id": "opt-jasmine-gold",
+      "name": "Gelsomino Oro",
+      "icon": "⭐",
+      "price": 20,
+      "constraints": {},
+      "order": 18
+    },
+    "opt-rooibos-vanilla": {
+      "id": "opt-rooibos-vanilla",
+      "name": "Rooibos Vaniglia",
+      "icon": "🟠",
+      "price": 20,
+      "constraints": {},
+      "order": 19
+    },
+    "opt-mountain-tea": {
+      "id": "opt-mountain-tea",
+      "name": "Tè di Montagna",
+      "icon": "🌿",
+      "price": 20,
+      "constraints": {},
+      "order": 6
+    },
+    "opt-sage": {
+      "id": "opt-sage",
+      "name": "Salvia",
+      "icon": "🍃",
+      "price": 20,
+      "constraints": {},
+      "order": 7
+    },
+    "opt-mint": {
+      "id": "opt-mint",
+      "name": "Menta",
+      "icon": "🌿",
+      "price": 20,
+      "constraints": {},
+      "order": 8
+    },
+    "opt-peppermint": {
+      "id": "opt-peppermint",
+      "name": "Menta Piperita",
+      "icon": "🍀",
+      "price": 20,
+      "constraints": {},
+      "order": 9
+    },
+    "opt-plumcinnamon": {
+      "id": "opt-plumcinnamon",
+      "name": "Prugna+Cannella",
+      "icon": "🟣",
+      "price": 20,
+      "constraints": {},
+      "order": 12
+    },
+    "opt-applecinnamon": {
+      "id": "opt-applecinnamon",
+      "name": "Mela+Cannella",
+      "icon": "🍎",
+      "price": 20,
+      "constraints": {},
+      "order": 13
+    },
+    "opt-turmeric": {
+      "id": "opt-turmeric",
+      "name": "Curcuma",
+      "icon": "🟡",
+      "price": 30,
+      "constraints": {},
+      "order": 3
+    }
+  },
+  "itemGroups": {
+    "included": {
+      "id": "included",
+      "name": "Inclusi",
+      "itemIds": []
+    },
+    "group-ingredients": {
+      "id": "group-ingredients",
+      "name": "Aggiunte",
+      "itemIds": [
+        "opt-ginger",
+        "opt-lemon",
+        "opt-propolis",
+        "opt-turmeric"
+      ]
+    },
+    "group-herbal-teas": {
+      "id": "group-herbal-teas",
+      "name": "Mescola con Tisana",
+      "itemIds": [
+        "opt-chamomile",
+        "opt-linden-flower",
+        "opt-mountain-tea",
+        "opt-sage",
+        "opt-mint",
+        "opt-peppermint"
+      ]
+    },
+    "group-classic-teas": {
+      "id": "group-classic-teas",
+      "name": "Mescola con Tè Fruttato",
+      "itemIds": [
+        "opt-bilberry",
+        "opt-berries",
+        "opt-plumcinnamon",
+        "opt-applecinnamon",
+        "opt-rose-hip"
+      ]
+    },
+    "group-4": {
+      "id": "group-4",
+      "name": "Mescola con Tè Speciale",
+      "itemIds": [
+        "opt-black-tea",
+        "opt-chai-tea",
+        "opt-green-tea",
+        "opt-jasmine-gold",
+        "opt-rooibos-vanilla"
+      ]
+    }
+  },
+  "layout": [
+    {
+      "type": "item-group",
+      "data": "included"
+    },
+    {
+      "type": "item-group",
+      "data": "group-ingredients"
+    },
+    {
+      "type": "item-group",
+      "data": "group-herbal-teas"
+    },
+    {
+      "type": "item-group",
+      "data": "group-classic-teas"
+    },
+    {
+      "type": "item-group",
+      "data": "group-4"
+    }
+  ],
+  "modifierMenu": true
+}

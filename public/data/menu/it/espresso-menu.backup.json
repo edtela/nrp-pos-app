@@ -1,0 +1,91 @@
+{
+  "id": "espresso-menu",
+  "name": "Menu Caffè",
+  "currency": "ALL",
+  "items": {},
+  "itemGroups": {},
+  "layout": {
+    "groups": [
+      {
+        "header": {
+          "text": {
+            "sq": "Espresso Klasik - Të Nxehta",
+            "en": "Classic Espresso - Hot",
+            "it": "Espresso Classico - Caldo"
+          },
+          "classes": [
+            "menu-items-title"
+          ]
+        },
+        "items": [
+          "espresso",
+          "espresso-macchiato",
+          "caffe-latte",
+          "caffe-americano",
+          "cappuccino",
+          "espresso-decaffeinato",
+          "espresso-macchiato-decaffeinato",
+          "turkish-coffee",
+          "hot-chocolate",
+          "hot-cocoa"
+        ]
+      },
+      {
+        "header": {
+          "text": {
+            "sq": "Kafe të Ftohta",
+            "en": "Cold Coffee",
+            "it": "Caffè Freddo"
+          },
+          "classes": [
+            "menu-items-title"
+          ]
+        },
+        "items": [
+          "caffe-freddo",
+          "cappuccino-freddo",
+          "classic-frappe",
+          "milk-frappe"
+        ]
+      },
+      {
+        "header": {
+          "text": {
+            "sq": "Pije Speciale të Nxehta",
+            "en": "Special Hot Drinks",
+            "it": "Bevande Calde Speciali"
+          },
+          "classes": [
+            "menu-items-title"
+          ]
+        },
+        "items": [
+          "aromal-salep",
+          "golden-milk",
+          "chai-latte",
+          "vegan-latte",
+          "matcha-latte"
+        ]
+      },
+      {
+        "header": {
+          "text": {
+            "sq": "Pije Speciale të Ftohta",
+            "en": "Special Cold Drinks",
+            "it": "Bevande Fredde Speciali"
+          },
+          "classes": [
+            "menu-items-title"
+          ]
+        },
+        "items": [
+          "yoguccino",
+          "choco-shake",
+          "date-shake",
+          "peanut-shake",
+          "matcha-shake"
+        ]
+      }
+    ]
+  }
+}

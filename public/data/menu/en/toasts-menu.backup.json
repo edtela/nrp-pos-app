@@ -1,0 +1,39 @@
+{
+  "id": "toasts-menu",
+  "name": "Toasts Menu",
+  "currency": "ALL",
+  "items": {},
+  "itemGroups": {},
+  "layout": {
+    "groups": [
+      {
+        "header": {
+          "text": "Yoast",
+          "classes": [
+            "menu-items-title"
+          ]
+        },
+        "items": [
+          "walnut-yoast",
+          "peanut-yoast",
+          "berries-yoast",
+          "prosciutto-yoast"
+        ]
+      },
+      {
+        "header": {
+          "text": "Avotoast",
+          "classes": [
+            "menu-items-title"
+          ]
+        },
+        "items": [
+          "dried-pomodori",
+          "porcini-avotoast",
+          "avocado-avotoast",
+          "premium-egg"
+        ]
+      }
+    ]
+  }
+}

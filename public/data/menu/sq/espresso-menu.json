@@ -1,0 +1,353 @@
+{
+  "id": "espresso-menu",
+  "name": "Menu Kafe",
+  "currency": "ALL",
+  "items": {
+    "espresso": {
+      "id": "espresso",
+      "name": "Espresso",
+      "icon": "☕",
+      "price": 80,
+      "constraints": {},
+      "subMenu": {
+        "menuId": "espresso-options-espresso-only",
+        "included": [
+          {
+            "itemId": "opt-normale"
+          }
+        ]
+      },
+      "order": 0
+    },
+    "espresso-macchiato": {
+      "id": "espresso-macchiato",
+      "name": "Macchiato",
+      "icon": "☕",
+      "price": 90,
+      "constraints": {},
+      "subMenu": {
+        "menuId": "espresso-options-macchiato-only",
+        "included": [
+          {
+            "itemId": "opt-milk"
+          }
+        ]
+      },
+      "order": 1
+    },
+    "caffe-latte": {
+      "id": "caffe-latte",
+      "name": "Kafe Latte",
+      "icon": "☕",
+      "price": 170,
+      "constraints": {},
+      "subMenu": {
+        "menuId": "espresso-options",
+        "included": [
+          {
+            "itemId": "opt-milk"
+          }
+        ]
+      },
+      "order": 2
+    },
+    "caffe-americano": {
+      "id": "caffe-americano",
+      "name": "Kafe Amerikano",
+      "icon": "☕",
+      "price": 120,
+      "constraints": {},
+      "subMenu": {
+        "menuId": "espresso-options-americano-only",
+        "included": [
+          {
+            "itemId": "opt-no-milk"
+          }
+        ]
+      },
+      "order": 3
+    },
+    "cappuccino": {
+      "id": "cappuccino",
+      "name": "Cappuccino",
+      "icon": "☕",
+      "price": 150,
+      "constraints": {},
+      "subMenu": {
+        "menuId": "espresso-options",
+        "included": [
+          {
+            "itemId": "opt-milk"
+          }
+        ]
+      },
+      "order": 4
+    },
+    "turkish-coffee": {
+      "id": "turkish-coffee",
+      "name": "Kafe Turke",
+      "icon": "🫖",
+      "price": 70,
+      "constraints": {},
+      "subMenu": {
+        "menuId": "espresso-options-turkish-only",
+        "included": [
+          {
+            "itemId": "opt-medium-sweet"
+          }
+        ]
+      },
+      "order": 5
+    },
+    "hot-chocolate": {
+      "id": "hot-chocolate",
+      "name": "Çokollatë e Nxehtë",
+      "icon": "🍫",
+      "price": 170,
+      "constraints": {},
+      "subMenu": {
+        "menuId": "espresso-options-milk-only",
+        "included": [
+          {
+            "itemId": "opt-milk"
+          }
+        ]
+      },
+      "order": 6
+    },
+    "hot-cocoa": {
+      "id": "hot-cocoa",
+      "name": "Kakao e Nxehtë",
+      "icon": "☕",
+      "price": 170,
+      "constraints": {},
+      "subMenu": {
+        "menuId": "espresso-options-milk-only",
+        "included": [
+          {
+            "itemId": "opt-milk"
+          }
+        ]
+      },
+      "order": 7
+    },
+    "caffe-freddo": {
+      "id": "caffe-freddo",
+      "name": "Kafe Freddo",
+      "icon": "🧊",
+      "price": 150,
+      "constraints": {},
+      "subMenu": {
+        "menuId": "espresso-options-americano-only",
+        "included": [
+          {
+            "itemId": "opt-no-milk"
+          }
+        ]
+      },
+      "order": 12
+    },
+    "cappuccino-freddo": {
+      "id": "cappuccino-freddo",
+      "name": "Cappuccino Freddo",
+      "icon": "🧊",
+      "price": 170,
+      "constraints": {},
+      "subMenu": {
+        "menuId": "espresso-options",
+        "included": [
+          {
+            "itemId": "opt-milk"
+          }
+        ]
+      },
+      "order": 13
+    },
+    "aromal-salep": {
+      "id": "aromal-salep",
+      "name": "Aromal Salep",
+      "description": "qumësht, salep, arra, fistiqe, kanellë",
+      "icon": "✨",
+      "price": 200,
+      "constraints": {},
+      "order": 8
+    },
+    "golden-milk": {
+      "id": "golden-milk",
+      "name": "Qumësht i Artë",
+      "description": "qumësht, kurkumë, xhinxher, piper, kanellë, mjaltë",
+      "icon": "🌟",
+      "price": 200,
+      "constraints": {},
+      "order": 9
+    },
+    "chai-latte": {
+      "id": "chai-latte",
+      "name": "Chai Latte",
+      "description": "çaj chai, qumësht, kanellë, mjaltë",
+      "icon": "🫖",
+      "price": 200,
+      "constraints": {},
+      "order": 10
+    },
+    "matcha-latte": {
+      "id": "matcha-latte",
+      "name": "Matcha Latte",
+      "description": "qumësht tërshëre, matcha",
+      "icon": "🍵",
+      "price": 250,
+      "constraints": {},
+      "order": 11
+    },
+    "yoguccino": {
+      "id": "yoguccino",
+      "name": "Yoguccino",
+      "description": "kos aromal, kafe, mjaltë",
+      "icon": "🥛",
+      "price": 250,
+      "constraints": {},
+      "order": 15
+    },
+    "choco-shake": {
+      "id": "choco-shake",
+      "name": "Choco Shake",
+      "description": "qumësht tërshëre, banane, kokrra kafeje, çokollatë e zezë",
+      "icon": "🍫",
+      "price": 250,
+      "constraints": {},
+      "order": 16
+    },
+    "date-shake": {
+      "id": "date-shake",
+      "name": "Date Shake",
+      "description": "qumësht soje, banane, kokrra kafeje, hurma",
+      "icon": "🌴",
+      "price": 250,
+      "constraints": {},
+      "order": 17
+    },
+    "peanut-shake": {
+      "id": "peanut-shake",
+      "name": "Peanut Shake",
+      "description": "qumësht bajame, banane, kokrra kafeje, gjalpë kikiriku",
+      "icon": "🥜",
+      "price": 250,
+      "constraints": {},
+      "order": 18
+    },
+    "matcha-shake": {
+      "id": "matcha-shake",
+      "name": "Matcha Shake",
+      "description": "qumësht kokosi, banane, matcha, spinaq",
+      "icon": "🍵",
+      "price": 300,
+      "constraints": {},
+      "order": 19
+    },
+    "frappe": {
+      "id": "frappe",
+      "name": "Frappe",
+      "icon": "🥤",
+      "price": 170,
+      "constraints": {},
+      "subMenu": {
+        "menuId": "espresso-options-frappe-only",
+        "included": [
+          {
+            "itemId": "opt-medium-sweet"
+          },
+          {
+            "itemId": "opt-milk"
+          }
+        ]
+      },
+      "order": 14
+    }
+  },
+  "itemGroups": {
+    "group-classic-hot": {
+      "id": "group-classic-hot",
+      "name": "Kafe Klasike",
+      "itemIds": [
+        "espresso",
+        "espresso-macchiato",
+        "caffe-latte",
+        "caffe-americano",
+        "cappuccino",
+        "turkish-coffee"
+      ]
+    },
+    "group-hot-chocolate": {
+      "id": "group-hot-chocolate",
+      "name": "Çokollata dhe Kakao",
+      "itemIds": [
+        "hot-chocolate",
+        "hot-cocoa"
+      ]
+    },
+    "group-special-hot": {
+      "id": "group-special-hot",
+      "name": "Pije Speciale të Nxehta",
+      "itemIds": [
+        "aromal-salep",
+        "golden-milk",
+        "chai-latte",
+        "matcha-latte"
+      ]
+    },
+    "group-cold-coffee": {
+      "id": "group-cold-coffee",
+      "name": "Kafe të Ftohta",
+      "itemIds": [
+        "caffe-freddo",
+        "cappuccino-freddo",
+        "frappe"
+      ]
+    },
+    "group-cold-shakes": {
+      "id": "group-cold-shakes",
+      "name": "Shakes të Ftohta",
+      "itemIds": [
+        "yoguccino",
+        "choco-shake",
+        "date-shake",
+        "peanut-shake",
+        "matcha-shake"
+      ]
+    }
+  },
+  "layout": [
+    {
+      "text": "Të Nxehta",
+      "classes": [
+        "menu-title"
+      ]
+    },
+    {
+      "type": "item-group",
+      "data": "group-classic-hot"
+    },
+    {
+      "type": "item-group",
+      "data": "group-hot-chocolate"
+    },
+    {
+      "type": "item-group",
+      "data": "group-special-hot"
+    },
+    {
+      "text": "Të Ftohta",
+      "classes": [
+        "menu-title"
+      ]
+    },
+    {
+      "type": "item-group",
+      "data": "group-cold-coffee"
+    },
+    {
+      "type": "item-group",
+      "data": "group-cold-shakes"
+    }
+  ]
+}

@@ -1,0 +1,157 @@
+{
+  "id": "espresso-options-frappe-only",
+  "name": "Opzioni Espresso",
+  "currency": "ALL",
+  "items": {
+    "opt-milk": {
+      "id": "opt-milk",
+      "name": "Latte",
+      "icon": "🥛",
+      "price": 0,
+      "constraints": {
+        "choiceId": "milk-choice"
+      },
+      "order": 4
+    },
+    "opt-almond-milk": {
+      "id": "opt-almond-milk",
+      "name": "Latte di Mandorle",
+      "icon": "🤍",
+      "price": 0,
+      "constraints": {
+        "choiceId": "milk-choice"
+      },
+      "order": 5
+    },
+    "opt-coconut-milk": {
+      "id": "opt-coconut-milk",
+      "name": "Latte di Cocco",
+      "icon": "🥥",
+      "price": 0,
+      "constraints": {
+        "choiceId": "milk-choice"
+      },
+      "order": 6
+    },
+    "opt-oat-milk": {
+      "id": "opt-oat-milk",
+      "name": "Latte d'Avena",
+      "icon": "🌾",
+      "price": 0,
+      "constraints": {
+        "choiceId": "milk-choice"
+      },
+      "order": 7
+    },
+    "opt-soy-milk": {
+      "id": "opt-soy-milk",
+      "name": "Latte di Soia",
+      "icon": "🟢",
+      "price": 0,
+      "constraints": {
+        "choiceId": "milk-choice"
+      },
+      "order": 8
+    },
+    "opt-unsweetened": {
+      "id": "opt-unsweetened",
+      "name": "Senza zucchero",
+      "icon": "⚪",
+      "price": 0,
+      "constraints": {
+        "choiceId": "sweetness-choice"
+      },
+      "order": 0
+    },
+    "opt-light-sweet": {
+      "id": "opt-light-sweet",
+      "name": "Poco dolce",
+      "icon": "🟡",
+      "price": 0,
+      "constraints": {
+        "choiceId": "sweetness-choice"
+      },
+      "order": 1
+    },
+    "opt-medium-sweet": {
+      "id": "opt-medium-sweet",
+      "name": "Medio",
+      "icon": "🟠",
+      "price": 0,
+      "constraints": {
+        "choiceId": "sweetness-choice"
+      },
+      "order": 2
+    },
+    "opt-sweet": {
+      "id": "opt-sweet",
+      "name": "Dolce",
+      "icon": "🔴",
+      "price": 0,
+      "constraints": {
+        "choiceId": "sweetness-choice"
+      },
+      "order": 3
+    }
+  },
+  "itemGroups": {
+    "included": {
+      "id": "included",
+      "name": "Inclusi",
+      "itemIds": []
+    },
+    "group-milk-choices": {
+      "id": "group-milk-choices",
+      "name": "Scelta del Latte",
+      "itemIds": [
+        "opt-milk",
+        "opt-almond-milk",
+        "opt-coconut-milk",
+        "opt-oat-milk",
+        "opt-soy-milk"
+      ]
+    },
+    "group-sweetness": {
+      "id": "group-sweetness",
+      "name": "Dolcezza",
+      "itemIds": [
+        "opt-unsweetened",
+        "opt-light-sweet",
+        "opt-medium-sweet",
+        "opt-sweet"
+      ]
+    }
+  },
+  "layout": [
+    {
+      "type": "item-group",
+      "data": "included"
+    },
+    {
+      "type": "item-group",
+      "data": "group-sweetness"
+    },
+    {
+      "type": "item-group",
+      "data": "group-milk-choices"
+    }
+  ],
+  "choices": {
+    "milk-choice": {
+      "id": "milk-choice",
+      "min": 1,
+      "max": 1
+    },
+    "shot-length": {
+      "id": "shot-length",
+      "min": 1,
+      "max": 1
+    },
+    "sweetness-choice": {
+      "id": "sweetness-choice",
+      "min": 1,
+      "max": 1
+    }
+  },
+  "modifierMenu": true
+}

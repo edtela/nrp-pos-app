@@ -1,0 +1,121 @@
+{
+  "id": "crepes-menu",
+  "name": "Menu Crepes",
+  "currency": "ALL",
+  "items": {
+    "berryland": {
+      "id": "berryland",
+      "name": "Berryland",
+      "description": "yogurt aromal, marmellata di frutti di bosco, mirtilli, fragole/lamponi",
+      "price": 300,
+      "constraints": {},
+      "order": 0
+    },
+    "honey-bee": {
+      "id": "honey-bee",
+      "name": "Honey Bee",
+      "description": "miele, banana, more, burro di noci, cannella",
+      "price": 300,
+      "constraints": {},
+      "order": 1
+    },
+    "crispy-bite": {
+      "id": "crispy-bite",
+      "name": "Crispy Bite",
+      "description": "nutella, banana, fragole/lamponi, granola, burro di arachidi",
+      "price": 350,
+      "constraints": {},
+      "order": 2
+    },
+    "nut-berry": {
+      "id": "nut-berry",
+      "name": "Nut&Berry",
+      "description": "nutella, mirtilli, more, nocciole, mandorle",
+      "price": 350,
+      "constraints": {},
+      "order": 3
+    },
+    "tropic-snow": {
+      "id": "tropic-snow",
+      "name": "Tropic Snow",
+      "description": "cioccolato bianco, kiwi, ananas, mango, cocco",
+      "price": 350,
+      "constraints": {},
+      "order": 4
+    },
+    "chicky-meal": {
+      "id": "chicky-meal",
+      "name": "Chicky Meal",
+      "description": "yogurt aromal, gouda, pomodorini, prosciutto di pollo, zaatar, olio evo",
+      "price": 300,
+      "constraints": {},
+      "order": 5
+    },
+    "farmville": {
+      "id": "farmville",
+      "name": "Farmville",
+      "description": "yogurt aromal, feta, pomodori secchi, cetriolo, olive, ajvar, origano, olio evo",
+      "price": 300,
+      "constraints": {},
+      "order": 6
+    },
+    "porcini-boost": {
+      "id": "porcini-boost",
+      "name": "Porcini Boost",
+      "description": "pesto, gouda, porcini secchi, pomodorini, zaatar, olio evo",
+      "price": 350,
+      "constraints": {},
+      "order": 7
+    },
+    "mexican-street": {
+      "id": "mexican-street",
+      "name": "Mexican Street",
+      "description": "yogurt aromal, gouda, avocado, pomodorini, mais, prezzemolo, limone, olio evo",
+      "price": 350,
+      "constraints": {},
+      "order": 8
+    },
+    "greenchick": {
+      "id": "greenchick",
+      "name": "GreenChick",
+      "description": "yogurt aromal, feta, avocado, prosciutto di pollo, pomodori secchi, olio evo",
+      "price": 350,
+      "constraints": {},
+      "order": 9
+    }
+  },
+  "itemGroups": {
+    "group-sweet": {
+      "id": "group-sweet",
+      "name": "Crepes Dolci",
+      "itemIds": [
+        "berryland",
+        "honey-bee",
+        "crispy-bite",
+        "nut-berry",
+        "tropic-snow"
+      ]
+    },
+    "group-savory": {
+      "id": "group-savory",
+      "name": "Crepes Salate",
+      "itemIds": [
+        "chicky-meal",
+        "farmville",
+        "porcini-boost",
+        "mexican-street",
+        "greenchick"
+      ]
+    }
+  },
+  "layout": [
+    {
+      "type": "item-group",
+      "data": "group-sweet"
+    },
+    {
+      "type": "item-group",
+      "data": "group-savory"
+    }
+  ]
+}

@@ -1,0 +1,67 @@
+{
+  "id": "smoothie-menu",
+  "name": "Menu Smoothie",
+  "currency": "ALL",
+  "items": {},
+  "itemGroups": {},
+  "layout": {
+    "groups": [
+      {
+        "header": {
+          "text": {
+            "sq": "Ndërto Smoothien Tënd",
+            "en": "Build Your Own Smoothie",
+            "it": "Costruisci il Tuo Smoothie"
+          },
+          "classes": [
+            "menu-items-title"
+          ]
+        },
+        "items": [
+          "aromal-yogurt-base",
+          "milk-base",
+          "juice-base"
+        ]
+      },
+      {
+        "header": {
+          "text": {
+            "sq": "Përzierjet e Smoothies",
+            "en": "Smoothie Blends",
+            "it": "Miscele di Smoothie"
+          },
+          "classes": [
+            "menu-items-title"
+          ]
+        },
+        "items": [
+          "goji-c",
+          "triple-berry",
+          "green-muscle",
+          "protein-punch",
+          "nutty-date",
+          "coco-mango"
+        ]
+      }
+    ]
+  },
+  "variants": {
+    "smoothie-type": {
+      "id": "smoothie-type",
+      "variants": [
+        {
+          "id": "smoothie",
+          "name": "Smoothie",
+          "icon": "🥤"
+        },
+        {
+          "id": "bowl",
+          "name": "Smoothie Bowl",
+          "icon": "🥣"
+        }
+      ],
+      "selectedId": "smoothie",
+      "name": "Tipo"
+    }
+  }
+}

@@ -1,0 +1,103 @@
+{
+  "id": "toasts-menu",
+  "name": "Toasts Menu",
+  "currency": "ALL",
+  "items": {
+    "walnut-yoast": {
+      "id": "walnut-yoast",
+      "name": "Walnut",
+      "description": "aromal yogurt, walnut butter, blueberries, chia seeds, honey",
+      "price": 300,
+      "constraints": {},
+      "order": 0
+    },
+    "peanut-yoast": {
+      "id": "peanut-yoast",
+      "name": "Peanut",
+      "description": "aromal yogurt, peanut butter, banana, flax seeds, cinnamon, honey",
+      "price": 300,
+      "constraints": {},
+      "order": 1
+    },
+    "berries-yoast": {
+      "id": "berries-yoast",
+      "name": "Berries",
+      "description": "aromal yogurt, berries jam, granola",
+      "price": 300,
+      "constraints": {},
+      "order": 2
+    },
+    "prosciutto-yoast": {
+      "id": "prosciutto-yoast",
+      "name": "Prosciutto",
+      "description": "aromal yogurt, gouda cheese, pomadorini, chicken ham, zaatar, evoo",
+      "price": 300,
+      "constraints": {},
+      "order": 3
+    },
+    "dried-pomodori": {
+      "id": "dried-pomodori",
+      "name": "Dried Pomodori",
+      "description": "avocado, feta cheese, dried tomatoes, sunflower seeds",
+      "price": 350,
+      "constraints": {},
+      "order": 4
+    },
+    "porcini-avotoast": {
+      "id": "porcini-avotoast",
+      "name": "Porcini",
+      "description": "avocado, dried porcini, pine nuts",
+      "price": 350,
+      "constraints": {},
+      "order": 5
+    },
+    "avocado-avotoast": {
+      "id": "avocado-avotoast",
+      "name": "Avocado",
+      "description": "avocado, pomadorini, corn, pumpkin seeds, parsley, lemon, evoo",
+      "price": 350,
+      "constraints": {},
+      "order": 6
+    },
+    "premium-egg": {
+      "id": "premium-egg",
+      "name": "Premium Egg",
+      "description": "avocado, chicken ham, boiled egg, chia seeds, evoo",
+      "price": 400,
+      "constraints": {},
+      "order": 7
+    }
+  },
+  "itemGroups": {
+    "group-yoast": {
+      "id": "group-yoast",
+      "name": "Yoast",
+      "itemIds": [
+        "walnut-yoast",
+        "peanut-yoast",
+        "berries-yoast",
+        "prosciutto-yoast"
+      ]
+    },
+    "group-avotoast": {
+      "id": "group-avotoast",
+      "name": "Avotoast",
+      "itemIds": [
+        "dried-pomodori",
+        "porcini-avotoast",
+        "avocado-avotoast",
+        "premium-egg"
+      ]
+    }
+  },
+  "layout": [
+    {
+      "type": "item-group",
+      "data": "group-yoast"
+    },
+    {
+      "type": "item-group",
+      "data": "group-avotoast"
+    }
+  ]
+}

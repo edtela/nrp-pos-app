@@ -1,0 +1,353 @@
+{
+  "id": "espresso-menu",
+  "name": "Coffee Menu",
+  "currency": "ALL",
+  "items": {
+    "espresso": {
+      "id": "espresso",
+      "name": "Espresso",
+      "icon": "☕",
+      "price": 80,
+      "constraints": {},
+      "subMenu": {
+        "menuId": "espresso-options-espresso-only",
+        "included": [
+          {
+            "itemId": "opt-normale"
+          }
+        ]
+      },
+      "order": 0
+    },
+    "espresso-macchiato": {
+      "id": "espresso-macchiato",
+      "name": "Macchiato",
+      "icon": "☕",
+      "price": 90,
+      "constraints": {},
+      "subMenu": {
+        "menuId": "espresso-options-macchiato-only",
+        "included": [
+          {
+            "itemId": "opt-milk"
+          }
+        ]
+      },
+      "order": 1
+    },
+    "caffe-latte": {
+      "id": "caffe-latte",
+      "name": "Caffè Latte",
+      "icon": "☕",
+      "price": 170,
+      "constraints": {},
+      "subMenu": {
+        "menuId": "espresso-options",
+        "included": [
+          {
+            "itemId": "opt-milk"
+          }
+        ]
+      },
+      "order": 2
+    },
+    "caffe-americano": {
+      "id": "caffe-americano",
+      "name": "Caffè Americano",
+      "icon": "☕",
+      "price": 120,
+      "constraints": {},
+      "subMenu": {
+        "menuId": "espresso-options-americano-only",
+        "included": [
+          {
+            "itemId": "opt-no-milk"
+          }
+        ]
+      },
+      "order": 3
+    },
+    "cappuccino": {
+      "id": "cappuccino",
+      "name": "Cappuccino",
+      "icon": "☕",
+      "price": 150,
+      "constraints": {},
+      "subMenu": {
+        "menuId": "espresso-options",
+        "included": [
+          {
+            "itemId": "opt-milk"
+          }
+        ]
+      },
+      "order": 4
+    },
+    "turkish-coffee": {
+      "id": "turkish-coffee",
+      "name": "Turkish Coffee",
+      "icon": "🫖",
+      "price": 70,
+      "constraints": {},
+      "subMenu": {
+        "menuId": "espresso-options-turkish-only",
+        "included": [
+          {
+            "itemId": "opt-medium-sweet"
+          }
+        ]
+      },
+      "order": 5
+    },
+    "hot-chocolate": {
+      "id": "hot-chocolate",
+      "name": "Hot Chocolate",
+      "icon": "🍫",
+      "price": 170,
+      "constraints": {},
+      "subMenu": {
+        "menuId": "espresso-options-milk-only",
+        "included": [
+          {
+            "itemId": "opt-milk"
+          }
+        ]
+      },
+      "order": 6
+    },
+    "hot-cocoa": {
+      "id": "hot-cocoa",
+      "name": "Hot Cocoa",
+      "icon": "☕",
+      "price": 170,
+      "constraints": {},
+      "subMenu": {
+        "menuId": "espresso-options-milk-only",
+        "included": [
+          {
+            "itemId": "opt-milk"
+          }
+        ]
+      },
+      "order": 7
+    },
+    "caffe-freddo": {
+      "id": "caffe-freddo",
+      "name": "Caffè Freddo",
+      "icon": "🧊",
+      "price": 150,
+      "constraints": {},
+      "subMenu": {
+        "menuId": "espresso-options-americano-only",
+        "included": [
+          {
+            "itemId": "opt-no-milk"
+          }
+        ]
+      },
+      "order": 12
+    },
+    "cappuccino-freddo": {
+      "id": "cappuccino-freddo",
+      "name": "Cappuccino Freddo",
+      "icon": "🧊",
+      "price": 170,
+      "constraints": {},
+      "subMenu": {
+        "menuId": "espresso-options",
+        "included": [
+          {
+            "itemId": "opt-milk"
+          }
+        ]
+      },
+      "order": 13
+    },
+    "aromal-salep": {
+      "id": "aromal-salep",
+      "name": "Aromal Salep",
+      "description": "milk, salep, walnuts, pistachios, cinnamon",
+      "icon": "✨",
+      "price": 200,
+      "constraints": {},
+      "order": 8
+    },
+    "golden-milk": {
+      "id": "golden-milk",
+      "name": "Golden Milk",
+      "description": "milk, turmeric, ginger, pepper, cinnamon, honey",
+      "icon": "🌟",
+      "price": 200,
+      "constraints": {},
+      "order": 9
+    },
+    "chai-latte": {
+      "id": "chai-latte",
+      "name": "Chai Latte",
+      "description": "chai tea, milk, cinnamon, honey",
+      "icon": "🫖",
+      "price": 200,
+      "constraints": {},
+      "order": 10
+    },
+    "matcha-latte": {
+      "id": "matcha-latte",
+      "name": "Matcha Latte",
+      "description": "oat milk, matcha",
+      "icon": "🍵",
+      "price": 250,
+      "constraints": {},
+      "order": 11
+    },
+    "yoguccino": {
+      "id": "yoguccino",
+      "name": "Yoguccino",
+      "description": "aromal yogurt, coffee, honey",
+      "icon": "🥛",
+      "price": 250,
+      "constraints": {},
+      "order": 15
+    },
+    "choco-shake": {
+      "id": "choco-shake",
+      "name": "Choco Shake",
+      "description": "oat milk, banana, coffee beans, dark chocolate",
+      "icon": "🍫",
+      "price": 250,
+      "constraints": {},
+      "order": 16
+    },
+    "date-shake": {
+      "id": "date-shake",
+      "name": "Date Shake",
+      "description": "soya milk, banana, coffee beans, dates",
+      "icon": "🌴",
+      "price": 250,
+      "constraints": {},
+      "order": 17
+    },
+    "peanut-shake": {
+      "id": "peanut-shake",
+      "name": "Peanut Shake",
+      "description": "almond milk, banana, coffee beans, peanut butter",
+      "icon": "🥜",
+      "price": 250,
+      "constraints": {},
+      "order": 18
+    },
+    "matcha-shake": {
+      "id": "matcha-shake",
+      "name": "Matcha Shake",
+      "description": "coconut milk, banana, matcha, spinach",
+      "icon": "🍵",
+      "price": 300,
+      "constraints": {},
+      "order": 19
+    },
+    "frappe": {
+      "id": "frappe",
+      "name": "Frappe",
+      "icon": "🥤",
+      "price": 170,
+      "constraints": {},
+      "subMenu": {
+        "menuId": "espresso-options-frappe-only",
+        "included": [
+          {
+            "itemId": "opt-medium-sweet"
+          },
+          {
+            "itemId": "opt-milk"
+          }
+        ]
+      },
+      "order": 14
+    }
+  },
+  "itemGroups": {
+    "group-classic-hot": {
+      "id": "group-classic-hot",
+      "name": "Classic Coffee",
+      "itemIds": [
+        "espresso",
+        "espresso-macchiato",
+        "caffe-latte",
+        "caffe-americano",
+        "cappuccino",
+        "turkish-coffee"
+      ]
+    },
+    "group-hot-chocolate": {
+      "id": "group-hot-chocolate",
+      "name": "Chocolate & Cocoa",
+      "itemIds": [
+        "hot-chocolate",
+        "hot-cocoa"
+      ]
+    },
+    "group-special-hot": {
+      "id": "group-special-hot",
+      "name": "Special Hot Drinks",
+      "itemIds": [
+        "aromal-salep",
+        "golden-milk",
+        "chai-latte",
+        "matcha-latte"
+      ]
+    },
+    "group-cold-coffee": {
+      "id": "group-cold-coffee",
+      "name": "Cold Coffee",
+      "itemIds": [
+        "caffe-freddo",
+        "cappuccino-freddo",
+        "frappe"
+      ]
+    },
+    "group-cold-shakes": {
+      "id": "group-cold-shakes",
+      "name": "Cold Shakes",
+      "itemIds": [
+        "yoguccino",
+        "choco-shake",
+        "date-shake",
+        "peanut-shake",
+        "matcha-shake"
+      ]
+    }
+  },
+  "layout": [
+    {
+      "text": "Hot",
+      "classes": [
+        "menu-title"
+      ]
+    },
+    {
+      "type": "item-group",
+      "data": "group-classic-hot"
+    },
+    {
+      "type": "item-group",
+      "data": "group-hot-chocolate"
+    },
+    {
+      "type": "item-group",
+      "data": "group-special-hot"
+    },
+    {
+      "text": "Cold",
+      "classes": [
+        "menu-title"
+      ]
+    },
+    {
+      "type": "item-group",
+      "data": "group-cold-coffee"
+    },
+    {
+      "type": "item-group",
+      "data": "group-cold-shakes"
+    }
+  ]
+}

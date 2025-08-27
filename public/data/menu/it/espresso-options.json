@@ -1,0 +1,131 @@
+{
+  "id": "espresso-options",
+  "name": "Opzioni Espresso",
+  "currency": "ALL",
+  "items": {
+    "opt-milk": {
+      "id": "opt-milk",
+      "name": "Latte",
+      "icon": "🥛",
+      "price": 0,
+      "constraints": {
+        "choiceId": "milk-choice"
+      },
+      "order": 2
+    },
+    "opt-almond-milk": {
+      "id": "opt-almond-milk",
+      "name": "Latte di Mandorle",
+      "icon": "🤍",
+      "price": 0,
+      "constraints": {
+        "choiceId": "milk-choice"
+      },
+      "order": 3
+    },
+    "opt-coconut-milk": {
+      "id": "opt-coconut-milk",
+      "name": "Latte di Cocco",
+      "icon": "🥥",
+      "price": 0,
+      "constraints": {
+        "choiceId": "milk-choice"
+      },
+      "order": 4
+    },
+    "opt-oat-milk": {
+      "id": "opt-oat-milk",
+      "name": "Latte d'Avena",
+      "icon": "🌾",
+      "price": 0,
+      "constraints": {
+        "choiceId": "milk-choice"
+      },
+      "order": 5
+    },
+    "opt-soy-milk": {
+      "id": "opt-soy-milk",
+      "name": "Latte di Soia",
+      "icon": "🟢",
+      "price": 0,
+      "constraints": {
+        "choiceId": "milk-choice"
+      },
+      "order": 6
+    },
+    "opt-decaf": {
+      "id": "opt-decaf",
+      "name": "Decaffeinato",
+      "icon": "☕",
+      "price": 0,
+      "constraints": {},
+      "order": 0
+    },
+    "opt-double-shot": {
+      "id": "opt-double-shot",
+      "name": "Doppio",
+      "icon": "💪",
+      "price": 60,
+      "constraints": {},
+      "order": 1
+    }
+  },
+  "itemGroups": {
+    "included": {
+      "id": "included",
+      "name": "Inclusi",
+      "itemIds": []
+    },
+    "group-milk-choices": {
+      "id": "group-milk-choices",
+      "name": "Scelta del Latte",
+      "itemIds": [
+        "opt-milk",
+        "opt-almond-milk",
+        "opt-coconut-milk",
+        "opt-oat-milk",
+        "opt-soy-milk"
+      ]
+    },
+    "group-coffee-strength": {
+      "id": "group-coffee-strength",
+      "name": "Opzioni Caffè",
+      "itemIds": [
+        "opt-decaf",
+        "opt-double-shot"
+      ]
+    }
+  },
+  "layout": [
+    {
+      "type": "item-group",
+      "data": "included"
+    },
+    {
+      "type": "item-group",
+      "data": "group-coffee-strength"
+    },
+    {
+      "type": "item-group",
+      "data": "group-milk-choices"
+    }
+  ],
+  "choices": {
+    "milk-choice": {
+      "id": "milk-choice",
+      "min": 1,
+      "max": 1
+    },
+    "shot-length": {
+      "id": "shot-length",
+      "min": 1,
+      "max": 1
+    },
+    "sweetness-choice": {
+      "id": "sweetness-choice",
+      "min": 1,
+      "max": 1
+    }
+  },
+  "modifierMenu": true
+}

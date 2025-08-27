@@ -1,0 +1,525 @@
+{
+  "id": "tea-menu",
+  "name": "Tea Menu",
+  "currency": "ALL",
+  "items": {
+    "chamomile": {
+      "id": "chamomile",
+      "name": "Chamomile",
+      "description": "Calming and relaxing",
+      "icon": "☕",
+      "price": 150,
+      "constraints": {},
+      "subMenu": {
+        "menuId": "tea-options",
+        "included": [
+          {
+            "itemId": "opt-chamomile",
+            "display": "none"
+          }
+        ]
+      },
+      "order": 0
+    },
+    "linden-flower": {
+      "id": "linden-flower",
+      "name": "Linden Flower",
+      "description": "Mild and aromatic",
+      "icon": "☕",
+      "price": 150,
+      "constraints": {},
+      "subMenu": {
+        "menuId": "tea-options",
+        "included": [
+          {
+            "itemId": "opt-linden-flower",
+            "display": "none"
+          }
+        ]
+      },
+      "order": 1
+    },
+    "ginger-tea": {
+      "id": "ginger-tea",
+      "name": "Ginger",
+      "description": "Spicy and warming",
+      "icon": "☕",
+      "price": 150,
+      "constraints": {},
+      "subMenu": {
+        "menuId": "tea-options",
+        "included": [
+          {
+            "itemId": "opt-ginger",
+            "display": "none"
+          }
+        ]
+      },
+      "order": 6
+    },
+    "bilberry": {
+      "id": "bilberry",
+      "name": "Bilberry",
+      "description": "Rich in antioxidants",
+      "icon": "☕",
+      "price": 170,
+      "constraints": {},
+      "subMenu": {
+        "menuId": "tea-options",
+        "included": [
+          {
+            "itemId": "opt-bilberry",
+            "display": "none"
+          }
+        ]
+      },
+      "order": 7
+    },
+    "berries": {
+      "id": "berries",
+      "name": "Berries",
+      "description": "Fruity blend",
+      "icon": "☕",
+      "price": 170,
+      "constraints": {},
+      "subMenu": {
+        "menuId": "tea-options",
+        "included": [
+          {
+            "itemId": "opt-berries",
+            "display": "none"
+          }
+        ]
+      },
+      "order": 8
+    },
+    "lemon": {
+      "id": "lemon",
+      "name": "Lemon",
+      "description": "Zesty and vitamin C",
+      "icon": "☕",
+      "price": 170,
+      "constraints": {},
+      "subMenu": {
+        "menuId": "tea-options",
+        "included": [
+          {
+            "itemId": "opt-lemon",
+            "display": "none"
+          }
+        ]
+      },
+      "order": 11
+    },
+    "rose-hip": {
+      "id": "rose-hip",
+      "name": "Rose Hip",
+      "description": "Delicate and floral",
+      "icon": "☕",
+      "price": 170,
+      "constraints": {},
+      "subMenu": {
+        "menuId": "tea-options",
+        "included": [
+          {
+            "itemId": "opt-rose-hip",
+            "display": "none"
+          }
+        ]
+      },
+      "order": 12
+    },
+    "black-tea": {
+      "id": "black-tea",
+      "name": "Black Tea",
+      "description": "Bold and energizing",
+      "icon": "☕",
+      "price": 200,
+      "constraints": {},
+      "subMenu": {
+        "menuId": "tea-options",
+        "included": [
+          {
+            "itemId": "opt-black-tea",
+            "display": "none"
+          }
+        ]
+      },
+      "order": 13
+    },
+    "chai-tea": {
+      "id": "chai-tea",
+      "name": "Chai Tea",
+      "description": "Indian spices",
+      "icon": "☕",
+      "price": 200,
+      "constraints": {},
+      "subMenu": {
+        "menuId": "tea-options",
+        "included": [
+          {
+            "itemId": "opt-chai-tea",
+            "display": "none"
+          }
+        ]
+      },
+      "order": 14
+    },
+    "green-tea": {
+      "id": "green-tea",
+      "name": "Green Tea",
+      "description": "Delicate and healthy",
+      "icon": "☕",
+      "price": 200,
+      "constraints": {},
+      "subMenu": {
+        "menuId": "tea-options",
+        "included": [
+          {
+            "itemId": "opt-green-tea",
+            "display": "none"
+          }
+        ]
+      },
+      "order": 15
+    },
+    "jasmine-gold": {
+      "id": "jasmine-gold",
+      "name": "Jasmine Gold",
+      "description": "Floral and elegant",
+      "icon": "☕",
+      "price": 200,
+      "constraints": {},
+      "subMenu": {
+        "menuId": "tea-options",
+        "included": [
+          {
+            "itemId": "opt-jasmine-gold",
+            "display": "none"
+          }
+        ]
+      },
+      "order": 16
+    },
+    "rooibos-vanilla": {
+      "id": "rooibos-vanilla",
+      "name": "Rooibos Vanilla",
+      "description": "Caffeine-free, sweet",
+      "icon": "☕",
+      "price": 200,
+      "constraints": {},
+      "subMenu": {
+        "menuId": "tea-options",
+        "included": [
+          {
+            "itemId": "opt-rooibos-vanilla",
+            "display": "none"
+          }
+        ]
+      },
+      "order": 17
+    },
+    "iced-berries": {
+      "id": "iced-berries",
+      "name": "Iced Berries",
+      "description": "Refreshing fruity",
+      "icon": "🥤",
+      "price": 200,
+      "constraints": {},
+      "order": 18
+    },
+    "iced-cherry": {
+      "id": "iced-cherry",
+      "name": "Iced Cherry",
+      "description": "Fruity and vibrant",
+      "icon": "🥤",
+      "price": 200,
+      "constraints": {},
+      "order": 21
+    },
+    "iced-cornelian-cherry": {
+      "id": "iced-cornelian-cherry",
+      "name": "Iced Cornelian Cherry",
+      "description": "Traditional and unique",
+      "icon": "🥤",
+      "price": 200,
+      "constraints": {},
+      "order": 22
+    },
+    "iced-rose-petal": {
+      "id": "iced-rose-petal",
+      "name": "Iced Rose Petal",
+      "description": "Elegant and delicate",
+      "icon": "🥤",
+      "price": 200,
+      "constraints": {},
+      "order": 23
+    },
+    "kombucha-ginger": {
+      "id": "kombucha-ginger",
+      "name": "Ginger Kombucha",
+      "description": "Probiotic and spicy",
+      "icon": "🍾",
+      "price": 350,
+      "constraints": {},
+      "order": 24
+    },
+    "kombucha-luppolo": {
+      "id": "kombucha-luppolo",
+      "name": "Luppolo Kombucha",
+      "description": "Fermented with hops",
+      "icon": "🍾",
+      "price": 350,
+      "constraints": {},
+      "order": 25
+    },
+    "kombucha-passion-fruit": {
+      "id": "kombucha-passion-fruit",
+      "name": "Passion Fruit Kombucha",
+      "description": "Tropical and tangy",
+      "icon": "🍾",
+      "price": 350,
+      "constraints": {},
+      "order": 26
+    },
+    "kombucha-raspberry": {
+      "id": "kombucha-raspberry",
+      "name": "Raspberry Kombucha",
+      "description": "Fruity and tart",
+      "icon": "🍾",
+      "price": 350,
+      "constraints": {},
+      "order": 27
+    },
+    "kombucha-seasonal": {
+      "id": "kombucha-seasonal",
+      "name": "Seasonal Kombucha",
+      "description": "Ask for the flavor",
+      "icon": "🍾",
+      "price": 350,
+      "constraints": {},
+      "order": 28
+    },
+    "mountain-tea": {
+      "id": "mountain-tea",
+      "name": "Mountain Tea",
+      "description": "Traditional Albanian",
+      "icon": "☕",
+      "price": 150,
+      "constraints": {},
+      "subMenu": {
+        "menuId": "tea-options",
+        "included": [
+          {
+            "itemId": "opt-mountain-tea",
+            "display": "none"
+          }
+        ]
+      },
+      "order": 2
+    },
+    "sage": {
+      "id": "sage",
+      "name": "Sage",
+      "description": "Herbal and healing",
+      "icon": "☕",
+      "price": 150,
+      "constraints": {},
+      "subMenu": {
+        "menuId": "tea-options",
+        "included": [
+          {
+            "itemId": "opt-sage",
+            "display": "none"
+          }
+        ]
+      },
+      "order": 3
+    },
+    "mint": {
+      "id": "mint",
+      "name": "Mint",
+      "description": "Refreshing and digestive",
+      "icon": "☕",
+      "price": 150,
+      "constraints": {},
+      "subMenu": {
+        "menuId": "tea-options",
+        "included": [
+          {
+            "itemId": "opt-mint",
+            "display": "none"
+          }
+        ]
+      },
+      "order": 4
+    },
+    "peppermint": {
+      "id": "peppermint",
+      "name": "Peppermint",
+      "description": "Intense and cooling",
+      "icon": "☕",
+      "price": 150,
+      "constraints": {},
+      "subMenu": {
+        "menuId": "tea-options",
+        "included": [
+          {
+            "itemId": "opt-peppermint",
+            "display": "none"
+          }
+        ]
+      },
+      "order": 5
+    },
+    "plum-cinnamon": {
+      "id": "plum-cinnamon",
+      "name": "Plum+Cinnamon",
+      "description": "Sweet and aromatic",
+      "icon": "☕",
+      "price": 170,
+      "constraints": {},
+      "subMenu": {
+        "menuId": "tea-options",
+        "included": [
+          {
+            "itemId": "opt-plumcinnamon",
+            "display": "none"
+          }
+        ]
+      },
+      "order": 9
+    },
+    "apple-cinnamon": {
+      "id": "apple-cinnamon",
+      "name": "Apple+Cinnamon",
+      "description": "Classic and warming",
+      "icon": "☕",
+      "price": 170,
+      "constraints": {},
+      "subMenu": {
+        "menuId": "tea-options",
+        "included": [
+          {
+            "itemId": "opt-applecinnamon",
+            "display": "none"
+          }
+        ]
+      },
+      "order": 10
+    },
+    "iced-plum": {
+      "id": "iced-plum",
+      "name": "Iced Plum",
+      "description": "Sweet and refreshing",
+      "icon": "🥤",
+      "price": 200,
+      "constraints": {},
+      "order": 19
+    },
+    "iced-peach": {
+      "id": "iced-peach",
+      "name": "Iced Peach",
+      "description": "Delicate and summery",
+      "icon": "🥤",
+      "price": 200,
+      "constraints": {},
+      "order": 20
+    }
+  },
+  "itemGroups": {
+    "group-herbal-hot": {
+      "id": "group-herbal-hot",
+      "name": "Herbal Teas",
+      "itemIds": [
+        "chamomile",
+        "linden-flower",
+        "mountain-tea",
+        "sage",
+        "mint",
+        "peppermint",
+        "ginger-tea"
+      ]
+    },
+    "group-fruity-hot": {
+      "id": "group-fruity-hot",
+      "name": "Fruity Teas",
+      "itemIds": [
+        "bilberry",
+        "berries",
+        "plum-cinnamon",
+        "apple-cinnamon",
+        "lemon",
+        "rose-hip"
+      ]
+    },
+    "group-special-hot": {
+      "id": "group-special-hot",
+      "name": "Special Teas",
+      "itemIds": [
+        "black-tea",
+        "chai-tea",
+        "green-tea",
+        "jasmine-gold",
+        "rooibos-vanilla"
+      ]
+    },
+    "group-iced-teas": {
+      "id": "group-iced-teas",
+      "name": "Iced Teas",
+      "itemIds": [
+        "iced-berries",
+        "iced-plum",
+        "iced-peach",
+        "iced-cherry",
+        "iced-cornelian-cherry",
+        "iced-rose-petal"
+      ]
+    },
+    "group-kombucha": {
+      "id": "group-kombucha",
+      "name": "Kombucha",
+      "itemIds": [
+        "kombucha-ginger",
+        "kombucha-luppolo",
+        "kombucha-passion-fruit",
+        "kombucha-raspberry",
+        "kombucha-seasonal"
+      ]
+    }
+  },
+  "layout": [
+    {
+      "text": "Hot",
+      "classes": [
+        "menu-title"
+      ]
+    },
+    {
+      "type": "item-group",
+      "data": "group-herbal-hot"
+    },
+    {
+      "type": "item-group",
+      "data": "group-fruity-hot"
+    },
+    {
+      "type": "item-group",
+      "data": "group-special-hot"
+    },
+    {
+      "text": "Cold",
+      "classes": [
+        "menu-title"
+      ]
+    },
+    {
+      "type": "item-group",
+      "data": "group-iced-teas"
+    },
+    {
+      "type": "item-group",
+      "data": "group-kombucha"
+    }
+  ]
+}

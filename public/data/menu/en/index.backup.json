@@ -1,0 +1,18 @@
+{
+  "id": "main-menu",
+  "name": "Aromal",
+  "currency": "ALL",
+  "items": {},
+  "itemGroups": {},
+  "layout": {
+    "items": [
+      "coffee",
+      "tea",
+      "juice",
+      "smoothie",
+      "yogurt",
+      "crepes",
+      "toasts"
+    ]
+  }
+}

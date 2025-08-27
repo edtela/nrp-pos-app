@@ -1,0 +1,129 @@
+{
+  "id": "yogurt-options",
+  "name": "Yogurt Options",
+  "currency": "ALL",
+  "items": {},
+  "itemGroups": {},
+  "layout": {
+    "groups": [
+      {
+        "header": {
+          "text": {
+            "sq": "Fruta (+40 Lekë)",
+            "en": "Fruits (+40 Lekë)",
+            "it": "Frutta (+40 Lekë)"
+          },
+          "classes": [
+            "menu-items-title"
+          ]
+        },
+        "items": [
+          "banana",
+          "blueberries",
+          "kiwi",
+          "strawberries-raspberries",
+          "blackberries"
+        ]
+      },
+      {
+        "header": {
+          "text": {
+            "sq": "Arra dhe Fara (+40 Lekë)",
+            "en": "Nuts and Seeds (+40 Lekë)",
+            "it": "Noci e Semi (+40 Lekë)"
+          },
+          "classes": [
+            "menu-items-title"
+          ]
+        },
+        "items": [
+          "walnuts",
+          "almonds",
+          "granola",
+          "hazelnuts",
+          "mix-nuts",
+          "seeds-20"
+        ]
+      },
+      {
+        "header": {
+          "text": {
+            "sq": "Fruta të Thata (+40 Lekë)",
+            "en": "Dried Fruits (+40 Lekë)",
+            "it": "Frutta Secca (+40 Lekë)"
+          },
+          "classes": [
+            "menu-items-title"
+          ]
+        },
+        "items": [
+          "coconut",
+          "cranberries",
+          "dates",
+          "dried-apricots",
+          "raisins"
+        ]
+      },
+      {
+        "header": {
+          "text": {
+            "sq": "Ëmbëlsira (+30 Lekë)",
+            "en": "Sweets (+30 Lekë)",
+            "it": "Dolci (+30 Lekë)"
+          },
+          "classes": [
+            "menu-items-title"
+          ]
+        },
+        "items": [
+          "sweet-spoon",
+          "wildflower-honey",
+          "jam",
+          "date-syrup",
+          "choco-spoon"
+        ]
+      },
+      {
+        "header": {
+          "text": {
+            "sq": "Premium (+50 Lekë)",
+            "en": "Premium (+50 Lekë)",
+            "it": "Premium (+50 Lekë)"
+          },
+          "classes": [
+            "menu-items-title"
+          ]
+        },
+        "items": [
+          "pineapple",
+          "avocado",
+          "mango",
+          "dark-chocolate",
+          "hemp-seeds",
+          "pine-nut",
+          "peanut-almond-walnut-butter"
+        ]
+      },
+      {
+        "header": {
+          "text": {
+            "sq": "Superushqime (+100 Lekë)",
+            "en": "Superfoods (+100 Lekë)",
+            "it": "Superfood (+100 Lekë)"
+          },
+          "classes": [
+            "menu-items-title"
+          ]
+        },
+        "items": [
+          "wild-strawberry",
+          "goji-berry",
+          "bee-pollen",
+          "whey-protein",
+          "pistachios"
+        ]
+      }
+    ]
+  },
+  "modifierMenu": true
+}

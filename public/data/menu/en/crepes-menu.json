@@ -1,0 +1,121 @@
+{
+  "id": "crepes-menu",
+  "name": "Crepes Menu",
+  "currency": "ALL",
+  "items": {
+    "berryland": {
+      "id": "berryland",
+      "name": "Berryland",
+      "description": "aromal yogurt, berries jam, blueberries, strawberries/raspberries",
+      "price": 300,
+      "constraints": {},
+      "order": 0
+    },
+    "honey-bee": {
+      "id": "honey-bee",
+      "name": "Honey Bee",
+      "description": "honey, banana, blackberries, walnut butter, cinnamon",
+      "price": 300,
+      "constraints": {},
+      "order": 1
+    },
+    "crispy-bite": {
+      "id": "crispy-bite",
+      "name": "Crispy Bite",
+      "description": "nutella, banana, strawberries/raspberries, granola, peanut butter",
+      "price": 350,
+      "constraints": {},
+      "order": 2
+    },
+    "nut-berry": {
+      "id": "nut-berry",
+      "name": "Nut&Berry",
+      "description": "nutella, blueberries, blackberries, hazelnuts, almonds",
+      "price": 350,
+      "constraints": {},
+      "order": 3
+    },
+    "tropic-snow": {
+      "id": "tropic-snow",
+      "name": "Tropic Snow",
+      "description": "white chocolate, kiwi, pineapple, mango, coconut",
+      "price": 350,
+      "constraints": {},
+      "order": 4
+    },
+    "chicky-meal": {
+      "id": "chicky-meal",
+      "name": "Chicky Meal",
+      "description": "aromal yogurt, gouda cheese, pomadorini, chicken ham, zaatar, evoo",
+      "price": 300,
+      "constraints": {},
+      "order": 5
+    },
+    "farmville": {
+      "id": "farmville",
+      "name": "Farmville",
+      "description": "aromal yogurt, feta cheese, dried tomatoes, cucumber, olives, ajvar, oregano, evoo",
+      "price": 300,
+      "constraints": {},
+      "order": 6
+    },
+    "porcini-boost": {
+      "id": "porcini-boost",
+      "name": "Porcini Boost",
+      "description": "pesto, gouda cheese, dried porcini, pomadorini, zaatar, evoo",
+      "price": 350,
+      "constraints": {},
+      "order": 7
+    },
+    "mexican-street": {
+      "id": "mexican-street",
+      "name": "Mexican Street",
+      "description": "aromal yogurt, gouda cheese, avocado, pomadorini, corn, parsley, lemon, evoo",
+      "price": 350,
+      "constraints": {},
+      "order": 8
+    },
+    "greenchick": {
+      "id": "greenchick",
+      "name": "GreenChick",
+      "description": "aromal yogurt, feta cheese, avocado, chicken ham, dried tomatoes, evoo",
+      "price": 350,
+      "constraints": {},
+      "order": 9
+    }
+  },
+  "itemGroups": {
+    "group-sweet": {
+      "id": "group-sweet",
+      "name": "Sweet Crepes",
+      "itemIds": [
+        "berryland",
+        "honey-bee",
+        "crispy-bite",
+        "nut-berry",
+        "tropic-snow"
+      ]
+    },
+    "group-savory": {
+      "id": "group-savory",
+      "name": "Savory Crepes",
+      "itemIds": [
+        "chicky-meal",
+        "farmville",
+        "porcini-boost",
+        "mexican-street",
+        "greenchick"
+      ]
+    }
+  },
+  "layout": [
+    {
+      "type": "item-group",
+      "data": "group-sweet"
+    },
+    {
+      "type": "item-group",
+      "data": "group-savory"
+    }
+  ]
+}

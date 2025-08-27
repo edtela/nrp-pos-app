@@ -1,0 +1,392 @@
+{
+  "id": "juice-menu",
+  "name": "Juice Menu",
+  "currency": "ALL",
+  "items": {
+    "apple-juice": {
+      "id": "apple-juice",
+      "name": "Apple Juice",
+      "description": "Fresh apple juice",
+      "icon": "🍎",
+      "price": 120,
+      "constraints": {},
+      "subMenu": {
+        "menuId": "juice-options",
+        "included": [
+          {
+            "itemId": "opt-apple",
+            "display": "none"
+          }
+        ]
+      },
+      "order": 0
+    },
+    "orange-juice": {
+      "id": "orange-juice",
+      "name": "Orange Juice",
+      "description": "Fresh orange juice",
+      "icon": "🍊",
+      "price": 150,
+      "constraints": {},
+      "subMenu": {
+        "menuId": "juice-options",
+        "included": [
+          {
+            "itemId": "opt-orange",
+            "display": "none"
+          }
+        ]
+      },
+      "order": 1
+    },
+    "carrot-juice": {
+      "id": "carrot-juice",
+      "name": "Carrot Juice",
+      "description": "Fresh carrot juice",
+      "icon": "🥕",
+      "price": 200,
+      "constraints": {},
+      "subMenu": {
+        "menuId": "juice-options",
+        "included": [
+          {
+            "itemId": "opt-carrot",
+            "display": "none"
+          }
+        ]
+      },
+      "order": 2
+    },
+    "celery-juice": {
+      "id": "celery-juice",
+      "name": "Celery Juice",
+      "description": "Fresh celery juice",
+      "icon": "🟢",
+      "price": 250,
+      "constraints": {},
+      "subMenu": {
+        "menuId": "juice-options",
+        "included": [
+          {
+            "itemId": "opt-celery",
+            "display": "none"
+          }
+        ]
+      },
+      "order": 3
+    },
+    "pineapple-juice": {
+      "id": "pineapple-juice",
+      "name": "Pineapple Juice",
+      "description": "Fresh pineapple juice",
+      "icon": "🍍",
+      "price": 350,
+      "constraints": {},
+      "subMenu": {
+        "menuId": "juice-options",
+        "included": [
+          {
+            "itemId": "opt-pineapple",
+            "display": "none"
+          }
+        ]
+      },
+      "order": 4
+    },
+    "beet-it": {
+      "id": "beet-it",
+      "name": "Beet It",
+      "description": "orange, beet, apple, carrot",
+      "icon": "🥤",
+      "price": 250,
+      "constraints": {},
+      "subMenu": {
+        "menuId": "juice-options",
+        "included": [
+          {
+            "itemId": "opt-orange",
+            "display": "included"
+          },
+          {
+            "itemId": "opt-beet",
+            "display": "included"
+          },
+          {
+            "itemId": "opt-apple",
+            "display": "included"
+          },
+          {
+            "itemId": "opt-carrot",
+            "display": "included"
+          }
+        ]
+      },
+      "order": 5
+    },
+    "detox": {
+      "id": "detox",
+      "name": "Detox",
+      "description": "apple, carrot, cucumber, parsley, lemon, ginger",
+      "icon": "🥤",
+      "price": 250,
+      "constraints": {},
+      "subMenu": {
+        "menuId": "juice-options",
+        "included": [
+          {
+            "itemId": "opt-apple",
+            "display": "included"
+          },
+          {
+            "itemId": "opt-carrot",
+            "display": "included"
+          },
+          {
+            "itemId": "opt-cucumber",
+            "display": "included"
+          },
+          {
+            "itemId": "opt-parsley",
+            "display": "included"
+          },
+          {
+            "itemId": "opt-lemon",
+            "display": "included"
+          },
+          {
+            "itemId": "opt-ginger",
+            "display": "included"
+          }
+        ]
+      },
+      "order": 6
+    },
+    "greeny": {
+      "id": "greeny",
+      "name": "Greeny",
+      "description": "apple, celery, spinach, lemon, ginger",
+      "icon": "🥤",
+      "price": 250,
+      "constraints": {},
+      "subMenu": {
+        "menuId": "juice-options",
+        "included": [
+          {
+            "itemId": "opt-apple",
+            "display": "included"
+          },
+          {
+            "itemId": "opt-celery",
+            "display": "included"
+          },
+          {
+            "itemId": "opt-spinach",
+            "display": "included"
+          },
+          {
+            "itemId": "opt-lemon",
+            "display": "included"
+          },
+          {
+            "itemId": "opt-ginger",
+            "display": "included"
+          }
+        ]
+      },
+      "order": 7
+    },
+    "berry-me": {
+      "id": "berry-me",
+      "name": "Berry Me",
+      "description": "orange, blueberries, blackberries, strawberries/raspberries",
+      "icon": "🥤",
+      "price": 250,
+      "constraints": {},
+      "subMenu": {
+        "menuId": "juice-options",
+        "included": [
+          {
+            "itemId": "opt-orange",
+            "display": "included"
+          },
+          {
+            "itemId": "opt-blueberries",
+            "display": "included"
+          },
+          {
+            "itemId": "opt-blackberries",
+            "display": "included"
+          },
+          {
+            "itemId": "opt-strawberries",
+            "display": "included"
+          },
+          {
+            "itemId": "opt-raspberries",
+            "display": "included"
+          }
+        ]
+      },
+      "order": 8
+    },
+    "immunity": {
+      "id": "immunity",
+      "name": "Immunity",
+      "description": "orange, grapefruit, carrot, lemon, turmeric",
+      "icon": "🥤",
+      "price": 250,
+      "constraints": {},
+      "subMenu": {
+        "menuId": "juice-options",
+        "included": [
+          {
+            "itemId": "opt-orange",
+            "display": "included"
+          },
+          {
+            "itemId": "opt-grapefruit",
+            "display": "included"
+          },
+          {
+            "itemId": "opt-carrot",
+            "display": "included"
+          },
+          {
+            "itemId": "opt-lemon",
+            "display": "included"
+          },
+          {
+            "itemId": "opt-turmeric",
+            "display": "included"
+          }
+        ]
+      },
+      "order": 9
+    },
+    "refresh": {
+      "id": "refresh",
+      "name": "Refresh",
+      "description": "orange, pineapple, mango, apple, mint",
+      "icon": "🥤",
+      "price": 250,
+      "constraints": {},
+      "subMenu": {
+        "menuId": "juice-options",
+        "included": [
+          {
+            "itemId": "opt-orange",
+            "display": "included"
+          },
+          {
+            "itemId": "opt-pineapple",
+            "display": "included"
+          },
+          {
+            "itemId": "opt-mango",
+            "display": "included"
+          },
+          {
+            "itemId": "opt-apple",
+            "display": "included"
+          },
+          {
+            "itemId": "opt-mint",
+            "display": "included"
+          }
+        ]
+      },
+      "order": 10
+    },
+    "detox-water": {
+      "id": "detox-water",
+      "name": "Detox Water",
+      "description": "water, cucumber, lemon, ginger, mint",
+      "icon": "💧",
+      "price": 100,
+      "constraints": {},
+      "order": 11
+    },
+    "cold-tonic": {
+      "id": "cold-tonic",
+      "name": "Cold Tonic",
+      "description": "carrot, turmeric, lemon, ginger",
+      "icon": "🥃",
+      "price": 100,
+      "constraints": {},
+      "order": 12
+    },
+    "ginger-turmeric": {
+      "id": "ginger-turmeric",
+      "name": "Ginger+Turmeric",
+      "description": "ginger+turmeric, lemon",
+      "icon": "🥃",
+      "price": 100,
+      "constraints": {},
+      "order": 13
+    },
+    "protein-shot": {
+      "id": "protein-shot",
+      "name": "Protein Shot",
+      "description": "soya milk, whey protein, honey",
+      "icon": "🥃",
+      "price": 150,
+      "constraints": {},
+      "order": 14
+    }
+  },
+  "itemGroups": {
+    "group-classic-juices": {
+      "id": "group-classic-juices",
+      "name": "Mix Your Own",
+      "itemIds": [
+        "apple-juice",
+        "orange-juice",
+        "carrot-juice",
+        "celery-juice",
+        "pineapple-juice"
+      ]
+    },
+    "group-juice-blends": {
+      "id": "group-juice-blends",
+      "name": "Our Blends",
+      "itemIds": [
+        "beet-it",
+        "detox",
+        "greeny",
+        "berry-me",
+        "immunity",
+        "refresh"
+      ]
+    },
+    "group-shots-detox": {
+      "id": "group-shots-detox",
+      "name": "Shots / Detox Water",
+      "itemIds": [
+        "detox-water",
+        "cold-tonic",
+        "ginger-turmeric",
+        "protein-shot"
+      ]
+    }
+  },
+  "layout": [
+    {
+      "text": "Juice Menu",
+      "classes": [
+        "menu-title"
+      ]
+    },
+    {
+      "type": "item-group",
+      "data": "group-classic-juices"
+    },
+    {
+      "type": "item-group",
+      "data": "group-juice-blends"
+    },
+    {
+      "type": "item-group",
+      "data": "group-shots-detox"
+    }
+  ]
+}

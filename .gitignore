@@ -8,9 +8,9 @@ dist/
 # build/ - commented out to include build files for Railway deployment
 .linaria-cache/
 
-# Generated menu files
-public/data/menu/
-!public/data/menu/.gitkeep
+# Generated menu files - needed for runtime
+# public/data/menu/ - commented out, these files are needed for deployment
+# !public/data/menu/.gitkeep
 
 # Development
 *.local

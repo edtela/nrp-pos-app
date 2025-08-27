@@ -1,0 +1,591 @@
+{
+  "id": "smoothie-options-milk",
+  "name": "Opzioni Smoothie",
+  "currency": "ALL",
+  "items": {
+    "opt-almond-milk": {
+      "id": "opt-almond-milk",
+      "name": "Latte di Mandorle",
+      "icon": "🤍",
+      "price": 0,
+      "constraints": {
+        "choiceId": "milk-choice"
+      },
+      "order": 2
+    },
+    "opt-coconut-milk": {
+      "id": "opt-coconut-milk",
+      "name": "Latte di Cocco",
+      "icon": "🥥",
+      "price": 0,
+      "constraints": {
+        "choiceId": "milk-choice"
+      },
+      "order": 1
+    },
+    "opt-oat-milk": {
+      "id": "opt-oat-milk",
+      "name": "Latte d'Avena",
+      "icon": "🌾",
+      "price": 0,
+      "constraints": {
+        "choiceId": "milk-choice"
+      },
+      "order": 0
+    },
+    "opt-soy-milk": {
+      "id": "opt-soy-milk",
+      "name": "Latte di Soia",
+      "icon": "🟢",
+      "price": 0,
+      "constraints": {
+        "choiceId": "milk-choice"
+      },
+      "order": 3
+    },
+    "opt-banana": {
+      "id": "opt-banana",
+      "name": "Banana",
+      "icon": "🍌",
+      "price": 40,
+      "constraints": {},
+      "order": 4
+    },
+    "opt-blueberries": {
+      "id": "opt-blueberries",
+      "name": "Mirtilli",
+      "icon": "🫐",
+      "price": 40,
+      "constraints": {},
+      "order": 9
+    },
+    "opt-kiwi": {
+      "id": "opt-kiwi",
+      "name": "Kiwi",
+      "icon": "🥝",
+      "price": 40,
+      "constraints": {},
+      "order": 7
+    },
+    "opt-mixed-berries": {
+      "id": "opt-mixed-berries",
+      "name": "Frutti di Bosco Misti",
+      "icon": "🫐",
+      "price": 40,
+      "constraints": {},
+      "order": 6
+    },
+    "opt-strawberries": {
+      "id": "opt-strawberries",
+      "name": "Fragole",
+      "icon": "🍓",
+      "price": 40,
+      "constraints": {},
+      "order": 5
+    },
+    "opt-raspberries": {
+      "id": "opt-raspberries",
+      "name": "Lamponi",
+      "icon": "🔴",
+      "price": 40,
+      "constraints": {},
+      "order": 8
+    },
+    "opt-blackberries": {
+      "id": "opt-blackberries",
+      "name": "More",
+      "icon": "🟣",
+      "price": 40,
+      "constraints": {},
+      "order": 10
+    },
+    "opt-walnuts": {
+      "id": "opt-walnuts",
+      "name": "Noci",
+      "icon": "🟫",
+      "price": 40,
+      "constraints": {},
+      "order": 14
+    },
+    "opt-almonds": {
+      "id": "opt-almonds",
+      "name": "Mandorle",
+      "icon": "🟡",
+      "price": 40,
+      "constraints": {},
+      "order": 11
+    },
+    "opt-hazelnuts": {
+      "id": "opt-hazelnuts",
+      "name": "Nocciole",
+      "icon": "🟤",
+      "price": 40,
+      "constraints": {},
+      "order": 13
+    },
+    "opt-mixed-nuts": {
+      "id": "opt-mixed-nuts",
+      "name": "Mix di Noci",
+      "icon": "🥜",
+      "price": 40,
+      "constraints": {},
+      "order": 12
+    },
+    "opt-pistachios": {
+      "id": "opt-pistachios",
+      "name": "Pistacchi",
+      "icon": "🟢",
+      "price": 40,
+      "constraints": {},
+      "order": 16
+    },
+    "opt-pine-nut": {
+      "id": "opt-pine-nut",
+      "name": "Pinoli",
+      "icon": "⚪",
+      "price": 40,
+      "constraints": {},
+      "order": 15
+    },
+    "opt-mixed-seeds": {
+      "id": "opt-mixed-seeds",
+      "name": "Mix di Semi",
+      "icon": "🌱",
+      "price": 50,
+      "constraints": {},
+      "order": 17
+    },
+    "opt-sunflower-seeds": {
+      "id": "opt-sunflower-seeds",
+      "name": "Semi di Girasole",
+      "icon": "🌻",
+      "price": 50,
+      "constraints": {},
+      "order": 20
+    },
+    "opt-pumpkin-seeds": {
+      "id": "opt-pumpkin-seeds",
+      "name": "Semi di Zucca",
+      "icon": "🎃",
+      "price": 50,
+      "constraints": {},
+      "order": 22
+    },
+    "opt-flax-seeds": {
+      "id": "opt-flax-seeds",
+      "name": "Semi di Lino",
+      "icon": "🟫",
+      "price": 50,
+      "constraints": {},
+      "order": 21
+    },
+    "opt-chia-seeds": {
+      "id": "opt-chia-seeds",
+      "name": "Semi di Chia",
+      "icon": "⚫",
+      "price": 50,
+      "constraints": {},
+      "order": 19
+    },
+    "opt-hemp-seeds": {
+      "id": "opt-hemp-seeds",
+      "name": "Semi di Canapa",
+      "icon": "🌿",
+      "price": 50,
+      "constraints": {},
+      "order": 18
+    },
+    "opt-coconut": {
+      "id": "opt-coconut",
+      "name": "Cocco",
+      "icon": "🥥",
+      "price": 40,
+      "constraints": {},
+      "order": 24
+    },
+    "opt-cranberries": {
+      "id": "opt-cranberries",
+      "name": "Mirtilli Rossi",
+      "icon": "🩷",
+      "price": 40,
+      "constraints": {},
+      "order": 26
+    },
+    "opt-dates": {
+      "id": "opt-dates",
+      "name": "Datteri",
+      "icon": "🟠",
+      "price": 40,
+      "constraints": {},
+      "order": 25
+    },
+    "opt-dried-apricots": {
+      "id": "opt-dried-apricots",
+      "name": "Albicocche Secche",
+      "icon": "🟠",
+      "price": 40,
+      "constraints": {},
+      "order": 23
+    },
+    "opt-raisins": {
+      "id": "opt-raisins",
+      "name": "Uvetta",
+      "icon": "🍇",
+      "price": 40,
+      "constraints": {},
+      "order": 27
+    },
+    "opt-sweet-spoon": {
+      "id": "opt-sweet-spoon",
+      "name": "Cucchiaio Dolce",
+      "icon": "🍬",
+      "price": 30,
+      "constraints": {},
+      "order": 29
+    },
+    "opt-wildflower-honey": {
+      "id": "opt-wildflower-honey",
+      "name": "Miele di Fiori Selvatici",
+      "icon": "🍯",
+      "price": 30,
+      "constraints": {},
+      "order": 31
+    },
+    "opt-jam": {
+      "id": "opt-jam",
+      "name": "Marmellata",
+      "icon": "🍓",
+      "price": 30,
+      "constraints": {},
+      "order": 30
+    },
+    "opt-date-syrup": {
+      "id": "opt-date-syrup",
+      "name": "Sciroppo di Datteri",
+      "icon": "🍯",
+      "price": 30,
+      "constraints": {},
+      "order": 32
+    },
+    "opt-choco-spoon": {
+      "id": "opt-choco-spoon",
+      "name": "Cucchiaio di Cioccolato",
+      "icon": "🍫",
+      "price": 30,
+      "constraints": {},
+      "order": 28
+    },
+    "opt-pineapple": {
+      "id": "opt-pineapple",
+      "name": "Ananas",
+      "icon": "🍍",
+      "price": 50,
+      "constraints": {},
+      "order": 33
+    },
+    "opt-avocado": {
+      "id": "opt-avocado",
+      "name": "Avocado",
+      "icon": "🥑",
+      "price": 50,
+      "constraints": {},
+      "order": 34
+    },
+    "opt-mango": {
+      "id": "opt-mango",
+      "name": "Mango",
+      "icon": "🥭",
+      "price": 50,
+      "constraints": {},
+      "order": 36
+    },
+    "opt-dark-chocolate": {
+      "id": "opt-dark-chocolate",
+      "name": "Cioccolato Fondente",
+      "icon": "🍫",
+      "price": 50,
+      "constraints": {},
+      "order": 35
+    },
+    "opt-matcha": {
+      "id": "opt-matcha",
+      "name": "Matcha",
+      "icon": "🍵",
+      "price": 50,
+      "constraints": {},
+      "order": 37
+    },
+    "opt-peanut-butter": {
+      "id": "opt-peanut-butter",
+      "name": "Burro di Arachidi",
+      "icon": "🥜",
+      "price": 50,
+      "constraints": {},
+      "order": 38
+    },
+    "opt-almond-butter": {
+      "id": "opt-almond-butter",
+      "name": "Burro di Mandorle",
+      "icon": "🟨",
+      "price": 50,
+      "constraints": {},
+      "order": 39
+    },
+    "opt-walnut-butter": {
+      "id": "opt-walnut-butter",
+      "name": "Burro di Noci",
+      "icon": "🌰",
+      "price": 50,
+      "constraints": {},
+      "order": 40
+    },
+    "opt-wild-strawberry": {
+      "id": "opt-wild-strawberry",
+      "name": "Fragola Selvatica",
+      "icon": "🍓",
+      "price": 60,
+      "constraints": {},
+      "order": 42
+    },
+    "opt-goji-berry": {
+      "id": "opt-goji-berry",
+      "name": "Bacche di Goji",
+      "icon": "❤️",
+      "price": 60,
+      "constraints": {},
+      "order": 41
+    },
+    "opt-bee-pollen": {
+      "id": "opt-bee-pollen",
+      "name": "Polline d'Api",
+      "icon": "🐝",
+      "price": 60,
+      "constraints": {},
+      "order": 43
+    },
+    "opt-whey-protein": {
+      "id": "opt-whey-protein",
+      "name": "Proteine Whey",
+      "icon": "💪",
+      "price": 60,
+      "constraints": {},
+      "order": 44
+    },
+    "opt-cinnamon": {
+      "id": "opt-cinnamon",
+      "name": "Cannella",
+      "icon": "🟰",
+      "price": 40,
+      "constraints": {},
+      "order": 46
+    },
+    "opt-oat": {
+      "id": "opt-oat",
+      "name": "Avena",
+      "icon": "🌾",
+      "price": 40,
+      "constraints": {},
+      "order": 45
+    },
+    "opt-lemon-peel": {
+      "id": "opt-lemon-peel",
+      "name": "Scorza di Limone",
+      "icon": "🍋",
+      "price": 40,
+      "constraints": {},
+      "order": 48
+    },
+    "opt-granola": {
+      "id": "opt-granola",
+      "name": "Granola",
+      "icon": "🥣",
+      "price": 40,
+      "constraints": {},
+      "order": 47
+    },
+    "opt-spinach": {
+      "id": "opt-spinach",
+      "name": "Spinaci",
+      "icon": "🥬",
+      "price": 40,
+      "constraints": {},
+      "order": 49
+    }
+  },
+  "itemGroups": {
+    "included": {
+      "id": "included",
+      "name": "Inclusi",
+      "itemIds": []
+    },
+    "group-milk-base": {
+      "id": "group-milk-base",
+      "name": "Scegli la Base",
+      "itemIds": [
+        "opt-oat-milk",
+        "opt-coconut-milk",
+        "opt-almond-milk",
+        "opt-soy-milk"
+      ]
+    },
+    "group-fruits": {
+      "id": "group-fruits",
+      "name": "Frutta",
+      "itemIds": [
+        "opt-banana",
+        "opt-strawberries",
+        "opt-mixed-berries",
+        "opt-kiwi",
+        "opt-raspberries",
+        "opt-blueberries",
+        "opt-blackberries"
+      ]
+    },
+    "group-nuts": {
+      "id": "group-nuts",
+      "name": "Noci",
+      "itemIds": [
+        "opt-almonds",
+        "opt-mixed-nuts",
+        "opt-hazelnuts",
+        "opt-walnuts",
+        "opt-pine-nut",
+        "opt-pistachios"
+      ]
+    },
+    "group-seeds": {
+      "id": "group-seeds",
+      "name": "Semi",
+      "itemIds": [
+        "opt-mixed-seeds",
+        "opt-hemp-seeds",
+        "opt-chia-seeds",
+        "opt-sunflower-seeds",
+        "opt-flax-seeds",
+        "opt-pumpkin-seeds"
+      ]
+    },
+    "group-dried-fruits": {
+      "id": "group-dried-fruits",
+      "name": "Frutta Secca",
+      "itemIds": [
+        "opt-dried-apricots",
+        "opt-coconut",
+        "opt-dates",
+        "opt-cranberries",
+        "opt-raisins"
+      ]
+    },
+    "group-sweets": {
+      "id": "group-sweets",
+      "name": "Dolci",
+      "itemIds": [
+        "opt-choco-spoon",
+        "opt-sweet-spoon",
+        "opt-jam",
+        "opt-wildflower-honey",
+        "opt-date-syrup"
+      ]
+    },
+    "group-premium": {
+      "id": "group-premium",
+      "name": "Premium",
+      "itemIds": [
+        "opt-pineapple",
+        "opt-avocado",
+        "opt-dark-chocolate",
+        "opt-mango",
+        "opt-matcha"
+      ]
+    },
+    "group-nut-butter": {
+      "id": "group-nut-butter",
+      "name": "Burro di Noci",
+      "itemIds": [
+        "opt-peanut-butter",
+        "opt-almond-butter",
+        "opt-walnut-butter"
+      ]
+    },
+    "group-superfoods": {
+      "id": "group-superfoods",
+      "name": "Superfoods",
+      "itemIds": [
+        "opt-goji-berry",
+        "opt-wild-strawberry",
+        "opt-bee-pollen",
+        "opt-whey-protein"
+      ]
+    },
+    "group-extras": {
+      "id": "group-extras",
+      "name": "Extra",
+      "itemIds": [
+        "opt-oat",
+        "opt-cinnamon",
+        "opt-granola",
+        "opt-lemon-peel",
+        "opt-spinach"
+      ]
+    }
+  },
+  "layout": [
+    {
+      "type": "item-group",
+      "data": "included"
+    },
+    {
+      "type": "item-group",
+      "data": "group-milk-base"
+    },
+    {
+      "type": "item-group",
+      "data": "group-fruits"
+    },
+    {
+      "type": "item-group",
+      "data": "group-nuts"
+    },
+    {
+      "type": "item-group",
+      "data": "group-seeds"
+    },
+    {
+      "type": "item-group",
+      "data": "group-dried-fruits"
+    },
+    {
+      "type": "item-group",
+      "data": "group-sweets"
+    },
+    {
+      "type": "item-group",
+      "data": "group-premium"
+    },
+    {
+      "type": "item-group",
+      "data": "group-nut-butter"
+    },
+    {
+      "type": "item-group",
+      "data": "group-superfoods"
+    },
+    {
+      "type": "item-group",
+      "data": "group-extras"
+    }
+  ],
+  "choices": {
+    "milk-choice": {
+      "id": "milk-choice",
+      "min": 1,
+      "max": 1
+    },
+    "juice-choice": {
+      "id": "juice-choice",
+      "min": 1,
+      "max": 1
+    }
+  },
+  "modifierMenu": true
+}

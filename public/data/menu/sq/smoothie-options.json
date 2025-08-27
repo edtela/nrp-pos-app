@@ -1,0 +1,537 @@
+{
+  "id": "smoothie-options",
+  "name": "Opsione Smoothie",
+  "currency": "ALL",
+  "items": {
+    "opt-banana": {
+      "id": "opt-banana",
+      "name": "Banane",
+      "icon": "🍌",
+      "price": 40,
+      "constraints": {},
+      "order": 0
+    },
+    "opt-blueberries": {
+      "id": "opt-blueberries",
+      "name": "Boronica",
+      "icon": "🫐",
+      "price": 40,
+      "constraints": {},
+      "order": 1
+    },
+    "opt-kiwi": {
+      "id": "opt-kiwi",
+      "name": "Kivi",
+      "icon": "🥝",
+      "price": 40,
+      "constraints": {},
+      "order": 3
+    },
+    "opt-mixed-berries": {
+      "id": "opt-mixed-berries",
+      "name": "Mjedra të Përziera",
+      "icon": "🫐",
+      "price": 40,
+      "constraints": {},
+      "order": 6
+    },
+    "opt-strawberries": {
+      "id": "opt-strawberries",
+      "name": "Dredhëza",
+      "icon": "🍓",
+      "price": 40,
+      "constraints": {},
+      "order": 2
+    },
+    "opt-raspberries": {
+      "id": "opt-raspberries",
+      "name": "Mjedra",
+      "icon": "🔴",
+      "price": 40,
+      "constraints": {},
+      "order": 5
+    },
+    "opt-blackberries": {
+      "id": "opt-blackberries",
+      "name": "Manaferrë",
+      "icon": "🟣",
+      "price": 40,
+      "constraints": {},
+      "order": 4
+    },
+    "opt-walnuts": {
+      "id": "opt-walnuts",
+      "name": "Arra",
+      "icon": "🟫",
+      "price": 40,
+      "constraints": {},
+      "order": 7
+    },
+    "opt-almonds": {
+      "id": "opt-almonds",
+      "name": "Bajame",
+      "icon": "🟡",
+      "price": 40,
+      "constraints": {},
+      "order": 9
+    },
+    "opt-hazelnuts": {
+      "id": "opt-hazelnuts",
+      "name": "Lajthi",
+      "icon": "🟤",
+      "price": 40,
+      "constraints": {},
+      "order": 10
+    },
+    "opt-mixed-nuts": {
+      "id": "opt-mixed-nuts",
+      "name": "Arra të Përziera",
+      "icon": "🥜",
+      "price": 40,
+      "constraints": {},
+      "order": 8
+    },
+    "opt-pistachios": {
+      "id": "opt-pistachios",
+      "name": "Pistache",
+      "icon": "🟢",
+      "price": 40,
+      "constraints": {},
+      "order": 12
+    },
+    "opt-pine-nut": {
+      "id": "opt-pine-nut",
+      "name": "Pinjol",
+      "icon": "⚪",
+      "price": 40,
+      "constraints": {},
+      "order": 11
+    },
+    "opt-mixed-seeds": {
+      "id": "opt-mixed-seeds",
+      "name": "Fara të Përziera",
+      "icon": "🌱",
+      "price": 50,
+      "constraints": {},
+      "order": 18
+    },
+    "opt-sunflower-seeds": {
+      "id": "opt-sunflower-seeds",
+      "name": "Fara Lulediellit",
+      "icon": "🌻",
+      "price": 50,
+      "constraints": {},
+      "order": 17
+    },
+    "opt-pumpkin-seeds": {
+      "id": "opt-pumpkin-seeds",
+      "name": "Fara Kungulli",
+      "icon": "🎃",
+      "price": 50,
+      "constraints": {},
+      "order": 15
+    },
+    "opt-flax-seeds": {
+      "id": "opt-flax-seeds",
+      "name": "Fara Liri",
+      "icon": "🟫",
+      "price": 50,
+      "constraints": {},
+      "order": 16
+    },
+    "opt-chia-seeds": {
+      "id": "opt-chia-seeds",
+      "name": "Fara Chia",
+      "icon": "⚫",
+      "price": 50,
+      "constraints": {},
+      "order": 13
+    },
+    "opt-hemp-seeds": {
+      "id": "opt-hemp-seeds",
+      "name": "Fara Kënëpe",
+      "icon": "🌿",
+      "price": 50,
+      "constraints": {},
+      "order": 14
+    },
+    "opt-coconut": {
+      "id": "opt-coconut",
+      "name": "Kokos",
+      "icon": "🥥",
+      "price": 40,
+      "constraints": {},
+      "order": 22
+    },
+    "opt-cranberries": {
+      "id": "opt-cranberries",
+      "name": "Boronicë e Kuqe",
+      "icon": "🩷",
+      "price": 40,
+      "constraints": {},
+      "order": 19
+    },
+    "opt-dates": {
+      "id": "opt-dates",
+      "name": "Hurma",
+      "icon": "🟠",
+      "price": 40,
+      "constraints": {},
+      "order": 20
+    },
+    "opt-dried-apricots": {
+      "id": "opt-dried-apricots",
+      "name": "Kajsi të Thara",
+      "icon": "🟠",
+      "price": 40,
+      "constraints": {},
+      "order": 21
+    },
+    "opt-raisins": {
+      "id": "opt-raisins",
+      "name": "Rrush i Thatë",
+      "icon": "🍇",
+      "price": 40,
+      "constraints": {},
+      "order": 23
+    },
+    "opt-sweet-spoon": {
+      "id": "opt-sweet-spoon",
+      "name": "Lugë e Ëmbël",
+      "icon": "🍬",
+      "price": 30,
+      "constraints": {},
+      "order": 25
+    },
+    "opt-wildflower-honey": {
+      "id": "opt-wildflower-honey",
+      "name": "Mjaltë Lulesh të Egra",
+      "icon": "🍯",
+      "price": 30,
+      "constraints": {},
+      "order": 26
+    },
+    "opt-jam": {
+      "id": "opt-jam",
+      "name": "Reçel",
+      "icon": "🍓",
+      "price": 30,
+      "constraints": {},
+      "order": 27
+    },
+    "opt-date-syrup": {
+      "id": "opt-date-syrup",
+      "name": "Shurup Hurme",
+      "icon": "🍯",
+      "price": 30,
+      "constraints": {},
+      "order": 28
+    },
+    "opt-choco-spoon": {
+      "id": "opt-choco-spoon",
+      "name": "Lugë Çokollate",
+      "icon": "🍫",
+      "price": 30,
+      "constraints": {},
+      "order": 24
+    },
+    "opt-pineapple": {
+      "id": "opt-pineapple",
+      "name": "Ananas",
+      "icon": "🍍",
+      "price": 50,
+      "constraints": {},
+      "order": 29
+    },
+    "opt-avocado": {
+      "id": "opt-avocado",
+      "name": "Avokado",
+      "icon": "🥑",
+      "price": 50,
+      "constraints": {},
+      "order": 30
+    },
+    "opt-mango": {
+      "id": "opt-mango",
+      "name": "Mango",
+      "icon": "🥭",
+      "price": 50,
+      "constraints": {},
+      "order": 32
+    },
+    "opt-dark-chocolate": {
+      "id": "opt-dark-chocolate",
+      "name": "Çokollatë e Zezë",
+      "icon": "🍫",
+      "price": 50,
+      "constraints": {},
+      "order": 31
+    },
+    "opt-matcha": {
+      "id": "opt-matcha",
+      "name": "Matcha",
+      "icon": "🍵",
+      "price": 50,
+      "constraints": {},
+      "order": 33
+    },
+    "opt-peanut-butter": {
+      "id": "opt-peanut-butter",
+      "name": "Gjalpë Kikiriku",
+      "icon": "🥜",
+      "price": 50,
+      "constraints": {},
+      "order": 36
+    },
+    "opt-almond-butter": {
+      "id": "opt-almond-butter",
+      "name": "Gjalpë Bajame",
+      "icon": "🟨",
+      "price": 50,
+      "constraints": {},
+      "order": 35
+    },
+    "opt-walnut-butter": {
+      "id": "opt-walnut-butter",
+      "name": "Gjalpë Arre",
+      "icon": "🌰",
+      "price": 50,
+      "constraints": {},
+      "order": 34
+    },
+    "opt-wild-strawberry": {
+      "id": "opt-wild-strawberry",
+      "name": "Dredhëz e Egër",
+      "icon": "🍓",
+      "price": 60,
+      "constraints": {},
+      "order": 37
+    },
+    "opt-goji-berry": {
+      "id": "opt-goji-berry",
+      "name": "Goji Berry",
+      "icon": "❤️",
+      "price": 60,
+      "constraints": {},
+      "order": 38
+    },
+    "opt-bee-pollen": {
+      "id": "opt-bee-pollen",
+      "name": "Polen Blete",
+      "icon": "🐝",
+      "price": 60,
+      "constraints": {},
+      "order": 39
+    },
+    "opt-whey-protein": {
+      "id": "opt-whey-protein",
+      "name": "Proteina Whey",
+      "icon": "💪",
+      "price": 60,
+      "constraints": {},
+      "order": 40
+    },
+    "opt-cinnamon": {
+      "id": "opt-cinnamon",
+      "name": "Kanellë",
+      "icon": "🟰",
+      "price": 40,
+      "constraints": {},
+      "order": 42
+    },
+    "opt-oat": {
+      "id": "opt-oat",
+      "name": "Tërshërë",
+      "icon": "🌾",
+      "price": 40,
+      "constraints": {},
+      "order": 45
+    },
+    "opt-lemon-peel": {
+      "id": "opt-lemon-peel",
+      "name": "Lëkurë Limoni",
+      "icon": "🍋",
+      "price": 40,
+      "constraints": {},
+      "order": 43
+    },
+    "opt-granola": {
+      "id": "opt-granola",
+      "name": "Granola",
+      "icon": "🥣",
+      "price": 40,
+      "constraints": {},
+      "order": 41
+    },
+    "opt-spinach": {
+      "id": "opt-spinach",
+      "name": "Spinaq",
+      "icon": "🥬",
+      "price": 40,
+      "constraints": {},
+      "order": 44
+    }
+  },
+  "itemGroups": {
+    "included": {
+      "id": "included",
+      "name": "Të Përfshira",
+      "itemIds": []
+    },
+    "group-fruits": {
+      "id": "group-fruits",
+      "name": "Fruta",
+      "itemIds": [
+        "opt-banana",
+        "opt-blueberries",
+        "opt-strawberries",
+        "opt-kiwi",
+        "opt-blackberries",
+        "opt-raspberries",
+        "opt-mixed-berries"
+      ]
+    },
+    "group-nuts": {
+      "id": "group-nuts",
+      "name": "Arra",
+      "itemIds": [
+        "opt-walnuts",
+        "opt-mixed-nuts",
+        "opt-almonds",
+        "opt-hazelnuts",
+        "opt-pine-nut",
+        "opt-pistachios"
+      ]
+    },
+    "group-seeds": {
+      "id": "group-seeds",
+      "name": "Fara",
+      "itemIds": [
+        "opt-chia-seeds",
+        "opt-hemp-seeds",
+        "opt-pumpkin-seeds",
+        "opt-flax-seeds",
+        "opt-sunflower-seeds",
+        "opt-mixed-seeds"
+      ]
+    },
+    "group-dried-fruits": {
+      "id": "group-dried-fruits",
+      "name": "Fruta të Thara",
+      "itemIds": [
+        "opt-cranberries",
+        "opt-dates",
+        "opt-dried-apricots",
+        "opt-coconut",
+        "opt-raisins"
+      ]
+    },
+    "group-sweets": {
+      "id": "group-sweets",
+      "name": "Ëmbëlsira",
+      "itemIds": [
+        "opt-choco-spoon",
+        "opt-sweet-spoon",
+        "opt-wildflower-honey",
+        "opt-jam",
+        "opt-date-syrup"
+      ]
+    },
+    "group-premium": {
+      "id": "group-premium",
+      "name": "Premium",
+      "itemIds": [
+        "opt-pineapple",
+        "opt-avocado",
+        "opt-dark-chocolate",
+        "opt-mango",
+        "opt-matcha"
+      ]
+    },
+    "group-nut-butter": {
+      "id": "group-nut-butter",
+      "name": "Gjalpë Arre",
+      "itemIds": [
+        "opt-walnut-butter",
+        "opt-almond-butter",
+        "opt-peanut-butter"
+      ]
+    },
+    "group-superfoods": {
+      "id": "group-superfoods",
+      "name": "Superfoods",
+      "itemIds": [
+        "opt-wild-strawberry",
+        "opt-goji-berry",
+        "opt-bee-pollen",
+        "opt-whey-protein"
+      ]
+    },
+    "group-extras": {
+      "id": "group-extras",
+      "name": "Ekstra",
+      "itemIds": [
+        "opt-granola",
+        "opt-cinnamon",
+        "opt-lemon-peel",
+        "opt-spinach",
+        "opt-oat"
+      ]
+    }
+  },
+  "layout": [
+    {
+      "type": "item-group",
+      "data": "included"
+    },
+    {
+      "type": "item-group",
+      "data": "group-fruits"
+    },
+    {
+      "type": "item-group",
+      "data": "group-nuts"
+    },
+    {
+      "type": "item-group",
+      "data": "group-seeds"
+    },
+    {
+      "type": "item-group",
+      "data": "group-dried-fruits"
+    },
+    {
+      "type": "item-group",
+      "data": "group-sweets"
+    },
+    {
+      "type": "item-group",
+      "data": "group-premium"
+    },
+    {
+      "type": "item-group",
+      "data": "group-nut-butter"
+    },
+    {
+      "type": "item-group",
+      "data": "group-superfoods"
+    },
+    {
+      "type": "item-group",
+      "data": "group-extras"
+    }
+  ],
+  "choices": {
+    "milk-choice": {
+      "id": "milk-choice",
+      "min": 1,
+      "max": 1
+    },
+    "juice-choice": {
+      "id": "juice-choice",
+      "min": 1,
+      "max": 1
+    }
+  },
+  "modifierMenu": true
+}
