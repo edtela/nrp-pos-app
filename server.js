@@ -357,14 +357,33 @@ app.get('/api/orders', async (req, res) => {
   }
 });
 
-// Handle SPA routing - serve index-dyn.html for all non-API routes
+// Handle routing - serve static HTML files first, fallback to dynamic
 app.get('*', (req, res) => {
-  // Check if requesting static version
-  if (req.path.startsWith('/static')) {
-    res.sendFile(path.join(__dirname, 'dist', 'index-ssg.html'));
-  } else {
-    res.sendFile(path.join(__dirname, 'dist', 'index-dyn.html'));
+  // Clean the path and map to HTML file
+  let htmlPath = req.path;
+  
+  // Add .html extension if not present and not a directory
+  if (!htmlPath.endsWith('/') && !htmlPath.endsWith('.html')) {
+    htmlPath = htmlPath + '.html';
   }
+  
+  // Map directory paths to index.html
+  if (htmlPath.endsWith('/')) {
+    htmlPath = htmlPath + 'index.html';
+  }
+  
+  // Try to serve the static HTML file
+  const staticFilePath = path.join(__dirname, 'dist', htmlPath);
+  
+  fs.access(staticFilePath, fs.constants.F_OK, (err) => {
+    if (!err) {
+      // Static file exists, serve it
+      res.sendFile(staticFilePath);
+    } else {
+      // No static file, serve dynamic SPA version
+      res.sendFile(path.join(__dirname, 'dist', 'index-dyn.html'));
+    }
+  });
 });
 
 // Error handling middleware

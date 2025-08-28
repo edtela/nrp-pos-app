@@ -153,6 +153,13 @@ async function generateStaticPages() {
     const distDataDir = path.join(distDir, 'data/menu', lang);
     await fs.mkdir(distDataDir, { recursive: true });
     
+    // Determine HTML output directory
+    // Default language goes to root, others go to language subdirectory
+    const htmlOutputDir = lang === defaultLang ? distDir : path.join(distDir, lang);
+    if (lang !== defaultLang) {
+      await fs.mkdir(htmlOutputDir, { recursive: true });
+    }
+    
     // Read all menu files for this language
     const menuFiles = await fs.readdir(langMenuDir);
     
@@ -203,15 +210,15 @@ async function generateStaticPages() {
         `${displayMenu.name} - NRP POS`
       );
       
-      // Determine output file name with language prefix
+      // Simple file name - always just {name}.html
       const baseName = file === 'index.json' ? 'index' : file.replace('.json', '');
-      const pageName = lang === defaultLang ? 
-        `${baseName}.html` : 
-        `${baseName}.${lang}.html`;
+      const pageName = `${baseName}.html`;
       
-      // Write HTML file
-      await fs.writeFile(path.join(distDir, pageName), html);
-      console.log(`    ✓ Generated ${pageName}`);
+      // Write HTML file to the appropriate directory
+      const outputPath = path.join(htmlOutputDir, pageName);
+      await fs.writeFile(outputPath, html);
+      const relativePath = lang === defaultLang ? pageName : `${lang}/${pageName}`;
+      console.log(`    ✓ Generated ${relativePath}`);
     }
     
     // Generate order page for this language
@@ -259,9 +266,11 @@ async function generateStaticPages() {
       'Your Order - NRP POS'
     );
     
-    const orderPageName = lang === defaultLang ? 'order.html' : `order.${lang}.html`;
-    await fs.writeFile(path.join(distDir, orderPageName), orderHtml);
-    console.log(`    ✓ Generated ${orderPageName}`);
+    // Order page also goes in the language directory
+    const orderOutputPath = path.join(htmlOutputDir, 'order.html');
+    await fs.writeFile(orderOutputPath, orderHtml);
+    const orderRelativePath = lang === defaultLang ? 'order.html' : `${lang}/order.html`;
+    console.log(`    ✓ Generated ${orderRelativePath}`);
   }
   
   // No longer copying to root - all languages have their own directories
