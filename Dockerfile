@@ -43,8 +43,9 @@ COPY --from=builder /app/dist ./dist
 # Copy public directory for data files
 COPY public ./public
 
-# Copy server file
+# Copy server file and menu config
 COPY server.js ./
+COPY menu-config.json ./
 
 # Create non-root user
 RUN addgroup -g 1001 -S nodejs && \
