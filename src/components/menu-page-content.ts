@@ -23,8 +23,10 @@ export const menuPageContainer = "menu-page-content";
  * Main template for menu page content
  */
 export function template(displayMenu: DisplayMenu, context: Context): Template {
-  // Determine left button type based on menu ID
-  const leftButtonType: AppHeader.LeftButtonType = displayMenu.id === "main-menu" ? "home" : "back";
+  // Determine left button type - show home button for root/index menu
+  // Check if this is the root menu (main-menu is the ID of index.json)
+  const isRootMenu = displayMenu.id === "main-menu";
+  const leftButtonType: AppHeader.LeftButtonType = isRootMenu ? "home" : "back";
 
   const headerData: AppHeader.HeaderData = {
     leftButton: {
@@ -52,7 +54,8 @@ export function hydrate(container: Element, displayMenu: DisplayMenu, context: C
   // Hydrate header with navigation
   const header = page.querySelector(`.${layoutStyles.header}`) as HTMLElement;
   if (header) {
-    const leftButtonType: AppHeader.LeftButtonType = displayMenu.id === "main-menu" ? "home" : "back";
+    const isRootMenu = displayMenu.id === "main-menu";
+    const leftButtonType: AppHeader.LeftButtonType = isRootMenu ? "home" : "back";
 
     const headerData: AppHeader.HeaderData = {
       leftButton: {

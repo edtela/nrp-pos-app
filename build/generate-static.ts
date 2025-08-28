@@ -264,23 +264,7 @@ async function generateStaticPages() {
     console.log(`    ✓ Generated ${orderPageName}`);
   }
   
-  // Also copy default language menu data to root for backward compatibility
-  console.log(`\n  Creating backward compatibility files...`);
-  const defaultLangDir = path.join(menuDir, defaultLang);
-  const rootDataDir = path.join(distDir, 'data/menu');
-  
-  if (await fs.access(defaultLangDir).then(() => true).catch(() => false)) {
-    const files = await fs.readdir(defaultLangDir);
-    for (const file of files) {
-      if (file.endsWith('.json')) {
-        await fs.copyFile(
-          path.join(defaultLangDir, file),
-          path.join(rootDataDir, file)
-        );
-        console.log(`    ✓ Copied ${file} to root`);
-      }
-    }
-  }
+  // No longer copying to root - all languages have their own directories
   
   console.log('\n✨ Static generation complete!');
 }
