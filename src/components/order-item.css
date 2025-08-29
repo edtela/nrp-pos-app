@@ -168,20 +168,19 @@
   line-height: var(--md-sys-typescale-body-medium-line-height);
   color: var(--md-sys-color-on-surface-variant);
   margin: 0;
-  padding: 0 var(--md-sys-spacing-md) var(--md-sys-spacing-sm) var(--md-sys-spacing-md);
+  padding: var(--md-sys-spacing-md) var(--md-sys-spacing-md) var(--md-sys-spacing-md) var(--md-sys-spacing-md);
 }
 
 .order-item-modifications-list {
   display: flex;
   flex-direction: column;
   gap: var(--md-sys-spacing-xs);
-  padding: var(--md-sys-spacing-sm) var(--md-sys-spacing-md);
-  border-top: 1px solid var(--md-sys-color-outline-variant);
+  padding: 0 var(--md-sys-spacing-md) var(--md-sys-spacing-md) var(--md-sys-spacing-md);
+  border-top: none;
 }
 
 [data-theme="dark"] .order-item-modifications-list {
   background: transparent;
-  border-top-color: rgba(72, 77, 67, 0.3);
 }
 
 .order-item-mod-item {
@@ -216,17 +215,16 @@
 }
 
 .order-item-expanded-controls {
-  padding: var(--md-sys-spacing-sm) var(--md-sys-spacing-md);
+  padding: 0 var(--md-sys-spacing-md) var(--md-sys-spacing-md) var(--md-sys-spacing-md);
   display: flex;
   justify-content: flex-end;
   align-items: center;
   gap: var(--md-sys-spacing-lg);
-  border-top: 1px solid var(--md-sys-color-outline-variant);
+  border-top: none;
 }
 
 [data-theme="dark"] .order-item-expanded-controls {
   background: transparent;
-  border-top-color: rgba(72, 77, 67, 0.3);
 }
 
 .order-item-quantity-controls {
@@ -294,16 +292,17 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: var(--md-sys-spacing-sm) var(--md-sys-spacing-md);
-  background: var(--md-sys-color-surface-container-low);
+  padding: var(--md-sys-spacing-md);
+  background: var(--md-sys-color-surface-container);
   border-top: 1px solid var(--md-sys-color-outline-variant);
   border-bottom-left-radius: var(--md-sys-shape-corner-medium);
   border-bottom-right-radius: var(--md-sys-shape-corner-medium);
+  margin-top: var(--md-sys-spacing-sm);
 }
 
 [data-theme="dark"] .order-item-actions {
   background: var(--md-sys-color-surface-container-low);
-  border-top-color: rgba(72, 77, 67, 0.3);
+  border-top-color: rgba(141, 146, 134, 0.5);
 }
 
 .order-item-actions-left {

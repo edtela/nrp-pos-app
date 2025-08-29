@@ -34,8 +34,13 @@
 /* When an item is expanded, flatten the list appearance */
 .item-list-items[data-has-expanded="true"] {
   box-shadow: none;
-  background: transparent;
-  border: none;
+  background: rgba(29, 27, 32, 0.03); /* Very subtle background */
+  border: 1px solid rgba(202, 196, 208, 0.2); /* Very subtle border */
+}
+
+[data-theme="dark"] .item-list-items[data-has-expanded="true"] {
+  background: rgba(226, 227, 220, 0.03);
+  border-color: rgba(72, 77, 67, 0.15);
 }
 
 .item-list-item {
@@ -80,11 +85,24 @@
 /* Flat mode styling for collapsed items when another is expanded */
 .item-list-item[data-flat-mode="true"][data-expanded="false"] {
   background: transparent !important;
+  border-bottom: 1px solid rgba(202, 196, 208, 0.15) !important;
+  margin: 4px 0;
+}
+
+[data-theme="dark"] .item-list-item[data-flat-mode="true"][data-expanded="false"] {
+  border-bottom-color: rgba(72, 77, 67, 0.15) !important;
+}
+
+.item-list-item[data-flat-mode="true"][data-expanded="false"]:last-child {
   border-bottom: none !important;
 }
 
 .item-list-item[data-flat-mode="true"][data-expanded="false"]:hover {
-  background: transparent !important;
+  background: rgba(29, 27, 32, 0.04) !important;
+}
+
+[data-theme="dark"] .item-list-item[data-flat-mode="true"][data-expanded="false"]:hover {
+  background: rgba(226, 227, 220, 0.04) !important;
 }
 
 .item-list-empty-container {
