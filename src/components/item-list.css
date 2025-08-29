@@ -16,19 +16,19 @@
 }
 
 .item-list-items {
-  background: var(--md-sys-color-surface-container);
+  background: var(--md-sys-color-surface-container-high);
   border: 1px solid var(--md-sys-color-outline-variant);
   border-radius: var(--md-sys-shape-corner-medium);
   margin: var(--md-sys-spacing-md) 0;
   overflow: hidden;
-  box-shadow: none;
+  box-shadow: var(--md-sys-elevation-level1);
 }
 
 /* Enhanced dark mode container with tonal elevation */
 [data-theme="dark"] .item-list-items {
-  background: var(--md-sys-color-surface-dim);
+  background: var(--md-sys-color-surface-container-high);
   border-color: rgba(72, 77, 67, 0.3);
-  box-shadow: none;
+  box-shadow: var(--md-sys-elevation-level1);
 }
 
 /* When an item is expanded, flatten the list appearance */
@@ -39,14 +39,14 @@
 }
 
 .item-list-item {
-  background: var(--md-sys-color-surface);
+  background: transparent;
   border-bottom: 1px solid var(--md-sys-color-outline-variant);
   transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Dark mode item with subtle background */
 [data-theme="dark"] .item-list-item {
-  background: var(--md-sys-color-surface);
+  background: transparent;
   border-bottom-color: rgba(72, 77, 67, 0.3);
 }
 
@@ -55,24 +55,24 @@
 }
 
 .item-list-item:hover {
-  background: var(--md-sys-color-surface-container-low);
+  background: rgba(29, 27, 32, 0.08);
 }
 
 [data-theme="dark"] .item-list-item:hover {
-  background: var(--md-sys-color-surface-container-low);
+  background: rgba(226, 227, 220, 0.08);
 }
 
-/* Expanded item styling */
+/* Expanded item styling - becomes the card */
 .item-list-item[data-expanded="true"] {
-  background: var(--md-sys-color-surface) !important;
+  background: var(--md-sys-color-surface-container-high) !important;
   border: 1px solid var(--md-sys-color-outline-variant);
   border-radius: var(--md-sys-shape-corner-medium);
   margin: var(--md-sys-spacing-sm) 0;
-  box-shadow: var(--md-sys-elevation-level1);
+  box-shadow: var(--md-sys-elevation-level2);
 }
 
 [data-theme="dark"] .item-list-item[data-expanded="true"] {
-  background: var(--md-sys-color-surface-container) !important;
+  background: var(--md-sys-color-surface-container-high) !important;
   border-color: rgba(72, 77, 67, 0.5);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }

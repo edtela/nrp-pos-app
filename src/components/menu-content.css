@@ -49,19 +49,19 @@
 }
 
 .menu-group-items {
-  background: var(--md-sys-color-surface-container);
+  background: var(--md-sys-color-surface-container-high);
   border-radius: var(--md-sys-shape-corner-medium);
   padding: var(--md-sys-spacing-sm);
   overflow: hidden;
-  box-shadow: none;
+  box-shadow: var(--md-sys-elevation-level1);
   width: 100%;
   border: 1px solid var(--md-sys-color-outline-variant);
 }
 
 [data-theme="dark"] .menu-group-items {
-  background: var(--md-sys-color-surface-dim);
-  border: 1px solid rgba(72, 77, 67, 0.2);
-  box-shadow: none;
+  background: var(--md-sys-color-surface-container-high);
+  border: 1px solid rgba(72, 77, 67, 0.3);
+  box-shadow: var(--md-sys-elevation-level1);
 }
 
 

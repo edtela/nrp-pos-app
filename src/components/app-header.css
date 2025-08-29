@@ -55,6 +55,11 @@
   margin: 0 var(--md-sys-spacing-xs);
 }
 
+/* Dark theme search field - recessed appearance */
+[data-theme="dark"] .app-header-search-container {
+  background-color: var(--md-sys-color-surface-container-lowest);
+}
+
 .app-header-search-icon {
   color: var(--md-sys-color-on-surface-variant);
   margin-right: var(--md-sys-spacing-sm);

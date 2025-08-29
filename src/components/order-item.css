@@ -19,20 +19,20 @@
 }
 
 .order-item-header:hover {
-  background: var(--md-sys-color-surface-container);
+  background: rgba(29, 27, 32, 0.08);
 }
 
 .order-item-header:active {
-  background: var(--md-sys-color-surface-container);
+  background: rgba(29, 27, 32, 0.12);
 }
 
 /* Dark mode enhancements */
 [data-theme="dark"] .order-item-header:hover {
-  background: var(--md-sys-color-surface-container);
+  background: rgba(226, 227, 220, 0.08);
 }
 
 [data-theme="dark"] .order-item-header:active {
-  background: var(--md-sys-color-surface-container);
+  background: rgba(226, 227, 220, 0.12);
 }
 
 .order-item-info {
@@ -180,7 +180,7 @@
 }
 
 [data-theme="dark"] .order-item-modifications-list {
-  background: var(--md-sys-color-surface-dim);
+  background: transparent;
   border-top-color: rgba(72, 77, 67, 0.3);
 }
 
@@ -225,7 +225,7 @@
 }
 
 [data-theme="dark"] .order-item-expanded-controls {
-  background: var(--md-sys-color-surface-dim);
+  background: transparent;
   border-top-color: rgba(72, 77, 67, 0.3);
 }
 
@@ -295,14 +295,14 @@
   justify-content: space-between;
   align-items: center;
   padding: var(--md-sys-spacing-sm) var(--md-sys-spacing-md);
-  background: var(--md-sys-color-surface-container);
+  background: var(--md-sys-color-surface-container-low);
   border-top: 1px solid var(--md-sys-color-outline-variant);
   border-bottom-left-radius: var(--md-sys-shape-corner-medium);
   border-bottom-right-radius: var(--md-sys-shape-corner-medium);
 }
 
 [data-theme="dark"] .order-item-actions {
-  background: var(--md-sys-color-surface-container);
+  background: var(--md-sys-color-surface-container-low);
   border-top-color: rgba(72, 77, 67, 0.3);
 }
 
