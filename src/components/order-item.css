@@ -294,7 +294,6 @@
   align-items: center;
   padding: var(--md-sys-spacing-md);
   background: var(--md-sys-color-surface-container);
-  border-top: 1px solid var(--md-sys-color-outline-variant);
   border-bottom-left-radius: var(--md-sys-shape-corner-medium);
   border-bottom-right-radius: var(--md-sys-shape-corner-medium);
   margin-top: var(--md-sys-spacing-sm);
@@ -302,7 +301,6 @@
 
 [data-theme="dark"] .order-item-actions {
   background: var(--md-sys-color-surface-container-low);
-  border-top-color: rgba(141, 146, 134, 0.5);
 }
 
 .order-item-actions-left {
