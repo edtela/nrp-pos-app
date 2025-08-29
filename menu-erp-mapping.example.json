@@ -1,0 +1,60 @@
+{
+  "comment": "This file maps NRP menu item IDs to ERPNext product codes",
+  "comment2": "Copy to menu-erp-mapping.json and customize for your setup",
+  
+  "espresso-single": "PROD-ESP-001",
+  "espresso-double": "PROD-ESP-002",
+  "americano": "PROD-AMER-001",
+  "cappuccino": "PROD-CAP-001",
+  "latte": "PROD-LAT-001",
+  "macchiato": "PROD-MAC-001",
+  
+  "yogurt-plain": "PROD-YOG-001",
+  "yogurt-strawberry": "PROD-YOG-002",
+  "yogurt-blueberry": "PROD-YOG-003",
+  "yogurt-granola": "PROD-YOG-004",
+  
+  "juice-orange": "PROD-JUI-001",
+  "juice-apple": "PROD-JUI-002",
+  "juice-mixed": "PROD-JUI-003",
+  
+  "smoothie-berry": "PROD-SMO-001",
+  "smoothie-tropical": "PROD-SMO-002",
+  "smoothie-green": "PROD-SMO-003",
+  
+  "tea-black": "PROD-TEA-001",
+  "tea-green": "PROD-TEA-002",
+  "tea-herbal": "PROD-TEA-003",
+  
+  "toast-plain": "PROD-TOA-001",
+  "toast-cheese": "PROD-TOA-002",
+  "toast-avocado": "PROD-TOA-003",
+  
+  "crepe-nutella": "PROD-CRE-001",
+  "crepe-fruit": "PROD-CRE-002",
+  "crepe-savory": "PROD-CRE-003",
+  
+  "_modifiers_comment": "Modifiers mapping",
+  
+  "mod-extra-shot": "MOD-ESP-EXTRA",
+  "mod-decaf": "MOD-ESP-DECAF",
+  "mod-milk-whole": "MOD-MILK-WHOLE",
+  "mod-milk-skim": "MOD-MILK-SKIM",
+  "mod-milk-oat": "MOD-MILK-OAT",
+  "mod-milk-almond": "MOD-MILK-ALMOND",
+  "mod-milk-soy": "MOD-MILK-SOY",
+  "mod-size-small": "MOD-SIZE-S",
+  "mod-size-medium": "MOD-SIZE-M",
+  "mod-size-large": "MOD-SIZE-L",
+  "mod-syrup-vanilla": "MOD-SYR-VAN",
+  "mod-syrup-caramel": "MOD-SYR-CAR",
+  "mod-syrup-hazelnut": "MOD-SYR-HAZ",
+  "mod-whipped-cream": "MOD-WHIP",
+  "mod-extra-foam": "MOD-FOAM",
+  "mod-no-foam": "MOD-NOFOAM",
+  "mod-temp-hot": "MOD-TEMP-HOT",
+  "mod-temp-iced": "MOD-TEMP-ICED",
+  "mod-honey": "MOD-HONEY",
+  "mod-sugar": "MOD-SUGAR",
+  "mod-sweetener": "MOD-SWEET"
+}
