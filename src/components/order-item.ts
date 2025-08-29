@@ -19,6 +19,7 @@ export const INCREASE_QUANTITY_EVENT = "increase-quantity-event";
 export const DECREASE_QUANTITY_EVENT = "decrease-quantity-event";
 export const MODIFY_ITEM_EVENT = "modify-item-event";
 export const TOGGLE_ITEM_EVENT = "toggle-item-event";
+export const COMMENT_ITEM_EVENT = "comment-item-event";
 
 // Removed OrderItemData - using DisplayItem from model instead
 
@@ -194,6 +195,16 @@ export function template(displayItem: DisplayItem, context: Context): Template {
                   </button>
                 </div>
                 <div class="${classes.actionsRight}">
+                  <button
+                    class="${classes.actionBtn}"
+                    data-item-id="${item.id}"
+                    ${onClick(COMMENT_ITEM_EVENT)}
+                  >
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                    </svg>
+                    Comment
+                  </button>
                   <button
                     class="${classes.actionBtn} ${classes.actionBtnSecondary}"
                     data-item-id="${item.id}"

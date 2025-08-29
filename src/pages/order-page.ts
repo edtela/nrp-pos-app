@@ -130,6 +130,16 @@ export function hydrate(container: Element, _data: OrderPageData, context: Conte
     const changes = model.update(stmt);
     update(container, changes, model.getData(), context);
   });
+
+  // Handle comment item event
+  node.on(OrderItemUI.COMMENT_ITEM_EVENT, (data) => {
+    const itemId = data.itemId;
+    if (itemId) {
+      // For now, just log - can be expanded to show comment dialog
+      console.log('Comment requested for item:', itemId);
+      // TODO: Implement comment functionality
+    }
+  });
 }
 
 function update(
