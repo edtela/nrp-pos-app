@@ -72,7 +72,6 @@
   background: var(--md-sys-color-surface-container-high) !important;
   border: 1px solid var(--md-sys-color-outline-variant);
   border-radius: var(--md-sys-shape-corner-medium);
-  margin: var(--md-sys-spacing-sm) 0;
   box-shadow: none;
 }
 
