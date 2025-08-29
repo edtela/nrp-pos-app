@@ -59,6 +59,27 @@ async function generateHTMLDocument(
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>${title}</title>
+  <!-- Prevent flash of white content by immediately applying theme -->
+  <script>
+    (function() {
+      // Get stored theme preference or default to system
+      const stored = localStorage.getItem('theme-v1');
+      const theme = stored ? JSON.parse(stored) : 'system';
+      
+      // Resolve system theme if needed
+      const activeTheme = theme === 'system' 
+        ? (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+        : theme;
+      
+      // Apply theme immediately
+      document.documentElement.setAttribute('data-theme', activeTheme);
+      
+      // Set initial background to prevent flash
+      if (activeTheme === 'dark') {
+        document.documentElement.style.backgroundColor = '#1c1b1f';
+      }
+    })();
+  </script>
   ${assets.css ? `<link rel="stylesheet" href="${assets.css}">` : ''}
   <style>
     * {
@@ -73,7 +94,8 @@ async function generateHTMLDocument(
       -moz-osx-font-smoothing: grayscale;
       overscroll-behavior: none;
       touch-action: pan-x pan-y;
-      background: #f5f5f5;
+      background-color: var(--md-sys-color-background, #fef7ff);
+      color: var(--md-sys-color-on-background, #1d1b20);
     }
     
     #app {
