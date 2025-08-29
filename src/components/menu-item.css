@@ -31,7 +31,7 @@
 }
 
 .menu-item:hover {
-    background: var(--md-sys-color-surface-container-low);
+    background: var(--md-sys-color-surface-container);
 }
 
 /* Enhanced dark mode separation */

@@ -16,12 +16,12 @@
 }
 
 .item-list-items {
-  background: var(--md-sys-color-surface);
+  background: var(--md-sys-color-surface-container-low);
   border: 1px solid var(--md-sys-color-outline-variant);
   border-radius: var(--md-sys-shape-corner-medium);
   margin: var(--md-sys-spacing-md) 0;
   overflow: hidden;
-  box-shadow: var(--md-sys-elevation-level1);
+  box-shadow: none;
 }
 
 /* Enhanced dark mode container with tonal elevation */
@@ -55,7 +55,7 @@
 }
 
 .item-list-item:hover {
-  background: var(--md-sys-color-surface-variant);
+  background: var(--md-sys-color-surface-container);
 }
 
 [data-theme="dark"] .item-list-item:hover {
@@ -64,11 +64,11 @@
 
 /* Expanded item styling */
 .item-list-item[data-expanded="true"] {
-  background: var(--md-sys-color-surface) !important;
+  background: var(--md-sys-color-surface-container-high) !important;
   border: 1px solid var(--md-sys-color-outline-variant);
   border-radius: var(--md-sys-shape-corner-medium);
   margin: var(--md-sys-spacing-sm) 0;
-  box-shadow: var(--md-sys-elevation-level2);
+  box-shadow: var(--md-sys-elevation-level1);
 }
 
 [data-theme="dark"] .item-list-item[data-expanded="true"] {

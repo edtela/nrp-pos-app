@@ -49,12 +49,13 @@
 }
 
 .menu-group-items {
-  background: var(--md-sys-color-surface);
+  background: var(--md-sys-color-surface-container-low);
   border-radius: var(--md-sys-shape-corner-medium);
   padding: var(--md-sys-spacing-sm);
   overflow: hidden;
-  box-shadow: var(--md-sys-elevation-level1);
+  box-shadow: none;
   width: 100%;
+  border: 1px solid var(--md-sys-color-outline-variant);
 }
 
 [data-theme="dark"] .menu-group-items {
