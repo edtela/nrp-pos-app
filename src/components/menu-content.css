@@ -49,7 +49,7 @@
 }
 
 .menu-group-items {
-  background: var(--md-sys-color-surface-container-low);
+  background: var(--md-sys-color-surface-container);
   border-radius: var(--md-sys-shape-corner-medium);
   padding: var(--md-sys-spacing-sm);
   overflow: hidden;

@@ -19,7 +19,7 @@
 }
 
 .order-item-header:hover {
-  background: var(--md-sys-color-surface-container-low);
+  background: var(--md-sys-color-surface-container);
 }
 
 .order-item-header:active {
@@ -28,7 +28,7 @@
 
 /* Dark mode enhancements */
 [data-theme="dark"] .order-item-header:hover {
-  background: var(--md-sys-color-surface-container-low);
+  background: var(--md-sys-color-surface-container);
 }
 
 [data-theme="dark"] .order-item-header:active {
@@ -295,7 +295,7 @@
   justify-content: space-between;
   align-items: center;
   padding: var(--md-sys-spacing-sm) var(--md-sys-spacing-md);
-  background: var(--md-sys-color-surface-container-low);
+  background: var(--md-sys-color-surface-container);
   border-top: 1px solid var(--md-sys-color-outline-variant);
   border-bottom-left-radius: var(--md-sys-shape-corner-medium);
   border-bottom-right-radius: var(--md-sys-shape-corner-medium);
