@@ -31,7 +31,16 @@
 }
 
 .menu-item:hover {
-    background: var(--md-sys-color-surface-container);
+    background: var(--md-sys-color-surface-container-low);
+}
+
+/* Enhanced dark mode separation */
+[data-theme="dark"] .menu-item {
+    background: var(--md-sys-color-surface);
+}
+
+[data-theme="dark"] .menu-item:hover {
+    background: linear-gradient(0deg, var(--md-sys-color-surface-tint-1), var(--md-sys-color-surface-tint-1)), var(--md-sys-color-surface-container);
 }
 
 /* Control element styling */

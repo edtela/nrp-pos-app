@@ -26,6 +26,15 @@
   background: var(--md-sys-color-surface-container-high);
 }
 
+/* Dark mode enhancements */
+[data-theme="dark"] .order-item-header:hover {
+  background: linear-gradient(0deg, var(--md-sys-color-surface-tint-1), var(--md-sys-color-surface-tint-1)), var(--md-sys-color-surface-container);
+}
+
+[data-theme="dark"] .order-item-header:active {
+  background: linear-gradient(0deg, var(--md-sys-color-surface-tint-2), var(--md-sys-color-surface-tint-2)), var(--md-sys-color-surface-container-high);
+}
+
 .order-item-info {
   display: flex;
   align-items: flex-start;
@@ -170,6 +179,11 @@
   border-top: 1px solid var(--md-sys-color-outline-variant);
 }
 
+[data-theme="dark"] .order-item-modifications-list {
+  background: var(--md-sys-color-surface-container-low);
+  border-top-color: rgba(72, 77, 67, 0.5);
+}
+
 .order-item-mod-item {
   display: flex;
   justify-content: space-between;
@@ -208,6 +222,11 @@
   align-items: center;
   gap: var(--md-sys-spacing-lg);
   border-top: 1px solid var(--md-sys-color-outline-variant);
+}
+
+[data-theme="dark"] .order-item-expanded-controls {
+  background: var(--md-sys-color-surface-container-low);
+  border-top-color: rgba(72, 77, 67, 0.5);
 }
 
 .order-item-quantity-controls {
@@ -280,6 +299,11 @@
   border-top: 1px solid var(--md-sys-color-outline-variant);
   border-bottom-left-radius: var(--md-sys-shape-corner-medium);
   border-bottom-right-radius: var(--md-sys-shape-corner-medium);
+}
+
+[data-theme="dark"] .order-item-actions {
+  background: linear-gradient(0deg, var(--md-sys-color-surface-tint-2), var(--md-sys-color-surface-tint-2)), var(--md-sys-color-surface-container-high);
+  border-top-color: rgba(72, 77, 67, 0.5);
 }
 
 .order-item-actions-left {

@@ -203,15 +203,24 @@
   --md-sys-color-surface-variant: #43483E;
   --md-sys-color-on-surface-variant: #C3C8BB;
   
-  /* Surface container colors - Dark Theme */
-  --md-sys-color-surface-container: #1E201C;
-  --md-sys-color-surface-container-high: #282A26;
-  --md-sys-color-surface-container-highest: #333530;
-  --md-sys-color-surface-container-low: #1A1C18;
-  --md-sys-color-surface-container-lowest: #0C0F0B;
+  /* Surface container colors - Dark Theme - Enhanced for better separation */
+  --md-sys-color-surface-container: #1F211D;
+  --md-sys-color-surface-container-high: #2A2C28;
+  --md-sys-color-surface-container-highest: #363833;
+  --md-sys-color-surface-container-low: #1B1D19;
+  --md-sys-color-surface-container-lowest: #0F110D;
+  
+  /* Additional surface tints for elevation */
+  --md-sys-color-surface-dim: #141612;
+  --md-sys-color-surface-bright: #3A3C38;
+  --md-sys-color-surface-tint-1: rgba(135, 217, 160, 0.05);
+  --md-sys-color-surface-tint-2: rgba(135, 217, 160, 0.08);
+  --md-sys-color-surface-tint-3: rgba(135, 217, 160, 0.11);
+  --md-sys-color-surface-tint-4: rgba(135, 217, 160, 0.12);
+  --md-sys-color-surface-tint-5: rgba(135, 217, 160, 0.14);
   
   --md-sys-color-outline: #8D9286;
-  --md-sys-color-outline-variant: #43483E;
+  --md-sys-color-outline-variant: #484D43;
   
   --md-sys-color-surface-tint: #87D9A0;
   --md-sys-color-scrim: #000000;
