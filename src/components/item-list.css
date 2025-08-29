@@ -27,7 +27,7 @@
 /* Enhanced dark mode container with tonal elevation */
 [data-theme="dark"] .item-list-items {
   background: var(--md-sys-color-surface-container-high);
-  border-color: rgba(72, 77, 67, 0.3);
+  /* Border color handled by CSS variable */
   box-shadow: none;
 }
 
@@ -52,7 +52,7 @@
 /* Dark mode item with subtle background */
 [data-theme="dark"] .item-list-item {
   background: transparent;
-  border-bottom-color: rgba(72, 77, 67, 0.3);
+  /* Use same border as light mode - CSS variable handles the color */
 }
 
 .item-list-item:last-child {
@@ -78,7 +78,7 @@
 
 [data-theme="dark"] .item-list-item[data-expanded="true"] {
   background: var(--md-sys-color-surface-container-high) !important;
-  border-color: rgba(72, 77, 67, 0.5);
+  /* Border color handled by CSS variable */
   box-shadow: none;
 }
 
@@ -90,7 +90,7 @@
 }
 
 [data-theme="dark"] .item-list-item[data-flat-mode="true"][data-expanded="false"] {
-  border-bottom-color: rgba(72, 77, 67, 0.15) !important;
+  border-bottom: 1px solid rgba(72, 77, 67, 0.15) !important;
 }
 
 .item-list-item[data-flat-mode="true"][data-expanded="false"]:last-child {
