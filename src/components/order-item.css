@@ -28,11 +28,11 @@
 
 /* Dark mode enhancements */
 [data-theme="dark"] .order-item-header:hover {
-  background: linear-gradient(0deg, var(--md-sys-color-surface-tint-1), var(--md-sys-color-surface-tint-1)), var(--md-sys-color-surface-container);
+  background: var(--md-sys-color-surface-container-low);
 }
 
 [data-theme="dark"] .order-item-header:active {
-  background: linear-gradient(0deg, var(--md-sys-color-surface-tint-2), var(--md-sys-color-surface-tint-2)), var(--md-sys-color-surface-container-high);
+  background: var(--md-sys-color-surface-container);
 }
 
 .order-item-info {
@@ -180,8 +180,8 @@
 }
 
 [data-theme="dark"] .order-item-modifications-list {
-  background: var(--md-sys-color-surface-container-low);
-  border-top-color: rgba(72, 77, 67, 0.5);
+  background: var(--md-sys-color-surface-dim);
+  border-top-color: rgba(72, 77, 67, 0.3);
 }
 
 .order-item-mod-item {
@@ -225,8 +225,8 @@
 }
 
 [data-theme="dark"] .order-item-expanded-controls {
-  background: var(--md-sys-color-surface-container-low);
-  border-top-color: rgba(72, 77, 67, 0.5);
+  background: var(--md-sys-color-surface-dim);
+  border-top-color: rgba(72, 77, 67, 0.3);
 }
 
 .order-item-quantity-controls {
@@ -302,8 +302,8 @@
 }
 
 [data-theme="dark"] .order-item-actions {
-  background: linear-gradient(0deg, var(--md-sys-color-surface-tint-2), var(--md-sys-color-surface-tint-2)), var(--md-sys-color-surface-container-high);
-  border-top-color: rgba(72, 77, 67, 0.5);
+  background: var(--md-sys-color-surface-container);
+  border-top-color: rgba(72, 77, 67, 0.3);
 }
 
 .order-item-actions-left {

@@ -22,28 +22,8 @@ import type { PageStaticData } from '../src/types/page-data';
 import * as MenuPage from '../src/pages/menu-page';
 import * as OrderPage from '../src/pages/order-page';
 import { buildHTML } from '../src/lib/template';
-
-// Helper to transform Menu to DisplayMenu
-function transformToDisplayMenu(menu: Menu): DisplayMenu {
-  // Three-layer structure: map items directly
-  const mappedItems: Record<string, any> = {};
-  if (menu.items) {
-    for (const [id, item] of Object.entries(menu.items)) {
-      mappedItems[id] = {
-        data: item,
-        quantity: 0,
-        total: 0
-      };
-    }
-  }
-  
-  return {
-    ...menu,
-    items: mappedItems,
-    itemGroups: menu.itemGroups || {},
-    layout: menu.layout || []
-  } as DisplayMenu;
-}
+// Import the proper conversion function
+import { toDisplayMenu } from '../src/model/menu-model';
 
 // Read the Vite-generated assets from dist/assets
 async function getViteAssets(): Promise<{ js: string; css?: string }> {
@@ -177,8 +157,8 @@ async function generateStaticPages() {
         await fs.readFile(path.join(langMenuDir, file), 'utf-8')
       ) as Menu;
       
-      // Transform to DisplayMenu
-      const displayMenu = transformToDisplayMenu(menuData);
+      // Transform to DisplayMenu using the proper conversion function
+      const displayMenu = toDisplayMenu(menuData);
       
       // Generate page data
       const pageData: PageStaticData = {

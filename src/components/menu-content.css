@@ -58,9 +58,9 @@
 }
 
 [data-theme="dark"] .menu-group-items {
-  background: linear-gradient(0deg, var(--md-sys-color-surface-tint-1), var(--md-sys-color-surface-tint-1)), var(--md-sys-color-surface-container-low);
-  border: 1px solid rgba(72, 77, 67, 0.3);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  background: var(--md-sys-color-surface-dim);
+  border: 1px solid rgba(72, 77, 67, 0.2);
+  box-shadow: none;
 }
 
 
