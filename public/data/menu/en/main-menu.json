@@ -1,0 +1,112 @@
+{
+  "id": "main-menu",
+  "name": "Aromal",
+  "currency": "ALL",
+  "items": {
+    "coffee": {
+      "id": "coffee",
+      "name": "Coffee",
+      "description": "Espresso, specialty coffee and hot drinks",
+      "icon": "☕",
+      "constraints": {},
+      "subMenu": {
+        "menuId": "espresso-menu",
+        "included": []
+      },
+      "order": 0
+    },
+    "tea": {
+      "id": "tea",
+      "name": "Tea",
+      "description": "Herbal, fruity and special teas",
+      "icon": "🍵",
+      "constraints": {},
+      "subMenu": {
+        "menuId": "tea-menu",
+        "included": []
+      },
+      "order": 1
+    },
+    "juice": {
+      "id": "juice",
+      "name": "Juices",
+      "description": "Fresh juices and blends",
+      "icon": "🥤",
+      "constraints": {},
+      "subMenu": {
+        "menuId": "juice-menu",
+        "included": []
+      },
+      "order": 2
+    },
+    "smoothie": {
+      "id": "smoothie",
+      "name": "Smoothie",
+      "description": "Smoothies and smoothie bowls",
+      "icon": "🥤",
+      "constraints": {},
+      "subMenu": {
+        "menuId": "smoothie-menu",
+        "included": []
+      },
+      "order": 3
+    },
+    "yogurt": {
+      "id": "yogurt",
+      "name": "Yogurt",
+      "description": "Flavored yogurt and combos",
+      "icon": "🥛",
+      "constraints": {},
+      "subMenu": {
+        "menuId": "yogurt-menu",
+        "included": []
+      },
+      "order": 4
+    },
+    "crepes": {
+      "id": "crepes",
+      "name": "Crepes",
+      "description": "Sweet and savory crepes",
+      "icon": "🥞",
+      "constraints": {},
+      "subMenu": {
+        "menuId": "crepes-menu",
+        "included": []
+      },
+      "order": 5
+    },
+    "toasts": {
+      "id": "toasts",
+      "name": "Toasts",
+      "description": "Yoast and Avotoast",
+      "icon": "🍞",
+      "constraints": {},
+      "subMenu": {
+        "menuId": "toasts-menu",
+        "included": []
+      },
+      "order": 6
+    }
+  },
+  "itemGroups": {
+    "group-1": {
+      "id": "group-1",
+      "name": "",
+      "itemIds": [
+        "coffee",
+        "tea",
+        "juice",
+        "smoothie",
+        "yogurt",
+        "crepes",
+        "toasts"
+      ]
+    }
+  },
+  "layout": [
+    {
+      "type": "item-group",
+      "data": "group-1"
+    }
+  ]
+}

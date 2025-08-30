@@ -21,7 +21,7 @@ import { DataChange } from "@/lib/data-model-types";
 const classes = {
   container: "menu-content",
   group: "menu-group",
-  groupHeader: "menu-group-header",
+  groupHeader: "menu-items-title",
   groupItems: "menu-group-items",
 };
 
