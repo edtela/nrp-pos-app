@@ -59,7 +59,7 @@ export function once<T = any>(
  * Navigation event types
  */
 export interface NavigateEvent {
-  to: "home" | "menu" | "order" | "back";
+  to: "home" | "menu" | "order" | "tables" | "back";
   menuId?: string;
   state?: any;
 }

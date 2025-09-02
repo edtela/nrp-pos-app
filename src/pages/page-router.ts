@@ -12,6 +12,7 @@ import { Language, getCurrentLanguage, buildLanguageUrl } from "@/lib/language";
 export const ROUTES = {
   HOME: "/",
   ORDER: "/order",
+  TABLES: "/tables",
   MENU: (menuId: string) => `/${menuId}`,
 } as const;
 
@@ -69,6 +70,7 @@ export function navigateTo(
 export const routes = {
   home: (lang?: Language) => buildRoute(ROUTES.HOME, { language: lang }),
   order: (lang?: Language) => buildRoute(ROUTES.ORDER, { language: lang }),
+  tables: (lang?: Language) => buildRoute(ROUTES.TABLES, { language: lang }),
   menu: (menuId: string, lang?: Language) => buildRoute(ROUTES.MENU(menuId), { language: lang }),
 } as const;
 
@@ -79,6 +81,8 @@ export const navigate = {
   toHome: (options?: { language?: Language; replace?: boolean }) => navigateTo(ROUTES.HOME, options),
 
   toOrder: (options?: { language?: Language; replace?: boolean }) => navigateTo(ROUTES.ORDER, options),
+
+  toTables: (options?: { language?: Language; replace?: boolean }) => navigateTo(ROUTES.TABLES, options),
 
   toMenu: (menuId: string, options?: { language?: Language; replace?: boolean }) =>
     navigateTo(ROUTES.MENU(menuId), options),
@@ -118,6 +122,16 @@ export function isOrderPage(path?: string): boolean {
   const targetPath = path ?? window.location.pathname;
   const cleanPath = targetPath.replace(/^\/(sq|en|it)/, "");
   return cleanPath === "/order";
+}
+
+/**
+ * Check if a path is the tables page
+ * @param path - The path to check (defaults to current path)
+ */
+export function isTablesPage(path?: string): boolean {
+  const targetPath = path ?? window.location.pathname;
+  const cleanPath = targetPath.replace(/^\/(sq|en|it)/, "");
+  return cleanPath === "/tables";
 }
 
 /**

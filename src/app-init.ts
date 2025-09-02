@@ -51,6 +51,9 @@ export function initializeApp(): void {
         }
         navigate.toOrder();
         break;
+      case "tables":
+        navigate.toTables();
+        break;
       case "back":
         navigate.back();
         break;

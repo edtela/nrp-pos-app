@@ -7,9 +7,9 @@
 import { Menu } from "@/types";
 import { toDisplayMenu } from "@/model/menu-model";
 import { OrderPageData } from "@/model/order-model";
-import { PageStaticData } from "@/types/page-data";
+import { PageStaticData, TablesPageData } from "@/types/page-data";
 import { getCurrentLanguage, Language, parseLanguageFromUrl } from "@/lib/language";
-import { isOrderPage, parseMenuId } from "@/pages/page-router";
+import { isOrderPage, isTablesPage, parseMenuId } from "@/pages/page-router";
 
 /**
  * Get menu JSON filename from menu ID
@@ -47,6 +47,14 @@ export async function fetchPageData(path: string): Promise<PageStaticData> {
     return {
       type: "order",
       data: await createEmptyOrderData(),
+    };
+  }
+
+  // Check if this is the tables page
+  if (isTablesPage(path)) {
+    return {
+      type: "tables",
+      data: await fetchTablesData(),
     };
   }
 
@@ -101,4 +109,20 @@ export async function createEmptyOrderData(): Promise<OrderPageData> {
     items: {},
     currency: config.currency,
   };
+}
+
+/**
+ * Fetch tables/seatmap data
+ */
+export async function fetchTablesData(): Promise<TablesPageData> {
+  const response = await fetch("/data/seatmap/main-floor.json");
+  if (!response.ok) {
+    // Return a default empty tables page if file doesn't exist yet
+    return {
+      id: "main-floor",
+      name: "Main Floor",
+      svgContent: '<svg viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg"><text x="400" y="300" text-anchor="middle">No seatmap data available</text></svg>'
+    };
+  }
+  return response.json();
 }

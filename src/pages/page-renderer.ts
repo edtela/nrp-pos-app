@@ -11,12 +11,13 @@
 import { Menu } from "@/types";
 import { DisplayMenu } from "@/model/menu-model";
 import { OrderPageData } from "@/model/order-model";
-import { PageStaticData } from "@/types/page-data";
+import { PageStaticData, TablesPageData } from "@/types/page-data";
 import { render } from "@/lib/template";
 import { getCurrentLanguage } from "@/lib/language";
 import { createContext, Context, getCurrencyFormat } from "@/lib/context";
 import * as MenuPage from "./menu-page";
 import * as OrderPage from "./order-page";
+import * as TablesPage from "./tables-page";
 
 /**
  * Page Renderer
@@ -28,11 +29,11 @@ class PageRenderer {
    * Get context for current environment
    * @param data Optional menu or order data to extract currency from
    */
-  getContext(data?: Menu | DisplayMenu | OrderPageData): Context {
+  getContext(data?: Menu | DisplayMenu | OrderPageData | TablesPageData): Context {
     const lang = getCurrentLanguage();
 
-    // Check for currency in the data
-    if (data?.currency) {
+    // Check for currency in the data (not applicable to TablesPageData)
+    if (data && 'currency' in data && data.currency) {
       const currencyFormat = getCurrencyFormat(data.currency);
       return createContext(lang, currencyFormat);
     }
@@ -49,6 +50,8 @@ class PageRenderer {
 
     if (pageData.type === "order") {
       render(OrderPage.template(pageData.data, context), container);
+    } else if (pageData.type === "tables") {
+      render(TablesPage.template(pageData.data, context), container);
     } else {
       render(MenuPage.template(pageData.data, context), container);
     }
@@ -63,6 +66,8 @@ class PageRenderer {
 
     if (pageData.type === "order") {
       OrderPage.hydrate(container, pageData.data, context);
+    } else if (pageData.type === "tables") {
+      TablesPage.hydrate(container, pageData.data, context);
     } else {
       MenuPage.hydrate(container, pageData.data, context);
     }
