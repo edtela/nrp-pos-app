@@ -3,221 +3,140 @@
   "name": "Opsione Lëngu",
   "currency": "ALL",
   "items": {
-    "opt-ginger": {
-      "id": "opt-ginger",
-      "name": "Xhinxher",
-      "icon": "🫚",
-      "price": 30,
-      "constraints": {},
-      "order": 23
-    },
-    "opt-parsley": {
-      "id": "opt-parsley",
-      "name": "Majdanoz",
-      "icon": "🌿",
-      "price": 30,
-      "constraints": {},
-      "order": 24
-    },
-    "opt-mint": {
-      "id": "opt-mint",
-      "name": "Mente",
-      "icon": "🌿",
-      "price": 30,
-      "constraints": {},
-      "order": 25
-    },
-    "opt-carrot": {
-      "id": "opt-carrot",
-      "name": "Karrota",
-      "icon": "🥕",
-      "price": 30,
-      "constraints": {},
-      "order": 0
-    },
-    "opt-lemon": {
-      "id": "opt-lemon",
-      "name": "Limon",
-      "icon": "🍋",
-      "price": 30,
-      "constraints": {},
-      "order": 22
-    },
-    "opt-apple": {
-      "id": "opt-apple",
+    "MOD-APPLE-JUICE": {
+      "id": "MOD-APPLE-JUICE",
       "name": "Mollë",
+      "description": "Shto 200G",
       "icon": "🍎",
-      "price": 30,
-      "constraints": {},
-      "order": 5
-    },
-    "opt-beet": {
-      "id": "opt-beet",
-      "name": "Panxhar",
-      "icon": "🟣",
-      "price": 30,
+      "price": 50,
       "constraints": {},
       "order": 1
     },
-    "opt-orange": {
-      "id": "opt-orange",
+    "MOD-ORANGE-JUICE": {
+      "id": "MOD-ORANGE-JUICE",
       "name": "Portokall",
+      "description": "Shto 200G",
       "icon": "🍊",
-      "price": 30,
-      "constraints": {},
-      "order": 16
-    },
-    "opt-pear": {
-      "id": "opt-pear",
-      "name": "Dardhë",
-      "icon": "🍐",
-      "price": 40,
-      "constraints": {},
-      "order": 6
-    },
-    "opt-cucumber": {
-      "id": "opt-cucumber",
-      "name": "Kastravec",
-      "icon": "🥒",
-      "price": 40,
+      "price": 50,
       "constraints": {},
       "order": 2
     },
-    "opt-kiwi": {
-      "id": "opt-kiwi",
-      "name": "Kivi",
-      "icon": "🥝",
-      "price": 40,
+    "MOD-CARROT-JUICE": {
+      "id": "MOD-CARROT-JUICE",
+      "name": "Karrotë",
+      "description": "Shto 200G",
+      "icon": "🥕",
+      "price": 50,
       "constraints": {},
-      "order": 17
+      "order": 5
     },
-    "opt-melon": {
-      "id": "opt-melon",
-      "name": "Pjepër",
-      "icon": "🍈",
-      "price": 40,
-      "constraints": {},
-      "order": 7
-    },
-    "opt-grape": {
-      "id": "opt-grape",
-      "name": "Rrush",
-      "icon": "🍇",
-      "price": 40,
-      "constraints": {},
-      "order": 8
-    },
-    "opt-spinach": {
-      "id": "opt-spinach",
-      "name": "Spinaq",
+    "MOD-CELERY-JUICE": {
+      "id": "MOD-CELERY-JUICE",
+      "name": "Selino",
+      "description": "Shto 100G",
       "icon": "🥬",
-      "price": 40,
-      "constraints": {},
-      "order": 4
-    },
-    "opt-pineapple": {
-      "id": "opt-pineapple",
-      "name": "Ananas",
-      "icon": "🍍",
-      "price": 50,
-      "constraints": {},
-      "order": 18
-    },
-    "opt-grapefruit": {
-      "id": "opt-grapefruit",
-      "name": "Grejpfrut",
-      "icon": "🟠",
-      "price": 50,
-      "constraints": {},
-      "order": 19
-    },
-    "opt-lime": {
-      "id": "opt-lime",
-      "name": "Lime",
-      "icon": "🟢",
-      "price": 50,
-      "constraints": {},
-      "order": 20
-    },
-    "opt-mango": {
-      "id": "opt-mango",
-      "name": "Mango",
-      "icon": "🥭",
-      "price": 50,
-      "constraints": {},
-      "order": 21
-    },
-    "opt-peach": {
-      "id": "opt-peach",
-      "name": "Pjeshkë",
-      "icon": "🍑",
       "price": 50,
       "constraints": {},
       "order": 9
     },
-    "opt-celery": {
-      "id": "opt-celery",
-      "name": "Selino",
-      "icon": "🟩",
+    "MOD-PINEAPPLE-JUICE": {
+      "id": "MOD-PINEAPPLE-JUICE",
+      "name": "Ananas",
+      "description": "Shto 150G",
+      "icon": "🍍",
+      "price": 50,
+      "constraints": {},
+      "order": 0
+    },
+    "MOD-POMEGRANATE-JUICE": {
+      "id": "MOD-POMEGRANATE-JUICE",
+      "name": "Shegë",
+      "description": "Shto 200G",
+      "icon": "🫐",
       "price": 50,
       "constraints": {},
       "order": 3
     },
-    "opt-pomegranate": {
-      "id": "opt-pomegranate",
-      "name": "Shegë",
-      "icon": "🔴",
+    "MOD-CUCUMBER-JUICE": {
+      "id": "MOD-CUCUMBER-JUICE",
+      "name": "Kastravec",
+      "description": "Shto 100G",
+      "icon": "🥒",
+      "price": 50,
+      "constraints": {},
+      "order": 6
+    },
+    "MOD-BEET-JUICE": {
+      "id": "MOD-BEET-JUICE",
+      "name": "Panxhar",
+      "description": "Shto 100G",
+      "icon": "🟣",
+      "price": 50,
+      "constraints": {},
+      "order": 7
+    },
+    "MOD-KALE-JUICE": {
+      "id": "MOD-KALE-JUICE",
+      "name": "Kale",
+      "description": "Shto 25G",
+      "icon": "🥬",
+      "price": 50,
+      "constraints": {},
+      "order": 4
+    },
+    "MOD-SPINACH-JUICE": {
+      "id": "MOD-SPINACH-JUICE",
+      "name": "Spinaq",
+      "description": "Shto 30G",
+      "icon": "🍃",
       "price": 50,
       "constraints": {},
       "order": 10
     },
-    "opt-turmeric": {
-      "id": "opt-turmeric",
-      "name": "Kurkumë",
-      "icon": "🟡",
+    "MOD-LETTUCE-JUICE": {
+      "id": "MOD-LETTUCE-JUICE",
+      "name": "Sallatë",
+      "description": "Shto 30G",
+      "icon": "🥬",
       "price": 50,
       "constraints": {},
-      "order": 26
+      "order": 8
     },
-    "opt-strawberries": {
-      "id": "opt-strawberries",
-      "name": "Dredhëza",
-      "icon": "🍓",
-      "price": 50,
-      "constraints": {},
-      "order": 11
-    },
-    "opt-raspberries": {
-      "id": "opt-raspberries",
-      "name": "Mjedra",
-      "icon": "🔴",
-      "price": 50,
-      "constraints": {},
-      "order": 12
-    },
-    "opt-blueberries": {
-      "id": "opt-blueberries",
-      "name": "Boronica",
-      "icon": "🫐",
-      "price": 50,
-      "constraints": {},
-      "order": 13
-    },
-    "opt-blackberries": {
-      "id": "opt-blackberries",
-      "name": "Manaferrë",
-      "icon": "🟣",
+    "MOD-GINGER-JUICE": {
+      "id": "MOD-GINGER-JUICE",
+      "name": "Xhinxher",
+      "description": "Shto 20G",
+      "icon": "🫚",
       "price": 50,
       "constraints": {},
       "order": 14
     },
-    "opt-mixed-berries": {
-      "id": "opt-mixed-berries",
-      "name": "Mjedra të Përziera",
-      "icon": "🫐",
+    "MOD-TURMERIC-JUICE": {
+      "id": "MOD-TURMERIC-JUICE",
+      "name": "Turmerik",
+      "description": "Shto 10G",
+      "icon": "🟠",
       "price": 50,
       "constraints": {},
-      "order": 15
+      "order": 13
+    },
+    "MOD-LEMON-JUICE": {
+      "id": "MOD-LEMON-JUICE",
+      "name": "Limon",
+      "description": "Shto 50G",
+      "icon": "🍋",
+      "price": 50,
+      "constraints": {},
+      "order": 11
+    },
+    "MOD-PEPPER-JUICE": {
+      "id": "MOD-PEPPER-JUICE",
+      "name": "Piper i zi",
+      "description": "Shto 2G",
+      "icon": "⚫",
+      "price": 50,
+      "constraints": {},
+      "order": 12
     }
   },
   "itemGroups": {
@@ -226,61 +145,37 @@
       "name": "Të Përfshira",
       "itemIds": []
     },
-    "group-vegetables": {
-      "id": "group-vegetables",
-      "name": "Perime",
-      "itemIds": [
-        "opt-carrot",
-        "opt-beet",
-        "opt-cucumber",
-        "opt-celery",
-        "opt-spinach"
-      ]
-    },
-    "group-fruits": {
-      "id": "group-fruits",
+    "fruits": {
+      "id": "fruits",
       "name": "Fruta",
       "itemIds": [
-        "opt-apple",
-        "opt-pear",
-        "opt-melon",
-        "opt-grape",
-        "opt-peach",
-        "opt-pomegranate"
+        "MOD-PINEAPPLE-JUICE",
+        "MOD-APPLE-JUICE",
+        "MOD-ORANGE-JUICE",
+        "MOD-POMEGRANATE-JUICE"
       ]
     },
-    "group-herbs-spices": {
-      "id": "group-herbs-spices",
-      "name": "Erëza dhe Barishte",
+    "vegetables": {
+      "id": "vegetables",
+      "name": "Perime",
       "itemIds": [
-        "opt-ginger",
-        "opt-parsley",
-        "opt-mint",
-        "opt-turmeric"
+        "MOD-KALE-JUICE",
+        "MOD-CARROT-JUICE",
+        "MOD-CUCUMBER-JUICE",
+        "MOD-BEET-JUICE",
+        "MOD-LETTUCE-JUICE",
+        "MOD-CELERY-JUICE",
+        "MOD-SPINACH-JUICE"
       ]
     },
-    "group-berries": {
-      "id": "group-berries",
-      "name": "Mjedra",
+    "herbs": {
+      "id": "herbs",
+      "name": "Erëza & Barishte",
       "itemIds": [
-        "opt-strawberries",
-        "opt-raspberries",
-        "opt-blueberries",
-        "opt-blackberries",
-        "opt-mixed-berries"
-      ]
-    },
-    "group-tropical-citrus": {
-      "id": "group-tropical-citrus",
-      "name": "Tropikale dhe Agrume",
-      "itemIds": [
-        "opt-orange",
-        "opt-kiwi",
-        "opt-pineapple",
-        "opt-grapefruit",
-        "opt-lime",
-        "opt-mango",
-        "opt-lemon"
+        "MOD-LEMON-JUICE",
+        "MOD-PEPPER-JUICE",
+        "MOD-TURMERIC-JUICE",
+        "MOD-GINGER-JUICE"
       ]
     }
   },
@@ -291,23 +186,15 @@
     },
     {
       "type": "item-group",
-      "data": "group-vegetables"
+      "data": "fruits"
     },
     {
       "type": "item-group",
-      "data": "group-fruits"
+      "data": "vegetables"
     },
     {
       "type": "item-group",
-      "data": "group-berries"
-    },
-    {
-      "type": "item-group",
-      "data": "group-tropical-citrus"
-    },
-    {
-      "type": "item-group",
-      "data": "group-herbs-spices"
+      "data": "herbs"
     }
   ],
   "modifierMenu": true

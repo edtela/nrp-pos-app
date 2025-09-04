@@ -1,373 +1,339 @@
 {
   "id": "smoothie-menu",
-  "name": "Menu Smoothie",
+  "name": "Smoothie Menu",
   "currency": "ALL",
   "items": {
-    "aromal-yogurt": {
-      "id": "aromal-yogurt",
-      "name": "Base di Yogurt",
-      "description": "Yogurt autentico Aromal",
-      "icon": "🥛",
-      "price": {
-        "groupId": "smoothie-type",
-        "prices": {
-          "smoothie": 150,
-          "bowl": 200
-        }
-      },
-      "constraints": {},
-      "subMenu": {
-        "menuId": "smoothie-options",
-        "included": []
-      },
-      "order": 0
-    },
-    "plant-based-milk": {
-      "id": "plant-based-milk",
-      "name": "Base di Latte",
-      "description": "Scegli tra avena, mandorle, cocco, soia",
-      "icon": "🌱",
-      "price": {
-        "groupId": "smoothie-type",
-        "prices": {
-          "smoothie": 150,
-          "bowl": 200
-        }
-      },
-      "constraints": {},
-      "subMenu": {
-        "menuId": "smoothie-options-milk",
-        "included": [
-          {
-            "itemId": "opt-oat-milk"
-          }
-        ]
-      },
-      "order": 1
-    },
-    "juice-base": {
-      "id": "juice-base",
-      "name": "Base di Succo",
-      "description": "Scegli tra arancia, mela, ananas",
-      "icon": "🥤",
-      "price": {
-        "groupId": "smoothie-type",
-        "prices": {
-          "smoothie": 150,
-          "bowl": 200
-        }
-      },
-      "constraints": {},
-      "subMenu": {
-        "menuId": "smoothie-options-juice",
-        "included": [
-          {
-            "itemId": "opt-orange-juice"
-          }
-        ]
-      },
-      "order": 2
-    },
-    "goji-c": {
-      "id": "goji-c",
+    "ITEM-SMOOTHIE-GOJI-C": {
+      "id": "ITEM-SMOOTHIE-GOJI-C",
       "name": "Goji C",
-      "description": "succo d'arancia, banana, mirtilli, mango, bacche di goji",
-      "icon": "🫐",
-      "price": {
-        "groupId": "smoothie-type",
-        "prices": {
-          "smoothie": 300,
-          "bowl": 350
-        }
-      },
+      "description": "Orange juice, banana, blueberries, mango, goji berry",
+      "icon": "🍊",
+      "price": 350,
       "constraints": {},
       "subMenu": {
         "menuId": "smoothie-options-juice",
         "included": [
           {
-            "itemId": "opt-orange-juice"
+            "itemId": "MOD-ORANGE-SMOOTHIE",
+            "quantity": 3
           },
           {
-            "itemId": "opt-banana",
+            "itemId": "MOD-BANANA-SMOOTHIE",
+            "quantity": 1,
             "display": "included"
           },
           {
-            "itemId": "opt-blueberries",
+            "itemId": "MOD-BERRIES-SMOOTHIE",
+            "quantity": 1,
             "display": "included"
           },
           {
-            "itemId": "opt-mango",
+            "itemId": "MOD-GOJI-SMOOTHIE",
+            "quantity": 1,
             "display": "included"
           },
           {
-            "itemId": "opt-goji-berry",
+            "itemId": "MOD-MANGO-SMOOTHIE",
+            "quantity": 1,
             "display": "included"
           }
         ]
       },
       "order": 3
     },
-    "triple-berry": {
-      "id": "triple-berry",
-      "name": "Triple Berry",
-      "description": "yogurt aromal, banana, mirtilli, fragole, lamponi, more",
-      "icon": "🍓",
-      "price": {
-        "groupId": "smoothie-type",
-        "prices": {
-          "smoothie": 300,
-          "bowl": 350
-        }
-      },
+    "ITEM-SMOOTHIE-GREEN-MUSCLE": {
+      "id": "ITEM-SMOOTHIE-GREEN-MUSCLE",
+      "name": "Green Muscle",
+      "description": "Apple juice, banana, avocado, kale, farm lettuce, spinach",
+      "icon": "💚",
+      "price": 350,
       "constraints": {},
       "subMenu": {
-        "menuId": "smoothie-options",
+        "menuId": "smoothie-options-juice",
         "included": [
           {
-            "itemId": "opt-banana",
+            "itemId": "MOD-APPLE-SMOOTHIE",
+            "quantity": 2
+          },
+          {
+            "itemId": "MOD-BANANA-SMOOTHIE",
+            "quantity": 1,
             "display": "included"
           },
           {
-            "itemId": "opt-blueberries",
+            "itemId": "MOD-AVOCADO-SMOOTHIE",
+            "quantity": 1,
             "display": "included"
           },
           {
-            "itemId": "opt-strawberries",
+            "itemId": "MOD-KALE-SMOOTHIE",
+            "quantity": 1,
             "display": "included"
           },
           {
-            "itemId": "opt-raspberries",
+            "itemId": "MOD-SPINACH-SMOOTHIE",
+            "quantity": 1,
             "display": "included"
           },
           {
-            "itemId": "opt-blackberries",
+            "itemId": "MOD-LETTUCE-SMOOTHIE",
+            "quantity": 1,
             "display": "included"
           }
         ]
       },
       "order": 4
     },
-    "green-muscle": {
-      "id": "green-muscle",
-      "name": "Green Muscle",
-      "description": "latte di soia, banana, avocado, spinaci, matcha",
-      "icon": "🥬",
-      "price": {
-        "groupId": "smoothie-type",
-        "prices": {
-          "smoothie": 300,
-          "bowl": 350
-        }
-      },
+    "ITEM-SMOOTHIE-TRIPLE-BERRY": {
+      "id": "ITEM-SMOOTHIE-TRIPLE-BERRY",
+      "name": "Triple Berry",
+      "description": "Aromal yogurt, banana, blueberries, strawberries/raspberries, blackberries",
+      "icon": "🫐",
+      "price": 350,
       "constraints": {},
       "subMenu": {
-        "menuId": "smoothie-options-milk",
+        "menuId": "smoothie-options-default",
         "included": [
           {
-            "itemId": "opt-soy-milk"
+            "itemId": "MOD-YOGURT-SMOOTHIE",
+            "quantity": 1,
+            "display": "none"
           },
           {
-            "itemId": "opt-banana",
+            "itemId": "MOD-BANANA-SMOOTHIE",
+            "quantity": 1,
             "display": "included"
           },
           {
-            "itemId": "opt-avocado",
+            "itemId": "MOD-BERRIES-SMOOTHIE",
+            "quantity": 1,
             "display": "included"
           },
           {
-            "itemId": "opt-spinach",
+            "itemId": "MOD-STRAWBERRY-SMOOTHIE",
+            "quantity": 1,
             "display": "included"
           },
           {
-            "itemId": "opt-matcha",
+            "itemId": "MOD-RASPBERRY-SMOOTHIE",
+            "quantity": 1,
+            "display": "included"
+          },
+          {
+            "itemId": "MOD-BLACKBERRY-SMOOTHIE",
+            "quantity": 1,
             "display": "included"
           }
         ]
       },
       "order": 5
     },
-    "protein-punch": {
-      "id": "protein-punch",
-      "name": "Protein Punch",
-      "description": "latte d'avena, banana, mix di semi, granola, burro di arachidi, proteine whey",
-      "icon": "💪",
-      "price": {
-        "groupId": "smoothie-type",
-        "prices": {
-          "smoothie": 300,
-          "bowl": 350
-        }
-      },
+    "ITEM-SMOOTHIE-COCO-MANGO": {
+      "id": "ITEM-SMOOTHIE-COCO-MANGO",
+      "name": "Coco Mango",
+      "description": "Coconut milk, banana, pineapple, kiwi, mango",
+      "icon": "🥥",
+      "price": 350,
       "constraints": {},
       "subMenu": {
         "menuId": "smoothie-options-milk",
         "included": [
           {
-            "itemId": "opt-oat-milk"
+            "itemId": "MOD-MILK-COCONUT-SMOOTHIE",
+            "quantity": 1
           },
           {
-            "itemId": "opt-banana",
+            "itemId": "MOD-BANANA-SMOOTHIE",
+            "quantity": 1,
             "display": "included"
           },
           {
-            "itemId": "opt-mixed-seeds",
+            "itemId": "MOD-PINEAPPLE-SMOOTHIE-ADDON",
+            "quantity": 1,
             "display": "included"
           },
           {
-            "itemId": "opt-granola",
+            "itemId": "MOD-KIWI-SMOOTHIE",
+            "quantity": 1,
             "display": "included"
           },
           {
-            "itemId": "opt-peanut-butter",
-            "display": "included"
-          },
-          {
-            "itemId": "opt-whey-protein",
+            "itemId": "MOD-MANGO-SMOOTHIE",
+            "quantity": 1,
             "display": "included"
           }
         ]
       },
       "order": 6
     },
-    "nutty-date": {
-      "id": "nutty-date",
+    "ITEM-SMOOTHIE-NUTTY-DATE": {
+      "id": "ITEM-SMOOTHIE-NUTTY-DATE",
       "name": "Nutty Date",
-      "description": "latte di mandorle, banana, burro di noci, nocciole, datteri",
+      "description": "Almond milk, banana, nuts, dates, hazelnut butter",
       "icon": "🥜",
-      "price": {
-        "groupId": "smoothie-type",
-        "prices": {
-          "smoothie": 300,
-          "bowl": 350
-        }
-      },
+      "price": 350,
       "constraints": {},
       "subMenu": {
         "menuId": "smoothie-options-milk",
         "included": [
           {
-            "itemId": "opt-almond-milk"
+            "itemId": "MOD-MILK-ALMOND-SMOOTHIE",
+            "quantity": 1
           },
           {
-            "itemId": "opt-banana",
+            "itemId": "MOD-BANANA-SMOOTHIE",
+            "quantity": 1,
             "display": "included"
           },
           {
-            "itemId": "opt-walnut-butter",
+            "itemId": "MOD-NUTS-SMOOTHIE",
+            "quantity": 1,
             "display": "included"
           },
           {
-            "itemId": "opt-hazelnuts",
+            "itemId": "MOD-DATES-SMOOTHIE",
+            "quantity": 1,
             "display": "included"
           },
           {
-            "itemId": "opt-dates",
+            "itemId": "MOD-HAZELNUT-BUTTER-SMOOTHIE",
+            "quantity": 1,
             "display": "included"
           }
         ]
       },
       "order": 7
     },
-    "coco-mango": {
-      "id": "coco-mango",
-      "name": "Coco Mango",
-      "description": "latte di cocco, banana, ananas, kiwi, mango",
-      "icon": "🥥",
-      "price": {
-        "groupId": "smoothie-type",
-        "prices": {
-          "smoothie": 300,
-          "bowl": 350
-        }
-      },
+    "ITEM-SMOOTHIE-PROTEIN-PUNCH": {
+      "id": "ITEM-SMOOTHIE-PROTEIN-PUNCH",
+      "name": "Protein Punch",
+      "description": "Soy milk, banana, granola, mixed seeds, peanut butter, whey protein",
+      "icon": "💪",
+      "price": 350,
       "constraints": {},
       "subMenu": {
         "menuId": "smoothie-options-milk",
         "included": [
           {
-            "itemId": "opt-coconut-milk"
+            "itemId": "MOD-MILK-SOY-SMOOTHIE",
+            "quantity": 1
           },
           {
-            "itemId": "opt-banana",
+            "itemId": "MOD-BANANA-SMOOTHIE",
+            "quantity": 1,
             "display": "included"
           },
           {
-            "itemId": "opt-pineapple",
+            "itemId": "MOD-GRANOLA-SMOOTHIE",
+            "quantity": 1,
             "display": "included"
           },
           {
-            "itemId": "opt-kiwi",
+            "itemId": "MOD-SEEDS-SMOOTHIE",
+            "quantity": 1,
             "display": "included"
           },
           {
-            "itemId": "opt-mango",
+            "itemId": "MOD-PEANUT-BUTTER-SMOOTHIE",
+            "quantity": 1,
+            "display": "included"
+          },
+          {
+            "itemId": "MOD-PROTEIN-SMOOTHIE",
+            "quantity": 1,
             "display": "included"
           }
         ]
       },
       "order": 8
+    },
+    "ITEM-SMOOTHIE-BASE-YOGURT": {
+      "id": "ITEM-SMOOTHIE-BASE-YOGURT",
+      "name": "Yogurt Base",
+      "description": "Aromal authentic yogurt",
+      "icon": "🥛",
+      "price": 150,
+      "constraints": {},
+      "subMenu": {
+        "menuId": "smoothie-options-default",
+        "included": [
+          {
+            "itemId": "MOD-YOGURT-SMOOTHIE",
+            "quantity": 1,
+            "display": "none"
+          }
+        ]
+      },
+      "order": 0
+    },
+    "ITEM-SMOOTHIE-BASE-MILK": {
+      "id": "ITEM-SMOOTHIE-BASE-MILK",
+      "name": "Plant Milk Base",
+      "description": "Choose from oat, almond, coconut, soy",
+      "icon": "🌱",
+      "price": 150,
+      "constraints": {},
+      "subMenu": {
+        "menuId": "smoothie-options-milk",
+        "included": [
+          {
+            "itemId": "MOD-MILK-OAT-SMOOTHIE",
+            "quantity": 1
+          }
+        ]
+      },
+      "order": 1
+    },
+    "ITEM-SMOOTHIE-BASE-JUICE": {
+      "id": "ITEM-SMOOTHIE-BASE-JUICE",
+      "name": "Juice Base",
+      "description": "Choose from orange, apple, pineapple",
+      "icon": "🥤",
+      "price": 150,
+      "constraints": {},
+      "subMenu": {
+        "menuId": "smoothie-options-juice",
+        "included": [
+          {
+            "itemId": "MOD-ORANGE-SMOOTHIE",
+            "quantity": 1
+          }
+        ]
+      },
+      "order": 2
     }
   },
   "itemGroups": {
-    "group-build-your-own": {
-      "id": "group-build-your-own",
-      "name": "Costruisci il Tuo - Scegli la Base",
+    "choose-base": {
+      "id": "choose-base",
+      "name": "Build Your Own - Choose a Base",
       "itemIds": [
-        "aromal-yogurt",
-        "plant-based-milk",
-        "juice-base"
+        "ITEM-SMOOTHIE-BASE-YOGURT",
+        "ITEM-SMOOTHIE-BASE-MILK",
+        "ITEM-SMOOTHIE-BASE-JUICE"
       ]
     },
-    "group-smoothie-blends": {
-      "id": "group-smoothie-blends",
-      "name": "Miscele di Smoothie",
+    "smoothie-blends": {
+      "id": "smoothie-blends",
+      "name": "Smoothie Blends",
       "itemIds": [
-        "goji-c",
-        "triple-berry",
-        "green-muscle",
-        "protein-punch",
-        "nutty-date",
-        "coco-mango"
+        "ITEM-SMOOTHIE-GOJI-C",
+        "ITEM-SMOOTHIE-GREEN-MUSCLE",
+        "ITEM-SMOOTHIE-TRIPLE-BERRY",
+        "ITEM-SMOOTHIE-COCO-MANGO",
+        "ITEM-SMOOTHIE-NUTTY-DATE",
+        "ITEM-SMOOTHIE-PROTEIN-PUNCH"
       ]
     }
   },
   "layout": [
     {
-      "text": "Menu Smoothie",
-      "classes": [
-        "menu-title"
-      ]
-    },
-    {
-      "type": "variant-selection",
-      "data": "smoothie-type"
+      "type": "item-group",
+      "data": "choose-base"
     },
     {
       "type": "item-group",
-      "data": "group-build-your-own"
-    },
-    {
-      "type": "item-group",
-      "data": "group-smoothie-blends"
+      "data": "smoothie-blends"
     }
-  ],
-  "variants": {
-    "smoothie-type": {
-      "id": "smoothie-type",
-      "variants": [
-        {
-          "id": "smoothie",
-          "name": "Smoothie",
-          "icon": "🥤"
-        },
-        {
-          "id": "bowl",
-          "name": "Smoothie Bowl",
-          "icon": "🥣"
-        }
-      ],
-      "selectedId": "smoothie",
-      "name": "Tipo"
-    }
-  }
+  ]
 }

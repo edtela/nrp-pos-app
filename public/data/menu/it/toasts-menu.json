@@ -3,101 +3,101 @@
   "name": "Menu Toast",
   "currency": "ALL",
   "items": {
-    "walnut-yoast": {
-      "id": "walnut-yoast",
-      "name": "Noci",
-      "description": "yogurt aromal, burro di noci, mirtilli, semi di chia, miele",
-      "price": 300,
+    "ITEM-TOAST-PEANUT-BUTTER": {
+      "id": "ITEM-TOAST-PEANUT-BUTTER",
+      "name": "Toast al Burro di Arachidi",
+      "description": "Burro di arachidi, banana, cannella, miele",
+      "icon": "🥜",
+      "price": 350,
       "constraints": {},
       "order": 0
     },
-    "peanut-yoast": {
-      "id": "peanut-yoast",
-      "name": "Arachidi",
-      "description": "yogurt aromal, burro di arachidi, banana, semi di lino, cannella, miele",
-      "price": 300,
+    "ITEM-TOAST-ALMOND-BUTTER": {
+      "id": "ITEM-TOAST-ALMOND-BUTTER",
+      "name": "Toast al Burro di Mandorle",
+      "description": "Burro di mandorle, mirtilli, miele",
+      "icon": "🌰",
+      "price": 350,
       "constraints": {},
       "order": 1
     },
-    "berries-yoast": {
-      "id": "berries-yoast",
-      "name": "Frutti di Bosco",
-      "description": "yogurt aromal, marmellata di frutti di bosco, granola",
-      "price": 300,
+    "ITEM-TOAST-HAZELNUT-BUTTER": {
+      "id": "ITEM-TOAST-HAZELNUT-BUTTER",
+      "name": "Toast al Burro di Nocciole",
+      "description": "Burro di nocciole, fragole/lamponi, miele",
+      "icon": "🌰",
+      "price": 350,
       "constraints": {},
       "order": 2
     },
-    "prosciutto-yoast": {
-      "id": "prosciutto-yoast",
-      "name": "Prosciutto",
-      "description": "yogurt aromal, gouda, pomodorini, prosciutto di pollo, zaatar, olio evo",
-      "price": 300,
+    "ITEM-TOAST-AVOCADO-CLASSIC": {
+      "id": "ITEM-TOAST-AVOCADO-CLASSIC",
+      "name": "Avocado Classico",
+      "description": "Avocado, pomodorini, mais, semi di zucca, succo di limone, olio d'oliva",
+      "icon": "🥑",
+      "price": 400,
       "constraints": {},
       "order": 3
     },
-    "dried-pomodori": {
-      "id": "dried-pomodori",
+    "ITEM-TOAST-AVOCADO-DRIED-POMODORI": {
+      "id": "ITEM-TOAST-AVOCADO-DRIED-POMODORI",
       "name": "Pomodori Secchi",
-      "description": "avocado, feta, pomodori secchi, semi di girasole",
-      "price": 350,
+      "description": "Avocado, formaggio di capra, pomodori secchi, semi di girasole, olio d'oliva",
+      "icon": "🍅",
+      "price": 400,
       "constraints": {},
       "order": 4
     },
-    "porcini-avotoast": {
-      "id": "porcini-avotoast",
-      "name": "Porcini",
-      "description": "avocado, porcini secchi, pinoli",
-      "price": 350,
-      "constraints": {},
-      "order": 5
-    },
-    "avocado-avotoast": {
-      "id": "avocado-avotoast",
-      "name": "Avocado",
-      "description": "avocado, pomodorini, mais, semi di zucca, prezzemolo, limone, olio evo",
-      "price": 350,
-      "constraints": {},
-      "order": 6
-    },
-    "premium-egg": {
-      "id": "premium-egg",
-      "name": "Uovo Premium",
-      "description": "avocado, prosciutto di pollo, uovo sodo, semi di chia, olio evo",
+    "ITEM-TOAST-AVOCADO-PREMIUM-EGG": {
+      "id": "ITEM-TOAST-AVOCADO-PREMIUM-EGG",
+      "name": "Premium con Uovo",
+      "description": "Avocado, prosciutto di pollo, uovo sodo, pinoli, olio d'oliva",
+      "icon": "🥚",
       "price": 400,
       "constraints": {},
-      "order": 7
+      "order": 5
     }
   },
   "itemGroups": {
-    "group-yoast": {
-      "id": "group-yoast",
-      "name": "Yoast",
+    "nut-butter": {
+      "id": "nut-butter",
+      "name": "Toast al Burro di Frutta Secca",
       "itemIds": [
-        "walnut-yoast",
-        "peanut-yoast",
-        "berries-yoast",
-        "prosciutto-yoast"
+        "ITEM-TOAST-PEANUT-BUTTER",
+        "ITEM-TOAST-ALMOND-BUTTER",
+        "ITEM-TOAST-HAZELNUT-BUTTER"
       ]
     },
-    "group-avotoast": {
-      "id": "group-avotoast",
-      "name": "Avotoast",
+    "avocado": {
+      "id": "avocado",
+      "name": "Toast all'Avocado",
       "itemIds": [
-        "dried-pomodori",
-        "porcini-avotoast",
-        "avocado-avotoast",
-        "premium-egg"
+        "ITEM-TOAST-AVOCADO-CLASSIC",
+        "ITEM-TOAST-AVOCADO-DRIED-POMODORI",
+        "ITEM-TOAST-AVOCADO-PREMIUM-EGG"
       ]
     }
   },
   "layout": [
     {
-      "type": "item-group",
-      "data": "group-yoast"
+      "text": "Toast al Burro di Frutta Secca",
+      "classes": [
+        "menu-title"
+      ]
     },
     {
       "type": "item-group",
-      "data": "group-avotoast"
+      "data": "nut-butter"
+    },
+    {
+      "text": "Toast all'Avocado",
+      "classes": [
+        "menu-title"
+      ]
+    },
+    {
+      "type": "item-group",
+      "data": "avocado"
     }
   ]
 }

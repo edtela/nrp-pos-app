@@ -1,0 +1,21 @@
+{
+  "id": "yogurt-options-main",
+  "name": "Opsione Kosi",
+  "currency": "ALL",
+  "items": {},
+  "itemGroups": {
+    "included": {
+      "id": "included",
+      "name": "Të Përfshira",
+      "itemIds": []
+    }
+  },
+  "layout": [
+    {
+      "type": "item-group",
+      "data": "included"
+    }
+  ],
+  "choices": {},
+  "modifierMenu": true
+}

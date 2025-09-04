@@ -3,403 +3,200 @@
   "name": "Opsione Smoothie",
   "currency": "ALL",
   "items": {
-    "opt-orange-juice": {
-      "id": "opt-orange-juice",
+    "MOD-ORANGE-SMOOTHIE": {
+      "id": "MOD-ORANGE-SMOOTHIE",
       "name": "Lëng Portokalli",
+      "description": "Shto 200G",
       "icon": "🍊",
       "price": 0,
       "constraints": {
-        "choiceId": "juice-choice"
+        "choiceId": "base-choice"
       },
       "order": 2
     },
-    "opt-apple-juice": {
-      "id": "opt-apple-juice",
+    "MOD-APPLE-SMOOTHIE": {
+      "id": "MOD-APPLE-SMOOTHIE",
       "name": "Lëng Molle",
+      "description": "Shto 200G",
       "icon": "🍎",
       "price": 0,
       "constraints": {
-        "choiceId": "juice-choice"
+        "choiceId": "base-choice"
       },
       "order": 1
     },
-    "opt-pineapple-juice": {
-      "id": "opt-pineapple-juice",
-      "name": "Lëng Ananasi",
-      "icon": "🍍",
-      "price": 0,
-      "constraints": {
-        "choiceId": "juice-choice"
-      },
-      "order": 0
-    },
-    "opt-banana": {
-      "id": "opt-banana",
+    "MOD-BANANA-SMOOTHIE": {
+      "id": "MOD-BANANA-SMOOTHIE",
       "name": "Banane",
+      "description": "Shto 180G",
       "icon": "🍌",
-      "price": 40,
-      "constraints": {},
-      "order": 3
-    },
-    "opt-blueberries": {
-      "id": "opt-blueberries",
-      "name": "Boronica",
-      "icon": "🫐",
-      "price": 40,
+      "price": 70,
       "constraints": {},
       "order": 4
     },
-    "opt-kiwi": {
-      "id": "opt-kiwi",
-      "name": "Kivi",
-      "icon": "🥝",
-      "price": 40,
-      "constraints": {},
-      "order": 6
-    },
-    "opt-mixed-berries": {
-      "id": "opt-mixed-berries",
-      "name": "Mjedra të Përziera",
+    "MOD-BERRIES-SMOOTHIE": {
+      "id": "MOD-BERRIES-SMOOTHIE",
+      "name": "Boronicë e egër",
+      "description": "Shto 15G",
       "icon": "🫐",
-      "price": 40,
-      "constraints": {},
-      "order": 9
-    },
-    "opt-strawberries": {
-      "id": "opt-strawberries",
-      "name": "Dredhëza",
-      "icon": "🍓",
-      "price": 40,
+      "price": 70,
       "constraints": {},
       "order": 5
     },
-    "opt-raspberries": {
-      "id": "opt-raspberries",
-      "name": "Mjedra",
-      "icon": "🔴",
-      "price": 40,
+    "MOD-STRAWBERRY-SMOOTHIE": {
+      "id": "MOD-STRAWBERRY-SMOOTHIE",
+      "name": "Luleshtrydhe",
+      "description": "Shto 15G",
+      "icon": "🍓",
+      "price": 70,
       "constraints": {},
       "order": 8
     },
-    "opt-blackberries": {
-      "id": "opt-blackberries",
-      "name": "Manaferrë",
-      "icon": "🟣",
-      "price": 40,
-      "constraints": {},
-      "order": 7
-    },
-    "opt-walnuts": {
-      "id": "opt-walnuts",
-      "name": "Arra",
-      "icon": "🟫",
-      "price": 40,
-      "constraints": {},
-      "order": 10
-    },
-    "opt-almonds": {
-      "id": "opt-almonds",
-      "name": "Bajame",
-      "icon": "🟡",
-      "price": 40,
-      "constraints": {},
-      "order": 12
-    },
-    "opt-hazelnuts": {
-      "id": "opt-hazelnuts",
-      "name": "Lajthi",
-      "icon": "🟤",
-      "price": 40,
-      "constraints": {},
-      "order": 13
-    },
-    "opt-mixed-nuts": {
-      "id": "opt-mixed-nuts",
-      "name": "Arra të Përziera",
-      "icon": "🥜",
-      "price": 40,
+    "MOD-RASPBERRY-SMOOTHIE": {
+      "id": "MOD-RASPBERRY-SMOOTHIE",
+      "name": "Mjedër",
+      "description": "Shto 15G",
+      "icon": "🔴",
+      "price": 70,
       "constraints": {},
       "order": 11
     },
-    "opt-pistachios": {
-      "id": "opt-pistachios",
-      "name": "Pistache",
-      "icon": "🟢",
-      "price": 40,
+    "MOD-BLACKBERRY-SMOOTHIE": {
+      "id": "MOD-BLACKBERRY-SMOOTHIE",
+      "name": "Manaferrë",
+      "description": "Shto 15G",
+      "icon": "🟣",
+      "price": 70,
+      "constraints": {},
+      "order": 9
+    },
+    "MOD-MANGO-SMOOTHIE": {
+      "id": "MOD-MANGO-SMOOTHIE",
+      "name": "Mango",
+      "description": "Shto 70G",
+      "icon": "🥭",
+      "price": 70,
+      "constraints": {},
+      "order": 10
+    },
+    "MOD-KIWI-SMOOTHIE": {
+      "id": "MOD-KIWI-SMOOTHIE",
+      "name": "Kivi",
+      "description": "Shto 70G",
+      "icon": "🥝",
+      "price": 70,
+      "constraints": {},
+      "order": 7
+    },
+    "MOD-GOJI-SMOOTHIE": {
+      "id": "MOD-GOJI-SMOOTHIE",
+      "name": "Goji Berry",
+      "description": "Shto 5G",
+      "icon": "❤️",
+      "price": 70,
+      "constraints": {},
+      "order": 6
+    },
+    "MOD-AVOCADO-SMOOTHIE": {
+      "id": "MOD-AVOCADO-SMOOTHIE",
+      "name": "Avokado",
+      "description": "Shto 70G",
+      "icon": "🥑",
+      "price": 70,
+      "constraints": {},
+      "order": 12
+    },
+    "MOD-SPINACH-SMOOTHIE": {
+      "id": "MOD-SPINACH-SMOOTHIE",
+      "name": "Spinaq",
+      "description": "Shto 15G",
+      "icon": "🥬",
+      "price": 70,
       "constraints": {},
       "order": 15
     },
-    "opt-pine-nut": {
-      "id": "opt-pine-nut",
-      "name": "Pinjol",
-      "icon": "⚪",
-      "price": 40,
+    "MOD-KALE-SMOOTHIE": {
+      "id": "MOD-KALE-SMOOTHIE",
+      "name": "Kale",
+      "description": "Shto 15G",
+      "icon": "🥬",
+      "price": 70,
+      "constraints": {},
+      "order": 13
+    },
+    "MOD-LETTUCE-SMOOTHIE": {
+      "id": "MOD-LETTUCE-SMOOTHIE",
+      "name": "Sallatë Ferme",
+      "description": "Shto 15G",
+      "icon": "🥬",
+      "price": 70,
       "constraints": {},
       "order": 14
     },
-    "opt-mixed-seeds": {
-      "id": "opt-mixed-seeds",
-      "name": "Fara të Përziera",
-      "icon": "🌱",
-      "price": 50,
+    "MOD-GRANOLA-SMOOTHIE": {
+      "id": "MOD-GRANOLA-SMOOTHIE",
+      "name": "Granola",
+      "description": "Shto 30G",
+      "icon": "🥣",
+      "price": 70,
       "constraints": {},
-      "order": 21
+      "order": 16
     },
-    "opt-sunflower-seeds": {
-      "id": "opt-sunflower-seeds",
-      "name": "Fara Lulediellit",
-      "icon": "🌻",
-      "price": 50,
+    "MOD-GINGER-SMOOTHIE": {
+      "id": "MOD-GINGER-SMOOTHIE",
+      "name": "Xhinxher",
+      "description": "Shto 10G",
+      "icon": "🫚",
+      "price": 70,
       "constraints": {},
       "order": 20
     },
-    "opt-pumpkin-seeds": {
-      "id": "opt-pumpkin-seeds",
-      "name": "Fara Kungulli",
-      "icon": "🎃",
-      "price": 50,
+    "MOD-PINEAPPLE-SMOOTHIE-ADDON": {
+      "id": "MOD-PINEAPPLE-SMOOTHIE-ADDON",
+      "name": "Ananas",
+      "description": "Shto 70G",
+      "icon": "🍍",
+      "price": 70,
       "constraints": {},
-      "order": 18
+      "order": 3
     },
-    "opt-flax-seeds": {
-      "id": "opt-flax-seeds",
-      "name": "Fara Liri",
-      "icon": "🟫",
+    "MOD-PINEAPPLE-SMOOTHIE-BASE": {
+      "id": "MOD-PINEAPPLE-SMOOTHIE-BASE",
+      "name": "Lëng Ananasi",
+      "description": "Shto 150G",
+      "icon": "🍍",
+      "price": 0,
+      "constraints": {
+        "choiceId": "base-choice"
+      },
+      "order": 0
+    },
+    "MOD-CINNAMON-SMOOTHIE": {
+      "id": "MOD-CINNAMON-SMOOTHIE",
+      "name": "Kanellë",
+      "description": "Shto 3G",
+      "icon": "🟰",
+      "price": 40,
+      "constraints": {},
+      "order": 17
+    },
+    "MOD-OAT-SMOOTHIE": {
+      "id": "MOD-OAT-SMOOTHIE",
+      "name": "Tërshërë",
+      "description": "Shto 30G",
+      "icon": "🌾",
       "price": 50,
       "constraints": {},
       "order": 19
     },
-    "opt-chia-seeds": {
-      "id": "opt-chia-seeds",
-      "name": "Fara Chia",
-      "icon": "⚫",
-      "price": 50,
-      "constraints": {},
-      "order": 16
-    },
-    "opt-hemp-seeds": {
-      "id": "opt-hemp-seeds",
-      "name": "Fara Kënëpe",
-      "icon": "🌿",
-      "price": 50,
-      "constraints": {},
-      "order": 17
-    },
-    "opt-coconut": {
-      "id": "opt-coconut",
-      "name": "Kokos",
-      "icon": "🥥",
-      "price": 40,
-      "constraints": {},
-      "order": 25
-    },
-    "opt-cranberries": {
-      "id": "opt-cranberries",
-      "name": "Boronicë e Kuqe",
-      "icon": "🩷",
-      "price": 40,
-      "constraints": {},
-      "order": 22
-    },
-    "opt-dates": {
-      "id": "opt-dates",
-      "name": "Hurma",
-      "icon": "🟠",
-      "price": 40,
-      "constraints": {},
-      "order": 23
-    },
-    "opt-dried-apricots": {
-      "id": "opt-dried-apricots",
-      "name": "Kajsi të Thara",
-      "icon": "🟠",
-      "price": 40,
-      "constraints": {},
-      "order": 24
-    },
-    "opt-raisins": {
-      "id": "opt-raisins",
-      "name": "Rrush i Thatë",
-      "icon": "🍇",
-      "price": 40,
-      "constraints": {},
-      "order": 26
-    },
-    "opt-sweet-spoon": {
-      "id": "opt-sweet-spoon",
-      "name": "Lugë e Ëmbël",
-      "icon": "🍬",
-      "price": 30,
-      "constraints": {},
-      "order": 28
-    },
-    "opt-wildflower-honey": {
-      "id": "opt-wildflower-honey",
-      "name": "Mjaltë Lulesh të Egra",
-      "icon": "🍯",
-      "price": 30,
-      "constraints": {},
-      "order": 29
-    },
-    "opt-jam": {
-      "id": "opt-jam",
-      "name": "Reçel",
-      "icon": "🍓",
-      "price": 30,
-      "constraints": {},
-      "order": 30
-    },
-    "opt-date-syrup": {
-      "id": "opt-date-syrup",
-      "name": "Shurup Hurme",
-      "icon": "🍯",
-      "price": 30,
-      "constraints": {},
-      "order": 31
-    },
-    "opt-choco-spoon": {
-      "id": "opt-choco-spoon",
-      "name": "Lugë Çokollate",
-      "icon": "🍫",
-      "price": 30,
-      "constraints": {},
-      "order": 27
-    },
-    "opt-pineapple": {
-      "id": "opt-pineapple",
-      "name": "Ananas",
-      "icon": "🍍",
-      "price": 50,
-      "constraints": {},
-      "order": 32
-    },
-    "opt-avocado": {
-      "id": "opt-avocado",
-      "name": "Avokado",
-      "icon": "🥑",
-      "price": 50,
-      "constraints": {},
-      "order": 33
-    },
-    "opt-mango": {
-      "id": "opt-mango",
-      "name": "Mango",
-      "icon": "🥭",
-      "price": 50,
-      "constraints": {},
-      "order": 35
-    },
-    "opt-dark-chocolate": {
-      "id": "opt-dark-chocolate",
-      "name": "Çokollatë e Zezë",
-      "icon": "🍫",
-      "price": 50,
-      "constraints": {},
-      "order": 34
-    },
-    "opt-matcha": {
-      "id": "opt-matcha",
-      "name": "Matcha",
-      "icon": "🍵",
-      "price": 50,
-      "constraints": {},
-      "order": 36
-    },
-    "opt-peanut-butter": {
-      "id": "opt-peanut-butter",
-      "name": "Gjalpë Kikiriku",
-      "icon": "🥜",
-      "price": 50,
-      "constraints": {},
-      "order": 39
-    },
-    "opt-almond-butter": {
-      "id": "opt-almond-butter",
-      "name": "Gjalpë Bajame",
-      "icon": "🟨",
-      "price": 50,
-      "constraints": {},
-      "order": 38
-    },
-    "opt-walnut-butter": {
-      "id": "opt-walnut-butter",
-      "name": "Gjalpë Arre",
-      "icon": "🌰",
-      "price": 50,
-      "constraints": {},
-      "order": 37
-    },
-    "opt-wild-strawberry": {
-      "id": "opt-wild-strawberry",
-      "name": "Dredhëz e Egër",
-      "icon": "🍓",
-      "price": 60,
-      "constraints": {},
-      "order": 40
-    },
-    "opt-goji-berry": {
-      "id": "opt-goji-berry",
-      "name": "Goji Berry",
-      "icon": "❤️",
-      "price": 60,
-      "constraints": {},
-      "order": 41
-    },
-    "opt-bee-pollen": {
-      "id": "opt-bee-pollen",
-      "name": "Polen Blete",
-      "icon": "🐝",
-      "price": 60,
-      "constraints": {},
-      "order": 42
-    },
-    "opt-whey-protein": {
-      "id": "opt-whey-protein",
-      "name": "Proteina Whey",
-      "icon": "💪",
-      "price": 60,
-      "constraints": {},
-      "order": 43
-    },
-    "opt-cinnamon": {
-      "id": "opt-cinnamon",
-      "name": "Kanellë",
-      "icon": "🟰",
-      "price": 40,
-      "constraints": {},
-      "order": 45
-    },
-    "opt-oat": {
-      "id": "opt-oat",
-      "name": "Tërshërë",
-      "icon": "🌾",
-      "price": 40,
-      "constraints": {},
-      "order": 48
-    },
-    "opt-lemon-peel": {
-      "id": "opt-lemon-peel",
+    "MOD-LEMON-PEEL-SMOOTHIE": {
+      "id": "MOD-LEMON-PEEL-SMOOTHIE",
       "name": "Lëkurë Limoni",
+      "description": "Shto 3G",
       "icon": "🍋",
       "price": 40,
       "constraints": {},
-      "order": 46
-    },
-    "opt-granola": {
-      "id": "opt-granola",
-      "name": "Granola",
-      "icon": "🥣",
-      "price": 40,
-      "constraints": {},
-      "order": 44
-    },
-    "opt-spinach": {
-      "id": "opt-spinach",
-      "name": "Spinaq",
-      "icon": "🥬",
-      "price": 40,
-      "constraints": {},
-      "order": 47
+      "order": 18
     }
   },
   "itemGroups": {
@@ -408,113 +205,49 @@
       "name": "Të Përfshira",
       "itemIds": []
     },
-    "group-juice-base": {
-      "id": "group-juice-base",
-      "name": "Zgjidhni Bazën",
+    "base-juice": {
+      "id": "base-juice",
+      "name": "Bazë Lëng",
       "itemIds": [
-        "opt-pineapple-juice",
-        "opt-apple-juice",
-        "opt-orange-juice"
+        "MOD-PINEAPPLE-SMOOTHIE-BASE",
+        "MOD-APPLE-SMOOTHIE",
+        "MOD-ORANGE-SMOOTHIE"
       ]
     },
-    "group-fruits": {
-      "id": "group-fruits",
+    "fruits": {
+      "id": "fruits",
       "name": "Fruta",
       "itemIds": [
-        "opt-banana",
-        "opt-blueberries",
-        "opt-strawberries",
-        "opt-kiwi",
-        "opt-blackberries",
-        "opt-raspberries",
-        "opt-mixed-berries"
+        "MOD-PINEAPPLE-SMOOTHIE-ADDON",
+        "MOD-BANANA-SMOOTHIE",
+        "MOD-BERRIES-SMOOTHIE",
+        "MOD-GOJI-SMOOTHIE",
+        "MOD-KIWI-SMOOTHIE",
+        "MOD-STRAWBERRY-SMOOTHIE",
+        "MOD-BLACKBERRY-SMOOTHIE",
+        "MOD-MANGO-SMOOTHIE",
+        "MOD-RASPBERRY-SMOOTHIE"
       ]
     },
-    "group-nuts": {
-      "id": "group-nuts",
-      "name": "Arra",
+    "vegetables": {
+      "id": "vegetables",
+      "name": "Perime",
       "itemIds": [
-        "opt-walnuts",
-        "opt-mixed-nuts",
-        "opt-almonds",
-        "opt-hazelnuts",
-        "opt-pine-nut",
-        "opt-pistachios"
+        "MOD-AVOCADO-SMOOTHIE",
+        "MOD-KALE-SMOOTHIE",
+        "MOD-LETTUCE-SMOOTHIE",
+        "MOD-SPINACH-SMOOTHIE"
       ]
     },
-    "group-seeds": {
-      "id": "group-seeds",
-      "name": "Fara",
-      "itemIds": [
-        "opt-chia-seeds",
-        "opt-hemp-seeds",
-        "opt-pumpkin-seeds",
-        "opt-flax-seeds",
-        "opt-sunflower-seeds",
-        "opt-mixed-seeds"
-      ]
-    },
-    "group-dried-fruits": {
-      "id": "group-dried-fruits",
-      "name": "Fruta të Thara",
-      "itemIds": [
-        "opt-cranberries",
-        "opt-dates",
-        "opt-dried-apricots",
-        "opt-coconut",
-        "opt-raisins"
-      ]
-    },
-    "group-sweets": {
-      "id": "group-sweets",
-      "name": "Ëmbëlsira",
-      "itemIds": [
-        "opt-choco-spoon",
-        "opt-sweet-spoon",
-        "opt-wildflower-honey",
-        "opt-jam",
-        "opt-date-syrup"
-      ]
-    },
-    "group-premium": {
-      "id": "group-premium",
-      "name": "Premium",
-      "itemIds": [
-        "opt-pineapple",
-        "opt-avocado",
-        "opt-dark-chocolate",
-        "opt-mango",
-        "opt-matcha"
-      ]
-    },
-    "group-nut-butter": {
-      "id": "group-nut-butter",
-      "name": "Gjalpë Arre",
-      "itemIds": [
-        "opt-walnut-butter",
-        "opt-almond-butter",
-        "opt-peanut-butter"
-      ]
-    },
-    "group-superfoods": {
-      "id": "group-superfoods",
-      "name": "Superfoods",
-      "itemIds": [
-        "opt-wild-strawberry",
-        "opt-goji-berry",
-        "opt-bee-pollen",
-        "opt-whey-protein"
-      ]
-    },
-    "group-extras": {
-      "id": "group-extras",
+    "extras": {
+      "id": "extras",
       "name": "Ekstra",
       "itemIds": [
-        "opt-granola",
-        "opt-cinnamon",
-        "opt-lemon-peel",
-        "opt-spinach",
-        "opt-oat"
+        "MOD-GRANOLA-SMOOTHIE",
+        "MOD-CINNAMON-SMOOTHIE",
+        "MOD-LEMON-PEEL-SMOOTHIE",
+        "MOD-OAT-SMOOTHIE",
+        "MOD-GINGER-SMOOTHIE"
       ]
     }
   },
@@ -525,53 +258,24 @@
     },
     {
       "type": "item-group",
-      "data": "group-juice-base"
+      "data": "base-juice"
     },
     {
       "type": "item-group",
-      "data": "group-fruits"
+      "data": "fruits"
     },
     {
       "type": "item-group",
-      "data": "group-nuts"
+      "data": "vegetables"
     },
     {
       "type": "item-group",
-      "data": "group-seeds"
-    },
-    {
-      "type": "item-group",
-      "data": "group-dried-fruits"
-    },
-    {
-      "type": "item-group",
-      "data": "group-sweets"
-    },
-    {
-      "type": "item-group",
-      "data": "group-premium"
-    },
-    {
-      "type": "item-group",
-      "data": "group-nut-butter"
-    },
-    {
-      "type": "item-group",
-      "data": "group-superfoods"
-    },
-    {
-      "type": "item-group",
-      "data": "group-extras"
+      "data": "extras"
     }
   ],
   "choices": {
-    "milk-choice": {
-      "id": "milk-choice",
-      "min": 1,
-      "max": 1
-    },
-    "juice-choice": {
-      "id": "juice-choice",
+    "base-choice": {
+      "id": "base-choice",
       "min": 1,
       "max": 1
     }

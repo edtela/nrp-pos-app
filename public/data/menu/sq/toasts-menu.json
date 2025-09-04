@@ -3,101 +3,101 @@
   "name": "Menu Tost",
   "currency": "ALL",
   "items": {
-    "walnut-yoast": {
-      "id": "walnut-yoast",
-      "name": "Arre",
-      "description": "kos aromal, gjalpë arre, boronica, fara chia, mjaltë",
-      "price": 300,
+    "ITEM-TOAST-PEANUT-BUTTER": {
+      "id": "ITEM-TOAST-PEANUT-BUTTER",
+      "name": "Tost me Gjalpë Kikiriku",
+      "description": "Gjalpë kikiriku, banane, kanellë, mjaltë",
+      "icon": "🥜",
+      "price": 350,
       "constraints": {},
       "order": 0
     },
-    "peanut-yoast": {
-      "id": "peanut-yoast",
-      "name": "Kikiriku",
-      "description": "kos aromal, gjalpë kikiriku, banane, fara liri, kanellë, mjaltë",
-      "price": 300,
+    "ITEM-TOAST-ALMOND-BUTTER": {
+      "id": "ITEM-TOAST-ALMOND-BUTTER",
+      "name": "Tost me Gjalpë Bajame",
+      "description": "Gjalpë bajame, boronicë, mjaltë",
+      "icon": "🌰",
+      "price": 350,
       "constraints": {},
       "order": 1
     },
-    "berries-yoast": {
-      "id": "berries-yoast",
-      "name": "Fruta Pylli",
-      "description": "kos aromal, reçel frutash, granola",
-      "price": 300,
+    "ITEM-TOAST-HAZELNUT-BUTTER": {
+      "id": "ITEM-TOAST-HAZELNUT-BUTTER",
+      "name": "Tost me Gjalpë Lajthie",
+      "description": "Gjalpë lajthie, luleshtrydhe/mjedër, mjaltë",
+      "icon": "🌰",
+      "price": 350,
       "constraints": {},
       "order": 2
     },
-    "prosciutto-yoast": {
-      "id": "prosciutto-yoast",
-      "name": "Proshutë",
-      "description": "kos aromal, djathë gouda, pomadorini, proshutë pule, zaatar, vaj ulliri",
-      "price": 300,
+    "ITEM-TOAST-AVOCADO-CLASSIC": {
+      "id": "ITEM-TOAST-AVOCADO-CLASSIC",
+      "name": "Avokado Klasik",
+      "description": "Avokado, pomodorini, misër, fara kungulli, lëng limoni, vaj ulliri",
+      "icon": "🥑",
+      "price": 400,
       "constraints": {},
       "order": 3
     },
-    "dried-pomodori": {
-      "id": "dried-pomodori",
+    "ITEM-TOAST-AVOCADO-DRIED-POMODORI": {
+      "id": "ITEM-TOAST-AVOCADO-DRIED-POMODORI",
       "name": "Domate të Thata",
-      "description": "avokado, djathë feta, domate të thata, fara lulediellit",
-      "price": 350,
+      "description": "Avokado, djathë dhie, domate të thata, fara luledielli, vaj ulliri",
+      "icon": "🍅",
+      "price": 400,
       "constraints": {},
       "order": 4
     },
-    "porcini-avotoast": {
-      "id": "porcini-avotoast",
-      "name": "Porcini",
-      "description": "avokado, porcini të thata, pinjol",
-      "price": 350,
-      "constraints": {},
-      "order": 5
-    },
-    "avocado-avotoast": {
-      "id": "avocado-avotoast",
-      "name": "Avocado",
-      "description": "avokado, pomadorini, misër, fara kungulli, majdanoz, limon, vaj ulliri",
-      "price": 350,
-      "constraints": {},
-      "order": 6
-    },
-    "premium-egg": {
-      "id": "premium-egg",
-      "name": "Vezë Premium",
-      "description": "avokado, proshutë pule, vezë e zier, fara chia, vaj ulliri",
+    "ITEM-TOAST-AVOCADO-PREMIUM-EGG": {
+      "id": "ITEM-TOAST-AVOCADO-PREMIUM-EGG",
+      "name": "Premium me Vezë",
+      "description": "Avokado, proshutë pule, vezë e zierë, fara pishe, vaj ulliri",
+      "icon": "🥚",
       "price": 400,
       "constraints": {},
-      "order": 7
+      "order": 5
     }
   },
   "itemGroups": {
-    "group-yoast": {
-      "id": "group-yoast",
-      "name": "Yoast",
+    "nut-butter": {
+      "id": "nut-butter",
+      "name": "Tost me Gjalpë Arrash",
       "itemIds": [
-        "walnut-yoast",
-        "peanut-yoast",
-        "berries-yoast",
-        "prosciutto-yoast"
+        "ITEM-TOAST-PEANUT-BUTTER",
+        "ITEM-TOAST-ALMOND-BUTTER",
+        "ITEM-TOAST-HAZELNUT-BUTTER"
       ]
     },
-    "group-avotoast": {
-      "id": "group-avotoast",
-      "name": "Avotoast",
+    "avocado": {
+      "id": "avocado",
+      "name": "Tost me Avokado",
       "itemIds": [
-        "dried-pomodori",
-        "porcini-avotoast",
-        "avocado-avotoast",
-        "premium-egg"
+        "ITEM-TOAST-AVOCADO-CLASSIC",
+        "ITEM-TOAST-AVOCADO-DRIED-POMODORI",
+        "ITEM-TOAST-AVOCADO-PREMIUM-EGG"
       ]
     }
   },
   "layout": [
     {
-      "type": "item-group",
-      "data": "group-yoast"
+      "text": "Tost me Gjalpë Arrash",
+      "classes": [
+        "menu-title"
+      ]
     },
     {
       "type": "item-group",
-      "data": "group-avotoast"
+      "data": "nut-butter"
+    },
+    {
+      "text": "Tost me Avokado",
+      "classes": [
+        "menu-title"
+      ]
+    },
+    {
+      "type": "item-group",
+      "data": "avocado"
     }
   ]
 }

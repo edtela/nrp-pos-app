@@ -1,5 +1,5 @@
 {
-  "id": "main-menu",
+  "id": "index",
   "name": "Aromal",
   "currency": "ALL",
   "items": {
@@ -10,7 +10,7 @@
       "icon": "☕",
       "constraints": {},
       "subMenu": {
-        "menuId": "espresso-menu",
+        "menuId": "coffee-menu",
         "included": []
       },
       "order": 0

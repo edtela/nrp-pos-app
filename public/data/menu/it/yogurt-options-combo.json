@@ -1,0 +1,636 @@
+{
+  "id": "yogurt-options-combo",
+  "name": "Yogurt Options",
+  "currency": "ALL",
+  "items": {
+    "MOD-YOGURT-BASE": {
+      "id": "MOD-YOGURT-BASE",
+      "name": "Plain Yogurt",
+      "description": "Aromal authentic yogurt",
+      "icon": "🥛",
+      "price": 0,
+      "constraints": {},
+      "order": 0
+    },
+    "MOD-PINEAPPLE-YOGURT": {
+      "id": "MOD-PINEAPPLE-YOGURT",
+      "name": "Pineapple",
+      "icon": "🍍",
+      "price": 50,
+      "constraints": {},
+      "order": 6
+    },
+    "MOD-AVOCADO-YOGURT": {
+      "id": "MOD-AVOCADO-YOGURT",
+      "name": "Avocado",
+      "icon": "🥑",
+      "price": 50,
+      "constraints": {},
+      "order": 1
+    },
+    "MOD-BANANA-YOGURT": {
+      "id": "MOD-BANANA-YOGURT",
+      "name": "Banana",
+      "icon": "🍌",
+      "price": 50,
+      "constraints": {},
+      "order": 2
+    },
+    "MOD-KIWI-YOGURT": {
+      "id": "MOD-KIWI-YOGURT",
+      "name": "Kiwi",
+      "icon": "🥝",
+      "price": 50,
+      "constraints": {},
+      "order": 4
+    },
+    "MOD-WILD-BERRIES-YOGURT": {
+      "id": "MOD-WILD-BERRIES-YOGURT",
+      "name": "Wild Berries",
+      "icon": "🫐",
+      "price": 50,
+      "constraints": {},
+      "order": 9
+    },
+    "MOD-STRAWBERRIES-YOGURT": {
+      "id": "MOD-STRAWBERRIES-YOGURT",
+      "name": "Strawberries",
+      "icon": "🍓",
+      "price": 50,
+      "constraints": {},
+      "order": 8
+    },
+    "MOD-BLACKBERRIES-YOGURT": {
+      "id": "MOD-BLACKBERRIES-YOGURT",
+      "name": "Blackberries",
+      "icon": "🟣",
+      "price": 50,
+      "constraints": {},
+      "order": 3
+    },
+    "MOD-RASPBERRIES-YOGURT": {
+      "id": "MOD-RASPBERRIES-YOGURT",
+      "name": "Raspberries",
+      "icon": "🔴",
+      "price": 50,
+      "constraints": {},
+      "order": 7
+    },
+    "MOD-MANGO-YOGURT": {
+      "id": "MOD-MANGO-YOGURT",
+      "name": "Mango",
+      "icon": "🥭",
+      "price": 100,
+      "constraints": {},
+      "order": 5
+    },
+    "MOD-WILD-STRAWBERRY-YOGURT": {
+      "id": "MOD-WILD-STRAWBERRY-YOGURT",
+      "name": "Wild Strawberry",
+      "icon": "🍓",
+      "price": 100,
+      "constraints": {},
+      "order": 10
+    },
+    "MOD-WALNUTS-YOGURT": {
+      "id": "MOD-WALNUTS-YOGURT",
+      "name": "Walnuts",
+      "icon": "🟫",
+      "price": 50,
+      "constraints": {},
+      "order": 17
+    },
+    "MOD-ALMONDS-YOGURT": {
+      "id": "MOD-ALMONDS-YOGURT",
+      "name": "Almonds",
+      "icon": "🟡",
+      "price": 50,
+      "constraints": {},
+      "order": 11
+    },
+    "MOD-HAZELNUTS-YOGURT": {
+      "id": "MOD-HAZELNUTS-YOGURT",
+      "name": "Hazelnuts",
+      "icon": "🟤",
+      "price": 50,
+      "constraints": {},
+      "order": 12
+    },
+    "MOD-MIXED-NUTS-YOGURT": {
+      "id": "MOD-MIXED-NUTS-YOGURT",
+      "name": "Mixed Nuts",
+      "icon": "🥜",
+      "price": 50,
+      "constraints": {},
+      "order": 13
+    },
+    "MOD-PISTACHIOS-YOGURT": {
+      "id": "MOD-PISTACHIOS-YOGURT",
+      "name": "Pistachios",
+      "icon": "🟢",
+      "price": 100,
+      "constraints": {},
+      "order": 15
+    },
+    "MOD-PINE-NUTS-YOGURT": {
+      "id": "MOD-PINE-NUTS-YOGURT",
+      "name": "Pine Nuts",
+      "icon": "⚪",
+      "price": 100,
+      "constraints": {},
+      "order": 14
+    },
+    "MOD-ROASTED-CHICKPEAS-YOGURT": {
+      "id": "MOD-ROASTED-CHICKPEAS-YOGURT",
+      "name": "Roasted Chickpeas",
+      "icon": "🟤",
+      "price": 50,
+      "constraints": {},
+      "order": 16
+    },
+    "MOD-HEMP-SEEDS-YOGURT": {
+      "id": "MOD-HEMP-SEEDS-YOGURT",
+      "name": "Hemp Seeds",
+      "icon": "🌿",
+      "price": 30,
+      "constraints": {},
+      "order": 20
+    },
+    "MOD-FLAX-SEEDS-YOGURT": {
+      "id": "MOD-FLAX-SEEDS-YOGURT",
+      "name": "Flax Seeds",
+      "icon": "🟫",
+      "price": 30,
+      "constraints": {},
+      "order": 19
+    },
+    "MOD-CHIA-SEEDS-YOGURT": {
+      "id": "MOD-CHIA-SEEDS-YOGURT",
+      "name": "Chia Seeds",
+      "icon": "⚫",
+      "price": 30,
+      "constraints": {},
+      "order": 18
+    },
+    "MOD-PUMPKIN-SEEDS-YOGURT": {
+      "id": "MOD-PUMPKIN-SEEDS-YOGURT",
+      "name": "Pumpkin Seeds",
+      "icon": "🎃",
+      "price": 30,
+      "constraints": {},
+      "order": 22
+    },
+    "MOD-SUNFLOWER-SEEDS-YOGURT": {
+      "id": "MOD-SUNFLOWER-SEEDS-YOGURT",
+      "name": "Sunflower Seeds",
+      "icon": "🌻",
+      "price": 30,
+      "constraints": {},
+      "order": 24
+    },
+    "MOD-SESAME-SEEDS-YOGURT": {
+      "id": "MOD-SESAME-SEEDS-YOGURT",
+      "name": "Sesame Seeds",
+      "icon": "⚪",
+      "price": 30,
+      "constraints": {},
+      "order": 23
+    },
+    "MOD-MIXED-SEEDS-YOGURT": {
+      "id": "MOD-MIXED-SEEDS-YOGURT",
+      "name": "Mixed Seeds",
+      "icon": "🌱",
+      "price": 30,
+      "constraints": {},
+      "order": 21
+    },
+    "MOD-COCONUT-YOGURT": {
+      "id": "MOD-COCONUT-YOGURT",
+      "name": "Coconut Flakes",
+      "icon": "🥥",
+      "price": 50,
+      "constraints": {},
+      "order": 25
+    },
+    "MOD-CRANBERRIES-YOGURT": {
+      "id": "MOD-CRANBERRIES-YOGURT",
+      "name": "Cranberries",
+      "icon": "🩷",
+      "price": 50,
+      "constraints": {},
+      "order": 26
+    },
+    "MOD-DATES-YOGURT": {
+      "id": "MOD-DATES-YOGURT",
+      "name": "Dates",
+      "icon": "🟠",
+      "price": 50,
+      "constraints": {},
+      "order": 27
+    },
+    "MOD-GOJI-BERRY-YOGURT": {
+      "id": "MOD-GOJI-BERRY-YOGURT",
+      "name": "Goji Berry",
+      "icon": "❤️",
+      "price": 100,
+      "constraints": {},
+      "order": 28
+    },
+    "MOD-GRANOLA-YOGURT": {
+      "id": "MOD-GRANOLA-YOGURT",
+      "name": "Granola",
+      "icon": "🥣",
+      "price": 50,
+      "constraints": {},
+      "order": 29
+    },
+    "MOD-OATS-YOGURT": {
+      "id": "MOD-OATS-YOGURT",
+      "name": "Oats",
+      "icon": "🌾",
+      "price": 50,
+      "constraints": {},
+      "order": 30
+    },
+    "MOD-WHEY-PROTEIN-YOGURT": {
+      "id": "MOD-WHEY-PROTEIN-YOGURT",
+      "name": "Whey Protein",
+      "icon": "💪",
+      "price": 50,
+      "constraints": {},
+      "order": 32
+    },
+    "MOD-BEE-POLLEN-YOGURT": {
+      "id": "MOD-BEE-POLLEN-YOGURT",
+      "name": "Bee Pollen",
+      "icon": "🐝",
+      "price": 100,
+      "constraints": {},
+      "order": 31
+    },
+    "MOD-HONEY-YOGURT": {
+      "id": "MOD-HONEY-YOGURT",
+      "name": "Wildflower Honey",
+      "icon": "🍯",
+      "price": 50,
+      "constraints": {},
+      "order": 37
+    },
+    "MOD-FOREST-JAM-YOGURT": {
+      "id": "MOD-FOREST-JAM-YOGURT",
+      "name": "Forest Fruit Jam",
+      "icon": "🍓",
+      "price": 50,
+      "constraints": {},
+      "order": 36
+    },
+    "MOD-CHERRY-JAM-YOGURT": {
+      "id": "MOD-CHERRY-JAM-YOGURT",
+      "name": "Cherry Jam",
+      "icon": "🍒",
+      "price": 50,
+      "constraints": {},
+      "order": 33
+    },
+    "MOD-CHOCOLATE-CHIPS-YOGURT": {
+      "id": "MOD-CHOCOLATE-CHIPS-YOGURT",
+      "name": "Chocolate Chips",
+      "icon": "🍫",
+      "price": 50,
+      "constraints": {},
+      "order": 35
+    },
+    "MOD-MAPLE-SYRUP-YOGURT": {
+      "id": "MOD-MAPLE-SYRUP-YOGURT",
+      "name": "Chestnut Honey",
+      "icon": "🍯",
+      "price": 100,
+      "constraints": {},
+      "order": 34
+    },
+    "MOD-PEANUT-BUTTER-YOGURT": {
+      "id": "MOD-PEANUT-BUTTER-YOGURT",
+      "name": "Peanut Butter",
+      "icon": "🥜",
+      "price": 100,
+      "constraints": {},
+      "order": 42
+    },
+    "MOD-ALMOND-BUTTER-YOGURT": {
+      "id": "MOD-ALMOND-BUTTER-YOGURT",
+      "name": "Almond Butter",
+      "icon": "🟨",
+      "price": 100,
+      "constraints": {},
+      "order": 38
+    },
+    "MOD-CASHEW-BUTTER-YOGURT": {
+      "id": "MOD-CASHEW-BUTTER-YOGURT",
+      "name": "Cashew Butter",
+      "icon": "🟫",
+      "price": 100,
+      "constraints": {},
+      "order": 39
+    },
+    "MOD-HAZELNUT-BUTTER-YOGURT": {
+      "id": "MOD-HAZELNUT-BUTTER-YOGURT",
+      "name": "Hazelnut Butter",
+      "icon": "🌰",
+      "price": 100,
+      "constraints": {},
+      "order": 40
+    },
+    "MOD-PISTACHIO-BUTTER-YOGURT": {
+      "id": "MOD-PISTACHIO-BUTTER-YOGURT",
+      "name": "Pistachio Butter",
+      "icon": "🟢",
+      "price": 200,
+      "constraints": {},
+      "order": 43
+    },
+    "MOD-TAHINI-YOGURT": {
+      "id": "MOD-TAHINI-YOGURT",
+      "name": "Tahini",
+      "icon": "🥄",
+      "price": 100,
+      "constraints": {},
+      "order": 44
+    },
+    "MOD-HUMMUS-YOGURT": {
+      "id": "MOD-HUMMUS-YOGURT",
+      "name": "Hummus",
+      "icon": "🥙",
+      "price": 100,
+      "constraints": {},
+      "order": 41
+    },
+    "MOD-GARLIC-YOGURT": {
+      "id": "MOD-GARLIC-YOGURT",
+      "name": "Garlic",
+      "icon": "🧄",
+      "price": 0,
+      "constraints": {},
+      "order": 48
+    },
+    "MOD-DILL-YOGURT": {
+      "id": "MOD-DILL-YOGURT",
+      "name": "Dill",
+      "icon": "🌿",
+      "price": 0,
+      "constraints": {},
+      "order": 47
+    },
+    "MOD-PARSLEY-YOGURT": {
+      "id": "MOD-PARSLEY-YOGURT",
+      "name": "Parsley",
+      "icon": "🌿",
+      "price": 0,
+      "constraints": {},
+      "order": 55
+    },
+    "MOD-MINT-YOGURT": {
+      "id": "MOD-MINT-YOGURT",
+      "name": "Mint",
+      "icon": "🌿",
+      "price": 0,
+      "constraints": {},
+      "order": 52
+    },
+    "MOD-OREGANO-YOGURT": {
+      "id": "MOD-OREGANO-YOGURT",
+      "name": "Oregano",
+      "icon": "🌿",
+      "price": 0,
+      "constraints": {},
+      "order": 53
+    },
+    "MOD-ZAATAR-YOGURT": {
+      "id": "MOD-ZAATAR-YOGURT",
+      "name": "Zaatar",
+      "icon": "🌿",
+      "price": 0,
+      "constraints": {},
+      "order": 56
+    },
+    "MOD-PAPRIKA-YOGURT": {
+      "id": "MOD-PAPRIKA-YOGURT",
+      "name": "Paprika",
+      "icon": "🌶️",
+      "price": 0,
+      "constraints": {},
+      "order": 54
+    },
+    "MOD-BLACK-PEPPER-YOGURT": {
+      "id": "MOD-BLACK-PEPPER-YOGURT",
+      "name": "Black Pepper",
+      "icon": "⚫",
+      "price": 0,
+      "constraints": {},
+      "order": 45
+    },
+    "MOD-HIMALAYAN-SALT-YOGURT": {
+      "id": "MOD-HIMALAYAN-SALT-YOGURT",
+      "name": "Himalayan Salt",
+      "icon": "🧂",
+      "price": 0,
+      "constraints": {},
+      "order": 49
+    },
+    "MOD-CINNAMON-YOGURT": {
+      "id": "MOD-CINNAMON-YOGURT",
+      "name": "Cinnamon",
+      "icon": "🟰",
+      "price": 0,
+      "constraints": {},
+      "order": 46
+    },
+    "MOD-LEMON-PEEL-YOGURT": {
+      "id": "MOD-LEMON-PEEL-YOGURT",
+      "name": "Lemon Peel",
+      "icon": "🍋",
+      "price": 0,
+      "constraints": {},
+      "order": 50
+    },
+    "MOD-MATCHA-YOGURT": {
+      "id": "MOD-MATCHA-YOGURT",
+      "name": "Matcha Powder",
+      "icon": "🍵",
+      "price": 50,
+      "constraints": {},
+      "order": 51
+    }
+  },
+  "itemGroups": {
+    "included": {
+      "id": "included",
+      "name": "Included",
+      "itemIds": []
+    },
+    "base": {
+      "id": "base",
+      "name": "Base",
+      "itemIds": [
+        "MOD-YOGURT-BASE"
+      ]
+    },
+    "fruits": {
+      "id": "fruits",
+      "name": "Fruits",
+      "itemIds": [
+        "MOD-AVOCADO-YOGURT",
+        "MOD-BANANA-YOGURT",
+        "MOD-BLACKBERRIES-YOGURT",
+        "MOD-KIWI-YOGURT",
+        "MOD-MANGO-YOGURT",
+        "MOD-PINEAPPLE-YOGURT",
+        "MOD-RASPBERRIES-YOGURT",
+        "MOD-STRAWBERRIES-YOGURT",
+        "MOD-WILD-BERRIES-YOGURT",
+        "MOD-WILD-STRAWBERRY-YOGURT"
+      ]
+    },
+    "nuts": {
+      "id": "nuts",
+      "name": "Nuts",
+      "itemIds": [
+        "MOD-ALMONDS-YOGURT",
+        "MOD-HAZELNUTS-YOGURT",
+        "MOD-MIXED-NUTS-YOGURT",
+        "MOD-PINE-NUTS-YOGURT",
+        "MOD-PISTACHIOS-YOGURT",
+        "MOD-ROASTED-CHICKPEAS-YOGURT",
+        "MOD-WALNUTS-YOGURT"
+      ]
+    },
+    "seeds": {
+      "id": "seeds",
+      "name": "Seeds",
+      "itemIds": [
+        "MOD-CHIA-SEEDS-YOGURT",
+        "MOD-FLAX-SEEDS-YOGURT",
+        "MOD-HEMP-SEEDS-YOGURT",
+        "MOD-MIXED-SEEDS-YOGURT",
+        "MOD-PUMPKIN-SEEDS-YOGURT",
+        "MOD-SESAME-SEEDS-YOGURT",
+        "MOD-SUNFLOWER-SEEDS-YOGURT"
+      ]
+    },
+    "dried-fruits": {
+      "id": "dried-fruits",
+      "name": "Dried Fruits",
+      "itemIds": [
+        "MOD-COCONUT-YOGURT",
+        "MOD-CRANBERRIES-YOGURT",
+        "MOD-DATES-YOGURT",
+        "MOD-GOJI-BERRY-YOGURT"
+      ]
+    },
+    "grains": {
+      "id": "grains",
+      "name": "Grains & Cereals",
+      "itemIds": [
+        "MOD-GRANOLA-YOGURT",
+        "MOD-OATS-YOGURT"
+      ]
+    },
+    "proteins": {
+      "id": "proteins",
+      "name": "Proteins",
+      "itemIds": [
+        "MOD-BEE-POLLEN-YOGURT",
+        "MOD-WHEY-PROTEIN-YOGURT"
+      ]
+    },
+    "sweeteners": {
+      "id": "sweeteners",
+      "name": "Sweeteners",
+      "itemIds": [
+        "MOD-CHERRY-JAM-YOGURT",
+        "MOD-MAPLE-SYRUP-YOGURT",
+        "MOD-CHOCOLATE-CHIPS-YOGURT",
+        "MOD-FOREST-JAM-YOGURT",
+        "MOD-HONEY-YOGURT"
+      ]
+    },
+    "nut-butters": {
+      "id": "nut-butters",
+      "name": "Nut Butters",
+      "itemIds": [
+        "MOD-ALMOND-BUTTER-YOGURT",
+        "MOD-CASHEW-BUTTER-YOGURT",
+        "MOD-HAZELNUT-BUTTER-YOGURT",
+        "MOD-HUMMUS-YOGURT",
+        "MOD-PEANUT-BUTTER-YOGURT",
+        "MOD-PISTACHIO-BUTTER-YOGURT",
+        "MOD-TAHINI-YOGURT"
+      ]
+    },
+    "herbs": {
+      "id": "herbs",
+      "name": "Herbs & Spices",
+      "itemIds": [
+        "MOD-BLACK-PEPPER-YOGURT",
+        "MOD-CINNAMON-YOGURT",
+        "MOD-DILL-YOGURT",
+        "MOD-GARLIC-YOGURT",
+        "MOD-HIMALAYAN-SALT-YOGURT",
+        "MOD-LEMON-PEEL-YOGURT",
+        "MOD-MATCHA-YOGURT",
+        "MOD-MINT-YOGURT",
+        "MOD-OREGANO-YOGURT",
+        "MOD-PAPRIKA-YOGURT",
+        "MOD-PARSLEY-YOGURT",
+        "MOD-ZAATAR-YOGURT"
+      ]
+    }
+  },
+  "layout": [
+    {
+      "type": "item-group",
+      "data": "included"
+    },
+    {
+      "type": "item-group",
+      "data": "base"
+    },
+    {
+      "type": "item-group",
+      "data": "fruits"
+    },
+    {
+      "type": "item-group",
+      "data": "nuts"
+    },
+    {
+      "type": "item-group",
+      "data": "seeds"
+    },
+    {
+      "type": "item-group",
+      "data": "dried-fruits"
+    },
+    {
+      "type": "item-group",
+      "data": "grains"
+    },
+    {
+      "type": "item-group",
+      "data": "proteins"
+    },
+    {
+      "type": "item-group",
+      "data": "sweeteners"
+    },
+    {
+      "type": "item-group",
+      "data": "nut-butters"
+    },
+    {
+      "type": "item-group",
+      "data": "herbs"
+    }
+  ],
+  "choices": {},
+  "modifierMenu": true
+}

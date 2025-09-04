@@ -1,0 +1,109 @@
+{
+  "id": "coffee-options-espresso-only",
+  "name": "Coffee Options",
+  "currency": "ALL",
+  "items": {
+    "opt-decaf": {
+      "id": "opt-decaf",
+      "name": "Decaf",
+      "icon": "☕",
+      "price": 20,
+      "constraints": {},
+      "order": 0
+    },
+    "opt-double-shot": {
+      "id": "opt-double-shot",
+      "name": "Double Shot",
+      "icon": "💪",
+      "price": 60,
+      "constraints": {},
+      "order": 1
+    },
+    "opt-ristretto": {
+      "id": "opt-ristretto",
+      "name": "Ristretto",
+      "icon": "☕",
+      "price": 0,
+      "constraints": {
+        "choiceId": "shot-length"
+      },
+      "order": 2
+    },
+    "opt-normale": {
+      "id": "opt-normale",
+      "name": "Normale",
+      "icon": "☕",
+      "price": 0,
+      "constraints": {
+        "choiceId": "shot-length"
+      },
+      "order": 3
+    },
+    "opt-lungo": {
+      "id": "opt-lungo",
+      "name": "Lungo",
+      "icon": "☕",
+      "price": 0,
+      "constraints": {
+        "choiceId": "shot-length"
+      },
+      "order": 4
+    }
+  },
+  "itemGroups": {
+    "included": {
+      "id": "included",
+      "name": "Included",
+      "itemIds": []
+    },
+    "group-coffee-strength": {
+      "id": "group-coffee-strength",
+      "name": "Coffee Options",
+      "itemIds": [
+        "opt-decaf",
+        "opt-double-shot"
+      ]
+    },
+    "group-shot-length": {
+      "id": "group-shot-length",
+      "name": "",
+      "itemIds": [
+        "opt-ristretto",
+        "opt-normale",
+        "opt-lungo"
+      ]
+    }
+  },
+  "layout": [
+    {
+      "type": "item-group",
+      "data": "included"
+    },
+    {
+      "type": "item-group",
+      "data": "group-coffee-strength"
+    },
+    {
+      "type": "item-group",
+      "data": "group-shot-length"
+    }
+  ],
+  "choices": {
+    "milk-choice": {
+      "id": "milk-choice",
+      "min": 1,
+      "max": 1
+    },
+    "shot-length": {
+      "id": "shot-length",
+      "min": 1,
+      "max": 1
+    },
+    "sweetness-choice": {
+      "id": "sweetness-choice",
+      "min": 1,
+      "max": 1
+    }
+  },
+  "modifierMenu": true
+}

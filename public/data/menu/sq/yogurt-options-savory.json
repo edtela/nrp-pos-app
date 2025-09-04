@@ -3,261 +3,437 @@
   "name": "Opsione Kosi",
   "currency": "ALL",
   "items": {
-    "opt-walnuts": {
-      "id": "opt-walnuts",
-      "name": "Arra",
-      "icon": "🌰",
-      "price": 40,
-      "constraints": {},
-      "order": 11
-    },
-    "opt-almonds": {
-      "id": "opt-almonds",
-      "name": "Bajame",
-      "icon": "🟤",
-      "price": 40,
-      "constraints": {},
-      "order": 13
-    },
-    "opt-granola": {
-      "id": "opt-granola",
-      "name": "Granola",
-      "icon": "🥣",
-      "price": 40,
-      "constraints": {},
-      "order": 28
-    },
-    "opt-hazelnuts": {
-      "id": "opt-hazelnuts",
-      "name": "Lajthi",
-      "icon": "🌰",
-      "price": 40,
-      "constraints": {},
-      "order": 15
-    },
-    "opt-mixed-nuts": {
-      "id": "opt-mixed-nuts",
-      "name": "Arra të Përziera",
-      "icon": "🥜",
-      "price": 40,
-      "constraints": {},
-      "order": 12
-    },
-    "opt-mixed-seeds": {
-      "id": "opt-mixed-seeds",
-      "name": "Fara të Përziera",
-      "icon": "🌻",
-      "price": 40,
-      "constraints": {},
-      "order": 22
-    },
-    "opt-sunflower-seeds": {
-      "id": "opt-sunflower-seeds",
-      "name": "Fara Luledielli",
-      "icon": "🌻",
-      "price": 40,
-      "constraints": {},
-      "order": 21
-    },
-    "opt-pumpkin-seeds": {
-      "id": "opt-pumpkin-seeds",
-      "name": "Fara Kungulli",
-      "icon": "🎃",
-      "price": 40,
-      "constraints": {},
-      "order": 19
-    },
-    "opt-pineapple": {
-      "id": "opt-pineapple",
-      "name": "Ananas",
-      "icon": "🍍",
-      "price": 50,
-      "constraints": {},
-      "order": 23
-    },
-    "opt-avocado": {
-      "id": "opt-avocado",
-      "name": "Avocado",
-      "icon": "🥑",
-      "price": 50,
-      "constraints": {},
-      "order": 24
-    },
-    "opt-mango": {
-      "id": "opt-mango",
-      "name": "Mango",
-      "icon": "🥭",
-      "price": 50,
-      "constraints": {},
-      "order": 26
-    },
-    "opt-dark-chocolate": {
-      "id": "opt-dark-chocolate",
-      "name": "Çokollatë e Zezë",
-      "icon": "🍫",
-      "price": 50,
-      "constraints": {},
-      "order": 25
-    },
-    "opt-hemp-seeds": {
-      "id": "opt-hemp-seeds",
-      "name": "Fara Kënëpe",
-      "icon": "🌿",
-      "price": 50,
-      "constraints": {},
-      "order": 18
-    },
-    "opt-pine-nut": {
-      "id": "opt-pine-nut",
-      "name": "Pinjol",
-      "icon": "🌰",
-      "price": 50,
-      "constraints": {},
-      "order": 16
-    },
-    "opt-pistachios": {
-      "id": "opt-pistachios",
-      "name": "Fistiqe",
-      "icon": "🟢",
-      "price": 100,
-      "constraints": {},
-      "order": 14
-    },
-    "opt-cucumber": {
-      "id": "opt-cucumber",
+    "MOD-CUCUMBER-YOGURT": {
+      "id": "MOD-CUCUMBER-YOGURT",
       "name": "Kastravec",
       "icon": "🥒",
-      "price": 40,
-      "constraints": {},
-      "order": 1
-    },
-    "opt-dried-tomatoes": {
-      "id": "opt-dried-tomatoes",
-      "name": "Domate të Thata",
-      "icon": "🍅",
-      "price": 40,
-      "constraints": {},
-      "order": 0
-    },
-    "opt-corn": {
-      "id": "opt-corn",
-      "name": "Misër",
-      "icon": "🌽",
-      "price": 40,
-      "constraints": {},
-      "order": 2
-    },
-    "opt-pomadorini": {
-      "id": "opt-pomadorini",
-      "name": "Pomadorini",
-      "icon": "🍅",
-      "price": 40,
+      "price": 50,
       "constraints": {},
       "order": 3
     },
-    "opt-olives": {
-      "id": "opt-olives",
-      "name": "Ullinj",
-      "icon": "🫒",
-      "price": 40,
+    "MOD-CHERRY-TOMATOES-YOGURT": {
+      "id": "MOD-CHERRY-TOMATOES-YOGURT",
+      "name": "Pomodorini",
+      "icon": "🍅",
+      "price": 50,
       "constraints": {},
       "order": 9
     },
-    "opt-feta-cheese": {
-      "id": "opt-feta-cheese",
-      "name": "Djathë Feta",
-      "icon": "🧀",
+    "MOD-SUNDRIED-TOMATOES-YOGURT": {
+      "id": "MOD-SUNDRIED-TOMATOES-YOGURT",
+      "name": "Domate të Thata",
+      "icon": "🍅",
+      "price": 50,
+      "constraints": {},
+      "order": 2
+    },
+    "MOD-OLIVES-YOGURT": {
+      "id": "MOD-OLIVES-YOGURT",
+      "name": "Ullinj Berati",
+      "icon": "🫒",
+      "price": 50,
+      "constraints": {},
+      "order": 11
+    },
+    "MOD-CORN-YOGURT": {
+      "id": "MOD-CORN-YOGURT",
+      "name": "Misër",
+      "icon": "🌽",
+      "price": 50,
+      "constraints": {},
+      "order": 6
+    },
+    "MOD-MUSHROOMS-YOGURT": {
+      "id": "MOD-MUSHROOMS-YOGURT",
+      "name": "Kërpudhë Porcini",
+      "icon": "🍄",
       "price": 50,
       "constraints": {},
       "order": 5
     },
-    "opt-oregano": {
-      "id": "opt-oregano",
-      "name": "Rigon",
-      "icon": "🌿",
-      "price": 0,
+    "MOD-ARTICHOKE-YOGURT": {
+      "id": "MOD-ARTICHOKE-YOGURT",
+      "name": "Articok",
+      "icon": "🥬",
+      "price": 50,
       "constraints": {},
-      "order": 8
+      "order": 0
     },
-    "opt-parsley": {
-      "id": "opt-parsley",
-      "name": "Majdanoz",
-      "icon": "🌿",
-      "price": 0,
+    "MOD-CAPERS-YOGURT": {
+      "id": "MOD-CAPERS-YOGURT",
+      "name": "Caperi",
+      "icon": "🫒",
+      "price": 50,
       "constraints": {},
-      "order": 7
+      "order": 1
     },
-    "opt-ajvar": {
-      "id": "opt-ajvar",
-      "name": "Ajvar",
-      "icon": "🌶️",
-      "price": 0,
+    "MOD-PICKLES-YOGURT": {
+      "id": "MOD-PICKLES-YOGURT",
+      "name": "Kastravec Turshi Mini",
+      "icon": "🥒",
+      "price": 50,
       "constraints": {},
       "order": 4
     },
-    "opt-evoo": {
-      "id": "opt-evoo",
-      "name": "Vaj Ulliri",
-      "icon": "🫒",
-      "price": 0,
+    "MOD-BEETS-YOGURT": {
+      "id": "MOD-BEETS-YOGURT",
+      "name": "Panxhar",
+      "icon": "🟣",
+      "price": 50,
+      "constraints": {},
+      "order": 7
+    },
+    "MOD-EGGPLANT-YOGURT": {
+      "id": "MOD-EGGPLANT-YOGURT",
+      "name": "Patëllxhan",
+      "icon": "🍆",
+      "price": 50,
+      "constraints": {},
+      "order": 8
+    },
+    "MOD-ROASTED-PEPPERS-YOGURT": {
+      "id": "MOD-ROASTED-PEPPERS-YOGURT",
+      "name": "Speca të Pjekur",
+      "icon": "🌶️",
+      "price": 50,
       "constraints": {},
       "order": 10
     },
-    "opt-lemon": {
-      "id": "opt-lemon",
-      "name": "Limon",
-      "icon": "🍋",
-      "price": 0,
+    "MOD-WALNUTS-YOGURT": {
+      "id": "MOD-WALNUTS-YOGURT",
+      "name": "Arra",
+      "icon": "🟫",
+      "price": 50,
       "constraints": {},
-      "order": 6
+      "order": 12
     },
-    "opt-lemon-peel": {
-      "id": "opt-lemon-peel",
-      "name": "Lëkurë Limoni",
-      "icon": "🍋",
-      "price": 0,
+    "MOD-ALMONDS-YOGURT": {
+      "id": "MOD-ALMONDS-YOGURT",
+      "name": "Bajame",
+      "icon": "🟡",
+      "price": 50,
       "constraints": {},
-      "order": 30
+      "order": 13
     },
-    "opt-flax-seeds": {
-      "id": "opt-flax-seeds",
-      "name": "Fara Liri",
-      "icon": "🌾",
-      "price": 40,
-      "constraints": {},
-      "order": 20
-    },
-    "opt-cinnamon": {
-      "id": "opt-cinnamon",
-      "name": "Kanellë",
+    "MOD-HAZELNUTS-YOGURT": {
+      "id": "MOD-HAZELNUTS-YOGURT",
+      "name": "Lajthi",
       "icon": "🟤",
-      "price": 0,
+      "price": 50,
       "constraints": {},
-      "order": 29
+      "order": 15
     },
-    "opt-chia-seeds": {
-      "id": "opt-chia-seeds",
-      "name": "Fara Chia",
-      "icon": "🌱",
-      "price": 40,
+    "MOD-MIXED-NUTS-YOGURT": {
+      "id": "MOD-MIXED-NUTS-YOGURT",
+      "name": "Miks Arrorësh",
+      "icon": "🥜",
+      "price": 50,
+      "constraints": {},
+      "order": 16
+    },
+    "MOD-PISTACHIOS-YOGURT": {
+      "id": "MOD-PISTACHIOS-YOGURT",
+      "name": "Stika",
+      "icon": "🟢",
+      "price": 100,
+      "constraints": {},
+      "order": 18
+    },
+    "MOD-PINE-NUTS-YOGURT": {
+      "id": "MOD-PINE-NUTS-YOGURT",
+      "name": "Fara Pishe",
+      "icon": "⚪",
+      "price": 100,
+      "constraints": {},
+      "order": 14
+    },
+    "MOD-ROASTED-CHICKPEAS-YOGURT": {
+      "id": "MOD-ROASTED-CHICKPEAS-YOGURT",
+      "name": "Qiqër e Pjekur",
+      "icon": "🟤",
+      "price": 50,
       "constraints": {},
       "order": 17
     },
-    "opt-matcha": {
-      "id": "opt-matcha",
-      "name": "Matcha",
-      "icon": "🍵",
+    "MOD-HEMP-SEEDS-YOGURT": {
+      "id": "MOD-HEMP-SEEDS-YOGURT",
+      "name": "Fara Kërpi",
+      "icon": "🌿",
+      "price": 30,
+      "constraints": {},
+      "order": 20
+    },
+    "MOD-FLAX-SEEDS-YOGURT": {
+      "id": "MOD-FLAX-SEEDS-YOGURT",
+      "name": "Fara Lini",
+      "icon": "🟫",
+      "price": 30,
+      "constraints": {},
+      "order": 22
+    },
+    "MOD-CHIA-SEEDS-YOGURT": {
+      "id": "MOD-CHIA-SEEDS-YOGURT",
+      "name": "Fara Chia",
+      "icon": "⚫",
+      "price": 30,
+      "constraints": {},
+      "order": 19
+    },
+    "MOD-PUMPKIN-SEEDS-YOGURT": {
+      "id": "MOD-PUMPKIN-SEEDS-YOGURT",
+      "name": "Fara Kungulli",
+      "icon": "🎃",
+      "price": 30,
+      "constraints": {},
+      "order": 21
+    },
+    "MOD-SUNFLOWER-SEEDS-YOGURT": {
+      "id": "MOD-SUNFLOWER-SEEDS-YOGURT",
+      "name": "Fara Luledielli",
+      "icon": "🌻",
+      "price": 30,
+      "constraints": {},
+      "order": 23
+    },
+    "MOD-SESAME-SEEDS-YOGURT": {
+      "id": "MOD-SESAME-SEEDS-YOGURT",
+      "name": "Fara Susami",
+      "icon": "⚪",
+      "price": 30,
+      "constraints": {},
+      "order": 24
+    },
+    "MOD-MIXED-SEEDS-YOGURT": {
+      "id": "MOD-MIXED-SEEDS-YOGURT",
+      "name": "Miks Farash",
+      "icon": "🌱",
+      "price": 30,
+      "constraints": {},
+      "order": 25
+    },
+    "MOD-FETA-CHEESE-YOGURT": {
+      "id": "MOD-FETA-CHEESE-YOGURT",
+      "name": "Djathë Dhie",
+      "icon": "🧀",
+      "price": 50,
+      "constraints": {},
+      "order": 26
+    },
+    "MOD-GOUDA-CHEESE-YOGURT": {
+      "id": "MOD-GOUDA-CHEESE-YOGURT",
+      "name": "Djathë Gouda",
+      "icon": "🧀",
       "price": 50,
       "constraints": {},
       "order": 27
     },
-    "opt-oat": {
-      "id": "opt-oat",
-      "name": "Tërshërë",
-      "icon": "🌾",
-      "price": 30,
+    "MOD-PEANUT-BUTTER-YOGURT": {
+      "id": "MOD-PEANUT-BUTTER-YOGURT",
+      "name": "Gjalpë Kikiriku",
+      "icon": "🥜",
+      "price": 100,
+      "constraints": {},
+      "order": 30
+    },
+    "MOD-ALMOND-BUTTER-YOGURT": {
+      "id": "MOD-ALMOND-BUTTER-YOGURT",
+      "name": "Gjalpë Bajame",
+      "icon": "🟨",
+      "price": 100,
+      "constraints": {},
+      "order": 28
+    },
+    "MOD-CASHEW-BUTTER-YOGURT": {
+      "id": "MOD-CASHEW-BUTTER-YOGURT",
+      "name": "Gjalpë Kasie",
+      "icon": "🟫",
+      "price": 100,
+      "constraints": {},
+      "order": 29
+    },
+    "MOD-HAZELNUT-BUTTER-YOGURT": {
+      "id": "MOD-HAZELNUT-BUTTER-YOGURT",
+      "name": "Gjalpë Lajthie",
+      "icon": "🌰",
+      "price": 100,
       "constraints": {},
       "order": 31
+    },
+    "MOD-PISTACHIO-BUTTER-YOGURT": {
+      "id": "MOD-PISTACHIO-BUTTER-YOGURT",
+      "name": "Gjalpë Stike",
+      "icon": "🟢",
+      "price": 200,
+      "constraints": {},
+      "order": 32
+    },
+    "MOD-TAHINI-YOGURT": {
+      "id": "MOD-TAHINI-YOGURT",
+      "name": "Tahini",
+      "icon": "🥄",
+      "price": 100,
+      "constraints": {},
+      "order": 34
+    },
+    "MOD-HUMMUS-YOGURT": {
+      "id": "MOD-HUMMUS-YOGURT",
+      "name": "Hummus",
+      "icon": "🥙",
+      "price": 100,
+      "constraints": {},
+      "order": 33
+    },
+    "MOD-AJVAR-YOGURT": {
+      "id": "MOD-AJVAR-YOGURT",
+      "name": "Ajvar Speci",
+      "icon": "🌶️",
+      "price": 50,
+      "constraints": {},
+      "order": 35
+    },
+    "MOD-PESTO-YOGURT": {
+      "id": "MOD-PESTO-YOGURT",
+      "name": "Pesto Borziloku",
+      "icon": "🌿",
+      "price": 50,
+      "constraints": {},
+      "order": 38
+    },
+    "MOD-HOT-SAUCE-YOGURT": {
+      "id": "MOD-HOT-SAUCE-YOGURT",
+      "name": "Salcë Cayenne/Jalapeño",
+      "icon": "🌶️",
+      "price": 50,
+      "constraints": {},
+      "order": 39
+    },
+    "MOD-OLIVE-PATE-YOGURT": {
+      "id": "MOD-OLIVE-PATE-YOGURT",
+      "name": "Patë Ulliri",
+      "icon": "🫒",
+      "price": 50,
+      "constraints": {},
+      "order": 37
+    },
+    "MOD-TRUFFLE-SAUCE-YOGURT": {
+      "id": "MOD-TRUFFLE-SAUCE-YOGURT",
+      "name": "Salcë Tartufi",
+      "icon": "🍄",
+      "price": 100,
+      "constraints": {},
+      "order": 40
+    },
+    "MOD-OLIVE-OIL-YOGURT": {
+      "id": "MOD-OLIVE-OIL-YOGURT",
+      "name": "Vaj Ulliri EV",
+      "icon": "🫒",
+      "price": 0,
+      "constraints": {},
+      "order": 41
+    },
+    "MOD-LEMON-JUICE-YOGURT": {
+      "id": "MOD-LEMON-JUICE-YOGURT",
+      "name": "Lëng Limoni",
+      "icon": "🍋",
+      "price": 0,
+      "constraints": {},
+      "order": 36
+    },
+    "MOD-GARLIC-YOGURT": {
+      "id": "MOD-GARLIC-YOGURT",
+      "name": "Hudhër e Bluar",
+      "icon": "🧄",
+      "price": 0,
+      "constraints": {},
+      "order": 42
+    },
+    "MOD-DILL-YOGURT": {
+      "id": "MOD-DILL-YOGURT",
+      "name": "Kopër",
+      "icon": "🌿",
+      "price": 0,
+      "constraints": {},
+      "order": 44
+    },
+    "MOD-PARSLEY-YOGURT": {
+      "id": "MOD-PARSLEY-YOGURT",
+      "name": "Majdanoz",
+      "icon": "🌿",
+      "price": 0,
+      "constraints": {},
+      "order": 47
+    },
+    "MOD-MINT-YOGURT": {
+      "id": "MOD-MINT-YOGURT",
+      "name": "Mente",
+      "icon": "🌿",
+      "price": 0,
+      "constraints": {},
+      "order": 49
+    },
+    "MOD-OREGANO-YOGURT": {
+      "id": "MOD-OREGANO-YOGURT",
+      "name": "Rigon",
+      "icon": "🌿",
+      "price": 0,
+      "constraints": {},
+      "order": 52
+    },
+    "MOD-ZAATAR-YOGURT": {
+      "id": "MOD-ZAATAR-YOGURT",
+      "name": "Zaatar",
+      "icon": "🌿",
+      "price": 0,
+      "constraints": {},
+      "order": 53
+    },
+    "MOD-PAPRIKA-YOGURT": {
+      "id": "MOD-PAPRIKA-YOGURT",
+      "name": "Paprika",
+      "icon": "🌶️",
+      "price": 0,
+      "constraints": {},
+      "order": 50
+    },
+    "MOD-BLACK-PEPPER-YOGURT": {
+      "id": "MOD-BLACK-PEPPER-YOGURT",
+      "name": "Piper i Zi Kokërr",
+      "icon": "⚫",
+      "price": 0,
+      "constraints": {},
+      "order": 51
+    },
+    "MOD-HIMALAYAN-SALT-YOGURT": {
+      "id": "MOD-HIMALAYAN-SALT-YOGURT",
+      "name": "Kripë Himalaje",
+      "icon": "🧂",
+      "price": 0,
+      "constraints": {},
+      "order": 45
+    },
+    "MOD-CINNAMON-YOGURT": {
+      "id": "MOD-CINNAMON-YOGURT",
+      "name": "Kanellë",
+      "icon": "🟰",
+      "price": 0,
+      "constraints": {},
+      "order": 43
+    },
+    "MOD-LEMON-PEEL-YOGURT": {
+      "id": "MOD-LEMON-PEEL-YOGURT",
+      "name": "Lëkurë Limoni",
+      "icon": "🍋",
+      "price": 0,
+      "constraints": {},
+      "order": 46
+    },
+    "MOD-MATCHA-YOGURT": {
+      "id": "MOD-MATCHA-YOGURT",
+      "name": "Matcha Pluhur",
+      "icon": "🍵",
+      "price": 50,
+      "constraints": {},
+      "order": 48
     }
   },
   "itemGroups": {
@@ -266,72 +442,100 @@
       "name": "Të Përfshira",
       "itemIds": []
     },
-    "group-nuts": {
-      "id": "group-nuts",
-      "name": "Arra",
-      "itemIds": [
-        "opt-walnuts",
-        "opt-mixed-nuts",
-        "opt-almonds",
-        "opt-pistachios",
-        "opt-hazelnuts",
-        "opt-pine-nut"
-      ]
-    },
-    "group-seeds": {
-      "id": "group-seeds",
-      "name": "Fara",
-      "itemIds": [
-        "opt-chia-seeds",
-        "opt-hemp-seeds",
-        "opt-pumpkin-seeds",
-        "opt-flax-seeds",
-        "opt-sunflower-seeds",
-        "opt-mixed-seeds"
-      ]
-    },
-    "group-premium": {
-      "id": "group-premium",
-      "name": "Premium",
-      "itemIds": [
-        "opt-pineapple",
-        "opt-avocado",
-        "opt-dark-chocolate",
-        "opt-mango",
-        "opt-matcha"
-      ]
-    },
-    "group-vegetables": {
-      "id": "group-vegetables",
+    "vegetables": {
+      "id": "vegetables",
       "name": "Perime",
       "itemIds": [
-        "opt-dried-tomatoes",
-        "opt-cucumber",
-        "opt-corn",
-        "opt-pomadorini"
+        "MOD-ARTICHOKE-YOGURT",
+        "MOD-CAPERS-YOGURT",
+        "MOD-SUNDRIED-TOMATOES-YOGURT",
+        "MOD-CUCUMBER-YOGURT",
+        "MOD-PICKLES-YOGURT",
+        "MOD-MUSHROOMS-YOGURT",
+        "MOD-CORN-YOGURT",
+        "MOD-BEETS-YOGURT",
+        "MOD-EGGPLANT-YOGURT",
+        "MOD-CHERRY-TOMATOES-YOGURT",
+        "MOD-ROASTED-PEPPERS-YOGURT",
+        "MOD-OLIVES-YOGURT"
       ]
     },
-    "group-savory": {
-      "id": "group-savory",
-      "name": "Të Kripura",
+    "nuts": {
+      "id": "nuts",
+      "name": "Arrorë",
       "itemIds": [
-        "opt-ajvar",
-        "opt-feta-cheese",
-        "opt-lemon",
-        "opt-parsley",
-        "opt-oregano",
-        "opt-olives",
-        "opt-evoo"
+        "MOD-WALNUTS-YOGURT",
+        "MOD-ALMONDS-YOGURT",
+        "MOD-PINE-NUTS-YOGURT",
+        "MOD-HAZELNUTS-YOGURT",
+        "MOD-MIXED-NUTS-YOGURT",
+        "MOD-ROASTED-CHICKPEAS-YOGURT",
+        "MOD-PISTACHIOS-YOGURT"
       ]
     },
-    "group-extras": {
-      "id": "group-extras",
-      "name": "Ekstra",
+    "seeds": {
+      "id": "seeds",
+      "name": "Fara",
       "itemIds": [
-        "opt-granola",
-        "opt-cinnamon",
-        "opt-lemon-peel",
-        "opt-oat"
+        "MOD-CHIA-SEEDS-YOGURT",
+        "MOD-HEMP-SEEDS-YOGURT",
+        "MOD-PUMPKIN-SEEDS-YOGURT",
+        "MOD-FLAX-SEEDS-YOGURT",
+        "MOD-SUNFLOWER-SEEDS-YOGURT",
+        "MOD-SESAME-SEEDS-YOGURT",
+        "MOD-MIXED-SEEDS-YOGURT"
+      ]
+    },
+    "cheese": {
+      "id": "cheese",
+      "name": "Djathë",
+      "itemIds": [
+        "MOD-FETA-CHEESE-YOGURT",
+        "MOD-GOUDA-CHEESE-YOGURT"
+      ]
+    },
+    "nut-butters": {
+      "id": "nut-butters",
+      "name": "Gjalpë Arrorësh",
+      "itemIds": [
+        "MOD-ALMOND-BUTTER-YOGURT",
+        "MOD-CASHEW-BUTTER-YOGURT",
+        "MOD-PEANUT-BUTTER-YOGURT",
+        "MOD-HAZELNUT-BUTTER-YOGURT",
+        "MOD-PISTACHIO-BUTTER-YOGURT",
+        "MOD-HUMMUS-YOGURT",
+        "MOD-TAHINI-YOGURT"
+      ]
+    },
+    "sauces": {
+      "id": "sauces",
+      "name": "Salca & Dresing",
+      "itemIds": [
+        "MOD-AJVAR-YOGURT",
+        "MOD-LEMON-JUICE-YOGURT",
+        "MOD-OLIVE-PATE-YOGURT",
+        "MOD-PESTO-YOGURT",
+        "MOD-HOT-SAUCE-YOGURT",
+        "MOD-TRUFFLE-SAUCE-YOGURT",
+        "MOD-OLIVE-OIL-YOGURT"
+      ]
+    },
+    "herbs": {
+      "id": "herbs",
+      "name": "Erëza & Barishte",
+      "itemIds": [
+        "MOD-GARLIC-YOGURT",
+        "MOD-CINNAMON-YOGURT",
+        "MOD-DILL-YOGURT",
+        "MOD-HIMALAYAN-SALT-YOGURT",
+        "MOD-LEMON-PEEL-YOGURT",
+        "MOD-PARSLEY-YOGURT",
+        "MOD-MATCHA-YOGURT",
+        "MOD-MINT-YOGURT",
+        "MOD-PAPRIKA-YOGURT",
+        "MOD-BLACK-PEPPER-YOGURT",
+        "MOD-OREGANO-YOGURT",
+        "MOD-ZAATAR-YOGURT"
       ]
     }
   },
@@ -342,28 +546,33 @@
     },
     {
       "type": "item-group",
-      "data": "group-vegetables"
+      "data": "vegetables"
     },
     {
       "type": "item-group",
-      "data": "group-savory"
+      "data": "nuts"
     },
     {
       "type": "item-group",
-      "data": "group-nuts"
+      "data": "seeds"
     },
     {
       "type": "item-group",
-      "data": "group-seeds"
+      "data": "cheese"
     },
     {
       "type": "item-group",
-      "data": "group-premium"
+      "data": "nut-butters"
     },
     {
       "type": "item-group",
-      "data": "group-extras"
+      "data": "sauces"
+    },
+    {
+      "type": "item-group",
+      "data": "herbs"
     }
   ],
+  "choices": {},
   "modifierMenu": true
 }

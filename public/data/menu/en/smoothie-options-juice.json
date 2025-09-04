@@ -3,403 +3,200 @@
   "name": "Smoothie Options",
   "currency": "ALL",
   "items": {
-    "opt-orange-juice": {
-      "id": "opt-orange-juice",
+    "MOD-ORANGE-SMOOTHIE": {
+      "id": "MOD-ORANGE-SMOOTHIE",
       "name": "Orange Juice",
+      "description": "Add 200G",
       "icon": "🍊",
       "price": 0,
       "constraints": {
-        "choiceId": "juice-choice"
+        "choiceId": "base-choice"
       },
       "order": 1
     },
-    "opt-apple-juice": {
-      "id": "opt-apple-juice",
+    "MOD-APPLE-SMOOTHIE": {
+      "id": "MOD-APPLE-SMOOTHIE",
       "name": "Apple Juice",
+      "description": "Add 200G",
       "icon": "🍎",
       "price": 0,
       "constraints": {
-        "choiceId": "juice-choice"
+        "choiceId": "base-choice"
       },
       "order": 0
     },
-    "opt-pineapple-juice": {
-      "id": "opt-pineapple-juice",
-      "name": "Pineapple Juice",
-      "icon": "🍍",
-      "price": 0,
-      "constraints": {
-        "choiceId": "juice-choice"
-      },
-      "order": 2
-    },
-    "opt-banana": {
-      "id": "opt-banana",
+    "MOD-BANANA-SMOOTHIE": {
+      "id": "MOD-BANANA-SMOOTHIE",
       "name": "Banana",
+      "description": "Add 180G",
       "icon": "🍌",
-      "price": 40,
+      "price": 70,
       "constraints": {},
       "order": 3
     },
-    "opt-blueberries": {
-      "id": "opt-blueberries",
-      "name": "Blueberries",
+    "MOD-BERRIES-SMOOTHIE": {
+      "id": "MOD-BERRIES-SMOOTHIE",
+      "name": "Wild Berries",
+      "description": "Add 15G",
       "icon": "🫐",
-      "price": 40,
-      "constraints": {},
-      "order": 5
-    },
-    "opt-kiwi": {
-      "id": "opt-kiwi",
-      "name": "Kiwi",
-      "icon": "🥝",
-      "price": 40,
-      "constraints": {},
-      "order": 6
-    },
-    "opt-mixed-berries": {
-      "id": "opt-mixed-berries",
-      "name": "Mixed Berries",
-      "icon": "🫐",
-      "price": 40,
-      "constraints": {},
-      "order": 7
-    },
-    "opt-strawberries": {
-      "id": "opt-strawberries",
-      "name": "Strawberries",
-      "icon": "🍓",
-      "price": 40,
-      "constraints": {},
-      "order": 9
-    },
-    "opt-raspberries": {
-      "id": "opt-raspberries",
-      "name": "Raspberries",
-      "icon": "🔴",
-      "price": 40,
-      "constraints": {},
-      "order": 8
-    },
-    "opt-blackberries": {
-      "id": "opt-blackberries",
-      "name": "Blackberries",
-      "icon": "🟣",
-      "price": 40,
-      "constraints": {},
-      "order": 4
-    },
-    "opt-walnuts": {
-      "id": "opt-walnuts",
-      "name": "Walnuts",
-      "icon": "🟫",
-      "price": 40,
-      "constraints": {},
-      "order": 15
-    },
-    "opt-almonds": {
-      "id": "opt-almonds",
-      "name": "Almonds",
-      "icon": "🟡",
-      "price": 40,
-      "constraints": {},
-      "order": 10
-    },
-    "opt-hazelnuts": {
-      "id": "opt-hazelnuts",
-      "name": "Hazelnuts",
-      "icon": "🟤",
-      "price": 40,
+      "price": 70,
       "constraints": {},
       "order": 11
     },
-    "opt-mixed-nuts": {
-      "id": "opt-mixed-nuts",
-      "name": "Mixed Nuts",
-      "icon": "🥜",
-      "price": 40,
+    "MOD-STRAWBERRY-SMOOTHIE": {
+      "id": "MOD-STRAWBERRY-SMOOTHIE",
+      "name": "Strawberry",
+      "description": "Add 15G",
+      "icon": "🍓",
+      "price": 70,
+      "constraints": {},
+      "order": 10
+    },
+    "MOD-RASPBERRY-SMOOTHIE": {
+      "id": "MOD-RASPBERRY-SMOOTHIE",
+      "name": "Raspberry",
+      "description": "Add 15G",
+      "icon": "🔴",
+      "price": 70,
+      "constraints": {},
+      "order": 9
+    },
+    "MOD-BLACKBERRY-SMOOTHIE": {
+      "id": "MOD-BLACKBERRY-SMOOTHIE",
+      "name": "Blackberry",
+      "description": "Add 15G",
+      "icon": "🟣",
+      "price": 70,
+      "constraints": {},
+      "order": 4
+    },
+    "MOD-MANGO-SMOOTHIE": {
+      "id": "MOD-MANGO-SMOOTHIE",
+      "name": "Mango",
+      "description": "Add 70G",
+      "icon": "🥭",
+      "price": 70,
+      "constraints": {},
+      "order": 7
+    },
+    "MOD-KIWI-SMOOTHIE": {
+      "id": "MOD-KIWI-SMOOTHIE",
+      "name": "Kiwi",
+      "description": "Add 70G",
+      "icon": "🥝",
+      "price": 70,
+      "constraints": {},
+      "order": 6
+    },
+    "MOD-GOJI-SMOOTHIE": {
+      "id": "MOD-GOJI-SMOOTHIE",
+      "name": "Goji Berry",
+      "description": "Add 5G",
+      "icon": "❤️",
+      "price": 70,
+      "constraints": {},
+      "order": 5
+    },
+    "MOD-AVOCADO-SMOOTHIE": {
+      "id": "MOD-AVOCADO-SMOOTHIE",
+      "name": "Avocado",
+      "description": "Add 70G",
+      "icon": "🥑",
+      "price": 70,
       "constraints": {},
       "order": 12
     },
-    "opt-pistachios": {
-      "id": "opt-pistachios",
-      "name": "Pistachios",
-      "icon": "🟢",
-      "price": 40,
+    "MOD-SPINACH-SMOOTHIE": {
+      "id": "MOD-SPINACH-SMOOTHIE",
+      "name": "Spinach",
+      "description": "Add 15G",
+      "icon": "🥬",
+      "price": 70,
+      "constraints": {},
+      "order": 15
+    },
+    "MOD-KALE-SMOOTHIE": {
+      "id": "MOD-KALE-SMOOTHIE",
+      "name": "Kale",
+      "description": "Add 15G",
+      "icon": "🥬",
+      "price": 70,
       "constraints": {},
       "order": 14
     },
-    "opt-pine-nut": {
-      "id": "opt-pine-nut",
-      "name": "Pine Nut",
-      "icon": "⚪",
-      "price": 40,
+    "MOD-LETTUCE-SMOOTHIE": {
+      "id": "MOD-LETTUCE-SMOOTHIE",
+      "name": "Farm Lettuce",
+      "description": "Add 15G",
+      "icon": "🥬",
+      "price": 70,
       "constraints": {},
       "order": 13
     },
-    "opt-mixed-seeds": {
-      "id": "opt-mixed-seeds",
-      "name": "Mixed Seeds",
-      "icon": "🌱",
-      "price": 50,
+    "MOD-GRANOLA-SMOOTHIE": {
+      "id": "MOD-GRANOLA-SMOOTHIE",
+      "name": "Granola",
+      "description": "Add 30G",
+      "icon": "🥣",
+      "price": 70,
       "constraints": {},
-      "order": 19
+      "order": 18
     },
-    "opt-sunflower-seeds": {
-      "id": "opt-sunflower-seeds",
-      "name": "Sunflower Seeds",
-      "icon": "🌻",
-      "price": 50,
+    "MOD-GINGER-SMOOTHIE": {
+      "id": "MOD-GINGER-SMOOTHIE",
+      "name": "Ginger",
+      "description": "Add 10G",
+      "icon": "🫚",
+      "price": 70,
       "constraints": {},
-      "order": 21
+      "order": 17
     },
-    "opt-pumpkin-seeds": {
-      "id": "opt-pumpkin-seeds",
-      "name": "Pumpkin Seeds",
-      "icon": "🎃",
+    "MOD-PINEAPPLE-SMOOTHIE-ADDON": {
+      "id": "MOD-PINEAPPLE-SMOOTHIE-ADDON",
+      "name": "Pineapple",
+      "description": "Add 70G",
+      "icon": "🍍",
+      "price": 70,
+      "constraints": {},
+      "order": 8
+    },
+    "MOD-PINEAPPLE-SMOOTHIE-BASE": {
+      "id": "MOD-PINEAPPLE-SMOOTHIE-BASE",
+      "name": "Pineapple Juice",
+      "description": "Add 150G",
+      "icon": "🍍",
+      "price": 0,
+      "constraints": {
+        "choiceId": "base-choice"
+      },
+      "order": 2
+    },
+    "MOD-CINNAMON-SMOOTHIE": {
+      "id": "MOD-CINNAMON-SMOOTHIE",
+      "name": "Cinnamon",
+      "description": "Add 3G",
+      "icon": "🟰",
+      "price": 40,
+      "constraints": {},
+      "order": 16
+    },
+    "MOD-OAT-SMOOTHIE": {
+      "id": "MOD-OAT-SMOOTHIE",
+      "name": "Oat Flakes",
+      "description": "Add 30G",
+      "icon": "🌾",
       "price": 50,
       "constraints": {},
       "order": 20
     },
-    "opt-flax-seeds": {
-      "id": "opt-flax-seeds",
-      "name": "Flax Seeds",
-      "icon": "🟫",
-      "price": 50,
-      "constraints": {},
-      "order": 17
-    },
-    "opt-chia-seeds": {
-      "id": "opt-chia-seeds",
-      "name": "Chia Seeds",
-      "icon": "⚫",
-      "price": 50,
-      "constraints": {},
-      "order": 16
-    },
-    "opt-hemp-seeds": {
-      "id": "opt-hemp-seeds",
-      "name": "Hemp Seeds",
-      "icon": "🌿",
-      "price": 50,
-      "constraints": {},
-      "order": 18
-    },
-    "opt-coconut": {
-      "id": "opt-coconut",
-      "name": "Coconut",
-      "icon": "🥥",
-      "price": 40,
-      "constraints": {},
-      "order": 22
-    },
-    "opt-cranberries": {
-      "id": "opt-cranberries",
-      "name": "Cranberries",
-      "icon": "🩷",
-      "price": 40,
-      "constraints": {},
-      "order": 23
-    },
-    "opt-dates": {
-      "id": "opt-dates",
-      "name": "Dates",
-      "icon": "🟠",
-      "price": 40,
-      "constraints": {},
-      "order": 24
-    },
-    "opt-dried-apricots": {
-      "id": "opt-dried-apricots",
-      "name": "Dried Apricots",
-      "icon": "🟠",
-      "price": 40,
-      "constraints": {},
-      "order": 25
-    },
-    "opt-raisins": {
-      "id": "opt-raisins",
-      "name": "Raisins",
-      "icon": "🍇",
-      "price": 40,
-      "constraints": {},
-      "order": 26
-    },
-    "opt-sweet-spoon": {
-      "id": "opt-sweet-spoon",
-      "name": "Sweet Spoon",
-      "icon": "🍬",
-      "price": 30,
-      "constraints": {},
-      "order": 30
-    },
-    "opt-wildflower-honey": {
-      "id": "opt-wildflower-honey",
-      "name": "Wildflower Honey",
-      "icon": "🍯",
-      "price": 30,
-      "constraints": {},
-      "order": 31
-    },
-    "opt-jam": {
-      "id": "opt-jam",
-      "name": "Jam",
-      "icon": "🍓",
-      "price": 30,
-      "constraints": {},
-      "order": 29
-    },
-    "opt-date-syrup": {
-      "id": "opt-date-syrup",
-      "name": "Date Syrup",
-      "icon": "🍯",
-      "price": 30,
-      "constraints": {},
-      "order": 28
-    },
-    "opt-choco-spoon": {
-      "id": "opt-choco-spoon",
-      "name": "Choco Spoon",
-      "icon": "🍫",
-      "price": 30,
-      "constraints": {},
-      "order": 27
-    },
-    "opt-pineapple": {
-      "id": "opt-pineapple",
-      "name": "Pineapple",
-      "icon": "🍍",
-      "price": 50,
-      "constraints": {},
-      "order": 36
-    },
-    "opt-avocado": {
-      "id": "opt-avocado",
-      "name": "Avocado",
-      "icon": "🥑",
-      "price": 50,
-      "constraints": {},
-      "order": 32
-    },
-    "opt-mango": {
-      "id": "opt-mango",
-      "name": "Mango",
-      "icon": "🥭",
-      "price": 50,
-      "constraints": {},
-      "order": 34
-    },
-    "opt-dark-chocolate": {
-      "id": "opt-dark-chocolate",
-      "name": "Dark Chocolate",
-      "icon": "🍫",
-      "price": 50,
-      "constraints": {},
-      "order": 33
-    },
-    "opt-matcha": {
-      "id": "opt-matcha",
-      "name": "Matcha",
-      "icon": "🍵",
-      "price": 50,
-      "constraints": {},
-      "order": 35
-    },
-    "opt-peanut-butter": {
-      "id": "opt-peanut-butter",
-      "name": "Peanut Butter",
-      "icon": "🥜",
-      "price": 50,
-      "constraints": {},
-      "order": 38
-    },
-    "opt-almond-butter": {
-      "id": "opt-almond-butter",
-      "name": "Almond Butter",
-      "icon": "🟨",
-      "price": 50,
-      "constraints": {},
-      "order": 37
-    },
-    "opt-walnut-butter": {
-      "id": "opt-walnut-butter",
-      "name": "Walnut Butter",
-      "icon": "🌰",
-      "price": 50,
-      "constraints": {},
-      "order": 39
-    },
-    "opt-wild-strawberry": {
-      "id": "opt-wild-strawberry",
-      "name": "Wild Strawberry",
-      "icon": "🍓",
-      "price": 60,
-      "constraints": {},
-      "order": 43
-    },
-    "opt-goji-berry": {
-      "id": "opt-goji-berry",
-      "name": "Goji Berry",
-      "icon": "❤️",
-      "price": 60,
-      "constraints": {},
-      "order": 41
-    },
-    "opt-bee-pollen": {
-      "id": "opt-bee-pollen",
-      "name": "Bee Pollen",
-      "icon": "🐝",
-      "price": 60,
-      "constraints": {},
-      "order": 40
-    },
-    "opt-whey-protein": {
-      "id": "opt-whey-protein",
-      "name": "Whey Protein",
-      "icon": "💪",
-      "price": 60,
-      "constraints": {},
-      "order": 42
-    },
-    "opt-cinnamon": {
-      "id": "opt-cinnamon",
-      "name": "Cinnamon",
-      "icon": "🟰",
-      "price": 40,
-      "constraints": {},
-      "order": 44
-    },
-    "opt-oat": {
-      "id": "opt-oat",
-      "name": "Oat",
-      "icon": "🌾",
-      "price": 40,
-      "constraints": {},
-      "order": 47
-    },
-    "opt-lemon-peel": {
-      "id": "opt-lemon-peel",
+    "MOD-LEMON-PEEL-SMOOTHIE": {
+      "id": "MOD-LEMON-PEEL-SMOOTHIE",
       "name": "Lemon Peel",
+      "description": "Add 3G",
       "icon": "🍋",
       "price": 40,
       "constraints": {},
-      "order": 46
-    },
-    "opt-granola": {
-      "id": "opt-granola",
-      "name": "Granola",
-      "icon": "🥣",
-      "price": 40,
-      "constraints": {},
-      "order": 45
-    },
-    "opt-spinach": {
-      "id": "opt-spinach",
-      "name": "Spinach",
-      "icon": "🥬",
-      "price": 40,
-      "constraints": {},
-      "order": 48
+      "order": 19
     }
   },
   "itemGroups": {
@@ -408,113 +205,49 @@
       "name": "Included",
       "itemIds": []
     },
-    "group-juice-base": {
-      "id": "group-juice-base",
-      "name": "Choose Base",
+    "base-juice": {
+      "id": "base-juice",
+      "name": "Juice Base",
       "itemIds": [
-        "opt-apple-juice",
-        "opt-orange-juice",
-        "opt-pineapple-juice"
+        "MOD-APPLE-SMOOTHIE",
+        "MOD-ORANGE-SMOOTHIE",
+        "MOD-PINEAPPLE-SMOOTHIE-BASE"
       ]
     },
-    "group-fruits": {
-      "id": "group-fruits",
+    "fruits": {
+      "id": "fruits",
       "name": "Fruits",
       "itemIds": [
-        "opt-banana",
-        "opt-blackberries",
-        "opt-blueberries",
-        "opt-kiwi",
-        "opt-mixed-berries",
-        "opt-raspberries",
-        "opt-strawberries"
+        "MOD-BANANA-SMOOTHIE",
+        "MOD-BLACKBERRY-SMOOTHIE",
+        "MOD-GOJI-SMOOTHIE",
+        "MOD-KIWI-SMOOTHIE",
+        "MOD-MANGO-SMOOTHIE",
+        "MOD-PINEAPPLE-SMOOTHIE-ADDON",
+        "MOD-RASPBERRY-SMOOTHIE",
+        "MOD-STRAWBERRY-SMOOTHIE",
+        "MOD-BERRIES-SMOOTHIE"
       ]
     },
-    "group-nuts": {
-      "id": "group-nuts",
-      "name": "Nuts",
+    "vegetables": {
+      "id": "vegetables",
+      "name": "Vegetables",
       "itemIds": [
-        "opt-almonds",
-        "opt-hazelnuts",
-        "opt-mixed-nuts",
-        "opt-pine-nut",
-        "opt-pistachios",
-        "opt-walnuts"
+        "MOD-AVOCADO-SMOOTHIE",
+        "MOD-LETTUCE-SMOOTHIE",
+        "MOD-KALE-SMOOTHIE",
+        "MOD-SPINACH-SMOOTHIE"
       ]
     },
-    "group-seeds": {
-      "id": "group-seeds",
-      "name": "Seeds",
-      "itemIds": [
-        "opt-chia-seeds",
-        "opt-flax-seeds",
-        "opt-hemp-seeds",
-        "opt-mixed-seeds",
-        "opt-pumpkin-seeds",
-        "opt-sunflower-seeds"
-      ]
-    },
-    "group-dried-fruits": {
-      "id": "group-dried-fruits",
-      "name": "Dried Fruits",
-      "itemIds": [
-        "opt-coconut",
-        "opt-cranberries",
-        "opt-dates",
-        "opt-dried-apricots",
-        "opt-raisins"
-      ]
-    },
-    "group-sweets": {
-      "id": "group-sweets",
-      "name": "Sweets",
-      "itemIds": [
-        "opt-choco-spoon",
-        "opt-date-syrup",
-        "opt-jam",
-        "opt-sweet-spoon",
-        "opt-wildflower-honey"
-      ]
-    },
-    "group-premium": {
-      "id": "group-premium",
-      "name": "Premium",
-      "itemIds": [
-        "opt-avocado",
-        "opt-dark-chocolate",
-        "opt-mango",
-        "opt-matcha",
-        "opt-pineapple"
-      ]
-    },
-    "group-nut-butter": {
-      "id": "group-nut-butter",
-      "name": "Nut Butter",
-      "itemIds": [
-        "opt-almond-butter",
-        "opt-peanut-butter",
-        "opt-walnut-butter"
-      ]
-    },
-    "group-superfoods": {
-      "id": "group-superfoods",
-      "name": "Superfoods",
-      "itemIds": [
-        "opt-bee-pollen",
-        "opt-goji-berry",
-        "opt-whey-protein",
-        "opt-wild-strawberry"
-      ]
-    },
-    "group-extras": {
-      "id": "group-extras",
+    "extras": {
+      "id": "extras",
       "name": "Extras",
       "itemIds": [
-        "opt-cinnamon",
-        "opt-granola",
-        "opt-lemon-peel",
-        "opt-oat",
-        "opt-spinach"
+        "MOD-CINNAMON-SMOOTHIE",
+        "MOD-GINGER-SMOOTHIE",
+        "MOD-GRANOLA-SMOOTHIE",
+        "MOD-LEMON-PEEL-SMOOTHIE",
+        "MOD-OAT-SMOOTHIE"
       ]
     }
   },
@@ -525,53 +258,24 @@
     },
     {
       "type": "item-group",
-      "data": "group-juice-base"
+      "data": "base-juice"
     },
     {
       "type": "item-group",
-      "data": "group-fruits"
+      "data": "fruits"
     },
     {
       "type": "item-group",
-      "data": "group-nuts"
+      "data": "vegetables"
     },
     {
       "type": "item-group",
-      "data": "group-seeds"
-    },
-    {
-      "type": "item-group",
-      "data": "group-dried-fruits"
-    },
-    {
-      "type": "item-group",
-      "data": "group-sweets"
-    },
-    {
-      "type": "item-group",
-      "data": "group-premium"
-    },
-    {
-      "type": "item-group",
-      "data": "group-nut-butter"
-    },
-    {
-      "type": "item-group",
-      "data": "group-superfoods"
-    },
-    {
-      "type": "item-group",
-      "data": "group-extras"
+      "data": "extras"
     }
   ],
   "choices": {
-    "milk-choice": {
-      "id": "milk-choice",
-      "min": 1,
-      "max": 1
-    },
-    "juice-choice": {
-      "id": "juice-choice",
+    "base-choice": {
+      "id": "base-choice",
       "min": 1,
       "max": 1
     }

@@ -3,512 +3,360 @@
   "name": "Menu Çaji",
   "currency": "ALL",
   "items": {
-    "chamomile": {
-      "id": "chamomile",
-      "name": "Kamomil",
-      "description": "Qetësues dhe relaksues",
-      "icon": "☕",
-      "price": 150,
+    "ITEM-TEA-BILBERRY": {
+      "id": "ITEM-TEA-BILBERRY",
+      "name": "Boronicë e Egër",
+      "description": "I pasur me antioksidantë",
+      "icon": "🫐",
+      "price": 200,
       "constraints": {},
-      "subMenu": {
-        "menuId": "tea-options",
-        "included": [
-          {
-            "itemId": "opt-chamomile",
-            "display": "none"
-          }
-        ]
-      },
       "order": 0
     },
-    "linden-flower": {
-      "id": "linden-flower",
-      "name": "Lule Bliri",
-      "description": "I butë dhe aromatik",
-      "icon": "☕",
-      "price": 150,
-      "constraints": {},
-      "subMenu": {
-        "menuId": "tea-options",
-        "included": [
-          {
-            "itemId": "opt-linden-flower",
-            "display": "none"
-          }
-        ]
-      },
-      "order": 1
-    },
-    "ginger-tea": {
-      "id": "ginger-tea",
-      "name": "Xhinxher",
-      "description": "Pikant dhe ngrohës",
-      "icon": "☕",
-      "price": 150,
-      "constraints": {},
-      "subMenu": {
-        "menuId": "tea-options",
-        "included": [
-          {
-            "itemId": "opt-ginger",
-            "display": "none"
-          }
-        ]
-      },
-      "order": 6
-    },
-    "bilberry": {
-      "id": "bilberry",
-      "name": "Boronica",
-      "description": "I pasur me antioksidantë",
-      "icon": "☕",
-      "price": 170,
-      "constraints": {},
-      "subMenu": {
-        "menuId": "tea-options",
-        "included": [
-          {
-            "itemId": "opt-bilberry",
-            "display": "none"
-          }
-        ]
-      },
-      "order": 7
-    },
-    "berries": {
-      "id": "berries",
-      "name": "Fruta Pylli",
-      "description": "Përzierje frutore",
-      "icon": "☕",
-      "price": 170,
-      "constraints": {},
-      "subMenu": {
-        "menuId": "tea-options",
-        "included": [
-          {
-            "itemId": "opt-berries",
-            "display": "none"
-          }
-        ]
-      },
-      "order": 8
-    },
-    "lemon": {
-      "id": "lemon",
-      "name": "Limon",
-      "description": "I gjallë dhe vitamin C",
-      "icon": "☕",
-      "price": 170,
-      "constraints": {},
-      "subMenu": {
-        "menuId": "tea-options",
-        "included": [
-          {
-            "itemId": "opt-lemon",
-            "display": "none"
-          }
-        ]
-      },
-      "order": 11
-    },
-    "rose-hip": {
-      "id": "rose-hip",
-      "name": "Fruta e Trëndafilit",
-      "description": "Delikat dhe floral",
-      "icon": "☕",
-      "price": 170,
-      "constraints": {},
-      "subMenu": {
-        "menuId": "tea-options",
-        "included": [
-          {
-            "itemId": "opt-rose-hip",
-            "display": "none"
-          }
-        ]
-      },
-      "order": 12
-    },
-    "black-tea": {
-      "id": "black-tea",
+    "ITEM-TEA-BLACK": {
+      "id": "ITEM-TEA-BLACK",
       "name": "Çaj i Zi",
       "description": "I fortë dhe energjik",
       "icon": "☕",
       "price": 200,
       "constraints": {},
-      "subMenu": {
-        "menuId": "tea-options",
-        "included": [
-          {
-            "itemId": "opt-black-tea",
-            "display": "none"
-          }
-        ]
-      },
-      "order": 13
+      "order": 1
     },
-    "chai-tea": {
-      "id": "chai-tea",
-      "name": "Çaj Chai",
-      "description": "Erëza indiane",
-      "icon": "☕",
-      "price": 200,
-      "constraints": {},
-      "subMenu": {
-        "menuId": "tea-options",
-        "included": [
-          {
-            "itemId": "opt-chai-tea",
-            "display": "none"
-          }
-        ]
-      },
-      "order": 14
-    },
-    "green-tea": {
-      "id": "green-tea",
+    "ITEM-TEA-GREEN": {
+      "id": "ITEM-TEA-GREEN",
       "name": "Çaj Jeshil",
       "description": "Delikat dhe shëndetësor",
-      "icon": "☕",
+      "icon": "🍵",
       "price": 200,
       "constraints": {},
-      "subMenu": {
-        "menuId": "tea-options",
-        "included": [
-          {
-            "itemId": "opt-green-tea",
-            "display": "none"
-          }
-        ]
-      },
-      "order": 15
+      "order": 2
     },
-    "jasmine-gold": {
-      "id": "jasmine-gold",
-      "name": "Jasemini i Artë",
-      "description": "Lulëzues dhe elegant",
-      "icon": "☕",
+    "ITEM-TEA-MOUNTAIN": {
+      "id": "ITEM-TEA-MOUNTAIN",
+      "name": "Çaj Mali",
+      "description": "Tradicional shqiptar",
+      "icon": "🏔️",
       "price": 200,
       "constraints": {},
-      "subMenu": {
-        "menuId": "tea-options",
-        "included": [
-          {
-            "itemId": "opt-jasmine-gold",
-            "display": "none"
-          }
-        ]
-      },
-      "order": 16
+      "order": 3
     },
-    "rooibos-vanilla": {
-      "id": "rooibos-vanilla",
+    "ITEM-TEA-SAGE": {
+      "id": "ITEM-TEA-SAGE",
+      "name": "Sherbelë",
+      "description": "Bimor dhe shërues",
+      "icon": "🌿",
+      "price": 200,
+      "constraints": {},
+      "order": 4
+    },
+    "ITEM-TEA-CHAMOMILE": {
+      "id": "ITEM-TEA-CHAMOMILE",
+      "name": "Kamomil",
+      "description": "Qetësues dhe relaksues",
+      "icon": "🌼",
+      "price": 200,
+      "constraints": {},
+      "order": 5
+    },
+    "ITEM-TEA-MINT": {
+      "id": "ITEM-TEA-MINT",
+      "name": "Mente",
+      "description": "Freskues dhe digestiv",
+      "icon": "🌿",
+      "price": 200,
+      "constraints": {},
+      "order": 6
+    },
+    "ITEM-TEA-GINGER": {
+      "id": "ITEM-TEA-GINGER",
+      "name": "Xhinxher",
+      "description": "Pikant dhe ngrohës",
+      "icon": "🫚",
+      "price": 200,
+      "constraints": {},
+      "order": 7
+    },
+    "ITEM-TEA-GINGER-TURMERIC": {
+      "id": "ITEM-TEA-GINGER-TURMERIC",
+      "name": "Xhinxher + Turmerik",
+      "description": "Përzierje anti-inflamatore",
+      "icon": "🫚",
+      "price": 250,
+      "constraints": {},
+      "order": 8
+    },
+    "ITEM-TEA-LEMON-FRESH": {
+      "id": "ITEM-TEA-LEMON-FRESH",
+      "name": "Limon Freskues",
+      "description": "I gjallë dhe vitamin C",
+      "icon": "🍋",
+      "price": 250,
+      "constraints": {},
+      "order": 9
+    },
+    "ITEM-TEA-MOUNTAIN-CHAI": {
+      "id": "ITEM-TEA-MOUNTAIN-CHAI",
+      "name": "Çaj Mali me Erëza",
+      "description": "Çaj mali me erëza",
+      "icon": "☕",
+      "price": 250,
+      "constraints": {},
+      "order": 10
+    },
+    "ITEM-TEA-PLUM-CINNAMON": {
+      "id": "ITEM-TEA-PLUM-CINNAMON",
+      "name": "Kumbull + Kanellë",
+      "description": "I ëmbël dhe aromatik",
+      "icon": "🍑",
+      "price": 250,
+      "constraints": {},
+      "order": 11
+    },
+    "ITEM-TEA-RED-BERRIES": {
+      "id": "ITEM-TEA-RED-BERRIES",
+      "name": "Fruta të Kuqe",
+      "description": "Përzierje frutore",
+      "icon": "🍓",
+      "price": 250,
+      "constraints": {},
+      "order": 12
+    },
+    "ITEM-TEA-ROOIBOS-VANILLA": {
+      "id": "ITEM-TEA-ROOIBOS-VANILLA",
       "name": "Rooibos Vanilje",
       "description": "Pa kafeinë, i ëmbël",
       "icon": "☕",
-      "price": 200,
+      "price": 250,
       "constraints": {},
-      "subMenu": {
-        "menuId": "tea-options",
-        "included": [
-          {
-            "itemId": "opt-rooibos-vanilla",
-            "display": "none"
-          }
-        ]
-      },
+      "order": 13
+    },
+    "ITEM-TEA-CHAI-LATTE": {
+      "id": "ITEM-TEA-CHAI-LATTE",
+      "name": "Chai Latte",
+      "description": "qumësht, çaj mali me erëza, mjaltë",
+      "icon": "🫖",
+      "price": 250,
+      "constraints": {},
+      "order": 14
+    },
+    "ITEM-TEA-GOLDEN-LATTE": {
+      "id": "ITEM-TEA-GOLDEN-LATTE",
+      "name": "Latte Turmerik i Artë",
+      "description": "qumësht, turmerik, xhinxher, piper, kanellë",
+      "icon": "🌟",
+      "price": 250,
+      "constraints": {},
+      "order": 15
+    },
+    "ITEM-TEA-SALEP-LATTE": {
+      "id": "ITEM-TEA-SALEP-LATTE",
+      "name": "Salep Latte",
+      "description": "qumësht, salep, stika, kanellë",
+      "icon": "✨",
+      "price": 250,
+      "constraints": {},
+      "order": 16
+    },
+    "ITEM-TEA-CACAO-LATTE": {
+      "id": "ITEM-TEA-CACAO-LATTE",
+      "name": "Kakao Latte",
+      "description": "qumësht tërshëre, kakao organike",
+      "icon": "🍫",
+      "price": 250,
+      "constraints": {},
       "order": 17
     },
-    "iced-berries": {
-      "id": "iced-berries",
+    "ITEM-TEA-MATCHA-LATTE": {
+      "id": "ITEM-TEA-MATCHA-LATTE",
+      "name": "Matcha Latte",
+      "description": "qumësht tërshëre, matcha organike",
+      "icon": "🍵",
+      "price": 250,
+      "constraints": {},
+      "order": 18
+    },
+    "ITEM-TEA-ICED-BERRIES": {
+      "id": "ITEM-TEA-ICED-BERRIES",
       "name": "Fruta Pylli të Ftohta",
       "description": "Freskues frutor",
       "icon": "🥤",
       "price": 200,
       "constraints": {},
-      "order": 18
+      "order": 19
     },
-    "iced-cherry": {
-      "id": "iced-cherry",
-      "name": "Qershi të Ftohta",
-      "description": "Frutor dhe i gjallë",
-      "icon": "🥤",
-      "price": 200,
-      "constraints": {},
-      "order": 21
-    },
-    "iced-cornelian-cherry": {
-      "id": "iced-cornelian-cherry",
-      "name": "Thana të Ftohta",
-      "description": "Tradicional dhe unik",
-      "icon": "🥤",
-      "price": 200,
-      "constraints": {},
-      "order": 22
-    },
-    "iced-rose-petal": {
-      "id": "iced-rose-petal",
-      "name": "Petale Trëndafili të Ftohta",
-      "description": "Elegant dhe delikat",
-      "icon": "🥤",
-      "price": 200,
-      "constraints": {},
-      "order": 23
-    },
-    "kombucha-ginger": {
-      "id": "kombucha-ginger",
-      "name": "Kombucha Xhinxher",
-      "description": "Probiotik dhe pikant",
-      "icon": "🍾",
-      "price": 350,
-      "constraints": {},
-      "order": 24
-    },
-    "kombucha-luppolo": {
-      "id": "kombucha-luppolo",
-      "name": "Kombucha Luppolo",
-      "description": "Fermentuar me lupulo",
-      "icon": "🍾",
-      "price": 350,
-      "constraints": {},
-      "order": 25
-    },
-    "kombucha-passion-fruit": {
-      "id": "kombucha-passion-fruit",
-      "name": "Kombucha Frut Pasioni",
-      "description": "Tropical dhe i gjallë",
-      "icon": "🍾",
-      "price": 350,
-      "constraints": {},
-      "order": 26
-    },
-    "kombucha-raspberry": {
-      "id": "kombucha-raspberry",
-      "name": "Kombucha Mjedër",
-      "description": "Frutor dhe acidik",
-      "icon": "🍾",
-      "price": 350,
-      "constraints": {},
-      "order": 27
-    },
-    "kombucha-seasonal": {
-      "id": "kombucha-seasonal",
-      "name": "Kombucha Sezonal",
-      "description": "Pyetni për aromën",
-      "icon": "🍾",
-      "price": 350,
-      "constraints": {},
-      "order": 28
-    },
-    "mountain-tea": {
-      "id": "mountain-tea",
-      "name": "Çaj Mali",
-      "description": "Tradicional shqiptar",
-      "icon": "☕",
-      "price": 150,
-      "constraints": {},
-      "subMenu": {
-        "menuId": "tea-options",
-        "included": [
-          {
-            "itemId": "opt-mountain-tea",
-            "display": "none"
-          }
-        ]
-      },
-      "order": 2
-    },
-    "sage": {
-      "id": "sage",
-      "name": "Sherbelë",
-      "description": "Bimor dhe shërues",
-      "icon": "☕",
-      "price": 150,
-      "constraints": {},
-      "subMenu": {
-        "menuId": "tea-options",
-        "included": [
-          {
-            "itemId": "opt-sage",
-            "display": "none"
-          }
-        ]
-      },
-      "order": 3
-    },
-    "mint": {
-      "id": "mint",
-      "name": "Mente",
-      "description": "Freskues dhe digestiv",
-      "icon": "☕",
-      "price": 150,
-      "constraints": {},
-      "subMenu": {
-        "menuId": "tea-options",
-        "included": [
-          {
-            "itemId": "opt-mint",
-            "display": "none"
-          }
-        ]
-      },
-      "order": 4
-    },
-    "peppermint": {
-      "id": "peppermint",
-      "name": "Nenexhik",
-      "description": "Intensiv dhe ftohës",
-      "icon": "☕",
-      "price": 150,
-      "constraints": {},
-      "subMenu": {
-        "menuId": "tea-options",
-        "included": [
-          {
-            "itemId": "opt-peppermint",
-            "display": "none"
-          }
-        ]
-      },
-      "order": 5
-    },
-    "plum-cinnamon": {
-      "id": "plum-cinnamon",
-      "name": "Kumbull+Kanellë",
-      "description": "I ëmbël dhe aromatik",
-      "icon": "☕",
-      "price": 170,
-      "constraints": {},
-      "subMenu": {
-        "menuId": "tea-options",
-        "included": [
-          {
-            "itemId": "opt-plumcinnamon",
-            "display": "none"
-          }
-        ]
-      },
-      "order": 9
-    },
-    "apple-cinnamon": {
-      "id": "apple-cinnamon",
-      "name": "Mollë+Kanellë",
-      "description": "Klasik dhe ngrohës",
-      "icon": "☕",
-      "price": 170,
-      "constraints": {},
-      "subMenu": {
-        "menuId": "tea-options",
-        "included": [
-          {
-            "itemId": "opt-applecinnamon",
-            "display": "none"
-          }
-        ]
-      },
-      "order": 10
-    },
-    "iced-plum": {
-      "id": "iced-plum",
+    "ITEM-TEA-ICED-PLUM": {
+      "id": "ITEM-TEA-ICED-PLUM",
       "name": "Kumbull të Ftohta",
       "description": "I ëmbël dhe freskues",
       "icon": "🥤",
       "price": 200,
       "constraints": {},
-      "order": 19
+      "order": 20
     },
-    "iced-peach": {
-      "id": "iced-peach",
-      "name": "Pjeshkë të Ftohta",
+    "ITEM-TEA-ICED-NECTARINE": {
+      "id": "ITEM-TEA-ICED-NECTARINE",
+      "name": "Nektarinë të Ftohta",
       "description": "Delikat dhe verror",
       "icon": "🥤",
       "price": 200,
       "constraints": {},
-      "order": 20
+      "order": 21
+    },
+    "ITEM-TEA-ICED-CHERRY": {
+      "id": "ITEM-TEA-ICED-CHERRY",
+      "name": "Qershi të Ftohta",
+      "description": "Frutor dhe i gjallë",
+      "icon": "🥤",
+      "price": 200,
+      "constraints": {},
+      "order": 22
+    },
+    "ITEM-TEA-ICED-CORNELIAN": {
+      "id": "ITEM-TEA-ICED-CORNELIAN",
+      "name": "Thanë të Ftohta",
+      "description": "Tradicional dhe unik",
+      "icon": "🥤",
+      "price": 200,
+      "constraints": {},
+      "order": 23
+    },
+    "ITEM-TEA-KOMBUCHA-LUPPOLO": {
+      "id": "ITEM-TEA-KOMBUCHA-LUPPOLO",
+      "name": "Kombucha Luppolo",
+      "description": "Fermentuar me lupulo",
+      "icon": "🍾",
+      "price": 350,
+      "constraints": {},
+      "order": 24
+    },
+    "ITEM-TEA-KOMBUCHA-GINGER": {
+      "id": "ITEM-TEA-KOMBUCHA-GINGER",
+      "name": "Kombucha Xhinxher",
+      "description": "Probiotik dhe pikant",
+      "icon": "🍾",
+      "price": 350,
+      "constraints": {},
+      "order": 25
+    },
+    "ITEM-TEA-KOMBUCHA-MANGO": {
+      "id": "ITEM-TEA-KOMBUCHA-MANGO",
+      "name": "Kombucha Mango",
+      "description": "Tropikal dhe i ëmbël",
+      "icon": "🍾",
+      "price": 350,
+      "constraints": {},
+      "order": 26
+    },
+    "ITEM-TEA-KOMBUCHA-PASSION": {
+      "id": "ITEM-TEA-KOMBUCHA-PASSION",
+      "name": "Kombucha Frut Pasioni",
+      "description": "Tropikal dhe i thartë",
+      "icon": "🍾",
+      "price": 350,
+      "constraints": {},
+      "order": 27
+    },
+    "ITEM-TEA-KOMBUCHA-RASPBERRY": {
+      "id": "ITEM-TEA-KOMBUCHA-RASPBERRY",
+      "name": "Kombucha Mjedër",
+      "description": "Frutor dhe acidik",
+      "icon": "🍾",
+      "price": 350,
+      "constraints": {},
+      "order": 28
+    },
+    "ITEM-TEA-KOMBUCHA-SEASONAL": {
+      "id": "ITEM-TEA-KOMBUCHA-SEASONAL",
+      "name": "Kombucha Sezonal",
+      "description": "Pyetni për aromën",
+      "icon": "🍾",
+      "price": 350,
+      "constraints": {},
+      "order": 29
     }
   },
   "itemGroups": {
-    "group-herbal-hot": {
-      "id": "group-herbal-hot",
-      "name": "Çaje Bimore",
+    "group-single-teas": {
+      "id": "group-single-teas",
+      "name": "Çaje të Thjeshta",
       "itemIds": [
-        "chamomile",
-        "linden-flower",
-        "mountain-tea",
-        "sage",
-        "mint",
-        "peppermint",
-        "ginger-tea"
+        "ITEM-TEA-BILBERRY",
+        "ITEM-TEA-BLACK",
+        "ITEM-TEA-GREEN",
+        "ITEM-TEA-MOUNTAIN",
+        "ITEM-TEA-SAGE",
+        "ITEM-TEA-CHAMOMILE",
+        "ITEM-TEA-MINT",
+        "ITEM-TEA-GINGER"
       ]
     },
-    "group-fruity-hot": {
-      "id": "group-fruity-hot",
-      "name": "Çaje Frutore",
+    "group-mixed-teas": {
+      "id": "group-mixed-teas",
+      "name": "Çaje të Përziera",
       "itemIds": [
-        "bilberry",
-        "berries",
-        "plum-cinnamon",
-        "apple-cinnamon",
-        "lemon",
-        "rose-hip"
+        "ITEM-TEA-GINGER-TURMERIC",
+        "ITEM-TEA-LEMON-FRESH",
+        "ITEM-TEA-MOUNTAIN-CHAI",
+        "ITEM-TEA-PLUM-CINNAMON",
+        "ITEM-TEA-RED-BERRIES",
+        "ITEM-TEA-ROOIBOS-VANILLA"
       ]
     },
-    "group-special-hot": {
-      "id": "group-special-hot",
-      "name": "Çaje Speciale",
+    "group-tea-lattes": {
+      "id": "group-tea-lattes",
+      "name": "Lattes",
       "itemIds": [
-        "black-tea",
-        "chai-tea",
-        "green-tea",
-        "jasmine-gold",
-        "rooibos-vanilla"
+        "ITEM-TEA-CHAI-LATTE",
+        "ITEM-TEA-GOLDEN-LATTE",
+        "ITEM-TEA-SALEP-LATTE",
+        "ITEM-TEA-CACAO-LATTE",
+        "ITEM-TEA-MATCHA-LATTE"
       ]
     },
     "group-iced-teas": {
       "id": "group-iced-teas",
       "name": "Çaje të Ftohta",
       "itemIds": [
-        "iced-berries",
-        "iced-plum",
-        "iced-peach",
-        "iced-cherry",
-        "iced-cornelian-cherry",
-        "iced-rose-petal"
+        "ITEM-TEA-ICED-BERRIES",
+        "ITEM-TEA-ICED-PLUM",
+        "ITEM-TEA-ICED-NECTARINE",
+        "ITEM-TEA-ICED-CHERRY",
+        "ITEM-TEA-ICED-CORNELIAN"
       ]
     },
     "group-kombucha": {
       "id": "group-kombucha",
       "name": "Kombucha",
       "itemIds": [
-        "kombucha-ginger",
-        "kombucha-luppolo",
-        "kombucha-passion-fruit",
-        "kombucha-raspberry",
-        "kombucha-seasonal"
+        "ITEM-TEA-KOMBUCHA-LUPPOLO",
+        "ITEM-TEA-KOMBUCHA-GINGER",
+        "ITEM-TEA-KOMBUCHA-MANGO",
+        "ITEM-TEA-KOMBUCHA-PASSION",
+        "ITEM-TEA-KOMBUCHA-RASPBERRY",
+        "ITEM-TEA-KOMBUCHA-SEASONAL"
       ]
     }
   },
   "layout": [
     {
-      "text": "Të Nxehta",
+      "text": "Çaje të Nxehta",
       "classes": [
         "menu-title"
       ]
     },
     {
       "type": "item-group",
-      "data": "group-herbal-hot"
+      "data": "group-single-teas"
     },
     {
       "type": "item-group",
-      "data": "group-fruity-hot"
+      "data": "group-mixed-teas"
     },
     {
       "type": "item-group",
-      "data": "group-special-hot"
+      "data": "group-tea-lattes"
     },
     {
-      "text": "Të Ftohta",
+      "text": "Çaje të Ftohta",
       "classes": [
         "menu-title"
       ]

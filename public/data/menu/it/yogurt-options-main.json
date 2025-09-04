@@ -1,0 +1,21 @@
+{
+  "id": "yogurt-options-main",
+  "name": "Yogurt Options",
+  "currency": "ALL",
+  "items": {},
+  "itemGroups": {
+    "included": {
+      "id": "included",
+      "name": "Included",
+      "itemIds": []
+    }
+  },
+  "layout": [
+    {
+      "type": "item-group",
+      "data": "included"
+    }
+  ],
+  "choices": {},
+  "modifierMenu": true
+}

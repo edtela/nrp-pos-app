@@ -3,119 +3,191 @@
   "name": "Menu Krepe",
   "currency": "ALL",
   "items": {
-    "berryland": {
-      "id": "berryland",
-      "name": "Berryland",
-      "description": "kos aromal, reçel frutash, boronica, dredhëza/mjedra",
-      "price": 300,
+    "ITEM-CREPE-CLASSIC-CHOCOLATE": {
+      "id": "ITEM-CREPE-CLASSIC-CHOCOLATE",
+      "name": "Çokollatë e Zezë",
+      "description": "Krep klasik me çokollatë të zezë",
+      "icon": "🍫",
+      "price": 200,
       "constraints": {},
       "order": 0
     },
-    "honey-bee": {
-      "id": "honey-bee",
-      "name": "Honey Bee",
-      "description": "mjaltë, banane, manaferrë, gjalpë arre, kanellë",
-      "price": 300,
+    "ITEM-CREPE-CLASSIC-WHITE-CHOCOLATE": {
+      "id": "ITEM-CREPE-CLASSIC-WHITE-CHOCOLATE",
+      "name": "Çokollatë e Bardhë",
+      "description": "Krep klasik me çokollatë të bardhë",
+      "icon": "🤍",
+      "price": 200,
       "constraints": {},
       "order": 1
     },
-    "crispy-bite": {
-      "id": "crispy-bite",
-      "name": "Crispy Bite",
-      "description": "nutella, banane, dredhëza/mjedra, granola, gjalpë kikiriku",
-      "price": 350,
+    "ITEM-CREPE-CLASSIC-HONEY": {
+      "id": "ITEM-CREPE-CLASSIC-HONEY",
+      "name": "Mjaltë",
+      "description": "Krep klasik me mjaltë",
+      "icon": "🍯",
+      "price": 200,
       "constraints": {},
       "order": 2
     },
-    "nut-berry": {
-      "id": "nut-berry",
-      "name": "Nut&Berry",
-      "description": "nutella, boronica, manaferrë, lajthi, bajame",
-      "price": 350,
+    "ITEM-CREPE-CLASSIC-JAM": {
+      "id": "ITEM-CREPE-CLASSIC-JAM",
+      "name": "Reçel Frutash Pylli",
+      "description": "Krep klasik me reçel frutash pylli",
+      "icon": "🍓",
+      "price": 200,
       "constraints": {},
       "order": 3
     },
-    "tropic-snow": {
-      "id": "tropic-snow",
-      "name": "Tropic Snow",
-      "description": "çokollatë e bardhë, kivi, ananas, mango, kokos",
-      "price": 350,
+    "ITEM-CREPE-CLASSIC-NUTELLA": {
+      "id": "ITEM-CREPE-CLASSIC-NUTELLA",
+      "name": "Nutella",
+      "description": "Krep klasik me Nutella",
+      "icon": "🌰",
+      "price": 200,
       "constraints": {},
       "order": 4
     },
-    "chicky-meal": {
-      "id": "chicky-meal",
-      "name": "Chicky Meal",
-      "description": "kos aromal, djathë gouda, pomadorini, proshutë pule, zaatar, vaj ulliri",
-      "price": 300,
+    "ITEM-CREPE-CLASSIC-YOGURT": {
+      "id": "ITEM-CREPE-CLASSIC-YOGURT",
+      "name": "Kos Grek",
+      "description": "Krep klasik me kos grek",
+      "icon": "🥛",
+      "price": 200,
       "constraints": {},
       "order": 5
     },
-    "farmville": {
-      "id": "farmville",
-      "name": "Farmville",
-      "description": "kos aromal, djathë feta, domate të thata, kastravec, ullinj, ajvar, rigon, vaj ulliri",
-      "price": 300,
+    "ITEM-CREPE-HONEY-BEE": {
+      "id": "ITEM-CREPE-HONEY-BEE",
+      "name": "Honey Bee",
+      "description": "Mjaltë, banane, manaferrë, arra, kanellë",
+      "icon": "🐝",
+      "price": 350,
       "constraints": {},
       "order": 6
     },
-    "porcini-boost": {
-      "id": "porcini-boost",
-      "name": "Porcini Boost",
-      "description": "pesto, djathë gouda, porcini të thata, pomadorini, zaatar, vaj ulliri",
+    "ITEM-CREPE-NUT-BERRY": {
+      "id": "ITEM-CREPE-NUT-BERRY",
+      "name": "Nut&Berry",
+      "description": "Çokollatë e zezë, boronicë e egër, manaferrë, miks arrorësh",
+      "icon": "🫐",
       "price": 350,
       "constraints": {},
       "order": 7
     },
-    "mexican-street": {
-      "id": "mexican-street",
-      "name": "Mexican Street",
-      "description": "kos aromal, djathë gouda, avokado, pomadorini, misër, majdanoz, limon, vaj ulliri",
-      "price": 350,
+    "ITEM-CREPE-CRISPY-BITE": {
+      "id": "ITEM-CREPE-CRISPY-BITE",
+      "name": "Crispy Bite",
+      "description": "Nutella, banane, luleshtrydhe/mjedër, granola, gjalpë kikiriku",
+      "icon": "🥜",
+      "price": 400,
       "constraints": {},
       "order": 8
     },
-    "greenchick": {
-      "id": "greenchick",
-      "name": "GreenChick",
-      "description": "kos aromal, djathë feta, avokado, proshutë pule, domate të thata, vaj ulliri",
-      "price": 350,
+    "ITEM-CREPE-TROPIC-SNOW": {
+      "id": "ITEM-CREPE-TROPIC-SNOW",
+      "name": "Tropic Snow",
+      "description": "Çokollatë e bardhë, kivi, ananas, mango, arrë kokosi",
+      "icon": "🌴",
+      "price": 400,
       "constraints": {},
       "order": 9
+    },
+    "ITEM-CREPE-CHICKY-MEAL": {
+      "id": "ITEM-CREPE-CHICKY-MEAL",
+      "name": "Chicky Meal",
+      "description": "Aromal yogurt, djathë guda, pomodorini, proshutë pule, zaatar, vaj ulliri",
+      "icon": "🐔",
+      "price": 350,
+      "constraints": {},
+      "order": 10
+    },
+    "ITEM-CREPE-FARMVILLE": {
+      "id": "ITEM-CREPE-FARMVILLE",
+      "name": "Farmville",
+      "description": "Aromal yogurt, djathë dhie, domate të thata, kastravec, ullinj, ajvar, rigon, vaj ulliri",
+      "icon": "🧑‍🌾",
+      "price": 350,
+      "constraints": {},
+      "order": 11
+    },
+    "ITEM-CREPE-MEXICAN-STREET": {
+      "id": "ITEM-CREPE-MEXICAN-STREET",
+      "name": "Mexican Street",
+      "description": "Aromal yogurt, djathë guda, avokado, pomodorini, misër, lëng limoni, vaj ulliri",
+      "icon": "🌮",
+      "price": 400,
+      "constraints": {},
+      "order": 12
+    },
+    "ITEM-CREPE-GREENCHICK": {
+      "id": "ITEM-CREPE-GREENCHICK",
+      "name": "GreenChick",
+      "description": "Aromal yogurt, djathë dhie, avokado, proshutë pule, domate të thata, vaj ulliri",
+      "icon": "🥑",
+      "price": 400,
+      "constraints": {},
+      "order": 13
     }
   },
   "itemGroups": {
-    "group-sweet": {
-      "id": "group-sweet",
-      "name": "Krepe të Ëmbla",
+    "classic-crepes": {
+      "id": "classic-crepes",
+      "name": "Krepe Klasike",
       "itemIds": [
-        "berryland",
-        "honey-bee",
-        "crispy-bite",
-        "nut-berry",
-        "tropic-snow"
+        "ITEM-CREPE-CLASSIC-CHOCOLATE",
+        "ITEM-CREPE-CLASSIC-WHITE-CHOCOLATE",
+        "ITEM-CREPE-CLASSIC-HONEY",
+        "ITEM-CREPE-CLASSIC-JAM",
+        "ITEM-CREPE-CLASSIC-NUTELLA",
+        "ITEM-CREPE-CLASSIC-YOGURT"
       ]
     },
-    "group-savory": {
-      "id": "group-savory",
-      "name": "Krepe të Kripura",
+    "signature-sweet": {
+      "id": "signature-sweet",
+      "name": "Të Ëmbla Speciale",
       "itemIds": [
-        "chicky-meal",
-        "farmville",
-        "porcini-boost",
-        "mexican-street",
-        "greenchick"
+        "ITEM-CREPE-HONEY-BEE",
+        "ITEM-CREPE-NUT-BERRY",
+        "ITEM-CREPE-CRISPY-BITE",
+        "ITEM-CREPE-TROPIC-SNOW"
+      ]
+    },
+    "signature-savory": {
+      "id": "signature-savory",
+      "name": "Të Kripura Speciale",
+      "itemIds": [
+        "ITEM-CREPE-CHICKY-MEAL",
+        "ITEM-CREPE-FARMVILLE",
+        "ITEM-CREPE-MEXICAN-STREET",
+        "ITEM-CREPE-GREENCHICK"
       ]
     }
   },
   "layout": [
     {
-      "type": "item-group",
-      "data": "group-sweet"
+      "text": "Krepe Klasike",
+      "classes": [
+        "menu-title"
+      ]
     },
     {
       "type": "item-group",
-      "data": "group-savory"
+      "data": "classic-crepes"
+    },
+    {
+      "text": "Krepe Speciale",
+      "classes": [
+        "menu-title"
+      ]
+    },
+    {
+      "type": "item-group",
+      "data": "signature-sweet"
+    },
+    {
+      "type": "item-group",
+      "data": "signature-savory"
     }
   ]
 }

@@ -1,0 +1,103 @@
+{
+  "id": "coffee-options-milk-only",
+  "name": "Opsione Kafeje",
+  "currency": "ALL",
+  "items": {
+    "opt-milk": {
+      "id": "opt-milk",
+      "name": "Qumësht",
+      "icon": "🥛",
+      "price": 0,
+      "constraints": {
+        "choiceId": "milk-choice"
+      },
+      "order": 0
+    },
+    "opt-almond-milk": {
+      "id": "opt-almond-milk",
+      "name": "Qumësht Bajame",
+      "icon": "🤍",
+      "price": 50,
+      "constraints": {
+        "choiceId": "milk-choice"
+      },
+      "order": 1
+    },
+    "opt-coconut-milk": {
+      "id": "opt-coconut-milk",
+      "name": "Qumësht Kokosi",
+      "icon": "🥥",
+      "price": 50,
+      "constraints": {
+        "choiceId": "milk-choice"
+      },
+      "order": 2
+    },
+    "opt-oat-milk": {
+      "id": "opt-oat-milk",
+      "name": "Qumësht Tërshëre",
+      "icon": "🌾",
+      "price": 50,
+      "constraints": {
+        "choiceId": "milk-choice"
+      },
+      "order": 3
+    },
+    "opt-soy-milk": {
+      "id": "opt-soy-milk",
+      "name": "Qumësht Soje",
+      "icon": "🟢",
+      "price": 50,
+      "constraints": {
+        "choiceId": "milk-choice"
+      },
+      "order": 4
+    }
+  },
+  "itemGroups": {
+    "included": {
+      "id": "included",
+      "name": "Të Përfshira",
+      "itemIds": []
+    },
+    "group-milk-choices": {
+      "id": "group-milk-choices",
+      "name": "Zgjedhja e Qumështit",
+      "itemIds": [
+        "opt-milk",
+        "opt-almond-milk",
+        "opt-coconut-milk",
+        "opt-oat-milk",
+        "opt-soy-milk"
+      ]
+    }
+  },
+  "layout": [
+    {
+      "type": "item-group",
+      "data": "included"
+    },
+    {
+      "type": "item-group",
+      "data": "group-milk-choices"
+    }
+  ],
+  "choices": {
+    "milk-choice": {
+      "id": "milk-choice",
+      "min": 1,
+      "max": 1
+    },
+    "shot-length": {
+      "id": "shot-length",
+      "min": 1,
+      "max": 1
+    },
+    "sweetness-choice": {
+      "id": "sweetness-choice",
+      "min": 1,
+      "max": 1
+    }
+  },
+  "modifierMenu": true
+}

@@ -1,286 +1,181 @@
 {
   "id": "juice-options",
-  "name": "Opzioni Succo",
+  "name": "Juice Options",
   "currency": "ALL",
   "items": {
-    "opt-ginger": {
-      "id": "opt-ginger",
-      "name": "Zenzero",
-      "icon": "🫚",
-      "price": 30,
-      "constraints": {},
-      "order": 23
-    },
-    "opt-parsley": {
-      "id": "opt-parsley",
-      "name": "Prezzemolo",
-      "icon": "🌿",
-      "price": 30,
-      "constraints": {},
-      "order": 24
-    },
-    "opt-mint": {
-      "id": "opt-mint",
-      "name": "Menta",
-      "icon": "🌿",
-      "price": 30,
-      "constraints": {},
-      "order": 25
-    },
-    "opt-carrot": {
-      "id": "opt-carrot",
-      "name": "Carota",
-      "icon": "🥕",
-      "price": 30,
+    "MOD-APPLE-JUICE": {
+      "id": "MOD-APPLE-JUICE",
+      "name": "Apple",
+      "description": "Add 200G",
+      "icon": "🍎",
+      "price": 50,
       "constraints": {},
       "order": 0
     },
-    "opt-lemon": {
-      "id": "opt-lemon",
-      "name": "Limone",
-      "icon": "🍋",
-      "price": 30,
-      "constraints": {},
-      "order": 22
-    },
-    "opt-apple": {
-      "id": "opt-apple",
-      "name": "Mela",
-      "icon": "🍎",
-      "price": 30,
-      "constraints": {},
-      "order": 5
-    },
-    "opt-beet": {
-      "id": "opt-beet",
-      "name": "Barbabietola",
-      "icon": "🟣",
-      "price": 30,
+    "MOD-ORANGE-JUICE": {
+      "id": "MOD-ORANGE-JUICE",
+      "name": "Orange",
+      "description": "Add 200G",
+      "icon": "🍊",
+      "price": 50,
       "constraints": {},
       "order": 1
     },
-    "opt-orange": {
-      "id": "opt-orange",
-      "name": "Arancia",
-      "icon": "🍊",
-      "price": 30,
+    "MOD-CARROT-JUICE": {
+      "id": "MOD-CARROT-JUICE",
+      "name": "Carrot",
+      "description": "Add 200G",
+      "icon": "🥕",
+      "price": 50,
       "constraints": {},
-      "order": 16
+      "order": 5
     },
-    "opt-pear": {
-      "id": "opt-pear",
-      "name": "Pera",
-      "icon": "🍐",
-      "price": 40,
+    "MOD-CELERY-JUICE": {
+      "id": "MOD-CELERY-JUICE",
+      "name": "Celery",
+      "description": "Add 100G",
+      "icon": "🥬",
+      "price": 50,
       "constraints": {},
       "order": 6
     },
-    "opt-cucumber": {
-      "id": "opt-cucumber",
-      "name": "Cetriolo",
-      "icon": "🥒",
-      "price": 40,
-      "constraints": {},
-      "order": 2
-    },
-    "opt-kiwi": {
-      "id": "opt-kiwi",
-      "name": "Kiwi",
-      "icon": "🥝",
-      "price": 40,
-      "constraints": {},
-      "order": 17
-    },
-    "opt-melon": {
-      "id": "opt-melon",
-      "name": "Melone",
-      "icon": "🍈",
-      "price": 40,
-      "constraints": {},
-      "order": 7
-    },
-    "opt-grape": {
-      "id": "opt-grape",
-      "name": "Uva",
-      "icon": "🍇",
-      "price": 40,
-      "constraints": {},
-      "order": 8
-    },
-    "opt-spinach": {
-      "id": "opt-spinach",
-      "name": "Spinaci",
-      "icon": "🥬",
-      "price": 40,
-      "constraints": {},
-      "order": 4
-    },
-    "opt-pineapple": {
-      "id": "opt-pineapple",
-      "name": "Ananas",
+    "MOD-PINEAPPLE-JUICE": {
+      "id": "MOD-PINEAPPLE-JUICE",
+      "name": "Pineapple",
+      "description": "Add 150G",
       "icon": "🍍",
       "price": 50,
       "constraints": {},
-      "order": 18
+      "order": 2
     },
-    "opt-grapefruit": {
-      "id": "opt-grapefruit",
-      "name": "Pompelmo",
-      "icon": "🟠",
-      "price": 50,
-      "constraints": {},
-      "order": 19
-    },
-    "opt-lime": {
-      "id": "opt-lime",
-      "name": "Lime",
-      "icon": "🟢",
-      "price": 50,
-      "constraints": {},
-      "order": 20
-    },
-    "opt-mango": {
-      "id": "opt-mango",
-      "name": "Mango",
-      "icon": "🥭",
-      "price": 50,
-      "constraints": {},
-      "order": 21
-    },
-    "opt-peach": {
-      "id": "opt-peach",
-      "name": "Pesca",
-      "icon": "🍑",
-      "price": 50,
-      "constraints": {},
-      "order": 9
-    },
-    "opt-celery": {
-      "id": "opt-celery",
-      "name": "Sedano",
-      "icon": "🟩",
+    "MOD-POMEGRANATE-JUICE": {
+      "id": "MOD-POMEGRANATE-JUICE",
+      "name": "Pomegranate",
+      "description": "Add 200G",
+      "icon": "🫐",
       "price": 50,
       "constraints": {},
       "order": 3
     },
-    "opt-pomegranate": {
-      "id": "opt-pomegranate",
-      "name": "Melograno",
-      "icon": "🔴",
+    "MOD-CUCUMBER-JUICE": {
+      "id": "MOD-CUCUMBER-JUICE",
+      "name": "Cucumber",
+      "description": "Add 100G",
+      "icon": "🥒",
+      "price": 50,
+      "constraints": {},
+      "order": 7
+    },
+    "MOD-BEET-JUICE": {
+      "id": "MOD-BEET-JUICE",
+      "name": "Beet",
+      "description": "Add 100G",
+      "icon": "🟣",
+      "price": 50,
+      "constraints": {},
+      "order": 4
+    },
+    "MOD-KALE-JUICE": {
+      "id": "MOD-KALE-JUICE",
+      "name": "Kale",
+      "description": "Add 25G",
+      "icon": "🥬",
+      "price": 50,
+      "constraints": {},
+      "order": 8
+    },
+    "MOD-SPINACH-JUICE": {
+      "id": "MOD-SPINACH-JUICE",
+      "name": "Spinach",
+      "description": "Add 30G",
+      "icon": "🍃",
       "price": 50,
       "constraints": {},
       "order": 10
     },
-    "opt-turmeric": {
-      "id": "opt-turmeric",
-      "name": "Curcuma",
-      "icon": "🟡",
+    "MOD-LETTUCE-JUICE": {
+      "id": "MOD-LETTUCE-JUICE",
+      "name": "Lettuce",
+      "description": "Add 30G",
+      "icon": "🥬",
       "price": 50,
       "constraints": {},
-      "order": 26
+      "order": 9
     },
-    "opt-strawberries": {
-      "id": "opt-strawberries",
-      "name": "Fragole",
-      "icon": "🍓",
-      "price": 50,
-      "constraints": {},
-      "order": 11
-    },
-    "opt-raspberries": {
-      "id": "opt-raspberries",
-      "name": "Lamponi",
-      "icon": "🔴",
+    "MOD-GINGER-JUICE": {
+      "id": "MOD-GINGER-JUICE",
+      "name": "Ginger",
+      "description": "Add 20G",
+      "icon": "🫚",
       "price": 50,
       "constraints": {},
       "order": 12
     },
-    "opt-blueberries": {
-      "id": "opt-blueberries",
-      "name": "Mirtilli",
-      "icon": "🫐",
-      "price": 50,
-      "constraints": {},
-      "order": 13
-    },
-    "opt-blackberries": {
-      "id": "opt-blackberries",
-      "name": "More",
-      "icon": "🟣",
+    "MOD-TURMERIC-JUICE": {
+      "id": "MOD-TURMERIC-JUICE",
+      "name": "Turmeric",
+      "description": "Add 10G",
+      "icon": "🟠",
       "price": 50,
       "constraints": {},
       "order": 14
     },
-    "opt-mixed-berries": {
-      "id": "opt-mixed-berries",
-      "name": "Frutti di Bosco Misti",
-      "icon": "🫐",
+    "MOD-LEMON-JUICE": {
+      "id": "MOD-LEMON-JUICE",
+      "name": "Lemon",
+      "description": "Add 50G",
+      "icon": "🍋",
       "price": 50,
       "constraints": {},
-      "order": 15
+      "order": 13
+    },
+    "MOD-PEPPER-JUICE": {
+      "id": "MOD-PEPPER-JUICE",
+      "name": "Black Pepper",
+      "description": "Add 2G",
+      "icon": "⚫",
+      "price": 50,
+      "constraints": {},
+      "order": 11
     }
   },
   "itemGroups": {
     "included": {
       "id": "included",
-      "name": "Inclusi",
+      "name": "Included",
       "itemIds": []
     },
-    "group-vegetables": {
-      "id": "group-vegetables",
-      "name": "Verdure",
+    "fruits": {
+      "id": "fruits",
+      "name": "Fruits",
       "itemIds": [
-        "opt-carrot",
-        "opt-beet",
-        "opt-cucumber",
-        "opt-celery",
-        "opt-spinach"
+        "MOD-APPLE-JUICE",
+        "MOD-ORANGE-JUICE",
+        "MOD-PINEAPPLE-JUICE",
+        "MOD-POMEGRANATE-JUICE"
       ]
     },
-    "group-fruits": {
-      "id": "group-fruits",
-      "name": "Frutta",
+    "vegetables": {
+      "id": "vegetables",
+      "name": "Vegetables",
       "itemIds": [
-        "opt-apple",
-        "opt-pear",
-        "opt-melon",
-        "opt-grape",
-        "opt-peach",
-        "opt-pomegranate"
+        "MOD-BEET-JUICE",
+        "MOD-CARROT-JUICE",
+        "MOD-CELERY-JUICE",
+        "MOD-CUCUMBER-JUICE",
+        "MOD-KALE-JUICE",
+        "MOD-LETTUCE-JUICE",
+        "MOD-SPINACH-JUICE"
       ]
     },
-    "group-herbs-spices": {
-      "id": "group-herbs-spices",
-      "name": "Erbe e Spezie",
+    "herbs": {
+      "id": "herbs",
+      "name": "Herbs & Spices",
       "itemIds": [
-        "opt-ginger",
-        "opt-parsley",
-        "opt-mint",
-        "opt-turmeric"
-      ]
-    },
-    "group-berries": {
-      "id": "group-berries",
-      "name": "Frutti di Bosco",
-      "itemIds": [
-        "opt-strawberries",
-        "opt-raspberries",
-        "opt-blueberries",
-        "opt-blackberries",
-        "opt-mixed-berries"
-      ]
-    },
-    "group-tropical-citrus": {
-      "id": "group-tropical-citrus",
-      "name": "Tropicali e Agrumi",
-      "itemIds": [
-        "opt-orange",
-        "opt-kiwi",
-        "opt-pineapple",
-        "opt-grapefruit",
-        "opt-lime",
-        "opt-mango",
-        "opt-lemon"
+        "MOD-PEPPER-JUICE",
+        "MOD-GINGER-JUICE",
+        "MOD-LEMON-JUICE",
+        "MOD-TURMERIC-JUICE"
       ]
     }
   },
@@ -291,23 +186,15 @@
     },
     {
       "type": "item-group",
-      "data": "group-vegetables"
+      "data": "fruits"
     },
     {
       "type": "item-group",
-      "data": "group-fruits"
+      "data": "vegetables"
     },
     {
       "type": "item-group",
-      "data": "group-berries"
-    },
-    {
-      "type": "item-group",
-      "data": "group-tropical-citrus"
-    },
-    {
-      "type": "item-group",
-      "data": "group-herbs-spices"
+      "data": "herbs"
     }
   ],
   "modifierMenu": true

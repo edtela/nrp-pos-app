@@ -1,0 +1,948 @@
+{
+  "id": "yogurt-menu-main",
+  "name": "Yogurt Menu",
+  "currency": "ALL",
+  "items": {
+    "ITEM-YOGURT-BASE-SWEET": {
+      "id": "ITEM-YOGURT-BASE-SWEET",
+      "name": "Plain Sweet Yogurt",
+      "description": "Aromal authentic yogurt - creamy, packed with protein and probiotics",
+      "icon": "🍯",
+      "price": {
+        "groupId": "yogurt-size",
+        "prices": {
+          "mini": 100,
+          "standard": 150,
+          "family": 300
+        }
+      },
+      "constraints": {},
+      "subMenu": {
+        "menuId": "yogurt-options-sweet",
+        "included": []
+      },
+      "order": 0
+    },
+    "ITEM-YOGURT-BASE-SAVORY": {
+      "id": "ITEM-YOGURT-BASE-SAVORY",
+      "name": "Plain Savory Yogurt",
+      "description": "Aromal authentic yogurt - perfect for savory toppings",
+      "icon": "🧂",
+      "price": {
+        "groupId": "yogurt-size",
+        "prices": {
+          "mini": 100,
+          "standard": 150,
+          "family": 300
+        }
+      },
+      "constraints": {},
+      "subMenu": {
+        "menuId": "yogurt-options-savory",
+        "included": []
+      },
+      "order": 1
+    },
+    "ITEM-YOGURT-ARA": {
+      "id": "ITEM-YOGURT-ARA",
+      "name": "Ara",
+      "description": "Granola, mixed nuts, dates, flax seeds, almond butter, cinnamon, honey",
+      "icon": "🌰",
+      "price": 400,
+      "constraints": {},
+      "subMenu": {
+        "menuId": "yogurt-options-combo",
+        "included": [
+          {
+            "itemId": "MOD-YOGURT-BASE",
+            "quantity": 1,
+            "display": "none"
+          },
+          {
+            "itemId": "MOD-GRANOLA-YOGURT",
+            "quantity": 1,
+            "display": "included"
+          },
+          {
+            "itemId": "MOD-MIXED-NUTS-YOGURT",
+            "quantity": 1,
+            "display": "included"
+          },
+          {
+            "itemId": "MOD-DATES-YOGURT",
+            "quantity": 1,
+            "display": "included"
+          },
+          {
+            "itemId": "MOD-FLAX-SEEDS-YOGURT",
+            "quantity": 1,
+            "display": "included"
+          },
+          {
+            "itemId": "MOD-ALMOND-BUTTER-YOGURT",
+            "quantity": 1,
+            "display": "included"
+          },
+          {
+            "itemId": "MOD-CINNAMON-YOGURT",
+            "quantity": 1,
+            "display": "included"
+          },
+          {
+            "itemId": "MOD-HONEY-YOGURT",
+            "quantity": 1,
+            "display": "included"
+          }
+        ]
+      },
+      "order": 21
+    },
+    "ITEM-YOGURT-BJESHKA": {
+      "id": "ITEM-YOGURT-BJESHKA",
+      "name": "Bjeshka",
+      "description": "Wild berries, blackberries, goji berry, strawberries, cranberries, chia seeds, honey",
+      "icon": "🫐",
+      "price": 400,
+      "constraints": {},
+      "subMenu": {
+        "menuId": "yogurt-options-combo",
+        "included": [
+          {
+            "itemId": "MOD-YOGURT-BASE",
+            "quantity": 1,
+            "display": "none"
+          },
+          {
+            "itemId": "MOD-WILD-BERRIES-YOGURT",
+            "quantity": 1,
+            "display": "included"
+          },
+          {
+            "itemId": "MOD-BLACKBERRIES-YOGURT",
+            "quantity": 1,
+            "display": "included"
+          },
+          {
+            "itemId": "MOD-GOJI-BERRY-YOGURT",
+            "quantity": 1,
+            "display": "included"
+          },
+          {
+            "itemId": "MOD-STRAWBERRIES-YOGURT",
+            "quantity": 1,
+            "display": "included"
+          },
+          {
+            "itemId": "MOD-CRANBERRIES-YOGURT",
+            "quantity": 1,
+            "display": "included"
+          },
+          {
+            "itemId": "MOD-CHIA-SEEDS-YOGURT",
+            "quantity": 1,
+            "display": "included"
+          },
+          {
+            "itemId": "MOD-HONEY-YOGURT",
+            "quantity": 1,
+            "display": "included"
+          }
+        ]
+      },
+      "order": 22
+    },
+    "ITEM-YOGURT-ENERGJIA": {
+      "id": "ITEM-YOGURT-ENERGJIA",
+      "name": "Energjia",
+      "description": "Forest fruit jam, banana, strawberries, almonds, granola, chocolate chips",
+      "icon": "⚡",
+      "price": 400,
+      "constraints": {},
+      "subMenu": {
+        "menuId": "yogurt-options-combo",
+        "included": [
+          {
+            "itemId": "MOD-YOGURT-BASE",
+            "quantity": 1,
+            "display": "none"
+          },
+          {
+            "itemId": "MOD-FOREST-JAM-YOGURT",
+            "quantity": 1,
+            "display": "included"
+          },
+          {
+            "itemId": "MOD-BANANA-YOGURT",
+            "quantity": 1,
+            "display": "included"
+          },
+          {
+            "itemId": "MOD-STRAWBERRIES-YOGURT",
+            "quantity": 1,
+            "display": "included"
+          },
+          {
+            "itemId": "MOD-ALMONDS-YOGURT",
+            "quantity": 1,
+            "display": "included"
+          },
+          {
+            "itemId": "MOD-GRANOLA-YOGURT",
+            "quantity": 1,
+            "display": "included"
+          },
+          {
+            "itemId": "MOD-CHOCOLATE-CHIPS-YOGURT",
+            "quantity": 1,
+            "display": "included"
+          }
+        ]
+      },
+      "order": 23
+    },
+    "ITEM-YOGURT-GJELBER": {
+      "id": "ITEM-YOGURT-GJELBER",
+      "name": "Gjelbër",
+      "description": "Avocado, pistachios, hemp seeds, matcha powder, honey",
+      "icon": "💚",
+      "price": 400,
+      "constraints": {},
+      "subMenu": {
+        "menuId": "yogurt-options-combo",
+        "included": [
+          {
+            "itemId": "MOD-YOGURT-BASE",
+            "quantity": 1,
+            "display": "none"
+          },
+          {
+            "itemId": "MOD-AVOCADO-YOGURT",
+            "quantity": 1,
+            "display": "included"
+          },
+          {
+            "itemId": "MOD-PISTACHIOS-YOGURT",
+            "quantity": 1,
+            "display": "included"
+          },
+          {
+            "itemId": "MOD-HEMP-SEEDS-YOGURT",
+            "quantity": 1,
+            "display": "included"
+          },
+          {
+            "itemId": "MOD-MATCHA-YOGURT",
+            "quantity": 1,
+            "display": "included"
+          },
+          {
+            "itemId": "MOD-HONEY-YOGURT",
+            "quantity": 1,
+            "display": "included"
+          }
+        ]
+      },
+      "order": 24
+    },
+    "ITEM-YOGURT-LAMBADA": {
+      "id": "ITEM-YOGURT-LAMBADA",
+      "name": "Lambada",
+      "description": "Pineapple, kiwi, mango, banana, coconut flakes, lemon peel, honey",
+      "icon": "🌴",
+      "price": 400,
+      "constraints": {},
+      "subMenu": {
+        "menuId": "yogurt-options-combo",
+        "included": [
+          {
+            "itemId": "MOD-YOGURT-BASE",
+            "quantity": 1,
+            "display": "none"
+          },
+          {
+            "itemId": "MOD-PINEAPPLE-YOGURT",
+            "quantity": 1,
+            "display": "included"
+          },
+          {
+            "itemId": "MOD-KIWI-YOGURT",
+            "quantity": 1,
+            "display": "included"
+          },
+          {
+            "itemId": "MOD-MANGO-YOGURT",
+            "quantity": 1,
+            "display": "included"
+          },
+          {
+            "itemId": "MOD-BANANA-YOGURT",
+            "quantity": 1,
+            "display": "included"
+          },
+          {
+            "itemId": "MOD-COCONUT-YOGURT",
+            "quantity": 1,
+            "display": "included"
+          },
+          {
+            "itemId": "MOD-LEMON-PEEL-YOGURT",
+            "quantity": 1,
+            "display": "included"
+          },
+          {
+            "itemId": "MOD-HONEY-YOGURT",
+            "quantity": 1,
+            "display": "included"
+          }
+        ]
+      },
+      "order": 25
+    },
+    "ITEM-YOGURT-PROTEINI": {
+      "id": "ITEM-YOGURT-PROTEINI",
+      "name": "Proteini",
+      "description": "Wild berries, blackberries, oats, mixed seeds, whey protein, peanut butter, honey",
+      "icon": "💪",
+      "price": 400,
+      "constraints": {},
+      "subMenu": {
+        "menuId": "yogurt-options-combo",
+        "included": [
+          {
+            "itemId": "MOD-YOGURT-BASE",
+            "quantity": 1,
+            "display": "none"
+          },
+          {
+            "itemId": "MOD-WILD-BERRIES-YOGURT",
+            "quantity": 1,
+            "display": "included"
+          },
+          {
+            "itemId": "MOD-BLACKBERRIES-YOGURT",
+            "quantity": 1,
+            "display": "included"
+          },
+          {
+            "itemId": "MOD-OATS-YOGURT",
+            "quantity": 1,
+            "display": "included"
+          },
+          {
+            "itemId": "MOD-MIXED-SEEDS-YOGURT",
+            "quantity": 1,
+            "display": "included"
+          },
+          {
+            "itemId": "MOD-WHEY-PROTEIN-YOGURT",
+            "quantity": 1,
+            "display": "included"
+          },
+          {
+            "itemId": "MOD-PEANUT-BUTTER-YOGURT",
+            "quantity": 1,
+            "display": "included"
+          },
+          {
+            "itemId": "MOD-HONEY-YOGURT",
+            "quantity": 1,
+            "display": "included"
+          }
+        ]
+      },
+      "order": 26
+    },
+    "ITEM-YOGURT-AROMAL": {
+      "id": "ITEM-YOGURT-AROMAL",
+      "name": "Aromal",
+      "description": "Sun-dried tomatoes, cucumber, olives, feta cheese, ajvar, olive oil, oregano",
+      "icon": "🌿",
+      "price": 400,
+      "constraints": {},
+      "subMenu": {
+        "menuId": "yogurt-options-combo-savory",
+        "included": [
+          {
+            "itemId": "MOD-YOGURT-BASE",
+            "quantity": 1,
+            "display": "none"
+          },
+          {
+            "itemId": "MOD-SUNDRIED-TOMATOES-YOGURT",
+            "quantity": 1,
+            "display": "included"
+          },
+          {
+            "itemId": "MOD-CUCUMBER-YOGURT",
+            "quantity": 1,
+            "display": "included"
+          },
+          {
+            "itemId": "MOD-OLIVES-YOGURT",
+            "quantity": 1,
+            "display": "included"
+          },
+          {
+            "itemId": "MOD-FETA-CHEESE-YOGURT",
+            "quantity": 1,
+            "display": "included"
+          },
+          {
+            "itemId": "MOD-AJVAR-YOGURT",
+            "quantity": 1,
+            "display": "included"
+          },
+          {
+            "itemId": "MOD-OLIVE-OIL-YOGURT",
+            "quantity": 1,
+            "display": "included"
+          },
+          {
+            "itemId": "MOD-OREGANO-YOGURT",
+            "quantity": 1,
+            "display": "included"
+          }
+        ]
+      },
+      "order": 27
+    },
+    "ITEM-YOGURT-OMEGA": {
+      "id": "ITEM-YOGURT-OMEGA",
+      "name": "Omega",
+      "description": "Mango, avocado, pistachios, hemp seeds, lemon juice, olive oil",
+      "icon": "🥑",
+      "price": 400,
+      "constraints": {},
+      "subMenu": {
+        "menuId": "yogurt-options-combo-savory",
+        "included": [
+          {
+            "itemId": "MOD-YOGURT-BASE",
+            "quantity": 1,
+            "display": "none"
+          },
+          {
+            "itemId": "MOD-MANGO-YOGURT",
+            "quantity": 1,
+            "display": "included"
+          },
+          {
+            "itemId": "MOD-AVOCADO-YOGURT",
+            "quantity": 1,
+            "display": "included"
+          },
+          {
+            "itemId": "MOD-PISTACHIOS-YOGURT",
+            "quantity": 1,
+            "display": "included"
+          },
+          {
+            "itemId": "MOD-HEMP-SEEDS-YOGURT",
+            "quantity": 1,
+            "display": "included"
+          },
+          {
+            "itemId": "MOD-LEMON-JUICE-YOGURT",
+            "quantity": 1,
+            "display": "included"
+          },
+          {
+            "itemId": "MOD-OLIVE-OIL-YOGURT",
+            "quantity": 1,
+            "display": "included"
+          }
+        ]
+      },
+      "order": 28
+    },
+    "ITEM-YOGURT-PINATA": {
+      "id": "ITEM-YOGURT-PINATA",
+      "name": "Piñata",
+      "description": "Avocado, cherry tomatoes, corn, pumpkin seeds, lemon juice, olive oil",
+      "icon": "🎉",
+      "price": 400,
+      "constraints": {},
+      "subMenu": {
+        "menuId": "yogurt-options-combo-savory",
+        "included": [
+          {
+            "itemId": "MOD-YOGURT-BASE",
+            "quantity": 1,
+            "display": "none"
+          },
+          {
+            "itemId": "MOD-AVOCADO-YOGURT",
+            "quantity": 1,
+            "display": "included"
+          },
+          {
+            "itemId": "MOD-CHERRY-TOMATOES-YOGURT",
+            "quantity": 1,
+            "display": "included"
+          },
+          {
+            "itemId": "MOD-CORN-YOGURT",
+            "quantity": 1,
+            "display": "included"
+          },
+          {
+            "itemId": "MOD-PUMPKIN-SEEDS-YOGURT",
+            "quantity": 1,
+            "display": "included"
+          },
+          {
+            "itemId": "MOD-LEMON-JUICE-YOGURT",
+            "quantity": 1,
+            "display": "included"
+          },
+          {
+            "itemId": "MOD-OLIVE-OIL-YOGURT",
+            "quantity": 1,
+            "display": "included"
+          }
+        ]
+      },
+      "order": 29
+    },
+    "ITEM-COFFEE-YOGURT": {
+      "id": "ITEM-COFFEE-YOGURT",
+      "name": "Caffè",
+      "icon": "☕",
+      "price": {
+        "groupId": "yogurt-size",
+        "prices": {
+          "mini": 150,
+          "standard": 250,
+          "family": 500
+        }
+      },
+      "constraints": {},
+      "subMenu": {
+        "menuId": "yogurt-options-main",
+        "included": []
+      },
+      "order": 2
+    },
+    "ITEM-DATE-YOGURT": {
+      "id": "ITEM-DATE-YOGURT",
+      "name": "Dattero",
+      "icon": "🟫",
+      "price": {
+        "groupId": "yogurt-size",
+        "prices": {
+          "mini": 150,
+          "standard": 250,
+          "family": 500
+        }
+      },
+      "constraints": {},
+      "subMenu": {
+        "menuId": "yogurt-options-main",
+        "included": []
+      },
+      "order": 3
+    },
+    "ITEM-LIME-YOGURT": {
+      "id": "ITEM-LIME-YOGURT",
+      "name": "Lime",
+      "icon": "🟢",
+      "price": {
+        "groupId": "yogurt-size",
+        "prices": {
+          "mini": 150,
+          "standard": 250,
+          "family": 500
+        }
+      },
+      "constraints": {},
+      "subMenu": {
+        "menuId": "yogurt-options-main",
+        "included": []
+      },
+      "order": 4
+    },
+    "ITEM-PEANUT-BUTTER-YOGURT": {
+      "id": "ITEM-PEANUT-BUTTER-YOGURT",
+      "name": "Burro di Arachidi",
+      "icon": "🥜",
+      "price": {
+        "groupId": "yogurt-size",
+        "prices": {
+          "mini": 150,
+          "standard": 250,
+          "family": 500
+        }
+      },
+      "constraints": {},
+      "subMenu": {
+        "menuId": "yogurt-options-main",
+        "included": []
+      },
+      "order": 5
+    },
+    "ITEM-PISTACHIO-YOGURT": {
+      "id": "ITEM-PISTACHIO-YOGURT",
+      "name": "Pistacchio",
+      "icon": "🟩",
+      "price": {
+        "groupId": "yogurt-size",
+        "prices": {
+          "mini": 150,
+          "standard": 250,
+          "family": 500
+        }
+      },
+      "constraints": {},
+      "subMenu": {
+        "menuId": "yogurt-options-main",
+        "included": []
+      },
+      "order": 6
+    },
+    "ITEM-PROTEIN-YOGURT": {
+      "id": "ITEM-PROTEIN-YOGURT",
+      "name": "Proteina",
+      "icon": "💪",
+      "price": {
+        "groupId": "yogurt-size",
+        "prices": {
+          "mini": 200,
+          "standard": 300,
+          "family": 500
+        }
+      },
+      "constraints": {},
+      "subMenu": {
+        "menuId": "yogurt-options-main",
+        "included": []
+      },
+      "order": 7
+    },
+    "ITEM-SAFFRON-YOGURT": {
+      "id": "ITEM-SAFFRON-YOGURT",
+      "name": "Zafferano",
+      "icon": "🟨",
+      "price": {
+        "groupId": "yogurt-size",
+        "prices": {
+          "mini": 200,
+          "standard": 300,
+          "family": 500
+        }
+      },
+      "constraints": {},
+      "subMenu": {
+        "menuId": "yogurt-options-main",
+        "included": []
+      },
+      "order": 8
+    },
+    "ITEM-WILD-BLUEBERRY-YOGURT": {
+      "id": "ITEM-WILD-BLUEBERRY-YOGURT",
+      "name": "Mirtillo Selvatico",
+      "icon": "🫐",
+      "price": {
+        "groupId": "yogurt-size",
+        "prices": {
+          "mini": 150,
+          "standard": 250,
+          "family": 500
+        }
+      },
+      "constraints": {},
+      "subMenu": {
+        "menuId": "yogurt-options-main",
+        "included": []
+      },
+      "order": 9
+    },
+    "ITEM-WILD-STRAWBERRY-YOGURT": {
+      "id": "ITEM-WILD-STRAWBERRY-YOGURT",
+      "name": "Fragola Selvatica",
+      "icon": "🍓",
+      "price": {
+        "groupId": "yogurt-size",
+        "prices": {
+          "mini": 200,
+          "standard": 300,
+          "family": 500
+        }
+      },
+      "constraints": {},
+      "subMenu": {
+        "menuId": "yogurt-options-main",
+        "included": []
+      },
+      "order": 10
+    },
+    "ITEM-YOGURT-HONEY": {
+      "id": "ITEM-YOGURT-HONEY",
+      "name": "Yogurt al Miele",
+      "description": "Yogurt cremoso dolcificato con miele puro",
+      "price": {
+        "groupId": "yogurt-size",
+        "prices": {
+          "mini": 150,
+          "standard": 250,
+          "family": 500
+        }
+      },
+      "constraints": {},
+      "order": 16
+    },
+    "ITEM-YOGURT-BLUEBERRY": {
+      "id": "ITEM-YOGURT-BLUEBERRY",
+      "name": "Yogurt ai Mirtilli",
+      "description": "Yogurt fresco con mirtilli",
+      "price": {
+        "groupId": "yogurt-size",
+        "prices": {
+          "mini": 150,
+          "standard": 250,
+          "family": 500
+        }
+      },
+      "constraints": {},
+      "order": 12
+    },
+    "ITEM-YOGURT-STRAWBERRY": {
+      "id": "ITEM-YOGURT-STRAWBERRY",
+      "name": "Yogurt alla Fragola",
+      "description": "Yogurt delizioso con fragole fresche",
+      "price": {
+        "groupId": "yogurt-size",
+        "prices": {
+          "mini": 200,
+          "standard": 300,
+          "family": 500
+        }
+      },
+      "constraints": {},
+      "order": 20
+    },
+    "ITEM-YOGURT-MIXED-BERRIES": {
+      "id": "ITEM-YOGURT-MIXED-BERRIES",
+      "name": "Yogurt ai Frutti di Bosco",
+      "description": "Yogurt con mix di frutti di bosco",
+      "price": {
+        "groupId": "yogurt-size",
+        "prices": {
+          "mini": 150,
+          "standard": 250,
+          "family": 500
+        }
+      },
+      "constraints": {},
+      "order": 17
+    },
+    "ITEM-YOGURT-GREEK": {
+      "id": "ITEM-YOGURT-GREEK",
+      "name": "Yogurt Greco",
+      "description": "Yogurt greco denso e cremoso",
+      "price": {
+        "groupId": "yogurt-size",
+        "prices": {
+          "mini": 200,
+          "standard": 300,
+          "family": 500
+        }
+      },
+      "constraints": {},
+      "order": 15
+    },
+    "ITEM-YOGURT-BLACKBERRY": {
+      "id": "ITEM-YOGURT-BLACKBERRY",
+      "name": "Yogurt alle More",
+      "description": "Yogurt morbido con more",
+      "price": {
+        "groupId": "yogurt-size",
+        "prices": {
+          "mini": 150,
+          "standard": 250,
+          "family": 500
+        }
+      },
+      "constraints": {},
+      "order": 11
+    },
+    "ITEM-YOGURT-POMEGRANATE": {
+      "id": "ITEM-YOGURT-POMEGRANATE",
+      "name": "Yogurt al Melograno",
+      "description": "Yogurt acidulo con melograno",
+      "price": {
+        "groupId": "yogurt-size",
+        "prices": {
+          "mini": 150,
+          "standard": 250,
+          "family": 500
+        }
+      },
+      "constraints": {},
+      "order": 18
+    },
+    "ITEM-YOGURT-CHERRY": {
+      "id": "ITEM-YOGURT-CHERRY",
+      "name": "Yogurt alla Ciliegia",
+      "description": "Yogurt dolce con ciliegie",
+      "price": {
+        "groupId": "yogurt-size",
+        "prices": {
+          "mini": 150,
+          "standard": 250,
+          "family": 500
+        }
+      },
+      "constraints": {},
+      "order": 14
+    },
+    "ITEM-YOGURT-CARROT": {
+      "id": "ITEM-YOGURT-CARROT",
+      "name": "Yogurt alla Carota",
+      "description": "Yogurt unico con marmellata di carote",
+      "price": {
+        "groupId": "yogurt-size",
+        "prices": {
+          "mini": 150,
+          "standard": 250,
+          "family": 500
+        }
+      },
+      "constraints": {},
+      "order": 13
+    },
+    "ITEM-YOGURT-ROSE": {
+      "id": "ITEM-YOGURT-ROSE",
+      "name": "Yogurt alla Rosa",
+      "description": "Yogurt delicato con marmellata di petali di rosa",
+      "price": {
+        "groupId": "yogurt-size",
+        "prices": {
+          "mini": 200,
+          "standard": 300,
+          "family": 500
+        }
+      },
+      "constraints": {},
+      "order": 19
+    }
+  },
+  "itemGroups": {
+    "build-your-own": {
+      "id": "build-your-own",
+      "name": "Build Your Own Yogurt",
+      "itemIds": [
+        "ITEM-YOGURT-BASE-SWEET",
+        "ITEM-YOGURT-BASE-SAVORY"
+      ]
+    },
+    "sweet-combos": {
+      "id": "sweet-combos",
+      "name": "Sweet Classic Combos",
+      "itemIds": [
+        "ITEM-YOGURT-ARA",
+        "ITEM-YOGURT-BJESHKA",
+        "ITEM-YOGURT-ENERGJIA",
+        "ITEM-YOGURT-GJELBER",
+        "ITEM-YOGURT-LAMBADA",
+        "ITEM-YOGURT-PROTEINI"
+      ]
+    },
+    "savory-combos": {
+      "id": "savory-combos",
+      "name": "Savory Classic Combos",
+      "itemIds": [
+        "ITEM-YOGURT-AROMAL",
+        "ITEM-YOGURT-OMEGA",
+        "ITEM-YOGURT-PINATA"
+      ]
+    },
+    "special-flavors": {
+      "name": "Gusti Speciali",
+      "itemIds": [
+        "ITEM-COFFEE-YOGURT",
+        "ITEM-DATE-YOGURT",
+        "ITEM-LIME-YOGURT",
+        "ITEM-PEANUT-BUTTER-YOGURT",
+        "ITEM-PISTACHIO-YOGURT",
+        "ITEM-PROTEIN-YOGURT",
+        "ITEM-SAFFRON-YOGURT",
+        "ITEM-WILD-BLUEBERRY-YOGURT",
+        "ITEM-WILD-STRAWBERRY-YOGURT",
+        "ITEM-YOGURT-BLACKBERRY",
+        "ITEM-YOGURT-BLUEBERRY",
+        "ITEM-YOGURT-CARROT",
+        "ITEM-YOGURT-CHERRY",
+        "ITEM-YOGURT-GREEK",
+        "ITEM-YOGURT-HONEY",
+        "ITEM-YOGURT-MIXED-BERRIES",
+        "ITEM-YOGURT-POMEGRANATE",
+        "ITEM-YOGURT-ROSE",
+        "ITEM-YOGURT-STRAWBERRY"
+      ]
+    }
+  },
+  "layout": [
+    {
+      "text": "Costruisci il Tuo Yogurt",
+      "classes": [
+        "menu-title"
+      ]
+    },
+    {
+      "type": "variant-selection",
+      "data": "yogurt-size"
+    },
+    {
+      "type": "item-group",
+      "data": "build-your-own"
+    },
+    {
+      "type": "item-group",
+      "data": "special-flavors"
+    },
+    {
+      "text": "Combinazioni Classiche",
+      "classes": [
+        "menu-title"
+      ]
+    },
+    {
+      "text": "Standard",
+      "classes": [
+        "variant-button-static"
+      ]
+    },
+    {
+      "type": "item-group",
+      "data": "sweet-combos"
+    },
+    {
+      "type": "item-group",
+      "data": "savory-combos"
+    }
+  ],
+  "variants": {
+    "yogurt-size": {
+      "id": "yogurt-size",
+      "variants": [
+        {
+          "id": "mini",
+          "name": "Mini (125g)",
+          "icon": "🥄"
+        },
+        {
+          "id": "standard",
+          "name": "Standard (250g)",
+          "icon": "🍵"
+        },
+        {
+          "id": "family",
+          "name": "Famiglia (500g)",
+          "icon": "🍲"
+        }
+      ],
+      "selectedId": "standard",
+      "name": "Dimensione"
+    }
+  }
+}

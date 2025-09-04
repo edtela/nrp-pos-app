@@ -3,101 +3,101 @@
   "name": "Toasts Menu",
   "currency": "ALL",
   "items": {
-    "walnut-yoast": {
-      "id": "walnut-yoast",
-      "name": "Walnut",
-      "description": "aromal yogurt, walnut butter, blueberries, chia seeds, honey",
-      "price": 300,
+    "ITEM-TOAST-PEANUT-BUTTER": {
+      "id": "ITEM-TOAST-PEANUT-BUTTER",
+      "name": "Peanut Butter Toast",
+      "description": "Peanut butter, banana, cinnamon, honey",
+      "icon": "🥜",
+      "price": 350,
       "constraints": {},
       "order": 0
     },
-    "peanut-yoast": {
-      "id": "peanut-yoast",
-      "name": "Peanut",
-      "description": "aromal yogurt, peanut butter, banana, flax seeds, cinnamon, honey",
-      "price": 300,
+    "ITEM-TOAST-ALMOND-BUTTER": {
+      "id": "ITEM-TOAST-ALMOND-BUTTER",
+      "name": "Almond Butter Toast",
+      "description": "Almond butter, blueberries, honey",
+      "icon": "🌰",
+      "price": 350,
       "constraints": {},
       "order": 1
     },
-    "berries-yoast": {
-      "id": "berries-yoast",
-      "name": "Berries",
-      "description": "aromal yogurt, berries jam, granola",
-      "price": 300,
+    "ITEM-TOAST-HAZELNUT-BUTTER": {
+      "id": "ITEM-TOAST-HAZELNUT-BUTTER",
+      "name": "Hazelnut Butter Toast",
+      "description": "Hazelnut butter, strawberries/raspberries, honey",
+      "icon": "🌰",
+      "price": 350,
       "constraints": {},
       "order": 2
     },
-    "prosciutto-yoast": {
-      "id": "prosciutto-yoast",
-      "name": "Prosciutto",
-      "description": "aromal yogurt, gouda cheese, pomadorini, chicken ham, zaatar, evoo",
-      "price": 300,
+    "ITEM-TOAST-AVOCADO-CLASSIC": {
+      "id": "ITEM-TOAST-AVOCADO-CLASSIC",
+      "name": "Classic Avocado",
+      "description": "Avocado, cherry tomatoes, corn, pumpkin seeds, lemon juice, olive oil",
+      "icon": "🥑",
+      "price": 400,
       "constraints": {},
       "order": 3
     },
-    "dried-pomodori": {
-      "id": "dried-pomodori",
+    "ITEM-TOAST-AVOCADO-DRIED-POMODORI": {
+      "id": "ITEM-TOAST-AVOCADO-DRIED-POMODORI",
       "name": "Dried Pomodori",
-      "description": "avocado, feta cheese, dried tomatoes, sunflower seeds",
-      "price": 350,
+      "description": "Avocado, goat cheese, sun-dried tomatoes, sunflower seeds, olive oil",
+      "icon": "🍅",
+      "price": 400,
       "constraints": {},
       "order": 4
     },
-    "porcini-avotoast": {
-      "id": "porcini-avotoast",
-      "name": "Porcini",
-      "description": "avocado, dried porcini, pine nuts",
-      "price": 350,
-      "constraints": {},
-      "order": 5
-    },
-    "avocado-avotoast": {
-      "id": "avocado-avotoast",
-      "name": "Avocado",
-      "description": "avocado, pomadorini, corn, pumpkin seeds, parsley, lemon, evoo",
-      "price": 350,
-      "constraints": {},
-      "order": 6
-    },
-    "premium-egg": {
-      "id": "premium-egg",
+    "ITEM-TOAST-AVOCADO-PREMIUM-EGG": {
+      "id": "ITEM-TOAST-AVOCADO-PREMIUM-EGG",
       "name": "Premium Egg",
-      "description": "avocado, chicken ham, boiled egg, chia seeds, evoo",
+      "description": "Avocado, chicken ham, boiled egg, pine nuts, olive oil",
+      "icon": "🥚",
       "price": 400,
       "constraints": {},
-      "order": 7
+      "order": 5
     }
   },
   "itemGroups": {
-    "group-yoast": {
-      "id": "group-yoast",
-      "name": "Yoast",
+    "nut-butter": {
+      "id": "nut-butter",
+      "name": "Nut Butter Toasts",
       "itemIds": [
-        "walnut-yoast",
-        "peanut-yoast",
-        "berries-yoast",
-        "prosciutto-yoast"
+        "ITEM-TOAST-PEANUT-BUTTER",
+        "ITEM-TOAST-ALMOND-BUTTER",
+        "ITEM-TOAST-HAZELNUT-BUTTER"
       ]
     },
-    "group-avotoast": {
-      "id": "group-avotoast",
-      "name": "Avotoast",
+    "avocado": {
+      "id": "avocado",
+      "name": "Avocado Toasts",
       "itemIds": [
-        "dried-pomodori",
-        "porcini-avotoast",
-        "avocado-avotoast",
-        "premium-egg"
+        "ITEM-TOAST-AVOCADO-CLASSIC",
+        "ITEM-TOAST-AVOCADO-DRIED-POMODORI",
+        "ITEM-TOAST-AVOCADO-PREMIUM-EGG"
       ]
     }
   },
   "layout": [
     {
-      "type": "item-group",
-      "data": "group-yoast"
+      "text": "Nut Butter Toasts",
+      "classes": [
+        "menu-title"
+      ]
     },
     {
       "type": "item-group",
-      "data": "group-avotoast"
+      "data": "nut-butter"
+    },
+    {
+      "text": "Avocado Toasts",
+      "classes": [
+        "menu-title"
+      ]
+    },
+    {
+      "type": "item-group",
+      "data": "avocado"
     }
   ]
 }

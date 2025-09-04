@@ -1,0 +1,540 @@
+{
+  "id": "smoothie-options-default",
+  "name": "Opsione Smoothie",
+  "currency": "ALL",
+  "items": {
+    "MOD-YOGURT-SMOOTHIE": {
+      "id": "MOD-YOGURT-SMOOTHIE",
+      "name": "Kos",
+      "description": "Kos autentik Aromal",
+      "icon": "🥛",
+      "price": 0,
+      "constraints": {
+        "choiceId": "base-choice"
+      },
+      "order": 0
+    },
+    "MOD-BANANA-SMOOTHIE": {
+      "id": "MOD-BANANA-SMOOTHIE",
+      "name": "Banane",
+      "description": "Shto 180G",
+      "icon": "🍌",
+      "price": 70,
+      "constraints": {},
+      "order": 2
+    },
+    "MOD-BERRIES-SMOOTHIE": {
+      "id": "MOD-BERRIES-SMOOTHIE",
+      "name": "Boronicë e egër",
+      "description": "Shto 15G",
+      "icon": "🫐",
+      "price": 70,
+      "constraints": {},
+      "order": 3
+    },
+    "MOD-STRAWBERRY-SMOOTHIE": {
+      "id": "MOD-STRAWBERRY-SMOOTHIE",
+      "name": "Luleshtrydhe",
+      "description": "Shto 15G",
+      "icon": "🍓",
+      "price": 70,
+      "constraints": {},
+      "order": 6
+    },
+    "MOD-RASPBERRY-SMOOTHIE": {
+      "id": "MOD-RASPBERRY-SMOOTHIE",
+      "name": "Mjedër",
+      "description": "Shto 15G",
+      "icon": "🔴",
+      "price": 70,
+      "constraints": {},
+      "order": 9
+    },
+    "MOD-BLACKBERRY-SMOOTHIE": {
+      "id": "MOD-BLACKBERRY-SMOOTHIE",
+      "name": "Manaferrë",
+      "description": "Shto 15G",
+      "icon": "🟣",
+      "price": 70,
+      "constraints": {},
+      "order": 7
+    },
+    "MOD-MANGO-SMOOTHIE": {
+      "id": "MOD-MANGO-SMOOTHIE",
+      "name": "Mango",
+      "description": "Shto 70G",
+      "icon": "🥭",
+      "price": 70,
+      "constraints": {},
+      "order": 8
+    },
+    "MOD-KIWI-SMOOTHIE": {
+      "id": "MOD-KIWI-SMOOTHIE",
+      "name": "Kivi",
+      "description": "Shto 70G",
+      "icon": "🥝",
+      "price": 70,
+      "constraints": {},
+      "order": 5
+    },
+    "MOD-GOJI-SMOOTHIE": {
+      "id": "MOD-GOJI-SMOOTHIE",
+      "name": "Goji Berry",
+      "description": "Shto 5G",
+      "icon": "❤️",
+      "price": 70,
+      "constraints": {},
+      "order": 4
+    },
+    "MOD-AVOCADO-SMOOTHIE": {
+      "id": "MOD-AVOCADO-SMOOTHIE",
+      "name": "Avokado",
+      "description": "Shto 70G",
+      "icon": "🥑",
+      "price": 70,
+      "constraints": {},
+      "order": 10
+    },
+    "MOD-SPINACH-SMOOTHIE": {
+      "id": "MOD-SPINACH-SMOOTHIE",
+      "name": "Spinaq",
+      "description": "Shto 15G",
+      "icon": "🥬",
+      "price": 70,
+      "constraints": {},
+      "order": 13
+    },
+    "MOD-KALE-SMOOTHIE": {
+      "id": "MOD-KALE-SMOOTHIE",
+      "name": "Kale",
+      "description": "Shto 15G",
+      "icon": "🥬",
+      "price": 70,
+      "constraints": {},
+      "order": 11
+    },
+    "MOD-LETTUCE-SMOOTHIE": {
+      "id": "MOD-LETTUCE-SMOOTHIE",
+      "name": "Sallatë Ferme",
+      "description": "Shto 15G",
+      "icon": "🥬",
+      "price": 70,
+      "constraints": {},
+      "order": 12
+    },
+    "MOD-NUTS-SMOOTHIE": {
+      "id": "MOD-NUTS-SMOOTHIE",
+      "name": "Arra të Përziera",
+      "description": "Shto 30G",
+      "icon": "🥜",
+      "price": 70,
+      "constraints": {},
+      "order": 15
+    },
+    "MOD-DATES-SMOOTHIE": {
+      "id": "MOD-DATES-SMOOTHIE",
+      "name": "Hurma",
+      "description": "Shto 30G",
+      "icon": "🟠",
+      "price": 70,
+      "constraints": {},
+      "order": 27
+    },
+    "MOD-SEEDS-SMOOTHIE": {
+      "id": "MOD-SEEDS-SMOOTHIE",
+      "name": "Fara të Përziera",
+      "description": "Shto 20G",
+      "icon": "🌱",
+      "price": 70,
+      "constraints": {},
+      "order": 25
+    },
+    "MOD-GRANOLA-SMOOTHIE": {
+      "id": "MOD-GRANOLA-SMOOTHIE",
+      "name": "Granola",
+      "description": "Shto 30G",
+      "icon": "🥣",
+      "price": 70,
+      "constraints": {},
+      "order": 37
+    },
+    "MOD-PEANUT-BUTTER-SMOOTHIE": {
+      "id": "MOD-PEANUT-BUTTER-SMOOTHIE",
+      "name": "Gjalpë Kikiriku",
+      "description": "Shto 30G",
+      "icon": "🥜",
+      "price": 70,
+      "constraints": {},
+      "order": 32
+    },
+    "MOD-HAZELNUT-BUTTER-SMOOTHIE": {
+      "id": "MOD-HAZELNUT-BUTTER-SMOOTHIE",
+      "name": "Gjalpë Lajthi",
+      "description": "Shto 30G",
+      "icon": "🌰",
+      "price": 70,
+      "constraints": {},
+      "order": 33
+    },
+    "MOD-PROTEIN-SMOOTHIE": {
+      "id": "MOD-PROTEIN-SMOOTHIE",
+      "name": "Proteinë Whey",
+      "description": "Shto 30G",
+      "icon": "💪",
+      "price": 100,
+      "constraints": {},
+      "order": 36
+    },
+    "MOD-MATCHA-SMOOTHIE": {
+      "id": "MOD-MATCHA-SMOOTHIE",
+      "name": "Matcha",
+      "description": "Shto 5G",
+      "icon": "🍵",
+      "price": 70,
+      "constraints": {},
+      "order": 34
+    },
+    "MOD-GINGER-SMOOTHIE": {
+      "id": "MOD-GINGER-SMOOTHIE",
+      "name": "Xhinxher",
+      "description": "Shto 10G",
+      "icon": "🫚",
+      "price": 70,
+      "constraints": {},
+      "order": 41
+    },
+    "MOD-PINEAPPLE-SMOOTHIE-ADDON": {
+      "id": "MOD-PINEAPPLE-SMOOTHIE-ADDON",
+      "name": "Ananas",
+      "description": "Shto 70G",
+      "icon": "🍍",
+      "price": 70,
+      "constraints": {},
+      "order": 1
+    },
+    "MOD-WALNUTS-SMOOTHIE": {
+      "id": "MOD-WALNUTS-SMOOTHIE",
+      "name": "Arra",
+      "description": "Shto 20G",
+      "icon": "🟫",
+      "price": 70,
+      "constraints": {},
+      "order": 14
+    },
+    "MOD-ALMONDS-SMOOTHIE": {
+      "id": "MOD-ALMONDS-SMOOTHIE",
+      "name": "Bajame",
+      "description": "Shto 20G",
+      "icon": "🟡",
+      "price": 70,
+      "constraints": {},
+      "order": 16
+    },
+    "MOD-HAZELNUTS-SMOOTHIE": {
+      "id": "MOD-HAZELNUTS-SMOOTHIE",
+      "name": "Lajthi",
+      "description": "Shto 20G",
+      "icon": "🟤",
+      "price": 70,
+      "constraints": {},
+      "order": 17
+    },
+    "MOD-PISTACHIOS-SMOOTHIE": {
+      "id": "MOD-PISTACHIOS-SMOOTHIE",
+      "name": "Pistache",
+      "description": "Shto 20G",
+      "icon": "🟢",
+      "price": 70,
+      "constraints": {},
+      "order": 19
+    },
+    "MOD-PINE-NUTS-SMOOTHIE": {
+      "id": "MOD-PINE-NUTS-SMOOTHIE",
+      "name": "Pinjol",
+      "description": "Shto 15G",
+      "icon": "⚪",
+      "price": 80,
+      "constraints": {},
+      "order": 18
+    },
+    "MOD-SUNFLOWER-SEEDS-SMOOTHIE": {
+      "id": "MOD-SUNFLOWER-SEEDS-SMOOTHIE",
+      "name": "Fara Lulediellit",
+      "description": "Shto 15G",
+      "icon": "🌻",
+      "price": 60,
+      "constraints": {},
+      "order": 24
+    },
+    "MOD-PUMPKIN-SEEDS-SMOOTHIE": {
+      "id": "MOD-PUMPKIN-SEEDS-SMOOTHIE",
+      "name": "Fara Kungulli",
+      "description": "Shto 15G",
+      "icon": "🎃",
+      "price": 60,
+      "constraints": {},
+      "order": 22
+    },
+    "MOD-FLAX-SEEDS-SMOOTHIE": {
+      "id": "MOD-FLAX-SEEDS-SMOOTHIE",
+      "name": "Fara Liri",
+      "description": "Shto 15G",
+      "icon": "🟫",
+      "price": 60,
+      "constraints": {},
+      "order": 23
+    },
+    "MOD-CHIA-SEEDS-SMOOTHIE": {
+      "id": "MOD-CHIA-SEEDS-SMOOTHIE",
+      "name": "Fara Chia",
+      "description": "Shto 15G",
+      "icon": "⚫",
+      "price": 60,
+      "constraints": {},
+      "order": 20
+    },
+    "MOD-HEMP-SEEDS-SMOOTHIE": {
+      "id": "MOD-HEMP-SEEDS-SMOOTHIE",
+      "name": "Fara Kënëpe",
+      "description": "Shto 15G",
+      "icon": "🌿",
+      "price": 60,
+      "constraints": {},
+      "order": 21
+    },
+    "MOD-ALMOND-BUTTER-SMOOTHIE": {
+      "id": "MOD-ALMOND-BUTTER-SMOOTHIE",
+      "name": "Gjalpë Bajame",
+      "description": "Shto 30G",
+      "icon": "🟨",
+      "price": 80,
+      "constraints": {},
+      "order": 31
+    },
+    "MOD-WALNUT-BUTTER-SMOOTHIE": {
+      "id": "MOD-WALNUT-BUTTER-SMOOTHIE",
+      "name": "Gjalpë Arre",
+      "description": "Shto 30G",
+      "icon": "🌰",
+      "price": 80,
+      "constraints": {},
+      "order": 30
+    },
+    "MOD-BEE-POLLEN-SMOOTHIE": {
+      "id": "MOD-BEE-POLLEN-SMOOTHIE",
+      "name": "Polen Blete",
+      "description": "Shto 5G",
+      "icon": "🐝",
+      "price": 80,
+      "constraints": {},
+      "order": 35
+    },
+    "MOD-CINNAMON-SMOOTHIE": {
+      "id": "MOD-CINNAMON-SMOOTHIE",
+      "name": "Kanellë",
+      "description": "Shto 3G",
+      "icon": "🟰",
+      "price": 40,
+      "constraints": {},
+      "order": 38
+    },
+    "MOD-OAT-SMOOTHIE": {
+      "id": "MOD-OAT-SMOOTHIE",
+      "name": "Tërshërë",
+      "description": "Shto 30G",
+      "icon": "🌾",
+      "price": 50,
+      "constraints": {},
+      "order": 40
+    },
+    "MOD-LEMON-PEEL-SMOOTHIE": {
+      "id": "MOD-LEMON-PEEL-SMOOTHIE",
+      "name": "Lëkurë Limoni",
+      "description": "Shto 3G",
+      "icon": "🍋",
+      "price": 40,
+      "constraints": {},
+      "order": 39
+    },
+    "MOD-COCONUT-SMOOTHIE": {
+      "id": "MOD-COCONUT-SMOOTHIE",
+      "name": "Kokos",
+      "description": "Shto 15G",
+      "icon": "🥥",
+      "price": 60,
+      "constraints": {},
+      "order": 28
+    },
+    "MOD-CRANBERRIES-SMOOTHIE": {
+      "id": "MOD-CRANBERRIES-SMOOTHIE",
+      "name": "Boronicë e Kuqe",
+      "description": "Shto 15G",
+      "icon": "🩷",
+      "price": 60,
+      "constraints": {},
+      "order": 26
+    },
+    "MOD-RAISINS-SMOOTHIE": {
+      "id": "MOD-RAISINS-SMOOTHIE",
+      "name": "Rrush i Thatë",
+      "description": "Shto 20G",
+      "icon": "🍇",
+      "price": 50,
+      "constraints": {},
+      "order": 29
+    }
+  },
+  "itemGroups": {
+    "included": {
+      "id": "included",
+      "name": "Të Përfshira",
+      "itemIds": []
+    },
+    "base-yogurt": {
+      "id": "base-yogurt",
+      "name": "Baza",
+      "itemIds": [
+        "MOD-YOGURT-SMOOTHIE"
+      ]
+    },
+    "fruits": {
+      "id": "fruits",
+      "name": "Fruta",
+      "itemIds": [
+        "MOD-PINEAPPLE-SMOOTHIE-ADDON",
+        "MOD-BANANA-SMOOTHIE",
+        "MOD-BERRIES-SMOOTHIE",
+        "MOD-GOJI-SMOOTHIE",
+        "MOD-KIWI-SMOOTHIE",
+        "MOD-STRAWBERRY-SMOOTHIE",
+        "MOD-BLACKBERRY-SMOOTHIE",
+        "MOD-MANGO-SMOOTHIE",
+        "MOD-RASPBERRY-SMOOTHIE"
+      ]
+    },
+    "vegetables": {
+      "id": "vegetables",
+      "name": "Perime",
+      "itemIds": [
+        "MOD-AVOCADO-SMOOTHIE",
+        "MOD-KALE-SMOOTHIE",
+        "MOD-LETTUCE-SMOOTHIE",
+        "MOD-SPINACH-SMOOTHIE"
+      ]
+    },
+    "nuts": {
+      "id": "nuts",
+      "name": "Arra",
+      "itemIds": [
+        "MOD-WALNUTS-SMOOTHIE",
+        "MOD-NUTS-SMOOTHIE",
+        "MOD-ALMONDS-SMOOTHIE",
+        "MOD-HAZELNUTS-SMOOTHIE",
+        "MOD-PINE-NUTS-SMOOTHIE",
+        "MOD-PISTACHIOS-SMOOTHIE"
+      ]
+    },
+    "seeds": {
+      "id": "seeds",
+      "name": "Fara",
+      "itemIds": [
+        "MOD-CHIA-SEEDS-SMOOTHIE",
+        "MOD-HEMP-SEEDS-SMOOTHIE",
+        "MOD-PUMPKIN-SEEDS-SMOOTHIE",
+        "MOD-FLAX-SEEDS-SMOOTHIE",
+        "MOD-SUNFLOWER-SEEDS-SMOOTHIE",
+        "MOD-SEEDS-SMOOTHIE"
+      ]
+    },
+    "dried-fruits": {
+      "id": "dried-fruits",
+      "name": "Fruta të Thara",
+      "itemIds": [
+        "MOD-CRANBERRIES-SMOOTHIE",
+        "MOD-DATES-SMOOTHIE",
+        "MOD-COCONUT-SMOOTHIE",
+        "MOD-RAISINS-SMOOTHIE"
+      ]
+    },
+    "nut-butters": {
+      "id": "nut-butters",
+      "name": "Gjalpë Arre",
+      "itemIds": [
+        "MOD-WALNUT-BUTTER-SMOOTHIE",
+        "MOD-ALMOND-BUTTER-SMOOTHIE",
+        "MOD-PEANUT-BUTTER-SMOOTHIE",
+        "MOD-HAZELNUT-BUTTER-SMOOTHIE"
+      ]
+    },
+    "superfoods": {
+      "id": "superfoods",
+      "name": "Superfoods",
+      "itemIds": [
+        "MOD-MATCHA-SMOOTHIE",
+        "MOD-BEE-POLLEN-SMOOTHIE",
+        "MOD-PROTEIN-SMOOTHIE"
+      ]
+    },
+    "extras": {
+      "id": "extras",
+      "name": "Ekstra",
+      "itemIds": [
+        "MOD-GRANOLA-SMOOTHIE",
+        "MOD-CINNAMON-SMOOTHIE",
+        "MOD-LEMON-PEEL-SMOOTHIE",
+        "MOD-OAT-SMOOTHIE",
+        "MOD-GINGER-SMOOTHIE"
+      ]
+    }
+  },
+  "layout": [
+    {
+      "type": "item-group",
+      "data": "included"
+    },
+    {
+      "type": "item-group",
+      "data": "base-yogurt"
+    },
+    {
+      "type": "item-group",
+      "data": "fruits"
+    },
+    {
+      "type": "item-group",
+      "data": "vegetables"
+    },
+    {
+      "type": "item-group",
+      "data": "nuts"
+    },
+    {
+      "type": "item-group",
+      "data": "seeds"
+    },
+    {
+      "type": "item-group",
+      "data": "dried-fruits"
+    },
+    {
+      "type": "item-group",
+      "data": "nut-butters"
+    },
+    {
+      "type": "item-group",
+      "data": "superfoods"
+    },
+    {
+      "type": "item-group",
+      "data": "extras"
+    }
+  ],
+  "choices": {
+    "base-choice": {
+      "id": "base-choice",
+      "min": 1,
+      "max": 1
+    }
+  },
+  "modifierMenu": true
+}

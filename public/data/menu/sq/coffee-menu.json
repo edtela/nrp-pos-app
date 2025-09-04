@@ -1,0 +1,260 @@
+{
+  "id": "coffee-menu",
+  "name": "Menu Kafe",
+  "currency": "ALL",
+  "items": {
+    "ITEM-COFFEE-ESPRESSO": {
+      "id": "ITEM-COFFEE-ESPRESSO",
+      "name": "Espresso",
+      "icon": "☕",
+      "price": 90,
+      "constraints": {},
+      "subMenu": {
+        "menuId": "coffee-options-espresso-only",
+        "included": [
+          {
+            "itemId": "opt-normale"
+          }
+        ]
+      },
+      "order": 0
+    },
+    "ITEM-COFFEE-ESPRESSO-MACCHIATO": {
+      "id": "ITEM-COFFEE-ESPRESSO-MACCHIATO",
+      "name": "Espresso Macchiato",
+      "icon": "☕",
+      "price": 100,
+      "constraints": {},
+      "subMenu": {
+        "menuId": "coffee-options-macchiato-only",
+        "included": [
+          {
+            "itemId": "opt-milk"
+          }
+        ]
+      },
+      "order": 1
+    },
+    "ITEM-COFFEE-AMERICANO": {
+      "id": "ITEM-COFFEE-AMERICANO",
+      "name": "Kafe Amerikano",
+      "icon": "☕",
+      "price": 150,
+      "constraints": {},
+      "subMenu": {
+        "menuId": "coffee-options-americano-only",
+        "included": [
+          {
+            "itemId": "opt-no-milk"
+          }
+        ]
+      },
+      "order": 2
+    },
+    "ITEM-COFFEE-CAPPUCCINO": {
+      "id": "ITEM-COFFEE-CAPPUCCINO",
+      "name": "Cappuccino",
+      "icon": "☕",
+      "price": 180,
+      "constraints": {},
+      "subMenu": {
+        "menuId": "coffee-options",
+        "included": [
+          {
+            "itemId": "opt-milk"
+          }
+        ]
+      },
+      "order": 3
+    },
+    "ITEM-COFFEE-LATTE": {
+      "id": "ITEM-COFFEE-LATTE",
+      "name": "Kafe Latte",
+      "icon": "☕",
+      "price": 180,
+      "constraints": {},
+      "subMenu": {
+        "menuId": "coffee-options",
+        "included": [
+          {
+            "itemId": "opt-milk"
+          }
+        ]
+      },
+      "order": 4
+    },
+    "ITEM-COFFEE-ICED": {
+      "id": "ITEM-COFFEE-ICED",
+      "name": "Kafe e Ftohtë",
+      "icon": "🧊",
+      "price": 150,
+      "constraints": {},
+      "subMenu": {
+        "menuId": "coffee-options-espresso-only",
+        "included": [
+          {
+            "itemId": "opt-normale"
+          }
+        ]
+      },
+      "order": 5
+    },
+    "ITEM-COFFEE-ICED-AMERICANO": {
+      "id": "ITEM-COFFEE-ICED-AMERICANO",
+      "name": "Amerikano e Ftohtë",
+      "icon": "🧊",
+      "price": 180,
+      "constraints": {},
+      "subMenu": {
+        "menuId": "coffee-options-americano-only",
+        "included": [
+          {
+            "itemId": "opt-no-milk"
+          }
+        ]
+      },
+      "order": 6
+    },
+    "ITEM-COFFEE-ICED-CAPPUCCINO": {
+      "id": "ITEM-COFFEE-ICED-CAPPUCCINO",
+      "name": "Kapuçino e Ftohtë",
+      "icon": "🧊",
+      "price": 200,
+      "constraints": {},
+      "subMenu": {
+        "menuId": "coffee-options",
+        "included": [
+          {
+            "itemId": "opt-milk"
+          }
+        ]
+      },
+      "order": 7
+    },
+    "ITEM-COFFEE-ICED-LATTE": {
+      "id": "ITEM-COFFEE-ICED-LATTE",
+      "name": "Latte e Ftohtë",
+      "icon": "🧊",
+      "price": 200,
+      "constraints": {},
+      "subMenu": {
+        "menuId": "coffee-options",
+        "included": [
+          {
+            "itemId": "opt-milk"
+          }
+        ]
+      },
+      "order": 8
+    },
+    "ITEM-COFFEE-FRAPPE": {
+      "id": "ITEM-COFFEE-FRAPPE",
+      "name": "Frappe",
+      "icon": "🥤",
+      "price": 200,
+      "constraints": {},
+      "subMenu": {
+        "menuId": "coffee-options-frappe-only",
+        "included": [
+          {
+            "itemId": "opt-medium-sweet"
+          },
+          {
+            "itemId": "opt-milk"
+          }
+        ]
+      },
+      "order": 9
+    },
+    "ITEM-COFFEE-TURKISH": {
+      "id": "ITEM-COFFEE-TURKISH",
+      "name": "Kafe Turke",
+      "icon": "🫖",
+      "price": 80,
+      "constraints": {},
+      "subMenu": {
+        "menuId": "coffee-options-turkish-only",
+        "included": [
+          {
+            "itemId": "opt-medium-sweet"
+          }
+        ]
+      },
+      "order": 10
+    },
+    "ITEM-COFFEE-HOT-CHOCOLATE": {
+      "id": "ITEM-COFFEE-HOT-CHOCOLATE",
+      "name": "Çokollatë e Nxehtë",
+      "icon": "🍫",
+      "price": 200,
+      "constraints": {},
+      "subMenu": {
+        "menuId": "coffee-options-milk-only",
+        "included": [
+          {
+            "itemId": "opt-milk"
+          }
+        ]
+      },
+      "order": 11
+    }
+  },
+  "itemGroups": {
+    "group-hot-coffee": {
+      "id": "group-hot-coffee",
+      "name": "Kafe të Nxehta",
+      "itemIds": [
+        "ITEM-COFFEE-ESPRESSO",
+        "ITEM-COFFEE-ESPRESSO-MACCHIATO",
+        "ITEM-COFFEE-AMERICANO",
+        "ITEM-COFFEE-CAPPUCCINO",
+        "ITEM-COFFEE-LATTE"
+      ]
+    },
+    "group-cold-coffee": {
+      "id": "group-cold-coffee",
+      "name": "Kafe të Ftohta",
+      "itemIds": [
+        "ITEM-COFFEE-ICED",
+        "ITEM-COFFEE-ICED-AMERICANO",
+        "ITEM-COFFEE-ICED-CAPPUCCINO",
+        "ITEM-COFFEE-ICED-LATTE",
+        "ITEM-COFFEE-FRAPPE"
+      ]
+    },
+    "group-coffee-specialties": {
+      "id": "group-coffee-specialties",
+      "name": "Specialitete",
+      "itemIds": [
+        "ITEM-COFFEE-TURKISH",
+        "ITEM-COFFEE-HOT-CHOCOLATE"
+      ]
+    }
+  },
+  "layout": [
+    {
+      "text": "Të Nxehta",
+      "classes": [
+        "menu-title"
+      ]
+    },
+    {
+      "type": "item-group",
+      "data": "group-hot-coffee"
+    },
+    {
+      "text": "Të Ftohta",
+      "classes": [
+        "menu-title"
+      ]
+    },
+    {
+      "type": "item-group",
+      "data": "group-cold-coffee"
+    },
+    {
+      "type": "item-group",
+      "data": "group-coffee-specialties"
+    }
+  ]
+}

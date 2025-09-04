@@ -3,119 +3,191 @@
   "name": "Crepes Menu",
   "currency": "ALL",
   "items": {
-    "berryland": {
-      "id": "berryland",
-      "name": "Berryland",
-      "description": "aromal yogurt, berries jam, blueberries, strawberries/raspberries",
-      "price": 300,
+    "ITEM-CREPE-CLASSIC-CHOCOLATE": {
+      "id": "ITEM-CREPE-CLASSIC-CHOCOLATE",
+      "name": "Dark Chocolate",
+      "description": "Classic crepe with dark chocolate",
+      "icon": "🍫",
+      "price": 200,
       "constraints": {},
       "order": 0
     },
-    "honey-bee": {
-      "id": "honey-bee",
-      "name": "Honey Bee",
-      "description": "honey, banana, blackberries, walnut butter, cinnamon",
-      "price": 300,
+    "ITEM-CREPE-CLASSIC-WHITE-CHOCOLATE": {
+      "id": "ITEM-CREPE-CLASSIC-WHITE-CHOCOLATE",
+      "name": "White Chocolate",
+      "description": "Classic crepe with white chocolate",
+      "icon": "🤍",
+      "price": 200,
       "constraints": {},
       "order": 1
     },
-    "crispy-bite": {
-      "id": "crispy-bite",
-      "name": "Crispy Bite",
-      "description": "nutella, banana, strawberries/raspberries, granola, peanut butter",
-      "price": 350,
+    "ITEM-CREPE-CLASSIC-HONEY": {
+      "id": "ITEM-CREPE-CLASSIC-HONEY",
+      "name": "Honey",
+      "description": "Classic crepe with honey",
+      "icon": "🍯",
+      "price": 200,
       "constraints": {},
       "order": 2
     },
-    "nut-berry": {
-      "id": "nut-berry",
-      "name": "Nut&Berry",
-      "description": "nutella, blueberries, blackberries, hazelnuts, almonds",
-      "price": 350,
+    "ITEM-CREPE-CLASSIC-JAM": {
+      "id": "ITEM-CREPE-CLASSIC-JAM",
+      "name": "Forest Fruit Jam",
+      "description": "Classic crepe with forest fruit jam",
+      "icon": "🍓",
+      "price": 200,
       "constraints": {},
       "order": 3
     },
-    "tropic-snow": {
-      "id": "tropic-snow",
-      "name": "Tropic Snow",
-      "description": "white chocolate, kiwi, pineapple, mango, coconut",
-      "price": 350,
+    "ITEM-CREPE-CLASSIC-NUTELLA": {
+      "id": "ITEM-CREPE-CLASSIC-NUTELLA",
+      "name": "Nutella",
+      "description": "Classic crepe with Nutella",
+      "icon": "🌰",
+      "price": 200,
       "constraints": {},
       "order": 4
     },
-    "chicky-meal": {
-      "id": "chicky-meal",
-      "name": "Chicky Meal",
-      "description": "aromal yogurt, gouda cheese, pomadorini, chicken ham, zaatar, evoo",
-      "price": 300,
+    "ITEM-CREPE-CLASSIC-YOGURT": {
+      "id": "ITEM-CREPE-CLASSIC-YOGURT",
+      "name": "Greek Yogurt",
+      "description": "Classic crepe with Greek yogurt",
+      "icon": "🥛",
+      "price": 200,
       "constraints": {},
       "order": 5
     },
-    "farmville": {
-      "id": "farmville",
-      "name": "Farmville",
-      "description": "aromal yogurt, feta cheese, dried tomatoes, cucumber, olives, ajvar, oregano, evoo",
-      "price": 300,
+    "ITEM-CREPE-HONEY-BEE": {
+      "id": "ITEM-CREPE-HONEY-BEE",
+      "name": "Honey Bee",
+      "description": "Honey, banana, blackberries, walnuts, cinnamon",
+      "icon": "🐝",
+      "price": 350,
       "constraints": {},
       "order": 6
     },
-    "porcini-boost": {
-      "id": "porcini-boost",
-      "name": "Porcini Boost",
-      "description": "pesto, gouda cheese, dried porcini, pomadorini, zaatar, evoo",
+    "ITEM-CREPE-NUT-BERRY": {
+      "id": "ITEM-CREPE-NUT-BERRY",
+      "name": "Nut&Berry",
+      "description": "Dark chocolate, wild blueberries, blackberries, mixed nuts",
+      "icon": "🫐",
       "price": 350,
       "constraints": {},
       "order": 7
     },
-    "mexican-street": {
-      "id": "mexican-street",
-      "name": "Mexican Street",
-      "description": "aromal yogurt, gouda cheese, avocado, pomadorini, corn, parsley, lemon, evoo",
-      "price": 350,
+    "ITEM-CREPE-CRISPY-BITE": {
+      "id": "ITEM-CREPE-CRISPY-BITE",
+      "name": "Crispy Bite",
+      "description": "Nutella, banana, strawberries/raspberries, granola, peanut butter",
+      "icon": "🥜",
+      "price": 400,
       "constraints": {},
       "order": 8
     },
-    "greenchick": {
-      "id": "greenchick",
-      "name": "GreenChick",
-      "description": "aromal yogurt, feta cheese, avocado, chicken ham, dried tomatoes, evoo",
-      "price": 350,
+    "ITEM-CREPE-TROPIC-SNOW": {
+      "id": "ITEM-CREPE-TROPIC-SNOW",
+      "name": "Tropic Snow",
+      "description": "White chocolate, kiwi, pineapple, mango, coconut",
+      "icon": "🌴",
+      "price": 400,
       "constraints": {},
       "order": 9
+    },
+    "ITEM-CREPE-CHICKY-MEAL": {
+      "id": "ITEM-CREPE-CHICKY-MEAL",
+      "name": "Chicky Meal",
+      "description": "Aromal yogurt, gouda cheese, cherry tomatoes, chicken ham, zaatar, olive oil",
+      "icon": "🐔",
+      "price": 350,
+      "constraints": {},
+      "order": 10
+    },
+    "ITEM-CREPE-FARMVILLE": {
+      "id": "ITEM-CREPE-FARMVILLE",
+      "name": "Farmville",
+      "description": "Aromal yogurt, goat cheese, sun-dried tomatoes, cucumber, olives, ajvar, oregano, olive oil",
+      "icon": "🧑‍🌾",
+      "price": 350,
+      "constraints": {},
+      "order": 11
+    },
+    "ITEM-CREPE-MEXICAN-STREET": {
+      "id": "ITEM-CREPE-MEXICAN-STREET",
+      "name": "Mexican Street",
+      "description": "Aromal yogurt, gouda cheese, avocado, cherry tomatoes, corn, lemon juice, olive oil",
+      "icon": "🌮",
+      "price": 400,
+      "constraints": {},
+      "order": 12
+    },
+    "ITEM-CREPE-GREENCHICK": {
+      "id": "ITEM-CREPE-GREENCHICK",
+      "name": "GreenChick",
+      "description": "Aromal yogurt, goat cheese, avocado, chicken ham, sun-dried tomatoes, olive oil",
+      "icon": "🥑",
+      "price": 400,
+      "constraints": {},
+      "order": 13
     }
   },
   "itemGroups": {
-    "group-sweet": {
-      "id": "group-sweet",
-      "name": "Sweet Crepes",
+    "classic-crepes": {
+      "id": "classic-crepes",
+      "name": "Classic Crepes",
       "itemIds": [
-        "berryland",
-        "honey-bee",
-        "crispy-bite",
-        "nut-berry",
-        "tropic-snow"
+        "ITEM-CREPE-CLASSIC-CHOCOLATE",
+        "ITEM-CREPE-CLASSIC-WHITE-CHOCOLATE",
+        "ITEM-CREPE-CLASSIC-HONEY",
+        "ITEM-CREPE-CLASSIC-JAM",
+        "ITEM-CREPE-CLASSIC-NUTELLA",
+        "ITEM-CREPE-CLASSIC-YOGURT"
       ]
     },
-    "group-savory": {
-      "id": "group-savory",
-      "name": "Savory Crepes",
+    "signature-sweet": {
+      "id": "signature-sweet",
+      "name": "Sweet Signatures",
       "itemIds": [
-        "chicky-meal",
-        "farmville",
-        "porcini-boost",
-        "mexican-street",
-        "greenchick"
+        "ITEM-CREPE-HONEY-BEE",
+        "ITEM-CREPE-NUT-BERRY",
+        "ITEM-CREPE-CRISPY-BITE",
+        "ITEM-CREPE-TROPIC-SNOW"
+      ]
+    },
+    "signature-savory": {
+      "id": "signature-savory",
+      "name": "Savory Signatures",
+      "itemIds": [
+        "ITEM-CREPE-CHICKY-MEAL",
+        "ITEM-CREPE-FARMVILLE",
+        "ITEM-CREPE-MEXICAN-STREET",
+        "ITEM-CREPE-GREENCHICK"
       ]
     }
   },
   "layout": [
     {
-      "type": "item-group",
-      "data": "group-sweet"
+      "text": "Classic Crepes",
+      "classes": [
+        "menu-title"
+      ]
     },
     {
       "type": "item-group",
-      "data": "group-savory"
+      "data": "classic-crepes"
+    },
+    {
+      "text": "Signature Crepes",
+      "classes": [
+        "menu-title"
+      ]
+    },
+    {
+      "type": "item-group",
+      "data": "signature-sweet"
+    },
+    {
+      "type": "item-group",
+      "data": "signature-savory"
     }
   ]
 }

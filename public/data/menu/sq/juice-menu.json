@@ -3,390 +3,368 @@
   "name": "Menu Lëngjesh",
   "currency": "ALL",
   "items": {
-    "apple-juice": {
-      "id": "apple-juice",
+    "ITEM-JUICE-APPLE": {
+      "id": "ITEM-JUICE-APPLE",
       "name": "Lëng Molle",
-      "description": "Lëng i freskët molle",
       "icon": "🍎",
-      "price": 120,
+      "price": 150,
       "constraints": {},
-      "subMenu": {
-        "menuId": "juice-options",
-        "included": [
-          {
-            "itemId": "opt-apple",
-            "display": "none"
-          }
-        ]
-      },
-      "order": 0
+      "order": 2
     },
-    "orange-juice": {
-      "id": "orange-juice",
+    "ITEM-JUICE-APPLE-KIDS": {
+      "id": "ITEM-JUICE-APPLE-KIDS",
+      "name": "Lëng Molle për fëmijë",
+      "icon": "🍎",
+      "price": 100,
+      "constraints": {},
+      "order": 11
+    },
+    "ITEM-JUICE-ORANGE": {
+      "id": "ITEM-JUICE-ORANGE",
       "name": "Lëng Portokalli",
-      "description": "Lëng i freskët portokalli",
+      "icon": "🍊",
+      "price": 200,
+      "constraints": {},
+      "order": 3
+    },
+    "ITEM-JUICE-ORANGE-KIDS": {
+      "id": "ITEM-JUICE-ORANGE-KIDS",
+      "name": "Lëng Portokalli për fëmijë",
       "icon": "🍊",
       "price": 150,
       "constraints": {},
-      "subMenu": {
-        "menuId": "juice-options",
-        "included": [
-          {
-            "itemId": "opt-orange",
-            "display": "none"
-          }
-        ]
-      },
-      "order": 1
+      "order": 12
     },
-    "carrot-juice": {
-      "id": "carrot-juice",
-      "name": "Lëng Karrote",
-      "description": "Lëng i freskët karrote",
-      "icon": "🥕",
-      "price": 200,
-      "constraints": {},
-      "subMenu": {
-        "menuId": "juice-options",
-        "included": [
-          {
-            "itemId": "opt-carrot",
-            "display": "none"
-          }
-        ]
-      },
-      "order": 2
-    },
-    "celery-juice": {
-      "id": "celery-juice",
-      "name": "Lëng Selino",
-      "description": "Lëng i freskët selino",
-      "icon": "🟢",
+    "ITEM-JUICE-POMEGRANATE": {
+      "id": "ITEM-JUICE-POMEGRANATE",
+      "name": "Lëng Shege",
+      "icon": "🫐",
       "price": 250,
       "constraints": {},
-      "subMenu": {
-        "menuId": "juice-options",
-        "included": [
-          {
-            "itemId": "opt-celery",
-            "display": "none"
-          }
-        ]
-      },
-      "order": 3
+      "order": 5
     },
-    "pineapple-juice": {
-      "id": "pineapple-juice",
+    "ITEM-JUICE-POMEGRANATE-KIDS": {
+      "id": "ITEM-JUICE-POMEGRANATE-KIDS",
+      "name": "Lëng Shege për fëmijë",
+      "icon": "🫐",
+      "price": 150,
+      "constraints": {},
+      "order": 13
+    },
+    "ITEM-JUICE-CELERY": {
+      "id": "ITEM-JUICE-CELERY",
+      "name": "Lëng Selinoje",
+      "icon": "🥬",
+      "price": 300,
+      "constraints": {},
+      "order": 4
+    },
+    "ITEM-JUICE-PINEAPPLE": {
+      "id": "ITEM-JUICE-PINEAPPLE",
       "name": "Lëng Ananasi",
-      "description": "Lëng i freskët ananasi",
       "icon": "🍍",
       "price": 350,
       "constraints": {},
-      "subMenu": {
-        "menuId": "juice-options",
-        "included": [
-          {
-            "itemId": "opt-pineapple",
-            "display": "none"
-          }
-        ]
-      },
-      "order": 4
+      "order": 0
     },
-    "beet-it": {
-      "id": "beet-it",
-      "name": "Beet It",
-      "description": "portokall, panxhar, mollë, karrota",
-      "icon": "🥤",
+    "ITEM-JUICE-CARROT": {
+      "id": "ITEM-JUICE-CARROT",
+      "name": "Lëng Karrote",
+      "icon": "🥕",
       "price": 250,
       "constraints": {},
-      "subMenu": {
-        "menuId": "juice-options",
-        "included": [
-          {
-            "itemId": "opt-orange",
-            "display": "included"
-          },
-          {
-            "itemId": "opt-beet",
-            "display": "included"
-          },
-          {
-            "itemId": "opt-apple",
-            "display": "included"
-          },
-          {
-            "itemId": "opt-carrot",
-            "display": "included"
-          }
-        ]
-      },
-      "order": 5
+      "order": 1
     },
-    "detox": {
-      "id": "detox",
-      "name": "Detox",
-      "description": "mollë, karrota, kastravec, majdanoz, limon, xhinxher",
-      "icon": "🥤",
-      "price": 250,
+    "ITEM-JUICE-DETOX": {
+      "id": "ITEM-JUICE-DETOX",
+      "name": "Lëng Detoks",
+      "icon": "💚",
+      "price": 300,
       "constraints": {},
       "subMenu": {
-        "menuId": "juice-options",
+        "menuId": "juice-modifiers",
         "included": [
           {
-            "itemId": "opt-apple",
+            "itemId": "MOD-APPLE-JUICE",
+            "quantity": 2,
             "display": "included"
           },
           {
-            "itemId": "opt-carrot",
+            "itemId": "MOD-CELERY-JUICE",
+            "quantity": 2,
             "display": "included"
           },
           {
-            "itemId": "opt-cucumber",
+            "itemId": "MOD-CUCUMBER-JUICE",
+            "quantity": 1,
             "display": "included"
           },
           {
-            "itemId": "opt-parsley",
-            "display": "included"
-          },
-          {
-            "itemId": "opt-lemon",
-            "display": "included"
-          },
-          {
-            "itemId": "opt-ginger",
+            "itemId": "MOD-LEMON-JUICE",
+            "quantity": 1,
             "display": "included"
           }
         ]
       },
       "order": 6
     },
-    "greeny": {
-      "id": "greeny",
-      "name": "Greeny",
-      "description": "mollë, selino, spinaq, limon, xhinxher",
-      "icon": "🥤",
-      "price": 250,
+    "ITEM-JUICE-BEET-IT": {
+      "id": "ITEM-JUICE-BEET-IT",
+      "name": "Beet It",
+      "icon": "🟣",
+      "price": 300,
       "constraints": {},
       "subMenu": {
-        "menuId": "juice-options",
+        "menuId": "juice-modifiers",
         "included": [
           {
-            "itemId": "opt-apple",
+            "itemId": "MOD-ORANGE-JUICE",
+            "quantity": 2,
             "display": "included"
           },
           {
-            "itemId": "opt-celery",
+            "itemId": "MOD-APPLE-JUICE",
+            "quantity": 1,
             "display": "included"
           },
           {
-            "itemId": "opt-spinach",
+            "itemId": "MOD-CARROT-JUICE",
+            "quantity": 1,
             "display": "included"
           },
           {
-            "itemId": "opt-lemon",
-            "display": "included"
-          },
-          {
-            "itemId": "opt-ginger",
+            "itemId": "MOD-BEET-JUICE",
+            "quantity": 1,
             "display": "included"
           }
         ]
       },
       "order": 7
     },
-    "berry-me": {
-      "id": "berry-me",
-      "name": "Berry Me",
-      "description": "portokall, boronica, manaferrë, dredhëza/mjedra",
-      "icon": "🥤",
-      "price": 250,
+    "ITEM-JUICE-GREENFARM": {
+      "id": "ITEM-JUICE-GREENFARM",
+      "name": "GreenFarm",
+      "icon": "🥬",
+      "price": 300,
       "constraints": {},
       "subMenu": {
-        "menuId": "juice-options",
+        "menuId": "juice-modifiers",
         "included": [
           {
-            "itemId": "opt-orange",
+            "itemId": "MOD-APPLE-JUICE",
+            "quantity": 2,
             "display": "included"
           },
           {
-            "itemId": "opt-blueberries",
+            "itemId": "MOD-KALE-JUICE",
+            "quantity": 1,
             "display": "included"
           },
           {
-            "itemId": "opt-blackberries",
+            "itemId": "MOD-SPINACH-JUICE",
+            "quantity": 1,
             "display": "included"
           },
           {
-            "itemId": "opt-strawberries",
+            "itemId": "MOD-LETTUCE-JUICE",
+            "quantity": 1,
             "display": "included"
           },
           {
-            "itemId": "opt-raspberries",
+            "itemId": "MOD-LEMON-JUICE",
+            "quantity": 1,
             "display": "included"
           }
         ]
       },
       "order": 8
     },
-    "immunity": {
-      "id": "immunity",
-      "name": "Immunity",
-      "description": "portokall, grejpfrut, karrota, limon, kurkumë",
-      "icon": "🥤",
-      "price": 250,
+    "ITEM-JUICE-IMMUNITY": {
+      "id": "ITEM-JUICE-IMMUNITY",
+      "name": "Imuniteti",
+      "icon": "🛡️",
+      "price": 300,
       "constraints": {},
       "subMenu": {
-        "menuId": "juice-options",
+        "menuId": "juice-modifiers",
         "included": [
           {
-            "itemId": "opt-orange",
+            "itemId": "MOD-ORANGE-JUICE",
+            "quantity": 3,
             "display": "included"
           },
           {
-            "itemId": "opt-grapefruit",
+            "itemId": "MOD-CARROT-JUICE",
+            "quantity": 1,
             "display": "included"
           },
           {
-            "itemId": "opt-carrot",
+            "itemId": "MOD-GINGER-JUICE",
+            "quantity": 1,
             "display": "included"
           },
           {
-            "itemId": "opt-lemon",
-            "display": "included"
-          },
-          {
-            "itemId": "opt-turmeric",
+            "itemId": "MOD-TURMERIC-JUICE",
+            "quantity": 1,
             "display": "included"
           }
         ]
       },
       "order": 9
     },
-    "refresh": {
-      "id": "refresh",
-      "name": "Refresh",
-      "description": "portokall, ananas, mango, mollë, mente",
-      "icon": "🥤",
-      "price": 250,
+    "ITEM-JUICE-REFRESH": {
+      "id": "ITEM-JUICE-REFRESH",
+      "name": "Rifreskim",
+      "icon": "🌊",
+      "price": 300,
       "constraints": {},
       "subMenu": {
-        "menuId": "juice-options",
+        "menuId": "juice-modifiers",
         "included": [
           {
-            "itemId": "opt-orange",
+            "itemId": "MOD-ORANGE-JUICE",
+            "quantity": 2,
             "display": "included"
           },
           {
-            "itemId": "opt-pineapple",
+            "itemId": "MOD-PINEAPPLE-JUICE",
+            "quantity": 1,
             "display": "included"
           },
           {
-            "itemId": "opt-mango",
+            "itemId": "MOD-APPLE-JUICE",
+            "quantity": 1,
             "display": "included"
           },
           {
-            "itemId": "opt-apple",
-            "display": "included"
-          },
-          {
-            "itemId": "opt-mint",
+            "itemId": "MOD-CUCUMBER-JUICE",
+            "quantity": 1,
             "display": "included"
           }
         ]
       },
       "order": 10
     },
-    "detox-water": {
-      "id": "detox-water",
-      "name": "Ujë Detoksi",
-      "description": "ujë, kastravec, limon, xhinxher, mente",
+    "ITEM-SHOT-AROMAL": {
+      "id": "ITEM-SHOT-AROMAL",
+      "name": "Shot Aromal",
+      "icon": "💊",
+      "price": 150,
+      "constraints": {},
+      "subMenu": {
+        "menuId": "juice-modifiers",
+        "included": [
+          {
+            "itemId": "MOD-GINGER-JUICE",
+            "quantity": 1,
+            "display": "included"
+          },
+          {
+            "itemId": "MOD-TURMERIC-JUICE",
+            "quantity": 1,
+            "display": "included"
+          },
+          {
+            "itemId": "MOD-LEMON-JUICE",
+            "quantity": 1,
+            "display": "included"
+          },
+          {
+            "itemId": "MOD-PEPPER-JUICE",
+            "quantity": 1,
+            "display": "included"
+          }
+        ]
+      },
+      "order": 14
+    },
+    "ITEM-DETOX-WATER": {
+      "id": "ITEM-DETOX-WATER",
+      "name": "Ujë Detoks",
       "icon": "💧",
       "price": 100,
       "constraints": {},
-      "order": 11
-    },
-    "cold-tonic": {
-      "id": "cold-tonic",
-      "name": "Cold Tonic",
-      "description": "karrota, kurkumë, limon, xhinxher",
-      "icon": "🥃",
-      "price": 100,
-      "constraints": {},
-      "order": 12
-    },
-    "ginger-turmeric": {
-      "id": "ginger-turmeric",
-      "name": "Xhinxher+Kurkumë",
-      "description": "xhinxher+kurkumë, limon",
-      "icon": "🥃",
-      "price": 100,
-      "constraints": {},
-      "order": 13
-    },
-    "protein-shot": {
-      "id": "protein-shot",
-      "name": "Shot Proteik",
-      "description": "qumësht soje, proteina whey, mjaltë",
-      "icon": "🥃",
-      "price": 150,
-      "constraints": {},
-      "order": 14
+      "subMenu": {
+        "menuId": "juice-modifiers",
+        "included": [
+          {
+            "itemId": "MOD-CUCUMBER-JUICE",
+            "quantity": 1,
+            "display": "included"
+          },
+          {
+            "itemId": "MOD-GINGER-JUICE",
+            "quantity": 1,
+            "display": "included"
+          },
+          {
+            "itemId": "MOD-LEMON-JUICE",
+            "quantity": 1,
+            "display": "included"
+          }
+        ]
+      },
+      "order": 15
     }
   },
   "itemGroups": {
-    "group-classic-juices": {
-      "id": "group-classic-juices",
-      "name": "Përzje Sipas Dëshirës",
+    "mix-your-own": {
+      "id": "mix-your-own",
+      "name": "Përziej Vetë",
       "itemIds": [
-        "apple-juice",
-        "orange-juice",
-        "carrot-juice",
-        "celery-juice",
-        "pineapple-juice"
+        "ITEM-JUICE-PINEAPPLE",
+        "ITEM-JUICE-CARROT",
+        "ITEM-JUICE-APPLE",
+        "ITEM-JUICE-ORANGE",
+        "ITEM-JUICE-CELERY",
+        "ITEM-JUICE-POMEGRANATE"
       ]
     },
-    "group-juice-blends": {
-      "id": "group-juice-blends",
-      "name": "Përzierjet Tona",
+    "juice-blends": {
+      "id": "juice-blends",
+      "name": "Përzierje Lëngjesh",
       "itemIds": [
-        "beet-it",
-        "detox",
-        "greeny",
-        "berry-me",
-        "immunity",
-        "refresh"
+        "ITEM-JUICE-DETOX",
+        "ITEM-JUICE-BEET-IT",
+        "ITEM-JUICE-GREENFARM",
+        "ITEM-JUICE-IMMUNITY",
+        "ITEM-JUICE-REFRESH"
       ]
     },
-    "group-shots-detox": {
-      "id": "group-shots-detox",
-      "name": "Shots / Ujë Detoksi",
+    "kids-menu": {
+      "id": "kids-menu",
+      "name": "Menu për Fëmijë",
       "itemIds": [
-        "detox-water",
-        "cold-tonic",
-        "ginger-turmeric",
-        "protein-shot"
+        "ITEM-JUICE-APPLE-KIDS",
+        "ITEM-JUICE-ORANGE-KIDS",
+        "ITEM-JUICE-POMEGRANATE-KIDS"
+      ]
+    },
+    "special-items": {
+      "id": "special-items",
+      "name": "Artikuj Specialë",
+      "itemIds": [
+        "ITEM-SHOT-AROMAL",
+        "ITEM-DETOX-WATER"
       ]
     }
   },
   "layout": [
     {
-      "text": "Menu Lëngjesh",
-      "classes": [
-        "menu-title"
-      ]
+      "type": "item-group",
+      "data": "mix-your-own"
     },
     {
       "type": "item-group",
-      "data": "group-classic-juices"
+      "data": "juice-blends"
     },
     {
       "type": "item-group",
-      "data": "group-juice-blends"
+      "data": "kids-menu"
     },
     {
       "type": "item-group",
-      "data": "group-shots-detox"
+      "data": "special-items"
     }
   ]
 }
