@@ -279,6 +279,7 @@ export function hydrate(container: Element, _displayMenu: DisplayMenu, context: 
     AppBottomBar.update(
       bottomBar,
       {
+        mode: order.id ? 'modify-order' : 'add-to-order',
         quantity: order.quantity,
         price: order.total,
       },
@@ -316,12 +317,16 @@ export function update(container: Element, changes: DataChange<MenuPageData>, ct
   // Handle order updates
   if ("order" in changes) {
     updateOrder(content, changes.order as any, ctx, data);
-    
-    // Also update bottom bar total if needed
-    if (changes.order && "total" in changes.order) {
+
+    // Also update bottom bar if order changed
+    if (changes.order && data.order) {
       const bottomBar = container.querySelector(`.${layoutStyles.bottomBar}`) as HTMLElement;
       if (bottomBar) {
-        AppBottomBar.update(bottomBar, { price: changes.order.total }, ctx);
+        AppBottomBar.update(bottomBar, {
+          mode: data.order.id ? 'modify-order' : 'add-to-order',
+          price: data.order.total,
+          quantity: data.order.quantity
+        }, ctx);
       }
     }
   }

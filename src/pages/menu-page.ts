@@ -14,7 +14,7 @@ import { DataChange, Update, UpdateResult } from "@/lib/data-model-types";
 import { MENU_ITEM_CLICK } from "@/components/menu-item";
 import { saveOrderItem, OrderItem } from "@/model/order-model";
 import { VARIANT_SELECT_EVENT } from "@/components/variant";
-import { ADD_TO_ORDER_EVENT, VIEW_ORDER_EVENT } from "@/components/app-bottom-bar";
+import { ADD_TO_ORDER_EVENT, VIEW_ORDER_EVENT, SAVE_CHANGES_EVENT } from "@/components/app-bottom-bar";
 import { isSaleItem } from "@/types";
 import { ALL, select, WHERE } from "tsqn";
 import { dom } from "@/lib/dom-node";
@@ -152,6 +152,15 @@ export function hydrate(container: Element, menu: DisplayMenu, context: Context)
           items: { [ALL]: { [WHERE]: (item) => item.selected === true, selected: false } },
         });
       }
+    }
+  });
+
+  // Handle save changes event (same as add to order, but for modify mode)
+  node.on(SAVE_CHANGES_EVENT, () => {
+    const order = model.data.order;
+    if (order) {
+      saveOrderItem(order);
+      node.dispatch("navigate", { to: "order" });
     }
   });
 }

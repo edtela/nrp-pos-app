@@ -239,6 +239,250 @@ export function update(container: Element, changes: DataChange<MyData>): void {
 }
 ```
 
+### Page vs Child Component Pattern (Clarified Oct 25, 2025)
+
+**Architecture Decision**: Clear separation between state-managing Page components and stateless Child components.
+
+#### Page Components (*Page.ts files)
+
+**Characteristics**:
+- Manage application state via model
+- Wire events in `hydrate()` function
+- Coordinate child components via `update()` calls
+- Own the data flow
+
+**Pattern**:
+```typescript
+// menu-page.ts (Page component)
+export function template(displayMenu: DisplayMenu, context: Context): Template {
+  if (displayMenu.modifierMenu) {
+    return ModifierPageContent.template(displayMenu, context);
+  } else {
+    return MenuPageContent.template(displayMenu, context);
+  }
+}
+
+export function hydrate(container: Element, menu: DisplayMenu, context: Context) {
+  const node = dom(container);
+
+  // Read page state
+  const pageState = getPageState(menu.id) ?? {};
+  const order: OrderItem = pageState.order;
+
+  // Delegate hydration to child components
+  if (menu.modifierMenu) {
+    ModifierPageContent.hydrate(container, menu, context, order);
+  }
+
+  // Initialize model
+  const model = new MenuModel();
+  function runUpdate(stmt: Update<MenuPageData>) {
+    const result = model.update(stmt);
+    update(container, result, model.data, context);
+  }
+
+  // Set initial state
+  let changes = model.setMenu(menu);
+  if (order) {
+    changes = model.updateAll([{ order: [order] }], changes);
+  }
+
+  // Initial render via update
+  update(container, changes, model.data, context);
+
+  // Wire events
+  node.on(SOME_EVENT, (data) => {
+    runUpdate({ ... });
+  });
+}
+
+export function update(
+  container: Element,
+  changes: DataChange<MenuPageData>,
+  data: MenuPageData,
+  context: Context
+): void {
+  // Delegate to appropriate child component
+  if (data.modifierMenu) {
+    ModifierPageContent.update(container, changes, context, data);
+  } else {
+    MenuPageContent.update(container, changes, context, data);
+  }
+}
+```
+
+#### Child Components (All other components)
+
+**Characteristics**:
+- Completely stateless
+- No `hydrate()` function (only in rare cases for event wiring)
+- Only `template()` and `update()`
+- All state comes via `update()` from parent
+
+**Pattern**:
+```typescript
+// modifier-page-content.ts (Child component)
+export function template(displayMenu: DisplayMenu, context: Context): Template {
+  return html`
+    <div class="page">
+      ${orderItemTemplate()}
+      ${MenuContent.template(displayMenu, context)}
+      <div class="bottom-bar">
+        ${AppBottomBar.template("add-to-order", context)}
+      </div>
+    </div>
+  `;
+}
+
+export function hydrate(
+  container: Element,
+  menu: DisplayMenu,
+  context: Context,
+  order?: OrderItem
+): void {
+  // Only wires events (one-time setup)
+  const header = container.querySelector('.header');
+  if (header) {
+    AppHeader.hydrate(header, context, headerData);
+  }
+
+  // Set initial state via update
+  if (order) {
+    const bottomBar = container.querySelector('.bottom-bar');
+    AppBottomBar.update(
+      bottomBar,
+      {
+        mode: order.id ? 'modify-order' : 'add-to-order',  // Derive mode from data
+        quantity: order.quantity,
+        price: order.total,
+      },
+      context
+    );
+  }
+}
+
+export function update(
+  container: Element,
+  changes: DataChange<MenuPageData>,
+  context: Context,
+  data: MenuPageData
+): void {
+  // Handle state changes
+  if ('order' in changes && data.order) {
+    // Update child components with derived state
+    const bottomBar = container.querySelector('.bottom-bar');
+    AppBottomBar.update(
+      bottomBar,
+      {
+        mode: data.order.id ? 'modify-order' : 'add-to-order',  // Always derive from data
+        price: data.order.total,
+        quantity: data.order.quantity
+      },
+      context
+    );
+  }
+}
+```
+
+#### Key Principles
+
+**1. State Derivation**
+```typescript
+// ✅ Good: Derive mode from order data
+const mode = data.order?.id ? 'modify-order' : 'add-to-order';
+AppBottomBar.update(bar, { mode, ...otherData }, context);
+
+// ❌ Bad: Pass mode explicitly from caller
+AppBottomBar.update(bar, { mode: 'modify-order', ... }, context);
+```
+
+**Reason**: Business logic stays in component, caller just passes data.
+
+**2. Initial State via update()**
+```typescript
+// ✅ Good: hydrate() calls update() for initial state
+export function hydrate(container, context, data) {
+  wireEvents(container);
+  update(container, data, context);  // Set initial state
+}
+
+// ❌ Bad: Separate initialization logic
+export function hydrate(container, context, data) {
+  wireEvents(container);
+  setInitialButton(data.mode);  // Duplicates update() logic
+}
+```
+
+**Reason**: Single source of truth for state → DOM mapping.
+
+**3. Event Wiring Location**
+```typescript
+// Page component: Wires events, owns state
+node.on(EVENT, (data) => {
+  const changes = model.update(...);
+  ChildComponent.update(child, changes, context, model.data);
+});
+
+// Child component: Only updates DOM
+export function update(container, changes, context, data) {
+  // Pure function: data → DOM changes
+}
+```
+
+**Reason**: Clear ownership - pages manage state, children render it.
+
+#### Real-World Example: Bottom Bar Mode Fix
+
+**Problem**: When modifying an order item, bottom bar showed "Add to Order" instead of "Save Changes".
+
+**Root Cause**: `template()` hardcoded mode to "add-to-order", but mode should be derived from runtime data (whether order has an ID).
+
+**Solution**:
+1. Template renders with default mode
+2. `hydrate()` determines correct mode from order.id
+3. `update()` always derives mode from data.order.id
+4. Mode changes automatically when order changes
+
+```typescript
+// modifier-page-content.ts - Before
+export function hydrate(container, menu, context, order) {
+  const bottomBar = container.querySelector('.bottom-bar');
+  AppBottomBar.update(bottomBar, {
+    quantity: order.quantity,
+    price: order.total,
+    // ❌ Missing: mode determination
+  }, context);
+}
+
+// modifier-page-content.ts - After
+export function hydrate(container, menu, context, order) {
+  const bottomBar = container.querySelector('.bottom-bar');
+  AppBottomBar.update(bottomBar, {
+    mode: order.id ? 'modify-order' : 'add-to-order',  // ✅ Derive from data
+    quantity: order.quantity,
+    price: order.total,
+  }, context);
+}
+
+// Also in update() function
+export function update(container, changes, context, data) {
+  if ('order' in changes && data.order) {
+    const bottomBar = container.querySelector('.bottom-bar');
+    AppBottomBar.update(bottomBar, {
+      mode: data.order.id ? 'modify-order' : 'add-to-order',  // ✅ Always derive
+      price: data.order.total,
+      quantity: data.order.quantity
+    }, context);
+  }
+}
+```
+
+**Benefits of This Approach**:
+- ✅ Consistent state derivation in both hydrate() and update()
+- ✅ No mode passed from parent (component decides)
+- ✅ Mode automatically correct based on data
+- ✅ Testable: `update(container, { order: mockOrder }, context)`
+
 ### Pattern Principles
 
 **1. Stateless Components**
