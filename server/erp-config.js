@@ -1,4 +1,3 @@
-import { createRestaurantPos } from 'erp-next';
 import dotenv from 'dotenv';
 
 // Load environment variables
@@ -8,18 +7,22 @@ dotenv.config();
  * Initialize ERPNext POS integration
  * This module is only loaded server-side, so it won't affect client bundle
  */
-export function initializeErpPos() {
+export async function initializeErpPos() {
   // Check required environment variables
   const requiredVars = ['ERP_BASE_URL', 'ERP_API_KEY', 'ERP_API_SECRET'];
   const missing = requiredVars.filter(key => !process.env[key]);
-  
+
   if (missing.length > 0) {
-    console.error('❌ Missing required ERP environment variables:', missing.join(', '));
-    console.error('   Please configure these in your .env file');
+    console.log('ℹ️  ERP integration disabled (missing environment variables)');
+    console.log('   Configure these variables to enable: ' + missing.join(', '));
     return null;
   }
 
   try {
+    // Dynamically import erp-next only if needed
+    // This allows the server to run without erp-next package installed
+    const { createRestaurantPos } = await import('erp-next');
+
     const pos = createRestaurantPos({
       erpBaseUrl: process.env.ERP_BASE_URL,
       erpApiKey: process.env.ERP_API_KEY,
@@ -34,9 +37,13 @@ export function initializeErpPos() {
     console.log(`   Base URL: ${process.env.ERP_BASE_URL}`);
     console.log(`   Warehouse: ${process.env.ERP_WAREHOUSE || 'Stores - AR'}`);
     console.log(`   Currency: ${process.env.ERP_CURRENCY || 'ALL'}`);
-    
+
     return pos;
   } catch (error) {
+    if (error.code === 'ERR_MODULE_NOT_FOUND') {
+      console.log('ℹ️  ERP integration disabled (erp-next package not installed)');
+      return null;
+    }
     console.error('❌ Failed to initialize ERPNext POS:', error.message);
     return null;
   }

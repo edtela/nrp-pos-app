@@ -11,11 +11,11 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Initialize ERPNext POS (if configured)
-const erpPos = initializeErpPos();
-
 // Track active table sessions
 const tableSessions = new Map();
+
+// ERP POS instance (initialized on startup)
+let erpPos = null;
 
 // Menu cache to store all menus in memory
 const menuCache = {
@@ -619,7 +619,20 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: 'Something went wrong!' });
 });
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-  console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
+// Async startup function
+async function startServer() {
+  // Initialize ERPNext POS integration (if configured)
+  erpPos = await initializeErpPos();
+
+  // Start server
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+    console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
+  });
+}
+
+// Start the server
+startServer().catch(error => {
+  console.error('Failed to start server:', error);
+  process.exit(1);
 });
