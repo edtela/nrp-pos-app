@@ -42,8 +42,9 @@ COPY --from=builder /app/dist ./dist
 # Copy public directory for data files
 COPY public ./public
 
-# Copy server file and menu config
+# Copy server files and config
 COPY server.js ./
+COPY server ./server
 COPY menu-config.json ./
 
 # Create non-root user
