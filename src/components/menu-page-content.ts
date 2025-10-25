@@ -14,7 +14,7 @@ import * as AppBottomBar from "./app-bottom-bar";
 import { styles as layoutStyles } from "./app-layout";
 import { navigate } from "@/pages/page-router";
 import { getOrder } from "@/model/order-model";
-import { typeChange } from "@/vendor/tsqn/index.js";
+import { typeChange } from "tsqn";
 
 // Export for page selector
 export const menuPageContainer = "menu-page-content";

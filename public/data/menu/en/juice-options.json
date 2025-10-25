@@ -6,7 +6,6 @@
     "MOD-APPLE-JUICE": {
       "id": "MOD-APPLE-JUICE",
       "name": "Apple",
-      "description": "Add 200G",
       "icon": "🍎",
       "price": 50,
       "constraints": {},
@@ -15,7 +14,6 @@
     "MOD-ORANGE-JUICE": {
       "id": "MOD-ORANGE-JUICE",
       "name": "Orange",
-      "description": "Add 200G",
       "icon": "🍊",
       "price": 50,
       "constraints": {},
@@ -24,7 +22,6 @@
     "MOD-CARROT-JUICE": {
       "id": "MOD-CARROT-JUICE",
       "name": "Carrot",
-      "description": "Add 200G",
       "icon": "🥕",
       "price": 50,
       "constraints": {},
@@ -33,7 +30,6 @@
     "MOD-CELERY-JUICE": {
       "id": "MOD-CELERY-JUICE",
       "name": "Celery",
-      "description": "Add 100G",
       "icon": "🥬",
       "price": 50,
       "constraints": {},
@@ -42,7 +38,6 @@
     "MOD-PINEAPPLE-JUICE": {
       "id": "MOD-PINEAPPLE-JUICE",
       "name": "Pineapple",
-      "description": "Add 150G",
       "icon": "🍍",
       "price": 50,
       "constraints": {},
@@ -51,7 +46,6 @@
     "MOD-POMEGRANATE-JUICE": {
       "id": "MOD-POMEGRANATE-JUICE",
       "name": "Pomegranate",
-      "description": "Add 200G",
       "icon": "🫐",
       "price": 50,
       "constraints": {},
@@ -60,7 +54,6 @@
     "MOD-CUCUMBER-JUICE": {
       "id": "MOD-CUCUMBER-JUICE",
       "name": "Cucumber",
-      "description": "Add 100G",
       "icon": "🥒",
       "price": 50,
       "constraints": {},
@@ -69,7 +62,6 @@
     "MOD-BEET-JUICE": {
       "id": "MOD-BEET-JUICE",
       "name": "Beet",
-      "description": "Add 100G",
       "icon": "🟣",
       "price": 50,
       "constraints": {},
@@ -78,7 +70,6 @@
     "MOD-KALE-JUICE": {
       "id": "MOD-KALE-JUICE",
       "name": "Kale",
-      "description": "Add 25G",
       "icon": "🥬",
       "price": 50,
       "constraints": {},
@@ -87,7 +78,6 @@
     "MOD-SPINACH-JUICE": {
       "id": "MOD-SPINACH-JUICE",
       "name": "Spinach",
-      "description": "Add 30G",
       "icon": "🍃",
       "price": 50,
       "constraints": {},
@@ -96,7 +86,6 @@
     "MOD-LETTUCE-JUICE": {
       "id": "MOD-LETTUCE-JUICE",
       "name": "Lettuce",
-      "description": "Add 30G",
       "icon": "🥬",
       "price": 50,
       "constraints": {},
@@ -105,7 +94,6 @@
     "MOD-GINGER-JUICE": {
       "id": "MOD-GINGER-JUICE",
       "name": "Ginger",
-      "description": "Add 20G",
       "icon": "🫚",
       "price": 50,
       "constraints": {},
@@ -114,7 +102,6 @@
     "MOD-TURMERIC-JUICE": {
       "id": "MOD-TURMERIC-JUICE",
       "name": "Turmeric",
-      "description": "Add 10G",
       "icon": "🟠",
       "price": 50,
       "constraints": {},
@@ -123,7 +110,6 @@
     "MOD-LEMON-JUICE": {
       "id": "MOD-LEMON-JUICE",
       "name": "Lemon",
-      "description": "Add 50G",
       "icon": "🍋",
       "price": 50,
       "constraints": {},
@@ -132,7 +118,6 @@
     "MOD-PEPPER-JUICE": {
       "id": "MOD-PEPPER-JUICE",
       "name": "Black Pepper",
-      "description": "Add 2G",
       "icon": "⚫",
       "price": 50,
       "constraints": {},

@@ -3,8 +3,8 @@
   "name": "Opsione Kafeje",
   "currency": "ALL",
   "items": {
-    "opt-milk": {
-      "id": "opt-milk",
+    "MOD-MILK": {
+      "id": "MOD-MILK",
       "name": "Qumësht",
       "icon": "🥛",
       "price": 0,
@@ -13,56 +13,56 @@
       },
       "order": 2
     },
-    "opt-almond-milk": {
-      "id": "opt-almond-milk",
+    "MOD-MILK-ALMOND": {
+      "id": "MOD-MILK-ALMOND",
       "name": "Qumësht Bajame",
       "icon": "🤍",
-      "price": 50,
+      "price": 0,
       "constraints": {
         "choiceId": "milk-choice"
       },
       "order": 3
     },
-    "opt-coconut-milk": {
-      "id": "opt-coconut-milk",
+    "MOD-MILK-COCONUT": {
+      "id": "MOD-MILK-COCONUT",
       "name": "Qumësht Kokosi",
       "icon": "🥥",
-      "price": 50,
+      "price": 0,
       "constraints": {
         "choiceId": "milk-choice"
       },
       "order": 4
     },
-    "opt-oat-milk": {
-      "id": "opt-oat-milk",
+    "MOD-MILK-OAT": {
+      "id": "MOD-MILK-OAT",
       "name": "Qumësht Tërshëre",
       "icon": "🌾",
-      "price": 50,
+      "price": 0,
       "constraints": {
         "choiceId": "milk-choice"
       },
       "order": 5
     },
-    "opt-soy-milk": {
-      "id": "opt-soy-milk",
+    "MOD-MILK-SOY": {
+      "id": "MOD-MILK-SOY",
       "name": "Qumësht Soje",
       "icon": "🟢",
-      "price": 50,
+      "price": 0,
       "constraints": {
         "choiceId": "milk-choice"
       },
       "order": 6
     },
-    "opt-decaf": {
-      "id": "opt-decaf",
+    "MOD-DECAF": {
+      "id": "MOD-DECAF",
       "name": "Dekafeinuar",
       "icon": "☕",
       "price": 20,
       "constraints": {},
       "order": 0
     },
-    "opt-double-shot": {
-      "id": "opt-double-shot",
+    "MOD-DOUBLE-SHOT": {
+      "id": "MOD-DOUBLE-SHOT",
       "name": "Dozë e Dyfishtë",
       "icon": "💪",
       "price": 60,
@@ -80,19 +80,19 @@
       "id": "group-milk-choices",
       "name": "Zgjedhja e Qumështit",
       "itemIds": [
-        "opt-milk",
-        "opt-almond-milk",
-        "opt-coconut-milk",
-        "opt-oat-milk",
-        "opt-soy-milk"
+        "MOD-MILK",
+        "MOD-MILK-ALMOND",
+        "MOD-MILK-COCONUT",
+        "MOD-MILK-OAT",
+        "MOD-MILK-SOY"
       ]
     },
     "group-coffee-strength": {
       "id": "group-coffee-strength",
       "name": "Opsione Kafeje",
       "itemIds": [
-        "opt-decaf",
-        "opt-double-shot"
+        "MOD-DECAF",
+        "MOD-DOUBLE-SHOT"
       ]
     }
   },

@@ -3,24 +3,24 @@
   "name": "Opzioni Caffè",
   "currency": "ALL",
   "items": {
-    "opt-decaf": {
-      "id": "opt-decaf",
+    "MOD-DECAF": {
+      "id": "MOD-DECAF",
       "name": "Decaffeinato",
       "icon": "☕",
       "price": 20,
       "constraints": {},
       "order": 0
     },
-    "opt-double-shot": {
-      "id": "opt-double-shot",
+    "MOD-DOUBLE-SHOT": {
+      "id": "MOD-DOUBLE-SHOT",
       "name": "Doppio",
       "icon": "💪",
       "price": 60,
       "constraints": {},
       "order": 1
     },
-    "opt-ristretto": {
-      "id": "opt-ristretto",
+    "MOD-RISTRETTO": {
+      "id": "MOD-RISTRETTO",
       "name": "Ristretto",
       "icon": "☕",
       "price": 0,
@@ -29,8 +29,8 @@
       },
       "order": 2
     },
-    "opt-normale": {
-      "id": "opt-normale",
+    "MOD-NORMALE": {
+      "id": "MOD-NORMALE",
       "name": "Normale",
       "icon": "☕",
       "price": 0,
@@ -39,8 +39,8 @@
       },
       "order": 3
     },
-    "opt-lungo": {
-      "id": "opt-lungo",
+    "MOD-LUNGO": {
+      "id": "MOD-LUNGO",
       "name": "Lungo",
       "icon": "☕",
       "price": 0,
@@ -60,17 +60,17 @@
       "id": "group-coffee-strength",
       "name": "Opzioni Caffè",
       "itemIds": [
-        "opt-decaf",
-        "opt-double-shot"
+        "MOD-DECAF",
+        "MOD-DOUBLE-SHOT"
       ]
     },
     "group-shot-length": {
       "id": "group-shot-length",
       "name": "",
       "itemIds": [
-        "opt-ristretto",
-        "opt-normale",
-        "opt-lungo"
+        "MOD-RISTRETTO",
+        "MOD-NORMALE",
+        "MOD-LUNGO"
       ]
     }
   },

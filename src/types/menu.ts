@@ -6,7 +6,7 @@
  */
 
 import { Cells } from "./display.js";
-import { Update } from "@/vendor/tsqn/index.js";
+import { Update } from "tsqn";
 
 /**
  * Item group - semantic collection of related menu items

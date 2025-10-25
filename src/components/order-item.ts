@@ -269,7 +269,7 @@ export function update(
     // Update decrease button disabled state
     const quantityControls = container.querySelector(`.${classes.quantityControls}`);
     if (quantityControls) {
-      const decreaseBtn = quantityControls.querySelector("button:first-child") as HTMLButtonElement;
+      const decreaseBtn = quantityControls.querySelector("button") as HTMLButtonElement;
       if (decreaseBtn) {
         decreaseBtn.disabled = itemData.quantity <= 1;
       }

@@ -3,160 +3,160 @@
   "name": "Opsione Çaji",
   "currency": "ALL",
   "items": {
-    "opt-ginger": {
-      "id": "opt-ginger",
+    "MOD-GINGER": {
+      "id": "MOD-GINGER",
       "name": "Xhinxher",
       "icon": "🫚",
       "price": 30,
       "constraints": {},
       "order": 0
     },
-    "opt-lemon": {
-      "id": "opt-lemon",
+    "MOD-LEMON": {
+      "id": "MOD-LEMON",
       "name": "Limon",
       "icon": "🍋",
       "price": 30,
       "constraints": {},
       "order": 1
     },
-    "opt-propolis": {
-      "id": "opt-propolis",
+    "MOD-PROPOLIS": {
+      "id": "MOD-PROPOLIS",
       "name": "Propolis",
       "icon": "🍯",
       "price": 30,
       "constraints": {},
       "order": 2
     },
-    "opt-chamomile": {
-      "id": "opt-chamomile",
+    "MOD-CHAMOMILE": {
+      "id": "MOD-CHAMOMILE",
       "name": "Kamomil",
       "icon": "🌼",
       "price": 20,
       "constraints": {},
       "order": 4
     },
-    "opt-linden-flower": {
-      "id": "opt-linden-flower",
+    "MOD-LINDEN-FLOWER": {
+      "id": "MOD-LINDEN-FLOWER",
       "name": "Lule Bliri",
       "icon": "🌸",
       "price": 20,
       "constraints": {},
       "order": 5
     },
-    "opt-bilberry": {
-      "id": "opt-bilberry",
+    "MOD-BILBERRY": {
+      "id": "MOD-BILBERRY",
       "name": "Boronica",
       "icon": "🫐",
       "price": 20,
       "constraints": {},
       "order": 10
     },
-    "opt-berries": {
-      "id": "opt-berries",
+    "MOD-BERRIES": {
+      "id": "MOD-BERRIES",
       "name": "Fruta Pylli",
       "icon": "🍓",
       "price": 20,
       "constraints": {},
       "order": 11
     },
-    "opt-rose-hip": {
-      "id": "opt-rose-hip",
+    "MOD-ROSE-HIP": {
+      "id": "MOD-ROSE-HIP",
       "name": "Fruta e Trëndafilit",
       "icon": "🌹",
       "price": 20,
       "constraints": {},
       "order": 14
     },
-    "opt-black-tea": {
-      "id": "opt-black-tea",
+    "MOD-BLACK-TEA": {
+      "id": "MOD-BLACK-TEA",
       "name": "Çaj i Zi",
       "icon": "⚫",
       "price": 20,
       "constraints": {},
       "order": 15
     },
-    "opt-chai-tea": {
-      "id": "opt-chai-tea",
+    "MOD-CHAI-TEA": {
+      "id": "MOD-CHAI-TEA",
       "name": "Çaj Chai",
       "icon": "🟫",
       "price": 20,
       "constraints": {},
       "order": 16
     },
-    "opt-green-tea": {
-      "id": "opt-green-tea",
+    "MOD-GREEN-TEA": {
+      "id": "MOD-GREEN-TEA",
       "name": "Çaj Jeshil",
       "icon": "🟢",
       "price": 20,
       "constraints": {},
       "order": 17
     },
-    "opt-jasmine-gold": {
-      "id": "opt-jasmine-gold",
+    "MOD-JASMINE-GOLD": {
+      "id": "MOD-JASMINE-GOLD",
       "name": "Jasemini i Artë",
       "icon": "⭐",
       "price": 20,
       "constraints": {},
       "order": 18
     },
-    "opt-rooibos-vanilla": {
-      "id": "opt-rooibos-vanilla",
+    "MOD-ROOIBOS-VANILLA": {
+      "id": "MOD-ROOIBOS-VANILLA",
       "name": "Rooibos Vanilje",
       "icon": "🟠",
       "price": 20,
       "constraints": {},
       "order": 19
     },
-    "opt-mountain-tea": {
-      "id": "opt-mountain-tea",
+    "MOD-MOUNTAIN-TEA": {
+      "id": "MOD-MOUNTAIN-TEA",
       "name": "Çaj Mali",
       "icon": "🌿",
       "price": 20,
       "constraints": {},
       "order": 6
     },
-    "opt-sage": {
-      "id": "opt-sage",
+    "MOD-SAGE": {
+      "id": "MOD-SAGE",
       "name": "Sherbelë",
       "icon": "🍃",
       "price": 20,
       "constraints": {},
       "order": 7
     },
-    "opt-mint": {
-      "id": "opt-mint",
+    "MOD-MINT": {
+      "id": "MOD-MINT",
       "name": "Mente",
       "icon": "🌿",
       "price": 20,
       "constraints": {},
       "order": 8
     },
-    "opt-peppermint": {
-      "id": "opt-peppermint",
+    "MOD-PEPPERMINT": {
+      "id": "MOD-PEPPERMINT",
       "name": "Nenexhik",
       "icon": "🍀",
       "price": 20,
       "constraints": {},
       "order": 9
     },
-    "opt-plumcinnamon": {
-      "id": "opt-plumcinnamon",
+    "MOD-PLUM-CINNAMON": {
+      "id": "MOD-PLUM-CINNAMON",
       "name": "Kumbull+Kanellë",
       "icon": "🟣",
       "price": 20,
       "constraints": {},
       "order": 12
     },
-    "opt-applecinnamon": {
-      "id": "opt-applecinnamon",
+    "MOD-APPLE-CINNAMON": {
+      "id": "MOD-APPLE-CINNAMON",
       "name": "Mollë+Kanellë",
       "icon": "🍎",
       "price": 20,
       "constraints": {},
       "order": 13
     },
-    "opt-turmeric": {
-      "id": "opt-turmeric",
+    "MOD-TURMERIC-TEA": {
+      "id": "MOD-TURMERIC-TEA",
       "name": "Kurkumë",
       "icon": "🟡",
       "price": 30,
@@ -174,44 +174,44 @@
       "id": "group-ingredients",
       "name": "Shtesa",
       "itemIds": [
-        "opt-ginger",
-        "opt-lemon",
-        "opt-propolis",
-        "opt-turmeric"
+        "MOD-GINGER",
+        "MOD-LEMON",
+        "MOD-PROPOLIS",
+        "MOD-TURMERIC-TEA"
       ]
     },
     "group-herbal-teas": {
       "id": "group-herbal-teas",
       "name": "Përzje me Çaj Bimor",
       "itemIds": [
-        "opt-chamomile",
-        "opt-linden-flower",
-        "opt-mountain-tea",
-        "opt-sage",
-        "opt-mint",
-        "opt-peppermint"
+        "MOD-CHAMOMILE",
+        "MOD-LINDEN-FLOWER",
+        "MOD-MOUNTAIN-TEA",
+        "MOD-SAGE",
+        "MOD-MINT",
+        "MOD-PEPPERMINT"
       ]
     },
     "group-classic-teas": {
       "id": "group-classic-teas",
       "name": "Përzje me Çaj Frutor",
       "itemIds": [
-        "opt-bilberry",
-        "opt-berries",
-        "opt-plumcinnamon",
-        "opt-applecinnamon",
-        "opt-rose-hip"
+        "MOD-BILBERRY",
+        "MOD-BERRIES",
+        "MOD-PLUM-CINNAMON",
+        "MOD-APPLE-CINNAMON",
+        "MOD-ROSE-HIP"
       ]
     },
     "group-4": {
       "id": "group-4",
       "name": "Përzje me Çaj Special",
       "itemIds": [
-        "opt-black-tea",
-        "opt-chai-tea",
-        "opt-green-tea",
-        "opt-jasmine-gold",
-        "opt-rooibos-vanilla"
+        "MOD-BLACK-TEA",
+        "MOD-CHAI-TEA",
+        "MOD-GREEN-TEA",
+        "MOD-JASMINE-GOLD",
+        "MOD-ROOIBOS-VANILLA"
       ]
     }
   },

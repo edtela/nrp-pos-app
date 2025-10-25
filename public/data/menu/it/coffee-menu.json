@@ -7,13 +7,13 @@
       "id": "ITEM-COFFEE-ESPRESSO",
       "name": "Espresso",
       "icon": "☕",
-      "price": 90,
+      "price": 95,
       "constraints": {},
       "subMenu": {
         "menuId": "coffee-options-espresso-only",
         "included": [
           {
-            "itemId": "opt-normale"
+            "itemId": "MOD-NORMALE"
           }
         ]
       },
@@ -29,7 +29,7 @@
         "menuId": "coffee-options-macchiato-only",
         "included": [
           {
-            "itemId": "opt-milk"
+            "itemId": "MOD-MILK"
           }
         ]
       },
@@ -45,7 +45,7 @@
         "menuId": "coffee-options-americano-only",
         "included": [
           {
-            "itemId": "opt-no-milk"
+            "itemId": "MOD-NO-MILK"
           }
         ]
       },
@@ -61,7 +61,7 @@
         "menuId": "coffee-options",
         "included": [
           {
-            "itemId": "opt-milk"
+            "itemId": "MOD-MILK"
           }
         ]
       },
@@ -77,7 +77,7 @@
         "menuId": "coffee-options",
         "included": [
           {
-            "itemId": "opt-milk"
+            "itemId": "MOD-MILK"
           }
         ]
       },
@@ -93,7 +93,7 @@
         "menuId": "coffee-options-espresso-only",
         "included": [
           {
-            "itemId": "opt-normale"
+            "itemId": "MOD-NORMALE"
           }
         ]
       },
@@ -109,7 +109,7 @@
         "menuId": "coffee-options-americano-only",
         "included": [
           {
-            "itemId": "opt-no-milk"
+            "itemId": "MOD-NO-MILK"
           }
         ]
       },
@@ -125,7 +125,7 @@
         "menuId": "coffee-options",
         "included": [
           {
-            "itemId": "opt-milk"
+            "itemId": "MOD-MILK"
           }
         ]
       },
@@ -141,7 +141,7 @@
         "menuId": "coffee-options",
         "included": [
           {
-            "itemId": "opt-milk"
+            "itemId": "MOD-MILK"
           }
         ]
       },
@@ -157,10 +157,10 @@
         "menuId": "coffee-options-frappe-only",
         "included": [
           {
-            "itemId": "opt-medium-sweet"
+            "itemId": "MOD-MEDIUM-SWEET"
           },
           {
-            "itemId": "opt-milk"
+            "itemId": "MOD-MILK"
           }
         ]
       },
@@ -176,7 +176,7 @@
         "menuId": "coffee-options-turkish-only",
         "included": [
           {
-            "itemId": "opt-medium-sweet"
+            "itemId": "MOD-MEDIUM-SWEET"
           }
         ]
       },
@@ -192,7 +192,7 @@
         "menuId": "coffee-options-milk-only",
         "included": [
           {
-            "itemId": "opt-milk"
+            "itemId": "MOD-MILK"
           }
         ]
       },

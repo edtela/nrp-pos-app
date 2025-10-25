@@ -3,12 +3,19 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import compression from 'compression';
 import fs from 'fs';
+import { initializeErpPos, mapOrderItemsToErp, createSessionMetadata, getPaymentMethod } from './server/erp-config.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+// Initialize ERPNext POS (if configured)
+const erpPos = initializeErpPos();
+
+// Track active table sessions
+const tableSessions = new Map();
 
 // Menu cache to store all menus in memory
 const menuCache = {
@@ -207,9 +214,9 @@ app.post('/api/translateOrder', (req, res) => {
 });
 
 // Validate and send order
-app.post('/api/sendOrder', (req, res) => {
+app.post('/api/sendOrder', async (req, res) => {
   try {
-    const { order, items, language = 'en' } = req.body;
+    const { order, items, language = 'en', tableNumber } = req.body;
     
     if (!order || !items) {
       return res.status(400).json({ 
@@ -293,18 +300,73 @@ app.post('/api/sendOrder', (req, res) => {
     }
     
     if (validation.valid) {
-      // Here you would normally:
-      // 1. Save order to database
-      // 2. Send to kitchen/POS system
-      // 3. Generate order number
-      // 4. Process payment
+      // Process with ERPNext if configured
+      let erpResult = null;
       
-      const orderNumber = `ORD-${Date.now()}`;
+      if (erpPos) {
+        try {
+          // Check if we have an active session for this table
+          let sessionId = order.sessionId;
+          
+          // If no session, create one
+          if (!sessionId) {
+            // Check if table already has an active session
+            const existingSession = Array.from(tableSessions.values())
+              .find(s => s.tableNumber === tableNumber && s.status === 'active');
+            
+            if (existingSession) {
+              sessionId = existingSession.sessionId;
+            } else {
+              // Create new session
+              const session = await erpPos.tables.openTable({
+                tableNumber: tableNumber || 'Takeaway',
+                waiter: order.waiter || 'POS User',
+                customerCount: order.customerCount || 1,
+                notes: order.notes
+              });
+              
+              sessionId = session.sessionId;
+              tableSessions.set(sessionId, session);
+              console.log(`Created new ERP session: ${sessionId} for table ${tableNumber}`);
+            }
+          }
+          
+          // Map NRP items to ERP format
+          const erpItems = mapOrderItemsToErp(items);
+          
+          // Create order in ERPNext
+          const erpOrder = await erpPos.orders.createOrder({
+            sessionId,
+            items: erpItems,
+            notes: order.notes
+          });
+          
+          // Submit to kitchen if configured
+          if (process.env.ERP_AUTO_SUBMIT === 'true') {
+            await erpPos.orders.submitToKitchen(erpOrder.orderId);
+          }
+          
+          erpResult = {
+            orderId: erpOrder.orderId,
+            sessionId: erpOrder.sessionId,
+            orderNumber: erpOrder.orderNumber,
+            status: erpOrder.status
+          };
+          
+          console.log(`Order sent to ERPNext: ${erpOrder.orderId}`);
+        } catch (erpError) {
+          console.error('ERPNext integration error:', erpError);
+          validation.warnings.push(`ERP sync failed: ${erpError.message}`);
+        }
+      }
+      
+      const orderNumber = erpResult?.orderId || `ORD-${Date.now()}`;
       
       console.log(`Order ${orderNumber} validated successfully:`, {
         items: Object.keys(items).length,
         total: order.total,
-        currency: order.currency
+        currency: order.currency,
+        erpSynced: !!erpResult
       });
       
       res.json({
@@ -313,6 +375,7 @@ app.post('/api/sendOrder', (req, res) => {
         message: 'Order validated successfully',
         validation,
         order,
+        erp: erpResult,
         timestamp: new Date().toISOString()
       });
     } else {
@@ -354,6 +417,170 @@ app.get('/api/orders', async (req, res) => {
     res.json(orderData);
   } catch (error) {
     res.status(500).json({ error: 'Failed to load order data' });
+  }
+});
+
+// ==========================================
+// ERPNext Integration API Routes
+// ==========================================
+
+// Get available tables
+app.get('/api/erp/tables', async (req, res) => {
+  if (!erpPos) {
+    return res.status(503).json({ error: 'ERP integration not configured' });
+  }
+  
+  try {
+    const tables = await erpPos.tables.getAllTables();
+    res.json({
+      success: true,
+      tables: tables.map(t => ({
+        id: t.id,
+        number: t.number,
+        status: t.status,
+        capacity: t.capacity,
+        currentSession: t.currentSession?.sessionId
+      }))
+    });
+  } catch (error) {
+    console.error('Failed to get tables:', error);
+    res.status(500).json({ error: 'Failed to get tables', message: error.message });
+  }
+});
+
+// Open table session
+app.post('/api/erp/tables/open', async (req, res) => {
+  if (!erpPos) {
+    return res.status(503).json({ error: 'ERP integration not configured' });
+  }
+  
+  try {
+    const { tableNumber, waiter, customerCount, notes } = req.body;
+    
+    const session = await erpPos.tables.openTable({
+      tableNumber: tableNumber || 'Takeaway',
+      waiter: waiter || 'POS User',
+      customerCount: customerCount || 1,
+      notes
+    });
+    
+    // Store session locally for quick lookup
+    tableSessions.set(session.sessionId, session);
+    
+    res.json({
+      success: true,
+      session: {
+        sessionId: session.sessionId,
+        tableNumber: session.tableNumber,
+        startTime: session.startTime,
+        status: session.status
+      }
+    });
+  } catch (error) {
+    console.error('Failed to open table:', error);
+    res.status(500).json({ error: 'Failed to open table', message: error.message });
+  }
+});
+
+// Create order for session
+app.post('/api/erp/orders/create', async (req, res) => {
+  if (!erpPos) {
+    return res.status(503).json({ error: 'ERP integration not configured' });
+  }
+  
+  try {
+    const { sessionId, items, notes } = req.body;
+    
+    // Map NRP items to ERP format
+    const erpItems = mapOrderItemsToErp(items);
+    
+    const order = await erpPos.orders.createOrder({
+      sessionId,
+      items: erpItems,
+      notes
+    });
+    
+    res.json({
+      success: true,
+      order: {
+        orderId: order.orderId,
+        sessionId: order.sessionId,
+        orderNumber: order.orderNumber,
+        status: order.status,
+        totalAmount: order.totalAmount
+      }
+    });
+  } catch (error) {
+    console.error('Failed to create order:', error);
+    res.status(500).json({ error: 'Failed to create order', message: error.message });
+  }
+});
+
+// Submit order to kitchen
+app.post('/api/erp/orders/:orderId/submit', async (req, res) => {
+  if (!erpPos) {
+    return res.status(503).json({ error: 'ERP integration not configured' });
+  }
+  
+  try {
+    const { orderId } = req.params;
+    await erpPos.orders.submitToKitchen(orderId);
+    
+    res.json({
+      success: true,
+      message: 'Order submitted to kitchen'
+    });
+  } catch (error) {
+    console.error('Failed to submit order:', error);
+    res.status(500).json({ error: 'Failed to submit order', message: error.message });
+  }
+});
+
+// Get bill for session
+app.get('/api/erp/bill/:sessionId', async (req, res) => {
+  if (!erpPos) {
+    return res.status(503).json({ error: 'ERP integration not configured' });
+  }
+  
+  try {
+    const { sessionId } = req.params;
+    const bill = await erpPos.payments.getTableBill(sessionId);
+    
+    res.json({
+      success: true,
+      bill
+    });
+  } catch (error) {
+    console.error('Failed to get bill:', error);
+    res.status(500).json({ error: 'Failed to get bill', message: error.message });
+  }
+});
+
+// Process payment
+app.post('/api/erp/payments/process', async (req, res) => {
+  if (!erpPos) {
+    return res.status(503).json({ error: 'ERP integration not configured' });
+  }
+  
+  try {
+    const { sessionId, amount, paymentMethod, tip } = req.body;
+    
+    const result = await erpPos.payments.processPayment({
+      sessionId,
+      amount,
+      paymentMethod: paymentMethod || 'cash',
+      tip
+    });
+    
+    // Clear local session if payment successful
+    if (result.success) {
+      tableSessions.delete(sessionId);
+    }
+    
+    res.json(result);
+  } catch (error) {
+    console.error('Failed to process payment:', error);
+    res.status(500).json({ error: 'Failed to process payment', message: error.message });
   }
 });
 

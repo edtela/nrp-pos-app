@@ -10,7 +10,7 @@ import {
   type UpdateResultMeta,
   type ChangeDetector,
   type ChangeDetectorFn
-} from "@/vendor/tsqn/index.js";
+} from "tsqn";
 
 export { 
   ALL, 

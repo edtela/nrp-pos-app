@@ -11,7 +11,7 @@ import {
   META,
   type Update,
   type UpdateResult,
-} from "@/vendor/tsqn/index.js";
+} from "tsqn";
 import { type DataChange, type DataBinding } from "./data-model-types";
 
 // Re-export from tsqn
@@ -47,9 +47,9 @@ export function applyBinding<T extends object>(
   const updateArgs = hasCapture ? [] : [data];
   const updates = extractBindingUpdates(data, init ? true : changes, binding, updateArgs, hasCapture);
   if (Array.isArray(updates)) {
-    updates.forEach((u) => update(data, u, changes));
+    updates.forEach((u) => update(data, u as any, changes));
   } else {
-    update(data, updates, changes);
+    update(data, updates as any, changes);
   }
 }
 

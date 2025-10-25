@@ -9,6 +9,10 @@
       "icon": "🍎",
       "price": 150,
       "constraints": {},
+      "subMenu": {
+        "menuId": "juice-options",
+        "included": []
+      },
       "order": 2
     },
     "ITEM-JUICE-APPLE-KIDS": {
@@ -25,6 +29,10 @@
       "icon": "🍊",
       "price": 200,
       "constraints": {},
+      "subMenu": {
+        "menuId": "juice-options",
+        "included": []
+      },
       "order": 3
     },
     "ITEM-JUICE-ORANGE-KIDS": {
@@ -41,6 +49,10 @@
       "icon": "🫐",
       "price": 250,
       "constraints": {},
+      "subMenu": {
+        "menuId": "juice-options",
+        "included": []
+      },
       "order": 5
     },
     "ITEM-JUICE-POMEGRANATE-KIDS": {
@@ -57,6 +69,10 @@
       "icon": "🥬",
       "price": 300,
       "constraints": {},
+      "subMenu": {
+        "menuId": "juice-options",
+        "included": []
+      },
       "order": 4
     },
     "ITEM-JUICE-PINEAPPLE": {
@@ -65,6 +81,10 @@
       "icon": "🍍",
       "price": 350,
       "constraints": {},
+      "subMenu": {
+        "menuId": "juice-options",
+        "included": []
+      },
       "order": 0
     },
     "ITEM-JUICE-CARROT": {
@@ -73,6 +93,10 @@
       "icon": "🥕",
       "price": 250,
       "constraints": {},
+      "subMenu": {
+        "menuId": "juice-options",
+        "included": []
+      },
       "order": 1
     },
     "ITEM-JUICE-DETOX": {
@@ -82,7 +106,7 @@
       "price": 300,
       "constraints": {},
       "subMenu": {
-        "menuId": "juice-modifiers",
+        "menuId": "juice-options",
         "included": [
           {
             "itemId": "MOD-APPLE-JUICE",
@@ -115,7 +139,7 @@
       "price": 300,
       "constraints": {},
       "subMenu": {
-        "menuId": "juice-modifiers",
+        "menuId": "juice-options",
         "included": [
           {
             "itemId": "MOD-ORANGE-JUICE",
@@ -148,7 +172,7 @@
       "price": 300,
       "constraints": {},
       "subMenu": {
-        "menuId": "juice-modifiers",
+        "menuId": "juice-options",
         "included": [
           {
             "itemId": "MOD-APPLE-JUICE",
@@ -186,7 +210,7 @@
       "price": 300,
       "constraints": {},
       "subMenu": {
-        "menuId": "juice-modifiers",
+        "menuId": "juice-options",
         "included": [
           {
             "itemId": "MOD-ORANGE-JUICE",
@@ -219,7 +243,7 @@
       "price": 300,
       "constraints": {},
       "subMenu": {
-        "menuId": "juice-modifiers",
+        "menuId": "juice-options",
         "included": [
           {
             "itemId": "MOD-ORANGE-JUICE",
@@ -252,7 +276,7 @@
       "price": 150,
       "constraints": {},
       "subMenu": {
-        "menuId": "juice-modifiers",
+        "menuId": "juice-options",
         "included": [
           {
             "itemId": "MOD-GINGER-JUICE",
@@ -285,7 +309,7 @@
       "price": 100,
       "constraints": {},
       "subMenu": {
-        "menuId": "juice-modifiers",
+        "menuId": "juice-options",
         "included": [
           {
             "itemId": "MOD-CUCUMBER-JUICE",

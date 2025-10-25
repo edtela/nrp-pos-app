@@ -1,0 +1,11 @@
+{
+  "id": "raw-materials",
+  "name": "Raw Materials",
+  "currency": "ALL",
+  "items": {},
+  "itemGroups": {},
+  "layout": {
+    "type": "item-group",
+    "data": "all-items"
+  }
+}

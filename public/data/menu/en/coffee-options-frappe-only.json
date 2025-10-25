@@ -3,8 +3,8 @@
   "name": "Coffee Options",
   "currency": "ALL",
   "items": {
-    "opt-milk": {
-      "id": "opt-milk",
+    "MOD-MILK": {
+      "id": "MOD-MILK",
       "name": "Milk",
       "icon": "🥛",
       "price": 0,
@@ -13,48 +13,48 @@
       },
       "order": 4
     },
-    "opt-almond-milk": {
-      "id": "opt-almond-milk",
+    "MOD-MILK-ALMOND": {
+      "id": "MOD-MILK-ALMOND",
       "name": "Almond Milk",
       "icon": "🤍",
-      "price": 50,
+      "price": 0,
       "constraints": {
         "choiceId": "milk-choice"
       },
       "order": 5
     },
-    "opt-coconut-milk": {
-      "id": "opt-coconut-milk",
+    "MOD-MILK-COCONUT": {
+      "id": "MOD-MILK-COCONUT",
       "name": "Coconut Milk",
       "icon": "🥥",
-      "price": 50,
+      "price": 0,
       "constraints": {
         "choiceId": "milk-choice"
       },
       "order": 6
     },
-    "opt-oat-milk": {
-      "id": "opt-oat-milk",
+    "MOD-MILK-OAT": {
+      "id": "MOD-MILK-OAT",
       "name": "Oat Milk",
       "icon": "🌾",
-      "price": 50,
+      "price": 0,
       "constraints": {
         "choiceId": "milk-choice"
       },
       "order": 7
     },
-    "opt-soy-milk": {
-      "id": "opt-soy-milk",
+    "MOD-MILK-SOY": {
+      "id": "MOD-MILK-SOY",
       "name": "Soy Milk",
       "icon": "🟢",
-      "price": 50,
+      "price": 0,
       "constraints": {
         "choiceId": "milk-choice"
       },
       "order": 8
     },
-    "opt-unsweetened": {
-      "id": "opt-unsweetened",
+    "MOD-UNSWEETENED": {
+      "id": "MOD-UNSWEETENED",
       "name": "Unsweetened",
       "icon": "⚪",
       "price": 0,
@@ -63,8 +63,8 @@
       },
       "order": 0
     },
-    "opt-light-sweet": {
-      "id": "opt-light-sweet",
+    "MOD-LIGHT-SWEET": {
+      "id": "MOD-LIGHT-SWEET",
       "name": "Light",
       "icon": "🟡",
       "price": 0,
@@ -73,8 +73,8 @@
       },
       "order": 1
     },
-    "opt-medium-sweet": {
-      "id": "opt-medium-sweet",
+    "MOD-MEDIUM-SWEET": {
+      "id": "MOD-MEDIUM-SWEET",
       "name": "Medium",
       "icon": "🟠",
       "price": 0,
@@ -83,8 +83,8 @@
       },
       "order": 2
     },
-    "opt-sweet": {
-      "id": "opt-sweet",
+    "MOD-SWEET": {
+      "id": "MOD-SWEET",
       "name": "Sweet",
       "icon": "🔴",
       "price": 0,
@@ -104,21 +104,21 @@
       "id": "group-milk-choices",
       "name": "Milk Choice",
       "itemIds": [
-        "opt-milk",
-        "opt-almond-milk",
-        "opt-coconut-milk",
-        "opt-oat-milk",
-        "opt-soy-milk"
+        "MOD-MILK",
+        "MOD-MILK-ALMOND",
+        "MOD-MILK-COCONUT",
+        "MOD-MILK-OAT",
+        "MOD-MILK-SOY"
       ]
     },
     "group-sweetness": {
       "id": "group-sweetness",
       "name": "Sweetness",
       "itemIds": [
-        "opt-unsweetened",
-        "opt-light-sweet",
-        "opt-medium-sweet",
-        "opt-sweet"
+        "MOD-UNSWEETENED",
+        "MOD-LIGHT-SWEET",
+        "MOD-MEDIUM-SWEET",
+        "MOD-SWEET"
       ]
     }
   },

@@ -91,7 +91,7 @@
   "itemGroups": {
     "group-1": {
       "id": "group-1",
-      "name": "Group 1",
+      "name": "",
       "itemIds": [
         "coffee",
         "tea",

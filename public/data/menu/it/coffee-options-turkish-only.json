@@ -3,8 +3,8 @@
   "name": "Opzioni Caffè",
   "currency": "ALL",
   "items": {
-    "opt-unsweetened": {
-      "id": "opt-unsweetened",
+    "MOD-UNSWEETENED": {
+      "id": "MOD-UNSWEETENED",
       "name": "Senza zucchero",
       "icon": "⚪",
       "price": 0,
@@ -13,8 +13,8 @@
       },
       "order": 0
     },
-    "opt-light-sweet": {
-      "id": "opt-light-sweet",
+    "MOD-LIGHT-SWEET": {
+      "id": "MOD-LIGHT-SWEET",
       "name": "Poco dolce",
       "icon": "🟡",
       "price": 0,
@@ -23,8 +23,8 @@
       },
       "order": 1
     },
-    "opt-medium-sweet": {
-      "id": "opt-medium-sweet",
+    "MOD-MEDIUM-SWEET": {
+      "id": "MOD-MEDIUM-SWEET",
       "name": "Medio",
       "icon": "🟠",
       "price": 0,
@@ -33,8 +33,8 @@
       },
       "order": 2
     },
-    "opt-sweet": {
-      "id": "opt-sweet",
+    "MOD-SWEET": {
+      "id": "MOD-SWEET",
       "name": "Dolce",
       "icon": "🔴",
       "price": 0,
@@ -54,10 +54,10 @@
       "id": "group-sweetness",
       "name": "Dolcezza",
       "itemIds": [
-        "opt-unsweetened",
-        "opt-light-sweet",
-        "opt-medium-sweet",
-        "opt-sweet"
+        "MOD-UNSWEETENED",
+        "MOD-LIGHT-SWEET",
+        "MOD-MEDIUM-SWEET",
+        "MOD-SWEET"
       ]
     }
   },

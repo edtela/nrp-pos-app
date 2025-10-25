@@ -3,8 +3,8 @@
   "name": "Opzioni Caffè",
   "currency": "ALL",
   "items": {
-    "opt-milk": {
-      "id": "opt-milk",
+    "MOD-MILK": {
+      "id": "MOD-MILK",
       "name": "Latte",
       "icon": "🥛",
       "price": 0,
@@ -13,64 +13,64 @@
       },
       "order": 3
     },
-    "opt-almond-milk": {
-      "id": "opt-almond-milk",
+    "MOD-MILK-ALMOND": {
+      "id": "MOD-MILK-ALMOND",
       "name": "Latte di Mandorle",
       "icon": "🤍",
-      "price": 50,
+      "price": 0,
       "constraints": {
         "choiceId": "milk-choice"
       },
       "order": 4
     },
-    "opt-coconut-milk": {
-      "id": "opt-coconut-milk",
+    "MOD-MILK-COCONUT": {
+      "id": "MOD-MILK-COCONUT",
       "name": "Latte di Cocco",
       "icon": "🥥",
-      "price": 50,
+      "price": 0,
       "constraints": {
         "choiceId": "milk-choice"
       },
       "order": 5
     },
-    "opt-oat-milk": {
-      "id": "opt-oat-milk",
+    "MOD-MILK-OAT": {
+      "id": "MOD-MILK-OAT",
       "name": "Latte d'Avena",
       "icon": "🌾",
-      "price": 50,
+      "price": 0,
       "constraints": {
         "choiceId": "milk-choice"
       },
       "order": 6
     },
-    "opt-soy-milk": {
-      "id": "opt-soy-milk",
+    "MOD-MILK-SOY": {
+      "id": "MOD-MILK-SOY",
       "name": "Latte di Soia",
       "icon": "🟢",
-      "price": 50,
+      "price": 0,
       "constraints": {
         "choiceId": "milk-choice"
       },
       "order": 7
     },
-    "opt-decaf": {
-      "id": "opt-decaf",
+    "MOD-DECAF": {
+      "id": "MOD-DECAF",
       "name": "Decaffeinato",
       "icon": "☕",
       "price": 20,
       "constraints": {},
       "order": 0
     },
-    "opt-double-shot": {
-      "id": "opt-double-shot",
+    "MOD-DOUBLE-SHOT": {
+      "id": "MOD-DOUBLE-SHOT",
       "name": "Doppio",
       "icon": "💪",
       "price": 60,
       "constraints": {},
       "order": 1
     },
-    "opt-no-foam": {
-      "id": "opt-no-foam",
+    "MOD-NO-FOAM": {
+      "id": "MOD-NO-FOAM",
       "name": "Senza schiuma",
       "icon": "☕",
       "price": 0,
@@ -88,20 +88,20 @@
       "id": "group-milk-choices",
       "name": "Scelta del Latte",
       "itemIds": [
-        "opt-milk",
-        "opt-almond-milk",
-        "opt-coconut-milk",
-        "opt-oat-milk",
-        "opt-soy-milk"
+        "MOD-MILK",
+        "MOD-MILK-ALMOND",
+        "MOD-MILK-COCONUT",
+        "MOD-MILK-OAT",
+        "MOD-MILK-SOY"
       ]
     },
     "group-macchiato-coffee": {
       "id": "group-macchiato-coffee",
       "name": "Opzioni Caffè",
       "itemIds": [
-        "opt-decaf",
-        "opt-double-shot",
-        "opt-no-foam"
+        "MOD-DECAF",
+        "MOD-DOUBLE-SHOT",
+        "MOD-NO-FOAM"
       ]
     }
   },

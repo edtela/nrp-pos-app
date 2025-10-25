@@ -1646,7 +1646,7 @@ describe('data-model', () => {
 
                 // Must use replacement syntax since union contains object
                 const changes1 = update(data, {
-                    value: ['new string']
+                    value: ['new string'] as any
                 });
                 expect(changes1).toEqual({
                     value: 'new string',

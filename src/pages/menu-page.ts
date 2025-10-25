@@ -16,7 +16,7 @@ import { saveOrderItem, OrderItem } from "@/model/order-model";
 import { VARIANT_SELECT_EVENT } from "@/components/variant";
 import { ADD_TO_ORDER_EVENT, VIEW_ORDER_EVENT } from "@/components/app-bottom-bar";
 import { isSaleItem } from "@/types";
-import { ALL, select, WHERE } from "@/vendor/tsqn/index.js";
+import { ALL, select, WHERE } from "tsqn";
 import { dom } from "@/lib/dom-node";
 
 // Template function - delegates to appropriate page component

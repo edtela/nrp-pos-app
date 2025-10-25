@@ -95,7 +95,7 @@
           }
         ]
       },
-      "order": 21
+      "order": 18
     },
     "ITEM-YOGURT-BJESHKA": {
       "id": "ITEM-YOGURT-BJESHKA",
@@ -149,7 +149,7 @@
           }
         ]
       },
-      "order": 22
+      "order": 19
     },
     "ITEM-YOGURT-ENERGJIA": {
       "id": "ITEM-YOGURT-ENERGJIA",
@@ -198,7 +198,7 @@
           }
         ]
       },
-      "order": 23
+      "order": 20
     },
     "ITEM-YOGURT-GJELBER": {
       "id": "ITEM-YOGURT-GJELBER",
@@ -242,7 +242,7 @@
           }
         ]
       },
-      "order": 24
+      "order": 21
     },
     "ITEM-YOGURT-LAMBADA": {
       "id": "ITEM-YOGURT-LAMBADA",
@@ -296,7 +296,7 @@
           }
         ]
       },
-      "order": 25
+      "order": 22
     },
     "ITEM-YOGURT-PROTEINI": {
       "id": "ITEM-YOGURT-PROTEINI",
@@ -350,7 +350,7 @@
           }
         ]
       },
-      "order": 26
+      "order": 23
     },
     "ITEM-YOGURT-AROMAL": {
       "id": "ITEM-YOGURT-AROMAL",
@@ -404,7 +404,7 @@
           }
         ]
       },
-      "order": 27
+      "order": 24
     },
     "ITEM-YOGURT-OMEGA": {
       "id": "ITEM-YOGURT-OMEGA",
@@ -453,7 +453,7 @@
           }
         ]
       },
-      "order": 28
+      "order": 25
     },
     "ITEM-YOGURT-PINATA": {
       "id": "ITEM-YOGURT-PINATA",
@@ -502,7 +502,7 @@
           }
         ]
       },
-      "order": 29
+      "order": 26
     },
     "ITEM-COFFEE-YOGURT": {
       "id": "ITEM-COFFEE-YOGURT",
@@ -580,25 +580,6 @@
       },
       "order": 5
     },
-    "ITEM-PISTACHIO-YOGURT": {
-      "id": "ITEM-PISTACHIO-YOGURT",
-      "name": "Pistacchio",
-      "icon": "🟩",
-      "price": {
-        "groupId": "yogurt-size",
-        "prices": {
-          "mini": 150,
-          "standard": 250,
-          "family": 500
-        }
-      },
-      "constraints": {},
-      "subMenu": {
-        "menuId": "yogurt-options-main",
-        "included": []
-      },
-      "order": 6
-    },
     "ITEM-PROTEIN-YOGURT": {
       "id": "ITEM-PROTEIN-YOGURT",
       "name": "Proteina",
@@ -616,7 +597,7 @@
         "menuId": "yogurt-options-main",
         "included": []
       },
-      "order": 7
+      "order": 6
     },
     "ITEM-SAFFRON-YOGURT": {
       "id": "ITEM-SAFFRON-YOGURT",
@@ -635,45 +616,7 @@
         "menuId": "yogurt-options-main",
         "included": []
       },
-      "order": 8
-    },
-    "ITEM-WILD-BLUEBERRY-YOGURT": {
-      "id": "ITEM-WILD-BLUEBERRY-YOGURT",
-      "name": "Mirtillo Selvatico",
-      "icon": "🫐",
-      "price": {
-        "groupId": "yogurt-size",
-        "prices": {
-          "mini": 150,
-          "standard": 250,
-          "family": 500
-        }
-      },
-      "constraints": {},
-      "subMenu": {
-        "menuId": "yogurt-options-main",
-        "included": []
-      },
-      "order": 9
-    },
-    "ITEM-WILD-STRAWBERRY-YOGURT": {
-      "id": "ITEM-WILD-STRAWBERRY-YOGURT",
-      "name": "Fragola Selvatica",
-      "icon": "🍓",
-      "price": {
-        "groupId": "yogurt-size",
-        "prices": {
-          "mini": 200,
-          "standard": 300,
-          "family": 500
-        }
-      },
-      "constraints": {},
-      "subMenu": {
-        "menuId": "yogurt-options-main",
-        "included": []
-      },
-      "order": 10
+      "order": 7
     },
     "ITEM-YOGURT-HONEY": {
       "id": "ITEM-YOGURT-HONEY",
@@ -688,7 +631,7 @@
         }
       },
       "constraints": {},
-      "order": 16
+      "order": 13
     },
     "ITEM-YOGURT-BLUEBERRY": {
       "id": "ITEM-YOGURT-BLUEBERRY",
@@ -703,7 +646,7 @@
         }
       },
       "constraints": {},
-      "order": 12
+      "order": 9
     },
     "ITEM-YOGURT-STRAWBERRY": {
       "id": "ITEM-YOGURT-STRAWBERRY",
@@ -718,7 +661,7 @@
         }
       },
       "constraints": {},
-      "order": 20
+      "order": 17
     },
     "ITEM-YOGURT-MIXED-BERRIES": {
       "id": "ITEM-YOGURT-MIXED-BERRIES",
@@ -733,7 +676,7 @@
         }
       },
       "constraints": {},
-      "order": 17
+      "order": 14
     },
     "ITEM-YOGURT-GREEK": {
       "id": "ITEM-YOGURT-GREEK",
@@ -748,7 +691,7 @@
         }
       },
       "constraints": {},
-      "order": 15
+      "order": 12
     },
     "ITEM-YOGURT-BLACKBERRY": {
       "id": "ITEM-YOGURT-BLACKBERRY",
@@ -763,7 +706,7 @@
         }
       },
       "constraints": {},
-      "order": 11
+      "order": 8
     },
     "ITEM-YOGURT-POMEGRANATE": {
       "id": "ITEM-YOGURT-POMEGRANATE",
@@ -778,7 +721,7 @@
         }
       },
       "constraints": {},
-      "order": 18
+      "order": 15
     },
     "ITEM-YOGURT-CHERRY": {
       "id": "ITEM-YOGURT-CHERRY",
@@ -793,7 +736,7 @@
         }
       },
       "constraints": {},
-      "order": 14
+      "order": 11
     },
     "ITEM-YOGURT-CARROT": {
       "id": "ITEM-YOGURT-CARROT",
@@ -808,7 +751,7 @@
         }
       },
       "constraints": {},
-      "order": 13
+      "order": 10
     },
     "ITEM-YOGURT-ROSE": {
       "id": "ITEM-YOGURT-ROSE",
@@ -823,7 +766,7 @@
         }
       },
       "constraints": {},
-      "order": 19
+      "order": 16
     }
   },
   "itemGroups": {
@@ -857,17 +800,15 @@
       ]
     },
     "special-flavors": {
+      "id": "special-flavors",
       "name": "Gusti Speciali",
       "itemIds": [
         "ITEM-COFFEE-YOGURT",
         "ITEM-DATE-YOGURT",
         "ITEM-LIME-YOGURT",
         "ITEM-PEANUT-BUTTER-YOGURT",
-        "ITEM-PISTACHIO-YOGURT",
         "ITEM-PROTEIN-YOGURT",
         "ITEM-SAFFRON-YOGURT",
-        "ITEM-WILD-BLUEBERRY-YOGURT",
-        "ITEM-WILD-STRAWBERRY-YOGURT",
         "ITEM-YOGURT-BLACKBERRY",
         "ITEM-YOGURT-BLUEBERRY",
         "ITEM-YOGURT-CARROT",
