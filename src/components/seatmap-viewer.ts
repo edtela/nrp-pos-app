@@ -324,8 +324,7 @@ export class SeatmapViewer {
   public centerContent() {
     // Center the scrollable area on the content
     const containerRect = this.container.getBoundingClientRect();
-    const svgRect = this.svg.getBoundingClientRect();
-    
+
     // Calculate center positions
     const scrollWidth = this.container.scrollWidth;
     const scrollHeight = this.container.scrollHeight;
