@@ -12,9 +12,9 @@ import * as MenuContent from "./menu-content";
 import * as AppHeader from "./app-header";
 import * as AppBottomBar from "./app-bottom-bar";
 import { styles as layoutStyles } from "./app-layout";
-import { navigate } from "@/pages/page-router";
 import { getOrder } from "@/model/order-model";
 import { typeChange } from "tsqn";
+import { dom } from "@/lib/dom-node";
 
 // Export for page selector
 export const menuPageContainer = "menu-page-content";
@@ -31,7 +31,7 @@ export function template(displayMenu: DisplayMenu, context: Context): Template {
   const headerData: AppHeader.HeaderData = {
     leftButton: {
       type: leftButtonType,
-      onClick: leftButtonType === "home" ? () => navigate.toHome() : () => navigate.back(),
+      onClick: () => dom(document.body).dispatch("navigate", { to: leftButtonType === "home" ? "home" : "back" }),
     },
   };
 
@@ -60,7 +60,7 @@ export function hydrate(container: Element, displayMenu: DisplayMenu, context: C
     const headerData: AppHeader.HeaderData = {
       leftButton: {
         type: leftButtonType,
-        onClick: leftButtonType === "home" ? () => navigate.toHome() : () => navigate.back(),
+        onClick: () => dom(document.body).dispatch("navigate", { to: leftButtonType === "home" ? "home" : "back" }),
       },
     };
     AppHeader.hydrate(header, context, headerData);

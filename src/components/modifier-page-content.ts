@@ -16,7 +16,6 @@ import * as AppHeader from "./app-header";
 import * as AppBottomBar from "./app-bottom-bar";
 import { styles as layoutStyles } from "./app-layout";
 import { styles } from "@/styles/styles";
-import { navigate } from "@/pages/page-router";
 
 // Export for page selector
 export const modifierPageContainer = "modifier-page-content";
@@ -197,7 +196,7 @@ export function template(displayMenu: DisplayMenu, context: Context): Template {
   const headerData: AppHeader.HeaderData = {
     leftButton: {
       type: "back",
-      onClick: () => navigate.back(),
+      onClick: () => dom(document.body).dispatch("navigate", { to: "back" }),
     },
   };
 
@@ -267,7 +266,7 @@ export function hydrate(container: Element, _displayMenu: DisplayMenu, context: 
     const headerData: AppHeader.HeaderData = {
       leftButton: {
         type: "back",
-        onClick: () => navigate.back(),
+        onClick: () => dom(document.body).dispatch("navigate", { to: "back" }),
       },
     };
     AppHeader.hydrate(header, context, headerData);
@@ -303,7 +302,7 @@ function showError(container: Element): void {
   // Set up click handler for home button
   const homeButton = content.querySelector('.nav-home-button') as HTMLButtonElement;
   if (homeButton) {
-    homeButton.onclick = () => navigate.toHome();
+    homeButton.onclick = () => dom(document.body).dispatch("navigate", { to: "home" });
   }
 }
 

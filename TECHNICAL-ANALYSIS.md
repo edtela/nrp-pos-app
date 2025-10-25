@@ -9,9 +9,9 @@
 ## Table of Contents
 1. [Executive Summary](#executive-summary)
 2. [Architecture Deep Dive](#architecture-deep-dive)
-3. [Code Quality Assessment](#code-quality-assessment)
+3. [TSQN Integration](#tsqn-integration)
 4. [Component Patterns](#component-patterns)
-5. [TSQN Integration](#tsqn-integration)
+5. [Event System Architecture](#event-system-architecture)
 6. [Performance Analysis](#performance-analysis)
 7. [Testing Strategy](#testing-strategy)
 8. [Detailed Recommendations](#detailed-recommendations)
@@ -524,6 +524,322 @@ render(container, template(data, context));                   // Runtime
 - Phase 2: Refactor high-traffic components (5-10)
 - Phase 3: Create component generator CLI
 - Phase 4: Refactor remaining components
+
+---
+
+## Event System Architecture
+
+### Overview
+
+NRP uses a **lightweight event system** built on native DOM CustomEvents with automatic namespacing and bubbling. This provides decoupled, testable component communication without the need for a global event bus or manual listener cleanup.
+
+**Key Design Principle**: Events flow UP the DOM tree (like Redux actions), state flows DOWN via `update()` (like Redux reducers).
+
+### Core API: `node.on()` / `node.dispatch()`
+
+The `DomNode` wrapper (src/lib/dom-node.ts) provides a chainable API for event handling:
+
+```typescript
+import { dom } from "@/lib/dom-node";
+
+const node = dom(container);
+
+// Listen for events (automatic `app:` prefix)
+node.on('menu-item-click', (data) => {
+  console.log(data); // { id: '123' }
+});
+
+// Dispatch events (bubbles up DOM tree)
+node.dispatch('menu-item-click', { id: '123' });
+```
+
+**Implementation Details**:
+- All events are prefixed with `app:` to avoid conflicts with native DOM events
+- Events automatically bubble up the tree (`bubbles: true`)
+- No manual cleanup needed - listeners are removed when DOM nodes are removed
+- Type-safe via TypeScript event name constants
+- Null-safe - operations are no-ops when element is null
+
+### Three-Layer Event Architecture
+
+```
+┌──────────────────────────────────────────────────────────┐
+│                     Application Layer                     │
+│                  (app-init.ts - Initialized Once)         │
+│                                                            │
+│  listen(document.body, AppEvents.NAVIGATE, handleNav)    │
+│                          ▲                                 │
+│                          │ Events bubble up               │
+└──────────────────────────┼────────────────────────────────┘
+                           │
+┌──────────────────────────┼────────────────────────────────┐
+│                     Page Components                        │
+│              (*Page.ts - State Management)                 │
+│                          │                                 │
+│  node.on(EVENT, data => model.update(...))                │
+│                          ▲                                 │
+│                          │ Events bubble from children    │
+└──────────────────────────┼────────────────────────────────┘
+                           │
+┌──────────────────────────┼────────────────────────────────┐
+│                  Child Components                          │
+│              (Stateless - Just Dispatch)                   │
+│                          │                                 │
+│  dom(element).dispatch(EVENT, data)                       │
+└────────────────────────────────────────────────────────────┘
+```
+
+### Event Types
+
+**1. Click Events** (via data attributes)
+```typescript
+// Template
+html`<button ${onClick('menu-item-click')} data-item-id="123">Click</button>`
+
+// Global handler (initialized once in app-init.ts)
+initializeGlobalClickHandler();
+
+// Automatically converted to CustomEvent and bubbles
+node.on('click-event', (data) => {
+  // data = { target, dataset: { itemId: '123' }, originalEvent }
+});
+```
+
+**2. Component Events** (direct dispatch)
+```typescript
+// Component exports event name constant
+export const VARIANT_SELECT_EVENT = "variant-select";
+
+// Component dispatches event
+dom(container).dispatch(VARIANT_SELECT_EVENT, {
+  variantGroupId: '123',
+  variantId: '456'
+});
+
+// Page listens for event
+node.on(VARIANT_SELECT_EVENT, (data) => {
+  runUpdate({ variants: { [data.variantGroupId]: { selectedId: data.variantId } } });
+});
+```
+
+**3. Navigation Events** (application-level)
+```typescript
+// Components dispatch navigate events
+dom(document.body).dispatch("navigate", { to: "menu", menuId: "123" });
+
+// App-init listens at document.body and routes
+listen(document.body, AppEvents.NAVIGATE, (data) => {
+  switch (data.to) {
+    case "menu": navigate.toMenu(data.menuId); break;
+    case "order": navigate.toOrder(); break;
+    case "back": navigate.back(); break;
+  }
+});
+```
+
+### Architecture Benefits
+
+**1. Decoupling**
+- Child components don't import parent modules
+- No circular dependencies
+- Components can be tested in isolation
+
+**2. No Cleanup Required**
+```typescript
+// ✅ Events auto-cleanup when DOM node is removed
+node.on('event', handler);  // No removeEventListener needed
+
+// ❌ Manual cleanup required
+element.addEventListener('event', handler);
+element.removeEventListener('event', handler);  // Must track and remove
+```
+
+**3. Bubbling Enables Interception**
+```typescript
+// Parent can intercept child events before they reach app layer
+parentNode.on('navigate', (data) => {
+  // Enrich, validate, or cancel
+  if (shouldIntercept(data)) {
+    // Handle locally, don't propagate
+  } else {
+    // Let it bubble to app-init
+  }
+});
+```
+
+**4. Testability**
+```typescript
+// Easy to test - just dispatch and assert
+const container = document.createElement('div');
+hydrate(container, mockMenu, mockContext);
+
+// Trigger event
+dom(container).dispatch('menu-item-click', { id: '123' });
+
+// Assert state changed
+expect(model.data.selectedItem).toBe('123');
+```
+
+### Real-World Example: Navigation Refactoring (Oct 25, 2025)
+
+**Problem**: Child components were importing `navigate` module directly, creating tight coupling.
+
+**Before** (Static Imports):
+```typescript
+// modifier-page-content.ts
+import { navigate } from "@/pages/page-router";  // ❌ Tight coupling
+
+const headerData: AppHeader.HeaderData = {
+  leftButton: {
+    type: "back",
+    onClick: () => navigate.back(),  // ❌ Direct module dependency
+  },
+};
+```
+
+**After** (Event-Driven):
+```typescript
+// modifier-page-content.ts
+import { dom } from "@/lib/dom-node";  // ✅ Only DOM helpers
+
+const headerData: AppHeader.HeaderData = {
+  leftButton: {
+    type: "back",
+    onClick: () => dom(document.body).dispatch("navigate", { to: "back" }),  // ✅ Event
+  },
+};
+```
+
+**Result**:
+- ✅ Components no longer depend on router module
+- ✅ Consistent navigation pattern throughout app
+- ✅ Parents can intercept/enrich navigation events
+- ✅ Easier to test (just listen for events)
+
+**Files Refactored**:
+- `src/components/menu-page-content.ts` (2 locations)
+- `src/components/modifier-page-content.ts` (3 locations)
+
+### Event Naming Conventions
+
+**1. Component-Specific Events**
+```typescript
+// Named with verb + subject
+export const MENU_ITEM_CLICK = "menu-item-click";
+export const VARIANT_SELECT_EVENT = "variant-select";
+export const TOGGLE_ITEM_EVENT = "toggle-item-event";
+```
+
+**2. Application Events** (src/lib/dom-events.ts)
+```typescript
+export const AppEvents = {
+  NAVIGATE: "app:navigate",
+  ORDER_ADD: "app:order:add",
+  ORDER_UPDATE: "app:order:update",
+  ORDER_REMOVE: "app:order:remove",
+  STATE_UPDATE: "app:state:update",
+} as const;
+```
+
+**3. Generic Events** (src/lib/events.ts)
+```typescript
+export const CLICK_EVENT = "click-event";
+export const STATE_UPDATE_EVENT = "state-update";
+```
+
+### Comparison with Other Patterns
+
+| Pattern | NRP Events | Redux | Event Bus | Props Drilling |
+|---------|-----------|-------|-----------|----------------|
+| **Coupling** | Low | Low | Low | High |
+| **Boilerplate** | Low | High | Medium | Low |
+| **Type Safety** | Medium | High | Low | High |
+| **Testability** | High | High | Medium | Medium |
+| **Cleanup** | Auto | Auto | Manual | N/A |
+| **Bundle Size** | 0KB (native) | 15-30KB | 5-10KB | 0KB |
+
+### Best Practices
+
+**1. Always Export Event Name Constants**
+```typescript
+// ✅ Good - refactor-safe, autocomplete
+export const MENU_ITEM_CLICK = "menu-item-click";
+node.on(MENU_ITEM_CLICK, handler);
+
+// ❌ Bad - typos, no autocomplete
+node.on("menu-item-clicl", handler);  // Typo!
+```
+
+**2. Use Document.body for Application Events**
+```typescript
+// ✅ Good - guaranteed to bubble to app-init
+dom(document.body).dispatch("navigate", { to: "home" });
+
+// ❌ Bad - might not bubble if parent intercepts
+dom(someElement).dispatch("navigate", { to: "home" });
+```
+
+**3. Keep Event Data Simple**
+```typescript
+// ✅ Good - serializable, simple
+dispatch("event", { id: '123', action: 'delete' });
+
+// ❌ Bad - complex objects, functions
+dispatch("event", { item: fullItemObject, callback: () => {} });
+```
+
+**4. Let Pages Own State**
+```typescript
+// ✅ Good - child dispatches, page handles
+// Child:
+dom(container).dispatch("menu-item-click", { id: '123' });
+
+// Page:
+node.on("menu-item-click", (data) => {
+  const item = model.data.items[data.id];
+  runUpdate({ selected: item });
+});
+
+// ❌ Bad - child updates parent state directly
+// (Not even possible in this architecture - good!)
+```
+
+### Event System Files
+
+**Core Implementation**:
+- `src/lib/dom-node.ts` - `DomNode.on()` and `DomNode.dispatch()` (lines 183-207)
+- `src/lib/dom-events.ts` - Helper functions and AppEvents constants
+- `src/lib/events.ts` - Click event handling via data attributes
+
+**Usage Examples**:
+- `src/pages/menu-page.ts` - Page component listening for events
+- `src/pages/order-page.ts` - Page component listening for events
+- `src/app-init.ts` - Application-level event listener (navigation)
+
+**Event Declarations**:
+- `src/components/app-bottom-bar.ts` - VIEW_ORDER_EVENT, ADD_TO_ORDER_EVENT, etc.
+- `src/components/order-item.ts` - INCREASE_QUANTITY_EVENT, MODIFY_ITEM_EVENT, etc.
+- `src/components/menu-item.ts` - MENU_ITEM_CLICK, ORDER_ITEM_EVENT
+- `src/components/variant.ts` - VARIANT_SELECT_EVENT
+
+### Why Not Use a Framework's Event System?
+
+**NRP's Choice**: Native DOM events with thin wrapper
+
+**Alternatives Considered**:
+- ❌ **Redux** - Too heavy, too much boilerplate for POS app
+- ❌ **MobX** - Magic reactivity, harder to debug
+- ❌ **Custom Event Bus** - Must manage subscriptions/unsubscriptions
+- ✅ **DOM Events** - Native, no cleanup, familiar, zero overhead
+
+**Key Insight**: The browser already has a sophisticated event system. By leveraging it with a thin wrapper, NRP gets:
+- Automatic cleanup (DOM handles it)
+- Bubbling for free
+- Event delegation patterns
+- No framework lock-in
+- Zero bundle size impact
+
+This is a brilliant use of the platform - similar to how jQuery popularized DOM manipulation patterns that eventually became native browser APIs.
 
 ---
 
