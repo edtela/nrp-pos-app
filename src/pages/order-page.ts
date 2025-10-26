@@ -13,8 +13,9 @@ import * as OrderContentUI from "@/components/order-content";
 import * as OrderItemUI from "@/components/order-item";
 import * as AppHeader from "@/components/app-header";
 import * as AppBottomBar from "@/components/app-bottom-bar";
+import { SEND_ORDER_EVENT } from "@/components/app-bottom-bar";
 import { styles as layoutStyles } from "@/components/app-layout";
-import { orderModel, OrderPageData } from "@/model/order-model";
+import { orderModel, OrderPageData, getStore, MAIN_ORDER_ID, storageKey } from "@/model/order-model";
 import { DataChange } from "@/lib/data-model-types";
 
 // Template function - accepts data for static generation
@@ -138,6 +139,59 @@ export function hydrate(container: Element, _data: OrderPageData, context: Conte
       // For now, just log - can be expanded to show comment dialog
       console.log('Comment requested for item:', itemId);
       // TODO: Implement comment functionality
+    }
+  });
+
+  // Handle send order event
+  node.on(SEND_ORDER_EVENT, async () => {
+    const orderData = model.getData();
+
+    if (orderData.order.itemIds.length === 0) {
+      console.warn('Cannot send empty order');
+      return;
+    }
+
+    try {
+      console.log('Sending order to server...', orderData);
+
+      const response = await fetch('/api/sendOrder', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          order: orderData.order,
+          items: orderData.items,
+          language: context.lang,
+          tableNumber: 'Takeaway' // Default to Takeaway for now
+        }),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        console.log('Order sent successfully:', result.orderNumber);
+
+        // Clear the order from session storage
+        const orderStore = getStore(MAIN_ORDER_ID);
+        orderStore.set({ itemIds: [], total: 0, currency: 'ALL' });
+
+        // Clear all individual order items
+        orderData.order.itemIds.forEach(itemId => {
+          sessionStorage.removeItem(storageKey(itemId));
+        });
+
+        // Navigate to main menu
+        node.dispatch('navigate', { to: 'home' });
+      } else {
+        console.error('Order validation failed:', result.validation);
+        // TODO: Show error message to user
+        alert(`Order failed: ${result.message || 'Validation error'}`);
+      }
+    } catch (error) {
+      console.error('Failed to send order:', error);
+      // TODO: Show error message to user
+      alert('Failed to send order. Please try again.');
     }
   });
 }

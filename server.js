@@ -300,62 +300,52 @@ app.post('/api/sendOrder', async (req, res) => {
     }
     
     if (validation.valid) {
-      // Process with ERPNext if configured
+      // Process with ERP if configured
       let erpResult = null;
-      
+
       if (erpPos) {
         try {
-          // Check if we have an active session for this table
-          let sessionId = order.sessionId;
-          
-          // If no session, create one
-          if (!sessionId) {
-            // Check if table already has an active session
-            const existingSession = Array.from(tableSessions.values())
-              .find(s => s.tableNumber === tableNumber && s.status === 'active');
-            
-            if (existingSession) {
-              sessionId = existingSession.sessionId;
-            } else {
-              // Create new session
-              const session = await erpPos.tables.openTable({
-                tableNumber: tableNumber || 'Takeaway',
-                waiter: order.waiter || 'POS User',
-                customerCount: order.customerCount || 1,
-                notes: order.notes
-              });
-              
-              sessionId = session.sessionId;
-              tableSessions.set(sessionId, session);
-              console.log(`Created new ERP session: ${sessionId} for table ${tableNumber}`);
-            }
-          }
-          
-          // Map NRP items to ERP format
-          const erpItems = mapOrderItemsToErp(items);
-          
-          // Create order in ERPNext
-          const erpOrder = await erpPos.orders.createOrder({
-            sessionId,
-            items: erpItems,
-            notes: order.notes
+          // Map NRP items to ERP OrderInput format
+          const orderItems = Object.values(items).map(displayItem => {
+            const orderItem = displayItem.item;
+            return {
+              productId: orderItem.menuItem.id,
+              quantity: orderItem.quantity,
+              price: orderItem.price / orderItem.quantity, // Unit price
+              modifiers: orderItem.modifiers?.map(mod => ({
+                id: mod.menuItemId,
+                price: mod.price,
+                quantity: 1
+              })) || [],
+              notes: orderItem.notes
+            };
           });
-          
-          // Submit to kitchen if configured
-          if (process.env.ERP_AUTO_SUBMIT === 'true') {
-            await erpPos.orders.submitToKitchen(erpOrder.orderId);
-          }
-          
+
+          // Create order using IERPAdapter interface
+          const erpOrder = await erpPos.createOrder({
+            customerName: order.customerName || 'Walk-in Customer',
+            customerPhone: order.customerPhone,
+            items: orderItems,
+            paymentMethod: order.paymentMethod || 'cash',
+            notes: order.notes,
+            metadata: {
+              tableNumber: tableNumber || 'Takeaway',
+              language: language,
+              source: 'nrp-pos'
+            }
+          });
+
           erpResult = {
-            orderId: erpOrder.orderId,
-            sessionId: erpOrder.sessionId,
+            orderId: erpOrder.id,
             orderNumber: erpOrder.orderNumber,
-            status: erpOrder.status
+            status: erpOrder.status,
+            total: erpOrder.total,
+            currency: erpOrder.currency
           };
-          
-          console.log(`Order sent to ERPNext: ${erpOrder.orderId}`);
+
+          console.log(`Order created in ERP: ${erpOrder.orderNumber} (${erpOrder.total} ${erpOrder.currency})`);
         } catch (erpError) {
-          console.error('ERPNext integration error:', erpError);
+          console.error('ERP integration error:', erpError);
           validation.warnings.push(`ERP sync failed: ${erpError.message}`);
         }
       }
