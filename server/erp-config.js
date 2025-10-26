@@ -8,19 +8,33 @@ dotenv.config();
  * This module is only loaded server-side, so it won't affect client bundle
  */
 export async function initializeErpPos() {
-  // Check required environment variables
+  // Check required environment variables for ERPNext
   const requiredVars = ['ERP_BASE_URL', 'ERP_API_KEY', 'ERP_API_SECRET'];
   const missing = requiredVars.filter(key => !process.env[key]);
 
   if (missing.length > 0) {
-    console.log('ℹ️  ERP integration disabled (missing environment variables)');
-    console.log('   Configure these variables to enable: ' + missing.join(', '));
-    return null;
+    console.log('ℹ️  ERPNext environment variables not configured, using mock ERP');
+
+    try {
+      // Use mock ERP adapter for development
+      const { MockERPAdapter } = await import('nrp-next');
+      const mockAdapter = new MockERPAdapter();
+      await mockAdapter.connect();
+
+      console.log('✅ Mock ERP adapter initialized (development mode)');
+      console.log('   ⚠️  Using in-memory data - resets on server restart');
+      console.log('   💡 Configure ERP_BASE_URL, ERP_API_KEY, and ERP_API_SECRET for production');
+
+      return mockAdapter;
+    } catch (mockError) {
+      console.error('❌ Failed to initialize mock ERP:', mockError.message);
+      console.error('   Install nrp-next package to enable mock ERP: npm install nrp-next');
+      return null;
+    }
   }
 
   try {
-    // Dynamically import erp-next only if needed
-    // This allows the server to run without erp-next package installed
+    // Try to load real ERPNext implementation first
     const { createRestaurantPos } = await import('erp-next');
 
     const pos = createRestaurantPos({
@@ -33,7 +47,7 @@ export async function initializeErpPos() {
       currency: process.env.ERP_CURRENCY || 'ALL'
     });
 
-    console.log('✅ ERPNext POS integration initialized');
+    console.log('✅ ERPNext POS integration initialized (production mode)');
     console.log(`   Base URL: ${process.env.ERP_BASE_URL}`);
     console.log(`   Warehouse: ${process.env.ERP_WAREHOUSE || 'Stores - AR'}`);
     console.log(`   Currency: ${process.env.ERP_CURRENCY || 'ALL'}`);
@@ -41,8 +55,23 @@ export async function initializeErpPos() {
     return pos;
   } catch (error) {
     if (error.code === 'ERR_MODULE_NOT_FOUND') {
-      console.log('ℹ️  ERP integration disabled (erp-next package not installed)');
-      return null;
+      console.log('ℹ️  ERPNext package not found, falling back to mock ERP');
+
+      try {
+        // Fall back to mock ERP adapter for development
+        const { MockERPAdapter } = await import('nrp-next');
+        const mockAdapter = new MockERPAdapter();
+        await mockAdapter.connect();
+
+        console.log('✅ Mock ERP adapter initialized (development mode)');
+        console.log('   ⚠️  Using in-memory data - resets on server restart');
+        console.log('   💡 Configure ERP_BASE_URL, ERP_API_KEY, and ERP_API_SECRET for production');
+
+        return mockAdapter;
+      } catch (mockError) {
+        console.error('❌ Failed to initialize mock ERP:', mockError.message);
+        return null;
+      }
     }
     console.error('❌ Failed to initialize ERPNext POS:', error.message);
     return null;
