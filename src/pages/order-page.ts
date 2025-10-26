@@ -154,20 +154,32 @@ export function hydrate(container: Element, _data: OrderPageData, context: Conte
     try {
       console.log('Sending order to server...', orderData);
 
+      const requestBody = {
+        order: orderData.order,
+        items: orderData.items,
+        language: context.lang,
+        tableNumber: 'Takeaway' // Default to Takeaway for now
+      };
+      console.log('Request body:', JSON.stringify(requestBody, null, 2));
+
       const response = await fetch('/api/sendOrder', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          order: orderData.order,
-          items: orderData.items,
-          language: context.lang,
-          tableNumber: 'Takeaway' // Default to Takeaway for now
-        }),
+        body: JSON.stringify(requestBody),
       });
 
+      console.log('Response status:', response.status, response.statusText);
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('Server error response:', errorText);
+        throw new Error(`Server returned ${response.status}: ${errorText}`);
+      }
+
       const result = await response.json();
+      console.log('Server response:', result);
 
       if (result.success) {
         console.log('Order sent successfully:', result.orderNumber);
