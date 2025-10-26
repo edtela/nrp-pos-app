@@ -12,6 +12,7 @@ import * as OrderItemUI from "./order-item";
 import { styles as itemListStyles } from "./item-list";
 import { DataChange } from "@/lib/data-model-types";
 import { typeChange } from "@/lib/data-model";
+import { dom } from "@/lib/dom-node";
 
 /**
  * Empty order state template
@@ -27,7 +28,7 @@ function emptyOrderTemplate(context: Context): Template {
       <div class="${itemListStyles.emptyIcon}">🛒</div>
       <h2 class="${itemListStyles.emptyTitle}">${emptyTitle()}</h2>
       <p class="${itemListStyles.emptyMessage}">${emptyMessage()}</p>
-      <button class="${itemListStyles.emptyAction}">${browseButton()}</button>
+      <button class="${itemListStyles.emptyAction}" data-browse-menu>${browseButton()}</button>
     </div>
   `;
 }
@@ -65,6 +66,14 @@ export function template(data: OrderPageData, context: Context): Template {
  */
 export function init(container: HTMLElement, data: OrderPageData, context: Context) {
   render(template(data, context), container);
+
+  // Attach event handler to browse menu button (empty state)
+  const browseButton = container.querySelector('[data-browse-menu]');
+  if (browseButton) {
+    browseButton.addEventListener('click', () => {
+      dom(document.body).dispatch('navigate', { to: 'home' });
+    });
+  }
 }
 
 export function update(
@@ -88,9 +97,22 @@ export function update(
     (itemId) => typeChange(itemId, changes.items) && (changes.items as any)[itemId] != null,
   );
 
-  if (hasNewItem) {
-    // Re-render everything to maintain proper order
+  // Check if order became empty (all items deleted)
+  const becameEmpty = data.order.itemIds.length === 0;
+
+  if (hasNewItem || becameEmpty) {
+    // Re-render everything to maintain proper order or show empty state
     render(template(data, context), container);
+
+    // Re-attach browse menu button handler if in empty state
+    if (becameEmpty) {
+      const browseButton = container.querySelector('[data-browse-menu]');
+      if (browseButton) {
+        browseButton.addEventListener('click', () => {
+          dom(document.body).dispatch('navigate', { to: 'home' });
+        });
+      }
+    }
     return;
   }
 
