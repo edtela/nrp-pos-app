@@ -115,14 +115,36 @@ export async function createEmptyOrderData(): Promise<OrderPageData> {
  * Fetch tables/seatmap data
  */
 export async function fetchTablesData(): Promise<TablesPageData> {
-  const response = await fetch("/data/seatmap/main-floor.json");
-  if (!response.ok) {
-    // Return a default empty tables page if file doesn't exist yet
-    return {
-      id: "main-floor",
-      name: "Main Floor",
-      svgContent: '<svg viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg"><text x="400" y="300" text-anchor="middle">No seatmap data available</text></svg>'
-    };
+  try {
+    const response = await fetch("/data/seatmap/main-floor.json");
+
+    if (!response.ok) {
+      console.warn(`Seatmap data fetch failed with status ${response.status}`);
+      return createDefaultTablesData();
+    }
+
+    // Check content type to ensure we're getting JSON
+    const contentType = response.headers.get('content-type');
+    if (!contentType || !contentType.includes('application/json')) {
+      console.warn(`Unexpected content type for seatmap data: ${contentType}`);
+      return createDefaultTablesData();
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Failed to fetch or parse seatmap data:', error);
+    return createDefaultTablesData();
   }
-  return response.json();
+}
+
+/**
+ * Create default/fallback tables page data
+ */
+function createDefaultTablesData(): TablesPageData {
+  return {
+    id: "main-floor",
+    name: "Main Floor",
+    svgContent: '<svg viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg"><text x="400" y="300" text-anchor="middle" font-size="20" fill="#666">No seatmap data available</text></svg>'
+  };
 }
