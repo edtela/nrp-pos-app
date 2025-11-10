@@ -1,0 +1,60 @@
+{
+  "baseUnit": 30,
+  "anchor": "center",
+  "children": [
+    {
+      "type": "container",
+      "name": "dining area",
+      "anchor": "center",
+      "fill": "#e8e8e8",
+      "width": "20s",
+      "height": "15s",
+      "children": [
+        {
+          "type": "table",
+          "name": "table 1 - round 4-person",
+          "shape": "round",
+          "capacity": 4,
+          "aspectRatio": 1.0,
+          "anchor": "top-left",
+          "offset": {"x": "1s", "y": "1s"},
+          "fill": "#ffffff",
+          "stroke": "#333333"
+        },
+        {
+          "type": "table",
+          "name": "table 2 - rectangle 8-person",
+          "shape": "rectangle",
+          "capacity": 8,
+          "aspectRatio": 2.0,
+          "anchor": "top-right",
+          "offset": {"x": "-1s", "y": "1s"},
+          "fill": "#ffffff",
+          "stroke": "#333333"
+        },
+        {
+          "type": "table",
+          "name": "table 3 - square 4-person",
+          "shape": "rectangle",
+          "capacity": 4,
+          "aspectRatio": 1.0,
+          "anchor": "bottom-left",
+          "offset": {"x": "1s", "y": "-1s"},
+          "fill": "#ffffff",
+          "stroke": "#333333"
+        },
+        {
+          "type": "table",
+          "name": "table 4 - oval 6-person",
+          "shape": "round",
+          "capacity": 6,
+          "aspectRatio": 1.5,
+          "anchor": "bottom-right",
+          "offset": {"x": "-1s", "y": "-1s"},
+          "fill": "#ffffff",
+          "stroke": "#333333"
+        }
+      ]
+    }
+  ]
+}

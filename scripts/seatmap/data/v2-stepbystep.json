@@ -1,0 +1,99 @@
+{
+  "baseUnit": 16,
+  "anchor": "center",
+
+  "templates": {
+    "large-benches": {
+      "type": "table",
+      "shape": "rectangle",
+      "capacity": 8,
+      "aspectRatio": 3
+    },
+    "round": {
+      "type": "table",
+      "shape": "round",
+      "capacity": 4
+    }
+  },
+
+  "children": [
+    {
+      "type": "container",
+      "name": "top",
+      "anchor": "bottom",
+      "offset": {"y": "-2s"},
+      "children": [
+        {
+          "type": "container",
+          "name": "top-left",
+          "offset": {"x": "-2s"},
+          "anchor": "bottom-right",
+          "layout": "column",
+          "children": [
+            {
+              "type": "container",
+              "name": "BL",
+              "layout": "row",
+              "children": [
+                {"type": "table", "name": "BL1", "use": "large-benches"},
+                {"type": "table", "name": "BL2", "use": "large-benches"},
+                {"type": "table", "name": "BL3", "use": "large-benches"},
+                {"type": "table", "name": "BL4", "use": "large-benches"}
+              ]
+            },
+            {
+              "type": "container",
+              "name": "CL",
+              "layout": "row",
+              "children": [
+                {"type": "table", "name": "CL1", "use": "round"},
+                {"type": "table", "name": "CL2", "use": "round"},
+                {"type": "table", "name": "CL3", "use": "round"},
+                {"type": "table", "name": "CL4", "use": "round"},
+                {"type": "table", "name": "CL5", "use": "round"},
+                {"type": "table", "name": "CL6", "use": "round"}
+              ]
+            },
+            {
+              "type": "container",
+              "name": "DL",
+              "layout": "row",
+              "children": [
+                {"type": "table", "name": "DL1", "use": "round"},
+                {"type": "table", "name": "DL2", "use": "round"},
+                {"type": "table", "name": "DL3", "use": "round"},
+                {"type": "table", "name": "DL4", "use": "round"},
+                {"type": "table", "name": "DL5", "use": "round"},
+                {"type": "table", "name": "DL6", "use": "round"}
+              ]
+            }
+          ]
+        },
+        {
+          "type": "container",
+          "name": "vertical sidewalk",
+          "width": "4s",
+          "fill": "lightgray"
+        },
+        {
+          "type": "container",
+          "name": "top-right",
+          "offset": {"x": "2s"},
+          "anchor": "bottom-left"
+        }
+      ]
+    },
+    {
+      "type": "container",
+      "name": "horizontal sidewalk",
+      "height": "4s",
+      "fill": "lightgray"
+    },
+    {
+      "type": "container",
+      "name": "bottom",
+      "anchor": "top",
+      "offset": {"y": "2s"}
+    }
+  ]
+}

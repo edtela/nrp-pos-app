@@ -1,0 +1,57 @@
+{
+  "baseUnit": 30,
+  "anchor": "center",
+  "children": [
+    {
+      "type": "container",
+      "layout": "column",
+      "gap": "2s",
+      "children": [
+        {
+          "type": "container",
+          "layout": "row",
+          "gap": "2s",
+          "children": [
+            {
+              "type": "box",
+              "width": "2s",
+              "height": "2s",
+              "fill": "#ff6b6b"
+            },
+            {
+              "type": "box",
+              "width": "2s",
+              "height": "2s",
+              "fill": "#4ecdc4"
+            },
+            {
+              "type": "box",
+              "width": "2s",
+              "height": "2s",
+              "fill": "#45b7d1"
+            }
+          ]
+        },
+        {
+          "type": "container",
+          "layout": "row",
+          "gap": "1s",
+          "children": [
+            {
+              "type": "box",
+              "width": "3s",
+              "height": "2s",
+              "fill": "#f9ca24"
+            },
+            {
+              "type": "box",
+              "width": "3s",
+              "height": "2s",
+              "fill": "#6c5ce7"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,123 @@
+{
+  "baseUnit": 30,
+  "anchor": "center",
+
+  "defaults": {
+    "table": {
+      "aspectRatio": 1.0,
+      "fill": "#ffffff",
+      "stroke": "#333333"
+    },
+    "container": {
+      "fill": "#f0f0f0"
+    }
+  },
+
+  "templates": {
+    "table-4-round": {
+      "type": "table",
+      "shape": "round",
+      "capacity": 4
+    },
+    "table-6-round": {
+      "type": "table",
+      "shape": "round",
+      "capacity": 6
+    },
+    "table-8-rect": {
+      "type": "table",
+      "shape": "rectangle",
+      "capacity": 8,
+      "aspectRatio": 2.0
+    },
+    "dining-row": {
+      "type": "container",
+      "layout": "row",
+      "gap": "1s"
+    }
+  },
+
+  "children": [
+    {
+      "type": "container",
+      "name": "main dining area",
+      "width": "30s",
+      "height": "20s",
+      "children": [
+        {
+          "type": "container",
+          "name": "top row",
+          "use": "dining-row",
+          "anchor": "top",
+          "offset": {"y": "2s"},
+          "children": [
+            {
+              "type": "table",
+              "name": "T1",
+              "use": "table-4-round"
+            },
+            {
+              "type": "table",
+              "name": "T2",
+              "use": "table-4-round"
+            },
+            {
+              "type": "table",
+              "name": "T3",
+              "use": "table-4-round"
+            },
+            {
+              "type": "table",
+              "name": "T4",
+              "use": "table-6-round"
+            }
+          ]
+        },
+        {
+          "type": "container",
+          "name": "middle row",
+          "use": "dining-row",
+          "anchor": "center",
+          "children": [
+            {
+              "type": "table",
+              "name": "T5",
+              "use": "table-8-rect"
+            },
+            {
+              "type": "table",
+              "name": "T6",
+              "use": "table-8-rect"
+            }
+          ]
+        },
+        {
+          "type": "container",
+          "name": "bottom row",
+          "use": "dining-row",
+          "anchor": "bottom",
+          "offset": {"y": "-2s"},
+          "children": [
+            {
+              "type": "table",
+              "name": "T7",
+              "use": "table-4-round"
+            },
+            {
+              "type": "table",
+              "name": "T8",
+              "use": "table-4-round",
+              "capacity": 6,
+              "fill": "#ffe0e0"
+            },
+            {
+              "type": "table",
+              "name": "T9",
+              "use": "table-4-round"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

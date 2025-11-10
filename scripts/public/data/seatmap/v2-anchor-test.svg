@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 700 700" xmlns="http://www.w3.org/2000/svg">
+  <!-- V2 Seatmap System -->
+
+  <g class="container">
+  <g class="container">
+  <rect x="20" y="20" width="660" height="660" fill="gray" />
+  <g class="container">
+  <rect x="20" y="20" width="300" height="300" fill="red" />
+</g>
+  <g class="container">
+  <rect x="320" y="20" width="60" height="300" fill="lightgray" />
+</g>
+  <g class="container">
+  <rect x="20" y="320" width="660" height="60" fill="lightgray" />
+</g>
+</g>
+</g>
+</svg>

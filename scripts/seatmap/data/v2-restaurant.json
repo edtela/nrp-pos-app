@@ -1,0 +1,249 @@
+{
+  "baseUnit": 30,
+  "anchor": "center",
+
+  "defaults": {
+    "table": {
+      "aspectRatio": 1.0,
+      "fill": "#ffffff",
+      "stroke": "#2c3e50"
+    },
+    "container": {
+      "fill": "#ecf0f1"
+    }
+  },
+
+  "templates": {
+    "table-2": {
+      "type": "table",
+      "shape": "round",
+      "capacity": 2
+    },
+    "table-4": {
+      "type": "table",
+      "shape": "round",
+      "capacity": 4
+    },
+    "table-6": {
+      "type": "table",
+      "shape": "round",
+      "capacity": 6
+    },
+    "table-4-square": {
+      "type": "table",
+      "shape": "rectangle",
+      "capacity": 4,
+      "aspectRatio": 1.0
+    },
+    "table-8-rect": {
+      "type": "table",
+      "shape": "rectangle",
+      "capacity": 8,
+      "aspectRatio": 2.0
+    }
+  },
+
+  "children": [
+    {
+      "type": "container",
+      "name": "Restaurant Floor",
+      "width": "40s",
+      "height": "30s",
+      "fill": "#bdc3c7",
+      "children": [
+        {
+          "type": "container",
+          "name": "Main Dining Area",
+          "anchor": "center",
+          "width": "35s",
+          "height": "25s",
+          "children": [
+            {
+              "type": "container",
+              "name": "Left Section",
+              "anchor": "left",
+              "offset": {"x": "1s"},
+              "layout": "column",
+              "gap": "1s",
+              "children": [
+                {
+                  "type": "table",
+                  "name": "L1",
+                  "use": "table-4"
+                },
+                {
+                  "type": "table",
+                  "name": "L2",
+                  "use": "table-4"
+                },
+                {
+                  "type": "table",
+                  "name": "L3",
+                  "use": "table-2"
+                },
+                {
+                  "type": "table",
+                  "name": "L4",
+                  "use": "table-2"
+                }
+              ]
+            },
+            {
+              "type": "container",
+              "name": "Center Section",
+              "anchor": "center",
+              "layout": "column",
+              "gap": "2s",
+              "children": [
+                {
+                  "type": "table",
+                  "name": "C1",
+                  "use": "table-8-rect"
+                },
+                {
+                  "type": "table",
+                  "name": "C2",
+                  "use": "table-8-rect"
+                },
+                {
+                  "type": "table",
+                  "name": "C3",
+                  "use": "table-6"
+                }
+              ]
+            },
+            {
+              "type": "container",
+              "name": "Right Section",
+              "anchor": "right",
+              "offset": {"x": "-1s"},
+              "layout": "column",
+              "gap": "1s",
+              "children": [
+                {
+                  "type": "table",
+                  "name": "R1",
+                  "use": "table-4"
+                },
+                {
+                  "type": "table",
+                  "name": "R2",
+                  "use": "table-4"
+                },
+                {
+                  "type": "table",
+                  "name": "R3",
+                  "use": "table-2"
+                },
+                {
+                  "type": "table",
+                  "name": "R4",
+                  "use": "table-2"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "container",
+          "name": "Window Bar Area",
+          "anchor": "top",
+          "offset": {"y": "1s"},
+          "width": "35s",
+          "height": "3s",
+          "fill": "#95a5a6",
+          "children": [
+            {
+              "type": "container",
+              "name": "Bar Seating",
+              "anchor": "center",
+              "layout": "row",
+              "gap": "0.5s",
+              "children": [
+                {
+                  "type": "table",
+                  "name": "B1",
+                  "use": "table-2"
+                },
+                {
+                  "type": "table",
+                  "name": "B2",
+                  "use": "table-2"
+                },
+                {
+                  "type": "table",
+                  "name": "B3",
+                  "use": "table-2"
+                },
+                {
+                  "type": "table",
+                  "name": "B4",
+                  "use": "table-2"
+                },
+                {
+                  "type": "table",
+                  "name": "B5",
+                  "use": "table-2"
+                },
+                {
+                  "type": "table",
+                  "name": "B6",
+                  "use": "table-2"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "container",
+          "name": "Private Dining Room",
+          "anchor": "bottom-right",
+          "offset": {"x": "-1s", "y": "-1s"},
+          "width": "10s",
+          "height": "8s",
+          "fill": "#d5dbdb",
+          "children": [
+            {
+              "type": "table",
+              "name": "P1",
+              "use": "table-8-rect",
+              "anchor": "center",
+              "fill": "#e8f5e9"
+            }
+          ]
+        },
+        {
+          "type": "container",
+          "name": "Entrance Area",
+          "anchor": "bottom-left",
+          "offset": {"x": "1s", "y": "-1s"},
+          "width": "8s",
+          "height": "8s",
+          "fill": "#7f8c8d",
+          "children": [
+            {
+              "type": "container",
+              "name": "Waiting Tables",
+              "anchor": "top-right",
+              "offset": {"x": "-0.5s", "y": "0.5s"},
+              "layout": "row",
+              "gap": "0.5s",
+              "children": [
+                {
+                  "type": "table",
+                  "name": "W1",
+                  "use": "table-2"
+                },
+                {
+                  "type": "table",
+                  "name": "W2",
+                  "use": "table-2"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
