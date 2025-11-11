@@ -114,7 +114,8 @@ export class Table implements Component {
     if (this.config.name) {
       const cx = layout.x + layout.width / 2;
       const cy = layout.y + layout.height / 2;
-      svg += `<text x="${cx}" y="${cy}" text-anchor="middle" dominant-baseline="central" font-size="8" fill="#000">${this.config.name}</text>`;
+      const fontSize = this.config.baseUnit * 0.25;  // 4px when baseUnit=16
+      svg += `<text x="${cx}" y="${cy}" text-anchor="middle" dominant-baseline="central" font-size="${fontSize}" fill="#000">${this.config.name}</text>`;
     }
 
     return svg;
@@ -137,7 +138,8 @@ export class Table implements Component {
 
     // Add label if name exists
     if (this.config.name) {
-      svg += `<text x="${cx}" y="${cy}" text-anchor="middle" dominant-baseline="central" font-size="8" fill="#000">${this.config.name}</text>`;
+      const fontSize = this.config.baseUnit * 0.25;  // 4px when baseUnit=16
+      svg += `<text x="${cx}" y="${cy}" text-anchor="middle" dominant-baseline="central" font-size="${fontSize}" fill="#000">${this.config.name}</text>`;
     }
 
     return svg;
