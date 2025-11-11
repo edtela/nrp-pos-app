@@ -168,6 +168,8 @@ export interface TableConfig extends BaseComponentConfig {
   stroke?: string;
   seatCount?: number;    // Number of people to seat (defaults to capacity if omitted)
   seats?: SeatDefinition[];  // Custom seat definitions
+  startingPosition?: string;  // Where seat #1 is located (compass or degrees, default: "N")
+  seatDirection?: 'clockwise' | 'counter-clockwise';  // Direction of numbering (default: "clockwise")
 }
 
 /**
@@ -265,6 +267,8 @@ export interface ResolvedTableConfig extends BaseResolvedConfig {
   stroke?: string;
   seatCount?: number;
   seats?: SeatDefinition[];
+  startingPosition?: string;
+  seatDirection?: 'clockwise' | 'counter-clockwise';
 }
 
 /**

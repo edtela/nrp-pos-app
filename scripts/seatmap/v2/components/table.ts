@@ -53,6 +53,33 @@ export class Table implements Component {
   }
 
   /**
+   * Convert compass direction to degrees
+   * N=0°, E=90°, S=180°, W=270°
+   */
+  private compassToDegrees(compass: string): number {
+    const map: Record<string, number> = {
+      'N': 0, 'NE': 45, 'E': 90, 'SE': 135,
+      'S': 180, 'SW': 225, 'W': 270, 'NW': 315
+    };
+    const upper = compass.toUpperCase();
+    return map[upper] ?? parseFloat(compass);
+  }
+
+  /**
+   * Calculate point on circle given center, radius, and angle
+   * Angle in degrees, 0° = top (N), increases clockwise
+   * Note: SVG Y-axis increases downward
+   */
+  private pointOnCircle(cx: number, cy: number, radius: number, angleDegrees: number): { x: number; y: number } {
+    // Convert to radians, adjust for SVG coordinates (0° at top)
+    const angleRadians = ((angleDegrees - 90) * Math.PI) / 180;
+    return {
+      x: cx + radius * Math.cos(angleRadians),
+      y: cy + radius * Math.sin(angleRadians)
+    };
+  }
+
+  /**
    * Phase 3: Render to SVG
    */
   render(layout: LayoutResult): string {
@@ -65,8 +92,9 @@ export class Table implements Component {
       svg += this.renderRound(layout);
     }
 
-    // Render benches (if any)
-    svg += this.renderBenches(layout);
+    // Render seats (benches for rectangles, chairs for rounds)
+    svg += this.renderBenches(layout);  // Rectangle benches
+    svg += this.renderChairs(layout);   // Round chairs
 
     return svg;
   }
@@ -139,6 +167,49 @@ export class Table implements Component {
         svg += `<rect x="${layout.x}" y="${benchY}" width="${layout.width}" height="${benchThickness}" rx="${radius}" ry="${radius}" fill="${darkBrown}" />`;
       }
       // E and W positions not yet implemented
+    }
+
+    return svg;
+  }
+
+  /**
+   * Render chairs for round tables
+   * Chairs are positioned with center on table perimeter (half visible)
+   */
+  private renderChairs(layout: LayoutResult): string {
+    // Only for round tables
+    if (this.config.shape !== 'round') {
+      return '';
+    }
+
+    // Get seat configuration with defaults
+    const seatCount = this.config.seatCount ?? this.config.capacity;
+    const startingPosition = this.config.startingPosition ?? 'N';
+    const seatDirection = this.config.seatDirection ?? 'clockwise';
+
+    // Skip if custom seats defined (custom seats for rounds not yet implemented)
+    if (this.config.seats && this.config.seats.length > 0) {
+      return '';
+    }
+
+    // Calculate table center and radius
+    const cx = layout.x + layout.width / 2;
+    const cy = layout.y + layout.height / 2;
+    const rx = layout.width / 2;  // Use rx for now (works for circles)
+
+    // Chair properties
+    const chairRadius = this.config.baseUnit * 0.25;  // 4px when baseUnit=16 (0.5s diameter)
+    const chairFill = '#8B4513';  // Dark brown
+
+    let svg = '';
+    const startAngle = this.compassToDegrees(startingPosition);
+    const angleStep = 360 / seatCount;
+    const directionMultiplier = seatDirection === 'clockwise' ? 1 : -1;
+
+    for (let i = 0; i < seatCount; i++) {
+      const angle = startAngle + (i * angleStep * directionMultiplier);
+      const chairCenter = this.pointOnCircle(cx, cy, rx, angle);
+      svg += `<circle cx="${chairCenter.x}" cy="${chairCenter.y}" r="${chairRadius}" fill="${chairFill}" />`;
     }
 
     return svg;

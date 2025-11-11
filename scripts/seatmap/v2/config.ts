@@ -115,6 +115,8 @@ function resolveTableConfig(
     offset: parseOffset(config.offset, baseUnit),
     seatCount: config.seatCount,
     seats: config.seats,
+    startingPosition: config.startingPosition,
+    seatDirection: config.seatDirection,
   };
 }
 
