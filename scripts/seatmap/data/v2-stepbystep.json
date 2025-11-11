@@ -1,5 +1,5 @@
 {
-  "baseUnit": 16,
+  "baseUnit": 24,
   "anchor": "center",
 
   "templates": {
@@ -42,7 +42,7 @@
               "layout": "row",
               "gap": "1s",
               "padding": "0.5s",
-              "fill": "lightblue",
+              "fill": "#BFBFBF",
               "children": [
                 {"type": "table", "name": "BL1", "use": "large-benches"},
                 {"type": "table", "name": "BL2", "use": "large-benches"},
@@ -92,7 +92,55 @@
           "type": "container",
           "name": "top-right",
           "offset": {"x": "1s"},
-          "anchor": "bottom-left"
+          "anchor": "bottom-left",
+          "layout": "column",
+          "fill": "lightgreen",
+          "children": [
+            {
+              "type": "container",
+              "name": "BR",
+              "layout": "row",
+              "gap": "1s",
+              "padding": "0.5s",
+              "fill": "#BFBFBF",
+              "children": [
+                {"type": "table", "name": "BR1", "use": "large-benches"},
+                {"type": "table", "name": "BR2", "use": "large-benches"},
+                {"type": "table", "name": "BR3", "use": "large-benches"},
+                {"type": "table", "name": "BR4", "use": "large-benches"}
+              ]
+            },
+            {
+              "type": "container",
+              "name": "CR",
+              "layout": "row",
+              "gap": "1s",
+              "padding": "0.5s",
+              "children": [
+                {"type": "table", "name": "CR1", "use": "round"},
+                {"type": "table", "name": "CR2", "use": "round"},
+                {"type": "table", "name": "CR3", "use": "round"},
+                {"type": "table", "name": "CR4", "use": "round"},
+                {"type": "table", "name": "CR5", "use": "round"},
+                {"type": "table", "name": "CR6", "use": "round"}
+              ]
+            },
+            {
+              "type": "container",
+              "name": "DR",
+              "layout": "row",
+              "gap": "1s",
+              "padding": "0.5s",
+              "children": [
+                {"type": "table", "name": "DR1", "use": "round"},
+                {"type": "table", "name": "DR2", "use": "round"},
+                {"type": "table", "name": "DR3", "use": "round"},
+                {"type": "table", "name": "DR4", "use": "round"},
+                {"type": "table", "name": "DR5", "use": "round"},
+                {"type": "table", "name": "DR6", "use": "round"}
+              ]
+            }
+          ]
         }
       ]
     },
