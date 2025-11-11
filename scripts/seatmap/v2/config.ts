@@ -113,6 +113,8 @@ function resolveTableConfig(
     stroke: config.stroke,
     anchor: config.anchor ?? parentAnchor,
     offset: parseOffset(config.offset, baseUnit),
+    seatCount: config.seatCount,
+    seats: config.seats,
   };
 }
 

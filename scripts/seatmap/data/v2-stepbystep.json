@@ -7,7 +7,12 @@
       "type": "table",
       "shape": "rectangle",
       "capacity": 8,
-      "aspectRatio": 3
+      "aspectRatio": 3,
+      "seatCount": 6,
+      "seats": [
+        {"position": "N", "seatCount": 3},
+        {"position": "S", "seatCount": 3}
+      ]
     },
     "round": {
       "type": "table",

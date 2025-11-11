@@ -149,6 +149,14 @@ export interface ContainerConfig extends BaseComponentConfig {
 }
 
 /**
+ * Seat definition for custom seat placement
+ */
+export interface SeatDefinition {
+  position: string;      // Compass direction ("N", "S", "E", "W", etc.) or degrees
+  seatCount: number;     // Number of people at this position (1 = chair, >1 = bench)
+}
+
+/**
  * Table component
  */
 export interface TableConfig extends BaseComponentConfig {
@@ -158,6 +166,8 @@ export interface TableConfig extends BaseComponentConfig {
   aspectRatio?: number;  // defaults to 1.0
   fill?: string;
   stroke?: string;
+  seatCount?: number;    // Number of people to seat (defaults to capacity if omitted)
+  seats?: SeatDefinition[];  // Custom seat definitions
 }
 
 /**
@@ -253,6 +263,8 @@ export interface ResolvedTableConfig extends BaseResolvedConfig {
   baseUnit: number;  // Needed to calculate dimensions from capacity
   fill?: string;
   stroke?: string;
+  seatCount?: number;
+  seats?: SeatDefinition[];
 }
 
 /**
