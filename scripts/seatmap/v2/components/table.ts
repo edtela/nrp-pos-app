@@ -81,20 +81,21 @@ export class Table implements Component {
 
   /**
    * Phase 3: Render to SVG
+   * Rendering order: seats first (under table), then table shape, then label
    */
   render(layout: LayoutResult): string {
     let svg = '';
 
-    // Render table shape
+    // Render seats first (so they appear under the table)
+    svg += this.renderBenches(layout);  // Rectangle benches (outside table)
+    svg += this.renderChairs(layout);   // Round chairs (half under table)
+
+    // Render table shape on top (includes label)
     if (this.config.shape === 'rectangle') {
       svg += this.renderRectangle(layout);
     } else {
       svg += this.renderRound(layout);
     }
-
-    // Render seats (benches for rectangles, chairs for rounds)
-    svg += this.renderBenches(layout);  // Rectangle benches
-    svg += this.renderChairs(layout);   // Round chairs
 
     return svg;
   }
@@ -123,7 +124,7 @@ export class Table implements Component {
    * Render round/ellipse table
    */
   private renderRound(layout: LayoutResult): string {
-    const fill = this.config.fill ?? '#f5f5f5';
+    const fill = this.config.fill ?? '#D2B48C';  // Light brown
     const stroke = this.config.stroke ?? '#333';
 
     // Calculate center and radii from bounding box
@@ -132,7 +133,7 @@ export class Table implements Component {
     const rx = layout.width / 2;
     const ry = layout.height / 2;
 
-    let svg = `<ellipse cx="${cx}" cy="${cy}" rx="${rx}" ry="${ry}" fill="${fill}" stroke="${stroke}" stroke-width="2" />`;
+    let svg = `<ellipse cx="${cx}" cy="${cy}" rx="${rx}" ry="${ry}" fill="${fill}" stroke="${stroke}" stroke-width="1" />`;
 
     // Add label if name exists
     if (this.config.name) {
