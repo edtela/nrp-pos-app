@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg viewBox="0 0 616 296" xmlns="http://www.w3.org/2000/svg">
+<svg viewBox="0 0 584 264" xmlns="http://www.w3.org/2000/svg">
   <!-- V2 Seatmap System -->
 
   <g class="container">
@@ -31,13 +31,13 @@
 </g>
 </g>
   <g class="container">
-  <rect x="276" y="20" width="64" height="96" fill="lightgray" />
+  <rect x="276" y="20" width="32" height="96" fill="lightgray" />
 </g>
   <g class="container">
 </g>
 </g>
   <g class="container">
-  <rect x="20" y="116" width="576" height="64" fill="lightgray" />
+  <rect x="20" y="116" width="544" height="32" fill="lightgray" />
 </g>
   <g class="container">
 </g>
