@@ -10,7 +10,7 @@ import type {
   ResolvedContainerConfig,
   AnchorPosition,
 } from '../types.js';
-import { calculateChildPosition, getAnchorPoint, applyOffset, isRightToLeft, isBottomToTop } from '../layout/anchor.js';
+import { calculateChildPosition, getAnchorPoint, applyOffset, isRightToLeft, isBottomToTop, getRowAlignmentY, getColumnAlignmentX, getSpacingStartPosition } from '../layout/anchor.js';
 
 /**
  * Container - arranges child components
@@ -54,6 +54,7 @@ export class Container implements Component {
    */
   private calculateRowPreferredSize(): PreferredSize {
     const gap = this.config.gap ?? 0;
+    const padding = this.config.padding ?? 0;
     let totalWidth = 0;
     let maxHeight = 0;
 
@@ -71,8 +72,8 @@ export class Container implements Component {
     }
 
     return {
-      width: totalWidth || undefined,
-      height: maxHeight || undefined,
+      width: totalWidth ? totalWidth + 2 * padding : undefined,
+      height: maxHeight ? maxHeight + 2 * padding : undefined,
     };
   }
 
@@ -81,6 +82,7 @@ export class Container implements Component {
    */
   private calculateColumnPreferredSize(): PreferredSize {
     const gap = this.config.gap ?? 0;
+    const padding = this.config.padding ?? 0;
     let totalHeight = 0;
     let maxWidth = 0;
 
@@ -98,8 +100,8 @@ export class Container implements Component {
     }
 
     return {
-      width: maxWidth || undefined,
-      height: totalHeight || undefined,
+      width: maxWidth ? maxWidth + 2 * padding : undefined,
+      height: totalHeight ? totalHeight + 2 * padding : undefined,
     };
   }
 
@@ -114,12 +116,16 @@ export class Container implements Component {
     }
 
     const containerAnchor = this.config.anchor || 'center';
+    const padding = this.config.padding ?? 0;
 
     // Calculate width and height separately
     const width = this.calculateManualWidth(containerAnchor);
     const height = this.calculateManualHeight(containerAnchor);
 
-    return { width, height };
+    return {
+      width: width !== undefined ? width + 2 * padding : undefined,
+      height: height !== undefined ? height + 2 * padding : undefined,
+    };
   }
 
   /**
@@ -271,45 +277,64 @@ export class Container implements Component {
    * Calculate row layout
    * Children arranged horizontally with gap between them
    * Flow direction determined by anchor (left-to-right or right-to-left)
+   * Spacing and alignment are anchor-relative
    */
   private calculateRowLayout(containerLayout: LayoutResult): LayoutResult[] {
     const gap = this.config.gap ?? 0;
+    const spacing = this.config.spacing ?? 'start';
+    const alignment = this.config.alignment ?? 'start';
+    const padding = this.config.padding ?? 0;
     const childLayouts: LayoutResult[] = [];
     const anchor = this.config.anchor || 'center';
     const rightToLeft = isRightToLeft(anchor);
 
-    // Starting position depends on flow direction
-    let currentX = rightToLeft
-      ? containerLayout.x + containerLayout.width  // Start at right edge
-      : containerLayout.x;                          // Start at left edge
+    // Create padded inner rectangle for child layout
+    const innerLayout: LayoutResult = {
+      x: containerLayout.x + padding,
+      y: containerLayout.y + padding,
+      width: containerLayout.width - 2 * padding,
+      height: containerLayout.height - 2 * padding,
+    };
 
+    // Calculate total width of children with gaps
+    let totalWidth = 0;
+    const childSizes: { width: number; height: number }[] = [];
     for (const child of this.children) {
       const childSize = child.getPreferredSize();
       const width = childSize.width ?? 0;
-      const height = childSize.height ?? containerLayout.height;
+      const height = childSize.height ?? innerLayout.height;
+      childSizes.push({ width, height });
+      totalWidth += width;
+    }
+    // Add gaps between children (n-1 gaps for n children)
+    if (this.children.length > 1) {
+      totalWidth += gap * (this.children.length - 1);
+    }
 
-      // For now, align to top (y = containerLayout.y)
-      // TODO: implement alignment modes (start, center, end)
-      const y = containerLayout.y;
+    // Calculate starting position based on spacing mode
+    let currentX = getSpacingStartPosition(
+      innerLayout.x,
+      innerLayout.width,
+      totalWidth,
+      spacing,
+      rightToLeft
+    );
+
+    // Place children
+    for (let i = 0; i < this.children.length; i++) {
+      const { width, height } = childSizes[i];
+
+      // Calculate Y position based on alignment mode (cross-axis)
+      const y = getRowAlignmentY(innerLayout, anchor, alignment, height);
 
       if (rightToLeft) {
         // Place from right to left: subtract width first, then place
         currentX -= width;
-        childLayouts.push({
-          x: currentX,
-          y,
-          width,
-          height,
-        });
+        childLayouts.push({ x: currentX, y, width, height });
         currentX -= gap;  // Subtract gap after placing
       } else {
         // Place from left to right: place first, then add width
-        childLayouts.push({
-          x: currentX,
-          y,
-          width,
-          height,
-        });
+        childLayouts.push({ x: currentX, y, width, height });
         currentX += width + gap;
       }
     }
@@ -321,45 +346,64 @@ export class Container implements Component {
    * Calculate column layout
    * Children arranged vertically with gap between them
    * Flow direction determined by anchor (top-to-bottom or bottom-to-top)
+   * Spacing and alignment are anchor-relative
    */
   private calculateColumnLayout(containerLayout: LayoutResult): LayoutResult[] {
     const gap = this.config.gap ?? 0;
+    const spacing = this.config.spacing ?? 'start';
+    const alignment = this.config.alignment ?? 'start';
+    const padding = this.config.padding ?? 0;
     const childLayouts: LayoutResult[] = [];
     const anchor = this.config.anchor || 'center';
     const bottomToTop = isBottomToTop(anchor);
 
-    // Starting position depends on flow direction
-    let currentY = bottomToTop
-      ? containerLayout.y + containerLayout.height  // Start at bottom edge
-      : containerLayout.y;                           // Start at top edge
+    // Create padded inner rectangle for child layout
+    const innerLayout: LayoutResult = {
+      x: containerLayout.x + padding,
+      y: containerLayout.y + padding,
+      width: containerLayout.width - 2 * padding,
+      height: containerLayout.height - 2 * padding,
+    };
 
+    // Calculate total height of children with gaps
+    let totalHeight = 0;
+    const childSizes: { width: number; height: number }[] = [];
     for (const child of this.children) {
       const childSize = child.getPreferredSize();
-      const width = childSize.width ?? containerLayout.width;
+      const width = childSize.width ?? innerLayout.width;
       const height = childSize.height ?? 0;
+      childSizes.push({ width, height });
+      totalHeight += height;
+    }
+    // Add gaps between children (n-1 gaps for n children)
+    if (this.children.length > 1) {
+      totalHeight += gap * (this.children.length - 1);
+    }
 
-      // For now, align to left (x = containerLayout.x)
-      // TODO: implement alignment modes (start, center, end)
-      const x = containerLayout.x;
+    // Calculate starting position based on spacing mode
+    let currentY = getSpacingStartPosition(
+      innerLayout.y,
+      innerLayout.height,
+      totalHeight,
+      spacing,
+      bottomToTop
+    );
+
+    // Place children
+    for (let i = 0; i < this.children.length; i++) {
+      const { width, height } = childSizes[i];
+
+      // Calculate X position based on alignment mode (cross-axis)
+      const x = getColumnAlignmentX(innerLayout, anchor, alignment, width);
 
       if (bottomToTop) {
         // Place from bottom to top: subtract height first, then place
         currentY -= height;
-        childLayouts.push({
-          x,
-          y: currentY,
-          width,
-          height,
-        });
+        childLayouts.push({ x, y: currentY, width, height });
         currentY -= gap;  // Subtract gap after placing
       } else {
         // Place from top to bottom: place first, then add height
-        childLayouts.push({
-          x,
-          y: currentY,
-          width,
-          height,
-        });
+        childLayouts.push({ x, y: currentY, width, height });
         currentY += height + gap;
       }
     }
@@ -419,8 +463,17 @@ export class Container implements Component {
    * Children with undefined size fill available space from anchor to edge
    */
   private calculateManualLayout(containerLayout: LayoutResult): LayoutResult[] {
+    const padding = this.config.padding ?? 0;
     const childLayouts: LayoutResult[] = [];
     const containerAnchor = this.config.anchor || 'center';
+
+    // Create padded inner rectangle for child layout
+    const innerLayout: LayoutResult = {
+      x: containerLayout.x + padding,
+      y: containerLayout.y + padding,
+      width: containerLayout.width - 2 * padding,
+      height: containerLayout.height - 2 * padding,
+    };
 
     for (let i = 0; i < this.children.length; i++) {
       const child = this.children[i];
@@ -430,12 +483,12 @@ export class Container implements Component {
       const childOffset = childConfig?.offset || { x: 0, y: 0 };
 
       // Calculate where the anchor point will land
-      const containerAnchorPoint = getAnchorPoint(containerLayout, containerAnchor);
+      const containerAnchorPoint = getAnchorPoint(innerLayout, containerAnchor);
       const targetPoint = applyOffset(containerAnchorPoint, childOffset);
 
       // Calculate available space from anchor to edges
       const availableSpace = this.calculateAvailableSpace(
-        containerLayout,
+        innerLayout,
         targetPoint,
         childAnchor
       );
@@ -445,7 +498,7 @@ export class Container implements Component {
       const height = childSize.height ?? availableSpace.height;
 
       const position = calculateChildPosition(
-        containerLayout,
+        innerLayout,
         containerAnchor,
         { width, height },
         childAnchor,

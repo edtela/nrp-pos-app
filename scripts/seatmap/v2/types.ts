@@ -134,6 +134,9 @@ export interface ContainerConfig extends BaseComponentConfig {
   spacing?: SpacingMode;
   alignment?: AlignmentMode;
 
+  // Spacing
+  padding?: UnitValue;
+
   // Size constraints
   width?: UnitValue;
   height?: UnitValue;
@@ -232,6 +235,7 @@ export interface ResolvedContainerConfig extends BaseResolvedConfig {
   gap?: number;
   spacing?: SpacingMode;
   alignment?: AlignmentMode;
+  padding?: number;
   width?: number;
   height?: number;
   fill?: string;

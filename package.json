@@ -7,6 +7,7 @@
     "build": "tsc && vite build && npm run generate-static",
     "build:client": "tsc && vite build",
     "generate-static": "tsx --loader ./build/css-loader.mjs build/generate-static.ts",
+    "generate:seatmap": "tsx scripts/seatmap/generate.ts",
     "preview": "vite preview",
     "start": "NODE_ENV=production node server.js",
     "test": "vitest",

@@ -116,22 +116,35 @@ export async function createEmptyOrderData(): Promise<OrderPageData> {
  */
 export async function fetchTablesData(): Promise<TablesPageData> {
   try {
-    const response = await fetch("/data/seatmap/main-floor.json");
-
-    if (!response.ok) {
-      console.warn(`Seatmap data fetch failed with status ${response.status}`);
+    // Fetch metadata from JSON
+    const metadataResponse = await fetch("/data/seatmap/main-floor.json");
+    if (!metadataResponse.ok) {
+      console.warn(`Seatmap metadata fetch failed with status ${metadataResponse.status}`);
       return createDefaultTablesData();
     }
 
-    // Check content type to ensure we're getting JSON
-    const contentType = response.headers.get('content-type');
+    const contentType = metadataResponse.headers.get('content-type');
     if (!contentType || !contentType.includes('application/json')) {
-      console.warn(`Unexpected content type for seatmap data: ${contentType}`);
+      console.warn(`Unexpected content type for seatmap metadata: ${contentType}`);
       return createDefaultTablesData();
     }
 
-    const data = await response.json();
-    return data;
+    const metadata = await metadataResponse.json();
+
+    // Fetch SVG content from separate file
+    const svgResponse = await fetch("/data/seatmap/main-floor.svg");
+    if (!svgResponse.ok) {
+      console.warn(`Seatmap SVG fetch failed with status ${svgResponse.status}`);
+      return createDefaultTablesData();
+    }
+
+    const svgContent = await svgResponse.text();
+
+    return {
+      id: metadata.id,
+      name: metadata.name,
+      svgContent: svgContent
+    };
   } catch (error) {
     console.error('Failed to fetch or parse seatmap data:', error);
     return createDefaultTablesData();

@@ -415,9 +415,10 @@ This ensures the container extends only upward from its bottom anchor.
 
   // Auto-layout (optional)
   "layout": "row",                 // "row" | "column" | null (manual)
-  "spacing": "even",               // "even" | "start" | "center" | "end"
-  "alignment": "center",           // "center" | "start" | "end"
+  "spacing": "start",              // "start" | "even" | "center" | "end" (default: "start")
+  "alignment": "start",            // "start" | "center" | "end" (default: "start")
   "gap": "2s",                     // Space between items
+  "padding": "1s",                 // Space inside container edges (around all children)
 
   // Visual properties
   "background": "gray",
@@ -453,14 +454,16 @@ The anchor point controls:
 - `anchor: "center"` or `"left"` or `"right"` → flows from center outward
 
 **Spacing values relative to anchor:**
-- `"start"` → toward anchor (packed near anchor point)
+- `"start"` → toward anchor (packed near anchor point) **[DEFAULT]**
 - `"end"` → away from anchor (packed far from anchor point)
 - `"center"` → centered between bounds
 - `"even"` → evenly distributed (works same in both directions)
 
 **Alignment values relative to anchor:**
-- Cross-axis "start" determined by anchor's perpendicular component
-- `anchor: "bottom-right"` with `layout: "row"` → alignment "start" = bottom
+- `"start"` → aligned to anchor's perpendicular component **[DEFAULT]**
+- `"center"` → centered on cross axis
+- `"end"` → aligned opposite to anchor
+- Example: `anchor: "bottom-right"` with `layout: "row"` → alignment "start" = bottom
 
 **Example: `anchor: "bottom-right"` with `layout: "row"`**
 ```
@@ -502,6 +505,51 @@ alignment: "start" (bottom):
 
 **Section mode:**
 - Section is either auto-layout OR manual (no mixing within one section)
+
+### Gap vs Padding
+
+**Gap** - Space **between** children:
+- Creates separation between adjacent items
+- `n` children → `n-1` gaps
+- Only applies in auto-layout (row/column)
+- Does not affect container size calculation
+- Example: `gap: "1s"` with 4 children → 3 gaps total
+
+**Padding** - Space **inside** container edges:
+- Creates margin around all children
+- Applies to all edges uniformly
+- Works with all layout modes (row/column/manual)
+- **Additive to content size**: content (100×100) + padding (10) → container (120×120)
+- Formula: `containerSize = contentSize + 2 × padding` (per axis)
+
+**Combined example:**
+```json
+{
+  "layout": "row",
+  "gap": "1s",      // Space between children
+  "padding": "2s"   // Space around all children
+}
+```
+```
+┌────────────────────────────────┐
+│padding                         │← 2s padding
+│  ┌───┐gap┌───┐gap┌───┐        │
+│  │ T1│ 1s│ T2│ 1s│ T3│        │
+│  └───┘   └───┘   └───┘        │
+│                                │
+└────────────────────────────────┘
+```
+
+**Padding implementation:**
+1. **Size calculation**: Padding is added to content dimensions
+   - Row: `width = childrenWidth + gaps + 2×padding`, `height = maxChildHeight + 2×padding`
+   - Column: `width = maxChildWidth + 2×padding`, `height = childrenHeight + gaps + 2×padding`
+   - Manual: `width = extentWidth + 2×padding`, `height = extentHeight + 2×padding`
+
+2. **Layout calculation**: Children are positioned within padded inner rectangle
+   - Container at (x, y) with size (width, height)
+   - Inner content area: (x + padding, y + padding) with size (width - 2×padding, height - 2×padding)
+   - All child positioning happens within this inner area
 
 ### Defaults and Templates System
 
@@ -889,6 +937,8 @@ Wall table (fewer seats than table size):
 ✅ Anchor inheritance (children inherit parent's anchor)
 ✅ Section is auto-layout OR manual (no mixing)
 ✅ Spacing/alignment are anchor-relative
+✅ Default spacing: "start" (pack toward anchor)
+✅ Default alignment: "start" (align to anchor's perpendicular component)
 ✅ Content-based bounds calculation
 
 ### Table Configuration

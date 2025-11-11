@@ -123,3 +123,129 @@ export function isRightToLeft(anchor: AnchorPosition): boolean {
 export function isBottomToTop(anchor: AnchorPosition): boolean {
   return anchor.includes('bottom');
 }
+
+/**
+ * Get Y position for row layout alignment (cross-axis)
+ *
+ * @param containerLayout - Container's layout box
+ * @param anchor - Container anchor position
+ * @param alignment - Alignment mode (start, center, end)
+ * @param childHeight - Child's height
+ * @returns Y position for child
+ */
+export function getRowAlignmentY(
+  containerLayout: LayoutResult,
+  anchor: AnchorPosition,
+  alignment: 'start' | 'center' | 'end',
+  childHeight: number
+): number {
+  // Determine what "start" means based on anchor's vertical component
+  let alignToTop: boolean;
+
+  if (anchor.includes('top')) {
+    // Top-anchored: "start" = top
+    alignToTop = alignment === 'start';
+  } else if (anchor.includes('bottom')) {
+    // Bottom-anchored: "start" = bottom
+    alignToTop = alignment === 'end';
+  } else {
+    // Center/left/right: "start" = top by default
+    alignToTop = alignment === 'start';
+  }
+
+  if (alignment === 'center') {
+    // Center alignment
+    return containerLayout.y + (containerLayout.height - childHeight) / 2;
+  } else if (alignToTop) {
+    // Align to top
+    return containerLayout.y;
+  } else {
+    // Align to bottom
+    return containerLayout.y + containerLayout.height - childHeight;
+  }
+}
+
+/**
+ * Get X position for column layout alignment (cross-axis)
+ *
+ * @param containerLayout - Container's layout box
+ * @param anchor - Container anchor position
+ * @param alignment - Alignment mode (start, center, end)
+ * @param childWidth - Child's width
+ * @returns X position for child
+ */
+export function getColumnAlignmentX(
+  containerLayout: LayoutResult,
+  anchor: AnchorPosition,
+  alignment: 'start' | 'center' | 'end',
+  childWidth: number
+): number {
+  // Determine what "start" means based on anchor's horizontal component
+  let alignToLeft: boolean;
+
+  if (anchor.includes('left')) {
+    // Left-anchored: "start" = left
+    alignToLeft = alignment === 'start';
+  } else if (anchor.includes('right')) {
+    // Right-anchored: "start" = right
+    alignToLeft = alignment === 'end';
+  } else {
+    // Center/top/bottom: "start" = left by default
+    alignToLeft = alignment === 'start';
+  }
+
+  if (alignment === 'center') {
+    // Center alignment
+    return containerLayout.x + (containerLayout.width - childWidth) / 2;
+  } else if (alignToLeft) {
+    // Align to left
+    return containerLayout.x;
+  } else {
+    // Align to right
+    return containerLayout.x + containerLayout.width - childWidth;
+  }
+}
+
+/**
+ * Calculate starting position for spacing modes
+ *
+ * @param containerStart - Container's start position on primary axis
+ * @param containerSize - Container's size on primary axis
+ * @param totalChildSize - Total size of all children including gaps
+ * @param spacing - Spacing mode
+ * @param flowReverse - Whether flow is reversed (right-to-left or bottom-to-top)
+ * @returns Starting position for first child
+ */
+export function getSpacingStartPosition(
+  containerStart: number,
+  containerSize: number,
+  totalChildSize: number,
+  spacing: 'even' | 'start' | 'center' | 'end',
+  flowReverse: boolean
+): number {
+  const availableSpace = containerSize - totalChildSize;
+
+  if (spacing === 'even') {
+    // Even spacing: space distributed around children
+    const spacingUnit = availableSpace / (totalChildSize > 0 ? 2 : 1);
+    return flowReverse
+      ? containerStart + containerSize - spacingUnit
+      : containerStart + spacingUnit;
+  } else if (spacing === 'start') {
+    // Pack toward anchor (start of flow)
+    return flowReverse
+      ? containerStart + containerSize
+      : containerStart;
+  } else if (spacing === 'end') {
+    // Pack away from anchor (end of flow)
+    return flowReverse
+      ? containerStart + totalChildSize
+      : containerStart + containerSize - totalChildSize;
+  } else {
+    // 'center': Center the group
+    const offset = availableSpace / 2;
+    return flowReverse
+      ? containerStart + containerSize - offset
+      : containerStart + offset;
+  }
+}

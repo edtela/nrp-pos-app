@@ -1,0 +1,99 @@
+{
+  "baseUnit": 30,
+  "anchor": "center",
+
+  "templates": {
+    "small-table": {
+      "type": "table",
+      "shape": "rectangle",
+      "capacity": 4,
+      "aspectRatio": 1
+    }
+  },
+
+  "children": [
+    {
+      "type": "container",
+      "name": "Row with spacing: start (anchor: left)",
+      "anchor": "top-left",
+      "offset": {"x": 0, "y": 0},
+      "layout": "row",
+      "spacing": "start",
+      "alignment": "start",
+      "width": "12s",
+      "height": "2s",
+      "fill": "#e8f4f8",
+      "children": [
+        {"type": "table", "name": "T1", "use": "small-table"},
+        {"type": "table", "name": "T2", "use": "small-table"},
+        {"type": "table", "name": "T3", "use": "small-table"}
+      ]
+    },
+    {
+      "type": "container",
+      "name": "Row with spacing: end (anchor: left)",
+      "anchor": "top-left",
+      "offset": {"x": 0, "y": "3s"},
+      "layout": "row",
+      "spacing": "end",
+      "alignment": "center",
+      "width": "12s",
+      "height": "2s",
+      "fill": "#f0f8e8",
+      "children": [
+        {"type": "table", "name": "T4", "use": "small-table"},
+        {"type": "table", "name": "T5", "use": "small-table"},
+        {"type": "table", "name": "T6", "use": "small-table"}
+      ]
+    },
+    {
+      "type": "container",
+      "name": "Row with spacing: center (anchor: right)",
+      "anchor": "top-right",
+      "offset": {"x": 0, "y": "6s"},
+      "layout": "row",
+      "spacing": "center",
+      "alignment": "end",
+      "width": "12s",
+      "height": "2s",
+      "fill": "#f8e8f0",
+      "children": [
+        {"type": "table", "name": "T7", "use": "small-table"},
+        {"type": "table", "name": "T8", "use": "small-table"},
+        {"type": "table", "name": "T9", "use": "small-table"}
+      ]
+    },
+    {
+      "type": "container",
+      "name": "Column with spacing: start (anchor: top)",
+      "anchor": "top-right",
+      "offset": {"x": "-13s", "y": 0},
+      "layout": "column",
+      "spacing": "start",
+      "alignment": "start",
+      "width": "2s",
+      "height": "8s",
+      "fill": "#fff8e8",
+      "children": [
+        {"type": "table", "name": "C1", "use": "small-table"},
+        {"type": "table", "name": "C2", "use": "small-table"}
+      ]
+    },
+    {
+      "type": "container",
+      "name": "Column with spacing: end (anchor: bottom)",
+      "anchor": "bottom-right",
+      "offset": {"x": "-13s", "y": 0},
+      "layout": "column",
+      "spacing": "end",
+      "alignment": "end",
+      "width": "2s",
+      "height": "8s",
+      "fill": "#f0e8f8",
+      "children": [
+        {"type": "table", "name": "C3", "use": "small-table"},
+        {"type": "table", "name": "C4", "use": "small-table"}
+      ]
+    }
+  ]
+}

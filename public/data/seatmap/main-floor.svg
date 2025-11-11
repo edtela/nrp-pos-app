@@ -1,0 +1,381 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 1200 1000" xmlns="http://www.w3.org/2000/svg">
+  <!-- Restaurant Floor Plan - Main Floor -->
+
+  <!-- OUTDOOR SECTION -->
+  <g id="outdoor-section">
+    <rect x="0" y="0" width="1200" height="560" fill="#e8f5e9" stroke="none"/>
+    <rect x="550" y="0" width="100" height="560" fill="#d0d0d0" stroke="none"/>
+    <rect x="0" y="370" width="1200" height="100" fill="#d0d0d0" stroke="none"/>
+    <rect x="0" y="40" width="550" height="250" fill="#7cb342" stroke="none"/>
+    <rect x="650" y="40" width="550" height="250" fill="#7cb342" stroke="none"/>
+    <g id="outdoor-section">
+    <g id="table-d1-group">
+    <circle cx="157" cy="79" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+    <circle cx="157" cy="121" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+    <circle cx="115" cy="121" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+    <circle cx="115" cy="79" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+    <g >
+    <circle cx="136" cy="100" r="30" id="table-d1" fill="#d7ccc8" stroke="#333" stroke-width="2" data-number="D1" data-capacity="4"/>
+    <text x="136" y="106" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="#ffffff">D1</text>
+    </g>
+    </g>
+    <g id="table-d2-group">
+    <circle cx="267" cy="79" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+    <circle cx="267" cy="121" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+    <circle cx="225" cy="121" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+    <circle cx="225" cy="79" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+    <g >
+    <circle cx="246" cy="100" r="30" id="table-d2" fill="#d7ccc8" stroke="#333" stroke-width="2" data-number="D2" data-capacity="4"/>
+    <text x="246" y="106" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="#ffffff">D2</text>
+    </g>
+    </g>
+    <g id="table-d3-group">
+    <circle cx="377" cy="79" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+    <circle cx="377" cy="121" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+    <circle cx="335" cy="121" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+    <circle cx="335" cy="79" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+    <g >
+    <circle cx="356" cy="100" r="30" id="table-d3" fill="#d7ccc8" stroke="#333" stroke-width="2" data-number="D3" data-capacity="4"/>
+    <text x="356" y="106" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="#ffffff">D3</text>
+    </g>
+    </g>
+    <g id="table-d4-group">
+    <circle cx="487" cy="79" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+    <circle cx="487" cy="121" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+    <circle cx="445" cy="121" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+    <circle cx="445" cy="79" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+    <g >
+    <circle cx="466" cy="100" r="30" id="table-d4" fill="#d7ccc8" stroke="#333" stroke-width="2" data-number="D4" data-capacity="4"/>
+    <text x="466" y="106" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="#ffffff">D4</text>
+    </g>
+    </g>
+    <g id="table-d5-group">
+    <circle cx="755" cy="79" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+    <circle cx="755" cy="121" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+    <circle cx="713" cy="121" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+    <circle cx="713" cy="79" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+    <g >
+    <circle cx="734" cy="100" r="30" id="table-d5" fill="#d7ccc8" stroke="#333" stroke-width="2" data-number="D5" data-capacity="4"/>
+    <text x="734" y="106" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="#ffffff">D5</text>
+    </g>
+    </g>
+    <g id="table-d6-group">
+    <circle cx="865" cy="79" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+    <circle cx="865" cy="121" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+    <circle cx="823" cy="121" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+    <circle cx="823" cy="79" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+    <g >
+    <circle cx="844" cy="100" r="30" id="table-d6" fill="#d7ccc8" stroke="#333" stroke-width="2" data-number="D6" data-capacity="4"/>
+    <text x="844" y="106" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="#ffffff">D6</text>
+    </g>
+    </g>
+    <g id="table-d7-group">
+    <circle cx="975" cy="79" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+    <circle cx="975" cy="121" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+    <circle cx="933" cy="121" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+    <circle cx="933" cy="79" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+    <g >
+    <circle cx="954" cy="100" r="30" id="table-d7" fill="#d7ccc8" stroke="#333" stroke-width="2" data-number="D7" data-capacity="4"/>
+    <text x="954" y="106" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="#ffffff">D7</text>
+    </g>
+    </g>
+    <g id="table-d8-group">
+    <circle cx="1085" cy="79" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+    <circle cx="1085" cy="121" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+    <circle cx="1043" cy="121" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+    <circle cx="1043" cy="79" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+    <g >
+    <circle cx="1064" cy="100" r="30" id="table-d8" fill="#d7ccc8" stroke="#333" stroke-width="2" data-number="D8" data-capacity="4"/>
+    <text x="1064" y="106" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="#ffffff">D8</text>
+    </g>
+    </g>
+    <g id="table-c1-group">
+    <circle cx="157" cy="179" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+    <circle cx="157" cy="221" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+    <circle cx="115" cy="221" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+    <circle cx="115" cy="179" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+    <g >
+    <circle cx="136" cy="200" r="30" id="table-c1" fill="#d7ccc8" stroke="#333" stroke-width="2" data-number="C1" data-capacity="4"/>
+    <text x="136" y="206" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="#ffffff">C1</text>
+    </g>
+    </g>
+    <g id="table-c2-group">
+    <circle cx="267" cy="179" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+    <circle cx="267" cy="221" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+    <circle cx="225" cy="221" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+    <circle cx="225" cy="179" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+    <g >
+    <circle cx="246" cy="200" r="30" id="table-c2" fill="#d7ccc8" stroke="#333" stroke-width="2" data-number="C2" data-capacity="4"/>
+    <text x="246" y="206" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="#ffffff">C2</text>
+    </g>
+    </g>
+    <g id="table-c3-group">
+    <circle cx="377" cy="179" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+    <circle cx="377" cy="221" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+    <circle cx="335" cy="221" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+    <circle cx="335" cy="179" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+    <g >
+    <circle cx="356" cy="200" r="30" id="table-c3" fill="#d7ccc8" stroke="#333" stroke-width="2" data-number="C3" data-capacity="4"/>
+    <text x="356" y="206" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="#ffffff">C3</text>
+    </g>
+    </g>
+    <g id="table-c4-group">
+    <circle cx="487" cy="179" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+    <circle cx="487" cy="221" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+    <circle cx="445" cy="221" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+    <circle cx="445" cy="179" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+    <g >
+    <circle cx="466" cy="200" r="30" id="table-c4" fill="#d7ccc8" stroke="#333" stroke-width="2" data-number="C4" data-capacity="4"/>
+    <text x="466" y="206" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="#ffffff">C4</text>
+    </g>
+    </g>
+    <g id="table-c5-group">
+    <circle cx="755" cy="179" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+    <circle cx="755" cy="221" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+    <circle cx="713" cy="221" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+    <circle cx="713" cy="179" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+    <g >
+    <circle cx="734" cy="200" r="30" id="table-c5" fill="#d7ccc8" stroke="#333" stroke-width="2" data-number="C5" data-capacity="4"/>
+    <text x="734" y="206" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="#ffffff">C5</text>
+    </g>
+    </g>
+    <g id="table-c6-group">
+    <circle cx="865" cy="179" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+    <circle cx="865" cy="221" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+    <circle cx="823" cy="221" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+    <circle cx="823" cy="179" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+    <g >
+    <circle cx="844" cy="200" r="30" id="table-c6" fill="#d7ccc8" stroke="#333" stroke-width="2" data-number="C6" data-capacity="4"/>
+    <text x="844" y="206" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="#ffffff">C6</text>
+    </g>
+    </g>
+    <g id="table-c7-group">
+    <circle cx="975" cy="179" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+    <circle cx="975" cy="221" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+    <circle cx="933" cy="221" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+    <circle cx="933" cy="179" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+    <g >
+    <circle cx="954" cy="200" r="30" id="table-c7" fill="#d7ccc8" stroke="#333" stroke-width="2" data-number="C7" data-capacity="4"/>
+    <text x="954" y="206" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="#ffffff">C7</text>
+    </g>
+    </g>
+    <g id="table-c8-group">
+    <circle cx="1085" cy="179" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+    <circle cx="1085" cy="221" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+    <circle cx="1043" cy="221" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+    <circle cx="1043" cy="179" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+    <g >
+    <circle cx="1064" cy="200" r="30" id="table-c8" fill="#d7ccc8" stroke="#333" stroke-width="2" data-number="C8" data-capacity="4"/>
+    <text x="1064" y="206" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="#ffffff">C8</text>
+    </g>
+    </g>
+    <g id="table-b1-group">
+    <rect x="42" y="285" width="100" height="12" fill="#a1887f" stroke="#666" stroke-width="1" rx="6" ry="6"/>
+    <rect x="42" y="363" width="100" height="12" fill="#a1887f" stroke="#666" stroke-width="1" rx="6" ry="6"/>
+    <g >
+    <rect x="42" y="300" width="100" height="60" id="table-b1" fill="#d7ccc8" stroke="#333" stroke-width="2" rx="5" data-number="B1" data-capacity="6"/>
+    <text x="92" y="336" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="#ffffff">B1</text>
+    </g>
+    </g>
+    <g id="table-b2-group">
+    <rect x="164" y="285" width="100" height="12" fill="#a1887f" stroke="#666" stroke-width="1" rx="6" ry="6"/>
+    <rect x="164" y="363" width="100" height="12" fill="#a1887f" stroke="#666" stroke-width="1" rx="6" ry="6"/>
+    <g >
+    <rect x="164" y="300" width="100" height="60" id="table-b2" fill="#d7ccc8" stroke="#333" stroke-width="2" rx="5" data-number="B2" data-capacity="6"/>
+    <text x="214" y="336" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="#ffffff">B2</text>
+    </g>
+    </g>
+    <g id="table-b3-group">
+    <rect x="286" y="285" width="100" height="12" fill="#a1887f" stroke="#666" stroke-width="1" rx="6" ry="6"/>
+    <rect x="286" y="363" width="100" height="12" fill="#a1887f" stroke="#666" stroke-width="1" rx="6" ry="6"/>
+    <g >
+    <rect x="286" y="300" width="100" height="60" id="table-b3" fill="#d7ccc8" stroke="#333" stroke-width="2" rx="5" data-number="B3" data-capacity="6"/>
+    <text x="336" y="336" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="#ffffff">B3</text>
+    </g>
+    </g>
+    <g id="table-b4-group">
+    <rect x="408" y="285" width="100" height="12" fill="#a1887f" stroke="#666" stroke-width="1" rx="6" ry="6"/>
+    <rect x="408" y="363" width="100" height="12" fill="#a1887f" stroke="#666" stroke-width="1" rx="6" ry="6"/>
+    <g >
+    <rect x="408" y="300" width="100" height="60" id="table-b4" fill="#d7ccc8" stroke="#333" stroke-width="2" rx="5" data-number="B4" data-capacity="6"/>
+    <text x="458" y="336" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="#ffffff">B4</text>
+    </g>
+    </g>
+    <g id="table-b5-group">
+    <rect x="692" y="285" width="100" height="12" fill="#a1887f" stroke="#666" stroke-width="1" rx="6" ry="6"/>
+    <rect x="692" y="363" width="100" height="12" fill="#a1887f" stroke="#666" stroke-width="1" rx="6" ry="6"/>
+    <g >
+    <rect x="692" y="300" width="100" height="60" id="table-b5" fill="#d7ccc8" stroke="#333" stroke-width="2" rx="5" data-number="B5" data-capacity="6"/>
+    <text x="742" y="336" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="#ffffff">B5</text>
+    </g>
+    </g>
+    <g id="table-b6-group">
+    <rect x="814" y="285" width="100" height="12" fill="#a1887f" stroke="#666" stroke-width="1" rx="6" ry="6"/>
+    <rect x="814" y="363" width="100" height="12" fill="#a1887f" stroke="#666" stroke-width="1" rx="6" ry="6"/>
+    <g >
+    <rect x="814" y="300" width="100" height="60" id="table-b6" fill="#d7ccc8" stroke="#333" stroke-width="2" rx="5" data-number="B6" data-capacity="6"/>
+    <text x="864" y="336" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="#ffffff">B6</text>
+    </g>
+    </g>
+    <g id="table-b7-group">
+    <rect x="936" y="285" width="100" height="12" fill="#a1887f" stroke="#666" stroke-width="1" rx="6" ry="6"/>
+    <rect x="936" y="363" width="100" height="12" fill="#a1887f" stroke="#666" stroke-width="1" rx="6" ry="6"/>
+    <g >
+    <rect x="936" y="300" width="100" height="60" id="table-b7" fill="#d7ccc8" stroke="#333" stroke-width="2" rx="5" data-number="B7" data-capacity="6"/>
+    <text x="986" y="336" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="#ffffff">B7</text>
+    </g>
+    </g>
+    <g id="table-b8-group">
+    <rect x="1058" y="285" width="100" height="12" fill="#a1887f" stroke="#666" stroke-width="1" rx="6" ry="6"/>
+    <rect x="1058" y="363" width="100" height="12" fill="#a1887f" stroke="#666" stroke-width="1" rx="6" ry="6"/>
+    <g >
+    <rect x="1058" y="300" width="100" height="60" id="table-b8" fill="#d7ccc8" stroke="#333" stroke-width="2" rx="5" data-number="B8" data-capacity="6"/>
+    <text x="1108" y="336" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="#ffffff">B8</text>
+    </g>
+    </g>
+    <g id="table-a1-group">
+    <rect x="270" y="519" width="60" height="12" fill="#a1887f" stroke="#666" stroke-width="1" rx="6" ry="6"/>
+    <circle cx="274" cy="480" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+    <circle cx="326" cy="480" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+    <g >
+    <circle cx="300" cy="495" r="30" id="table-a1" fill="#d7ccc8" stroke="#333" stroke-width="2" data-number="A1" data-capacity="4"/>
+    <text x="300" y="501" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="#ffffff">A1</text>
+    </g>
+    </g>
+    <g id="table-a2-group">
+    <rect x="370" y="519" width="60" height="12" fill="#a1887f" stroke="#666" stroke-width="1" rx="6" ry="6"/>
+    <circle cx="374" cy="480" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+    <circle cx="426" cy="480" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+    <g >
+    <circle cx="400" cy="495" r="30" id="table-a2" fill="#d7ccc8" stroke="#333" stroke-width="2" data-number="A2" data-capacity="4"/>
+    <text x="400" y="501" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="#ffffff">A2</text>
+    </g>
+    </g>
+    <g id="table-a3-group">
+    <rect x="470" y="519" width="60" height="12" fill="#a1887f" stroke="#666" stroke-width="1" rx="6" ry="6"/>
+    <circle cx="474" cy="480" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+    <circle cx="526" cy="480" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+    <g >
+    <circle cx="500" cy="495" r="30" id="table-a3" fill="#d7ccc8" stroke="#333" stroke-width="2" data-number="A3" data-capacity="4"/>
+    <text x="500" y="501" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="#ffffff">A3</text>
+    </g>
+    </g>
+    <g id="table-a4-group">
+    <rect x="670" y="519" width="60" height="12" fill="#a1887f" stroke="#666" stroke-width="1" rx="6" ry="6"/>
+    <circle cx="674" cy="480" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+    <circle cx="726" cy="480" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+    <g >
+    <circle cx="700" cy="495" r="30" id="table-a4" fill="#d7ccc8" stroke="#333" stroke-width="2" data-number="A4" data-capacity="4"/>
+    <text x="700" y="501" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="#ffffff">A4</text>
+    </g>
+    </g>
+    <g id="table-a5-group">
+    <rect x="770" y="519" width="60" height="12" fill="#a1887f" stroke="#666" stroke-width="1" rx="6" ry="6"/>
+    <circle cx="774" cy="480" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+    <circle cx="826" cy="480" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+    <g >
+    <circle cx="800" cy="495" r="30" id="table-a5" fill="#d7ccc8" stroke="#333" stroke-width="2" data-number="A5" data-capacity="4"/>
+    <text x="800" y="501" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="#ffffff">A5</text>
+    </g>
+    </g>
+    <g id="table-a6-group">
+    <rect x="870" y="519" width="60" height="12" fill="#a1887f" stroke="#666" stroke-width="1" rx="6" ry="6"/>
+    <circle cx="874" cy="480" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+    <circle cx="926" cy="480" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+    <g >
+    <circle cx="900" cy="495" r="30" id="table-a6" fill="#d7ccc8" stroke="#333" stroke-width="2" data-number="A6" data-capacity="4"/>
+    <text x="900" y="501" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="#ffffff">A6</text>
+    </g>
+    </g>
+    <g id="table-t1-group">
+    <circle cx="620" cy="275" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+    <circle cx="620" cy="325" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+    <g >
+    <circle cx="620" cy="300" r="25" id="table-t1" fill="#d7ccc8" stroke="#333" stroke-width="2" data-number="T1" data-capacity="2"/>
+    <text x="620" y="306" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="#ffffff">T1</text>
+    </g>
+    </g>
+    <g id="table-t2-group">
+    <circle cx="620" cy="175" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+    <circle cx="620" cy="225" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+    <g >
+    <circle cx="620" cy="200" r="25" id="table-t2" fill="#d7ccc8" stroke="#333" stroke-width="2" data-number="T2" data-capacity="2"/>
+    <text x="620" y="206" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="#ffffff">T2</text>
+    </g>
+    </g>
+    <g id="table-t3-group">
+    <circle cx="620" cy="75" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+    <circle cx="620" cy="125" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+    <g >
+    <circle cx="620" cy="100" r="25" id="table-t3" fill="#d7ccc8" stroke="#333" stroke-width="2" data-number="T3" data-capacity="2"/>
+    <text x="620" y="106" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="#ffffff">T3</text>
+    </g>
+    </g>
+    </g>
+  </g>
+
+  <!-- INDOOR SECTION -->
+  <rect x="0" y="560" width="1200" height="440" fill="#f5f5f5" />
+
+  <g id="indoor-section">
+  <g id="table-1-group">
+  <rect x="200" y="760" width="20" height="100" fill="#a1887f" stroke="#666" stroke-width="1" rx="6" ry="6"/>
+  <circle cx="315" cy="795" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+  <circle cx="315" cy="825" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+  <g >
+  <rect x="220" y="780" width="80" height="60" id="table-1" fill="#d7ccc8" stroke="#333" stroke-width="2" rx="5" data-number="1" data-capacity="4"/>
+  <text x="260" y="816" text-anchor="middle" font-family="Arial" font-size="16" font-weight="bold" fill="#ffffff">1</text>
+  </g>
+  </g>
+  <g id="table-2-group">
+  <circle cx="365" cy="620" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+  <circle cx="365" cy="730" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+  <circle cx="310" cy="675" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+  <circle cx="420" cy="675" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+  <g >
+  <rect x="330" y="640" width="70" height="70" id="table-2" fill="#d7ccc8" stroke="#333" stroke-width="2" rx="5" data-number="2" data-capacity="4"/>
+  <text x="365" y="681" text-anchor="middle" font-family="Arial" font-size="16" font-weight="bold" fill="#ffffff">2</text>
+  </g>
+  </g>
+  <g id="table-3-group">
+  <circle cx="475" cy="620" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+  <circle cx="475" cy="730" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+  <circle cx="420" cy="675" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+  <circle cx="530" cy="675" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+  <g >
+  <rect x="440" y="640" width="70" height="70" id="table-3" fill="#d7ccc8" stroke="#333" stroke-width="2" rx="5" data-number="3" data-capacity="4"/>
+  <text x="475" y="681" text-anchor="middle" font-family="Arial" font-size="16" font-weight="bold" fill="#ffffff">3</text>
+  </g>
+  </g>
+  <g id="table-4-group">
+  <circle cx="725" cy="620" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+  <circle cx="725" cy="730" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+  <circle cx="670" cy="675" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+  <circle cx="780" cy="675" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+  <g >
+  <rect x="690" y="640" width="70" height="70" id="table-4" fill="#d7ccc8" stroke="#333" stroke-width="2" rx="5" data-number="4" data-capacity="4"/>
+  <text x="725" y="681" text-anchor="middle" font-family="Arial" font-size="16" font-weight="bold" fill="#ffffff">4</text>
+  </g>
+  </g>
+  <g id="table-5-group">
+  <circle cx="835" cy="620" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+  <circle cx="835" cy="730" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+  <circle cx="780" cy="675" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+  <circle cx="890" cy="675" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+  <g >
+  <rect x="800" y="640" width="70" height="70" id="table-5" fill="#d7ccc8" stroke="#333" stroke-width="2" rx="5" data-number="5" data-capacity="4"/>
+  <text x="835" y="681" text-anchor="middle" font-family="Arial" font-size="16" font-weight="bold" fill="#ffffff">5</text>
+  </g>
+  </g>
+  <g id="table-6-group">
+  <rect x="880" y="760" width="20" height="100" fill="#a1887f" stroke="#666" stroke-width="1" rx="6" ry="6"/>
+  <circle cx="995" cy="795" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+  <circle cx="995" cy="825" r="8" fill="#a1887f" stroke="#666" stroke-width="1"/>
+  <g >
+  <rect x="900" y="780" width="80" height="60" id="table-6" fill="#d7ccc8" stroke="#333" stroke-width="2" rx="5" data-number="6" data-capacity="4"/>
+  <text x="940" y="816" text-anchor="middle" font-family="Arial" font-size="16" font-weight="bold" fill="#ffffff">6</text>
+  </g>
+  </g>
+  </g>
+</svg>

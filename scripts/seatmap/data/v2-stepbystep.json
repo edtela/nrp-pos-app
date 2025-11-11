@@ -29,11 +29,15 @@
           "offset": {"x": "-2s"},
           "anchor": "bottom-right",
           "layout": "column",
+          "fill": "lightgreen",
           "children": [
             {
               "type": "container",
               "name": "BL",
               "layout": "row",
+              "gap": "1s",
+              "padding": "0.5s",
+              "fill": "lightblue",
               "children": [
                 {"type": "table", "name": "BL1", "use": "large-benches"},
                 {"type": "table", "name": "BL2", "use": "large-benches"},
@@ -45,6 +49,8 @@
               "type": "container",
               "name": "CL",
               "layout": "row",
+              "gap": "1s",
+              "padding": "0.5s",
               "children": [
                 {"type": "table", "name": "CL1", "use": "round"},
                 {"type": "table", "name": "CL2", "use": "round"},
@@ -58,6 +64,8 @@
               "type": "container",
               "name": "DL",
               "layout": "row",
+              "gap": "1s",
+              "padding": "0.5s",
               "children": [
                 {"type": "table", "name": "DL1", "use": "round"},
                 {"type": "table", "name": "DL2", "use": "round"},

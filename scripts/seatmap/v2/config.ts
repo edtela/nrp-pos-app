@@ -84,6 +84,7 @@ function resolveContainerConfig(
     gap: parseUnit(config.gap, baseUnit),
     spacing: config.spacing,
     alignment: config.alignment,
+    padding: parseUnit(config.padding, baseUnit),
     width: parseUnit(config.width, baseUnit),
     height: parseUnit(config.height, baseUnit),
     fill: config.fill,
