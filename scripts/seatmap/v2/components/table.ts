@@ -187,7 +187,7 @@ export class Table implements Component {
 
     // Get seat configuration with defaults
     const seatCount = this.config.seatCount ?? this.config.capacity;
-    const startingPosition = this.config.startingPosition ?? 'N';
+    const startingPosition = this.config.startingPosition ?? 'NE';
     const seatDirection = this.config.seatDirection ?? 'clockwise';
 
     // Skip if custom seats defined (custom seats for rounds not yet implemented)
