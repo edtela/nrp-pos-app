@@ -301,8 +301,8 @@ export class Container implements Component {
     const childSizes: { width: number; height: number }[] = [];
     for (const child of this.children) {
       const childSize = child.getPreferredSize();
-      const width = childSize.width ?? 0;
-      const height = childSize.height ?? innerLayout.height;
+      const width = childSize.width ?? innerLayout.width;
+      const height = innerLayout.height;
       childSizes.push({ width, height });
       totalWidth += width;
     }
@@ -370,8 +370,8 @@ export class Container implements Component {
     const childSizes: { width: number; height: number }[] = [];
     for (const child of this.children) {
       const childSize = child.getPreferredSize();
-      const width = childSize.width ?? innerLayout.width;
-      const height = childSize.height ?? 0;
+      const width = innerLayout.width;
+      const height = childSize.height ?? innerLayout.height;
       childSizes.push({ width, height });
       totalHeight += height;
     }
@@ -517,15 +517,89 @@ export class Container implements Component {
   }
 
   /**
+   * Calculate horizontal offset to position content within allocated space
+   * Uses spacing attribute to determine alignment (start/center/end)
+   */
+  private calculateContentOffsetX(allocatedWidth: number, contentWidth: number): number {
+    if (allocatedWidth <= contentWidth) {
+      return 0; // No offset if content fills or exceeds allocated space
+    }
+
+    const spacing = this.config.spacing ?? 'start';
+    const availableSpace = allocatedWidth - contentWidth;
+
+    // For row layout, spacing affects horizontal positioning
+    if (this.config.layout === 'row') {
+      if (spacing === 'center') {
+        return availableSpace / 2;
+      } else if (spacing === 'end') {
+        return availableSpace;
+      }
+      // 'start' and 'even' both use 0 offset
+      return 0;
+    }
+
+    // For column/manual layout, use anchor-based positioning
+    // Default to center for non-row layouts
+    return availableSpace / 2;
+  }
+
+  /**
+   * Calculate vertical offset to position content within allocated space
+   * Uses spacing attribute to determine alignment (start/center/end)
+   */
+  private calculateContentOffsetY(allocatedHeight: number, contentHeight: number): number {
+    if (allocatedHeight <= contentHeight) {
+      return 0; // No offset if content fills or exceeds allocated space
+    }
+
+    const spacing = this.config.spacing ?? 'start';
+    const availableSpace = allocatedHeight - contentHeight;
+
+    // For column layout, spacing affects vertical positioning
+    if (this.config.layout === 'column') {
+      if (spacing === 'center') {
+        return availableSpace / 2;
+      } else if (spacing === 'end') {
+        return availableSpace;
+      }
+      // 'start' and 'even' both use 0 offset
+      return 0;
+    }
+
+    // For row/manual layout, use anchor-based positioning
+    // Default to center for non-column layouts
+    return availableSpace / 2;
+  }
+
+  /**
    * Phase 3: Render with calculated layout
+   * Container now fills allocated space and positions content based on spacing
    */
   render(layout: LayoutResult): string {
-    // Calculate layouts for all children
-    const childLayouts = this.calculateChildLayouts(layout);
+    // Get our preferred (content) size
+    const preferredSize = this.getPreferredSize();
+    const contentWidth = preferredSize.width ?? layout.width;
+    const contentHeight = preferredSize.height ?? layout.height;
+
+    // Calculate content offset based on spacing (when allocated > content)
+    const offsetX = this.calculateContentOffsetX(layout.width, contentWidth);
+    const offsetY = this.calculateContentOffsetY(layout.height, contentHeight);
+
+    // Create adjusted layout for content area
+    const contentLayout: LayoutResult = {
+      x: layout.x + offsetX,
+      y: layout.y + offsetY,
+      width: contentWidth,
+      height: contentHeight,
+    };
+
+    // Calculate layouts for all children within content area
+    const childLayouts = this.calculateChildLayouts(contentLayout);
 
     let svg = '<g class="container">\n';
 
-    // Render background if fill is defined (renders first = bottom layer)
+    // Render background at full allocated size (renders first = bottom layer)
     if (this.config.fill) {
       svg += `  <rect x="${layout.x}" y="${layout.y}" width="${layout.width}" height="${layout.height}" fill="${this.config.fill}" />\n`;
     }

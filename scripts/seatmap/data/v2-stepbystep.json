@@ -190,7 +190,6 @@
                   "spacing": "center",
                   "gap": "2s",
                   "padding": "0.5s",
-                  "fill": "lightblue",
                   "children": [
                     {"type": "table", "name": "I3", "use": "round"},
                     {"type": "table", "name": "I2", "use": "round"}
@@ -202,7 +201,6 @@
                   "layout": "row",
                   "spacing": "end",
                   "padding": "0.5s",
-                  "fill": "lightgreen",
                   "children": [
                     {"type": "table", "name": "I1", "use": "round"}
                   ]
